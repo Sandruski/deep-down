@@ -122,7 +122,7 @@ bool j1Scene::Update(float dt)
 
 	// Scene2 boss
 	if (index == 1 && App->player->position.y <= 1050)
-		Boss();
+		//Boss();
 
 	return true;
 }

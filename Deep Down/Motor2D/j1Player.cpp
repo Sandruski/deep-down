@@ -255,10 +255,11 @@ bool j1Player::CleanUp()
 bool j1Player::Update(float dt)
 {
 	// Check for collisions
-	if (App->fade->GetStep() == 0) {
-		App->map->CheckNextTile(colliderPos, size, 0, 2, left, right, up, down);
-		App->map->CheckTile(colliderPos, size, 10, left, right, up, down);
-	}
+	up = true;
+	down = true;
+	left = true;
+	right = true;
+	CheckCollision(colliderPos, size, 2, up, down, left, right, GetState());
 
 	CheckIfDead();
 
@@ -962,4 +963,63 @@ void j1Player::OnCollision(Collider* a, Collider* b) {
 		App->audio->PlayFx(5);
 		App->scene->bossPosition = { App->player->position.x, 1200 };
 	}
+}
+
+void j1Player::CheckCollision(iPoint position, iPoint size, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state) {
+
+	for (int i = 0; i < App->map->collisionLayer->width; i++) {
+		for (int j = 0; j < App->map->collisionLayer->height; j++) {
+
+			uint id = App->map->collisionLayer->Get(i, j);
+
+			if (id != 0) {
+				iPoint world = App->map->MapToWorld(i, j);
+				CalculateCollision(position, size, world.x, world.y, id, offset, up, down, left, right, state);
+			}
+		}
+	}
+}
+
+void j1Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, uint id, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state) {
+
+	SDL_Rect B = { x, y, 16, 16 }; //object rectangle
+	SDL_Rect result = { 0, 0, 0, 0 };
+
+	iPoint c_up = { 0, -offset };
+	iPoint c_down = { 0, offset };
+	iPoint c_left = { -offset, 0 };
+	iPoint c_right = { offset, 0 };
+
+	//UP
+	SDL_Rect A_up = { position.x + c_up.x, position.y + c_up.y, size.x, size.y }; //player rectangle
+	if (SDL_IntersectRect(&A_up, &B, &result)) {
+		if (id == 1181 || (id == 1182 && App->scene->gate == false))
+			up = false;
+		else if (id == 1183 && state != null_)
+			SetState(punished_);
+	}
+
+	//DOWN
+	SDL_Rect A_down = { position.x + c_down.x, position.y + c_down.y, size.x, size.y }; //player rectangle
+	if (SDL_IntersectRect(&A_down, &B, &result))
+		if (id == 1181 || (id == 1182 && App->scene->gate == false))
+			down = false;
+		else if (id == 1183 && state != null_)
+			SetState(punished_);
+
+	//LEFT
+	SDL_Rect A_left = { position.x + c_left.x, position.y + c_left.y, size.x, size.y }; //player rectangle
+	if (SDL_IntersectRect(&A_left, &B, &result))
+		if (id == 1181 || (id == 1182 && App->scene->gate == false))
+			left = false;
+		else if (id == 1183 && state != null_)
+			SetState(punished_);
+
+	//RIGHT
+	SDL_Rect A_right = { position.x + c_right.x, position.y + c_right.y, size.x, size.y }; //player rectangle
+	if (SDL_IntersectRect(&A_right, &B, &result))
+		if (id == 1181 || (id == 1182 && App->scene->gate == false))
+			right = false;
+		else if (id == 1183 && state != null_)
+			SetState(punished_);
 }

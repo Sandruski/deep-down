@@ -148,10 +148,7 @@ bool Particle::Update()
 		if (anim.Finished())
 			ret = false;
 
-	if (speed.x > 0)
-		App->map->CheckNextTile({ (int)position.x + 22, (int)position.y + 3 }, { 22, 3 }, 0, 2, left, right, up, down);
-	else
-		App->map->CheckNextTile({ (int)position.x - 22, (int)position.y + 3 }, { 22, 3 }, 0, 2, left, right, up, down);
+	App->player->CheckCollision({ (int)position.x, (int)position.y }, { 22, 3 }, 2, up, down, left, right);
 
 	if (App->map->data.CheckIfEnter("Player", "Gate", position) && App->scene->gate == false) {
 
@@ -170,7 +167,7 @@ bool Particle::Update()
 	else
 		position.x = position.x;
 
-	position.y += speed.y;
+	//position.y += speed.y;
 
 	if (collider != nullptr)
 		collider->SetPos(position.x, position.y);

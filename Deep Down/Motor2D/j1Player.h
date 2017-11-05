@@ -74,6 +74,9 @@ public:
 
 	void OnCollision(Collider* a, Collider* b);
 
+	void CheckCollision(iPoint position, iPoint size, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state = null_);
+	void CalculateCollision(iPoint position, iPoint size, uint x, uint y, uint id, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state = null_);
+
 public:
 
 	fPoint startPos = { 0,0 };

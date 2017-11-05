@@ -161,9 +161,6 @@ public:
 
 	iPoint MouseTile(int x, int y) const;
 
-	void CheckNextTile(iPoint position, iPoint size, int offset, int pixels, bool& left, bool& right, bool& up, bool& down);
-	void CheckTile(iPoint position, iPoint size, int offset, bool& left, bool& right, bool& up, bool& down);
-
 private:
 
 	bool LoadMap();
@@ -179,6 +176,7 @@ private:
 public:
 
 	MapData data;
+	MapLayer*			collisionLayer = nullptr;
 
 private:
 
@@ -186,7 +184,6 @@ private:
 	p2SString			folder;
 	bool				map_loaded;
 
-	MapLayer*			collisionLayer = nullptr;
 	MapLayer*			aboveLayer = nullptr;
 
 };
