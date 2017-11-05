@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<game_state>
+	<input />
+	<window />
+	<textures />
+	<audio>
+		<volume default="16" />
+	</audio>
+	<map />
+	<scene>
+		<index index="1" />
+		<gate opened="false" fx="false" />
+	</scene>
+	<player>
+		<position position.x="1491" position.y="894.293518" />
+		<state state="12" />
+		<speed speed.x="0" speed.y="2" />
+	</player>
+	<collision />
+	<particles />
+	<fade />
+	<renderer>
+		<camera x="-4173" y="-2226" />
+	</renderer>
+</game_state>

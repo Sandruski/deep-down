@@ -1,0 +1,42 @@
+<!-- Config file for the game -->
+
+<config>
+  <app>
+    <title>Deep Down</title>
+    <organization>UPC</organization>
+  </app>
+	
+  <renderer>
+    <vsync value="true"/>
+  </renderer>
+
+  <window>
+    <resolution width="1024" height="768" scale="3"/>
+    <fullscreen value="false"/>
+    <borderless value="false"/>
+    <resizable value="false"/>
+    <fullscreen_window value="false"/>
+  </window>
+
+  <file_system>
+    <path>data.zip</path>
+  </file_system>
+
+  <map>
+    <folder>Assets/Sprites/Maps/</folder>
+  </map>
+
+  <scene>
+    <map1 name="scene1.tmx"/>
+    <map2 name="scene2.tmx"/>
+    <song1 name="scene1.ogg"/>
+    <song2 name="scene2.ogg"/>
+  </scene>
+
+  <audio>
+    <music_folder>Assets/Audio/Music/</music_folder>
+    <fx_folder>Assets/Audio/FX/</fx_folder>
+    <volume default="16"/>
+  </audio>
+
+</config>
