@@ -126,6 +126,40 @@ j1Player::j1Player()
 
 	dash2.PushBack({ 931, 518, 48, 48 });
 	dash.speed = 0.2f;
+
+	firstAttack.PushBack({ 1, 580, 48, 44 });
+	firstAttack.PushBack({ 50, 580, 48, 44 });
+	firstAttack.PushBack({ 99, 580, 48, 44 });
+	firstAttack.PushBack({ 148, 580, 48, 44 });
+	firstAttack.PushBack({ 197, 580, 48, 44 });
+	firstAttack.PushBack({ 246, 580, 48, 44 });
+	firstAttack.PushBack({ 295, 580, 48, 44 });
+	firstAttack.speed = 0.1f;
+	firstAttack.loops = false;
+
+
+	secondAttack.PushBack({ 1, 643, 48, 44 });
+	secondAttack.PushBack({ 50, 643, 48, 44 });
+	secondAttack.PushBack({ 99, 643, 48, 44 });
+	secondAttack.PushBack({ 148, 643, 48, 44 });
+	secondAttack.PushBack({ 197, 643, 48, 44 });
+	secondAttack.PushBack({ 246, 643, 48, 44 });
+	secondAttack.PushBack({ 295, 643, 48, 44 });
+	secondAttack.speed = 0.1f;
+
+
+	thirdAttack.PushBack({ 1, 706, 48, 44 });
+	thirdAttack.PushBack({ 50, 706, 48, 44 });
+	thirdAttack.PushBack({ 99, 706, 48, 44 });
+	thirdAttack.PushBack({ 148, 706, 48, 44 });
+	thirdAttack.PushBack({ 197, 706, 48, 44 });
+	thirdAttack.PushBack({ 246, 706, 48, 44 });
+	thirdAttack.PushBack({ 295, 706, 48, 44 });
+	thirdAttack.PushBack({ 344, 706, 48, 44 });
+	thirdAttack.PushBack({ 393, 706, 48, 44 });
+	thirdAttack.PushBack({ 442, 706, 48, 44 });
+	thirdAttack.PushBack({ 491, 706, 48, 44 });
+	thirdAttack.speed = 0.1f;
 }
 
 j1Player::~j1Player()
@@ -339,6 +373,10 @@ void j1Player::PlayerStateMachine() {
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && current_animation == &idle) {
 			state = shot_;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && current_animation == &idle) {
+			state = firstAttack_;
 			break;
 		}
 		current_animation = &idle;
@@ -593,6 +631,12 @@ void j1Player::PlayerStateMachine() {
 		}
 		break;
 
+	case firstAttack_:
+		current_animation = &firstAttack;
+		if (firstAttack.Finished())
+			state = idle_;
+		break;
+
 	case punished_:
 		if (current_animation == &forward || current_animation == &jump || current_animation == &punished)
 			current_animation = &punished;
@@ -601,6 +645,7 @@ void j1Player::PlayerStateMachine() {
 		speed.y = 0;
 		speed.x = 0;
 		break;
+
 	}
 }
 

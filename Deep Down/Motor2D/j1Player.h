@@ -28,6 +28,12 @@ enum playerstates {
 	dashForward_,
 	dashBackward_,
 	punished_,
+	firstAttack_,
+	secondAttack_,
+	thirdAttack_,
+	firstAttack2_,
+	secondAttack2_,
+	thirdAttack2_,
 };
 
 class j1Player : public j1Module
@@ -92,7 +98,7 @@ private:
 	bool stopshot;
 
 	Animation* current_animation;
-	Animation idle, idle2, forward, backward, jump, jump2, crouch, crouch2, dash, dash2, shot, shot2, crouchShot, crouchShot2, punished, punished2;
+	Animation idle, idle2, forward, backward, jump, jump2, crouch, crouch2, dash, dash2, shot, shot2, crouchShot, crouchShot2, punished, punished2, firstAttack, secondAttack, thirdAttack, firstAttack2, secondAttack2, thirdAttack2;
 	playerstates state;
 };
 
