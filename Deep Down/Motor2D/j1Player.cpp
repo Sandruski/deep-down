@@ -127,39 +127,77 @@ j1Player::j1Player()
 	dash2.PushBack({ 931, 518, 48, 48 });
 	dash.speed = 0.2f;
 
-	firstAttack.PushBack({ 1, 580, 48, 44 });
-	firstAttack.PushBack({ 50, 580, 48, 44 });
-	firstAttack.PushBack({ 99, 580, 48, 44 });
-	firstAttack.PushBack({ 148, 580, 48, 44 });
-	firstAttack.PushBack({ 197, 580, 48, 44 });
-	firstAttack.PushBack({ 246, 580, 48, 44 });
-	firstAttack.PushBack({ 295, 580, 48, 44 });
-	firstAttack.speed = 0.1f;
+	firstAttack.PushBack({ 1, 580, 48, 48 });
+	firstAttack.PushBack({ 50, 580, 48, 48 });
+	firstAttack.PushBack({ 99, 580, 48, 48 });
+	firstAttack.PushBack({ 148, 580, 48, 48 });
+	firstAttack.PushBack({ 197, 580, 48, 48 });
+	firstAttack.PushBack({ 246, 580, 48, 48 });
+	firstAttack.PushBack({ 295, 580, 48, 48 });
+	firstAttack.speed = 0.2f;
 	firstAttack.loops = false;
 
 
-	secondAttack.PushBack({ 1, 643, 48, 44 });
-	secondAttack.PushBack({ 50, 643, 48, 44 });
-	secondAttack.PushBack({ 99, 643, 48, 44 });
-	secondAttack.PushBack({ 148, 643, 48, 44 });
-	secondAttack.PushBack({ 197, 643, 48, 44 });
-	secondAttack.PushBack({ 246, 643, 48, 44 });
-	secondAttack.PushBack({ 295, 643, 48, 44 });
-	secondAttack.speed = 0.1f;
+	secondAttack.PushBack({ 1, 643, 48, 48 });
+	secondAttack.PushBack({ 50, 643, 48, 48 });
+	secondAttack.PushBack({ 99, 643, 48, 48 });
+	secondAttack.PushBack({ 148, 643, 48, 48 });
+	secondAttack.PushBack({ 197, 643, 48, 48 });
+	secondAttack.PushBack({ 246, 643, 48, 48 });
+	secondAttack.PushBack({ 295, 643, 48, 48 });
+	secondAttack.speed = 0.2f;
+	secondAttack.loops = false;
 
 
-	thirdAttack.PushBack({ 1, 706, 48, 44 });
-	thirdAttack.PushBack({ 50, 706, 48, 44 });
-	thirdAttack.PushBack({ 99, 706, 48, 44 });
-	thirdAttack.PushBack({ 148, 706, 48, 44 });
-	thirdAttack.PushBack({ 197, 706, 48, 44 });
-	thirdAttack.PushBack({ 246, 706, 48, 44 });
-	thirdAttack.PushBack({ 295, 706, 48, 44 });
-	thirdAttack.PushBack({ 344, 706, 48, 44 });
-	thirdAttack.PushBack({ 393, 706, 48, 44 });
-	thirdAttack.PushBack({ 442, 706, 48, 44 });
-	thirdAttack.PushBack({ 491, 706, 48, 44 });
-	thirdAttack.speed = 0.1f;
+	thirdAttack.PushBack({ 1, 706, 48, 48 });
+	thirdAttack.PushBack({ 50, 706, 48, 48 });
+	thirdAttack.PushBack({ 99, 706, 48, 48 });
+	thirdAttack.PushBack({ 148, 706, 48, 48 });
+	thirdAttack.PushBack({ 197, 706, 48, 48 });
+	thirdAttack.PushBack({ 246, 706, 48, 48 });
+	thirdAttack.PushBack({ 295, 706, 48, 48 });
+	thirdAttack.PushBack({ 344, 706, 48, 48 });
+	thirdAttack.PushBack({ 393, 706, 48, 48 });
+	thirdAttack.PushBack({ 442, 706, 48, 48 });
+	thirdAttack.PushBack({ 491, 706, 48, 48 });
+	thirdAttack.speed = 0.2f;
+	thirdAttack.loops = false;
+
+	firstAttack2.PushBack({ 931, 643, 48, 48 });
+	firstAttack2.PushBack({ 882, 643, 48, 48 });
+	firstAttack2.PushBack({ 833, 643, 48, 48 });
+	firstAttack2.PushBack({ 784, 643, 48, 48 });
+	firstAttack2.PushBack({ 735, 643, 48, 48 });
+	firstAttack2.PushBack({ 686, 643, 48, 48 });
+	firstAttack2.PushBack({ 637, 643, 48, 48 });
+	firstAttack2.speed = 0.2f;
+	firstAttack2.loops = false;
+
+
+	secondAttack2.PushBack({ 931, 706, 48, 48 });
+	secondAttack2.PushBack({ 882, 706, 48, 48 });
+	secondAttack2.PushBack({ 833, 706, 48, 48 });
+	secondAttack2.PushBack({ 784, 706, 48, 48 });
+	secondAttack2.PushBack({ 735, 706, 48, 48 });
+	secondAttack2.PushBack({ 686, 706, 48, 48 });
+	secondAttack2.PushBack({ 637, 706, 48, 48 });
+	secondAttack2.speed = 0.2f;
+	secondAttack2.loops = false;
+
+
+	thirdAttack2.PushBack({ 931, 582, 48, 48 });
+	thirdAttack2.PushBack({ 882, 582, 48, 48 });
+	thirdAttack2.PushBack({ 833, 582, 48, 48 });
+	thirdAttack2.PushBack({ 784, 582, 48, 48 });
+	thirdAttack2.PushBack({ 735, 582, 48, 48 });
+	thirdAttack2.PushBack({ 686, 582, 48, 48 });
+	thirdAttack2.PushBack({ 637, 582, 48, 48 });
+	thirdAttack2.PushBack({ 588, 582, 48, 48 });
+	thirdAttack2.PushBack({ 539, 582, 48, 48 });
+	thirdAttack2.PushBack({ 490, 582, 48, 48 });
+	thirdAttack2.PushBack({ 441, 582, 48, 48 });
+	thirdAttack2.speed = 0.2f;
+	thirdAttack2.loops = false;
 }
 
 j1Player::~j1Player()
@@ -375,10 +413,36 @@ void j1Player::PlayerStateMachine() {
 			state = shot_;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && current_animation == &idle) {
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && current_animation == &idle && !secondAttackToCheck && !thirdAttackToCheck) {
 			state = firstAttack_;
 			break;
 		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && current_animation == &idle && secondAttackToCheck && !thirdAttackToCheck) {
+			state = secondAttack_;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && current_animation == &idle && thirdAttackToCheck) {
+			state = thirdAttack_;
+			break;
+		}
+
+		if (secondAttackToCheck) {
+			time2++;
+			if (time2 >= 50) {
+				secondAttackToCheck = false;
+				time2 = 0;
+			}
+		}
+
+
+		if (thirdAttackToCheck) {
+			time2++;
+			if (time2 >= 50) {
+				thirdAttackToCheck = false;
+				time2 = 0;
+			}
+		}
+
 		current_animation = &idle;
 		break;
 
@@ -405,25 +469,119 @@ void j1Player::PlayerStateMachine() {
 			state = shot2_;
 			break;
 		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && current_animation == &idle2 && !secondAttackToCheck2 && !thirdAttackToCheck2) {
+			state = firstAttack2_;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && current_animation == &idle2 && secondAttackToCheck2 && !thirdAttackToCheck2) {
+			state = secondAttack2_;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && current_animation == &idle2 && thirdAttackToCheck2) {
+			state = thirdAttack2_;
+			break;
+		}
+
+		if (secondAttackToCheck2) {
+			time2++;
+			if (time2 >= 50) {
+				secondAttackToCheck2 = false;
+				time2 = 0;
+			}
+		}
+
+
+		if (thirdAttackToCheck2) {
+			time2++;
+			if (time2 >= 50) {
+				thirdAttackToCheck2 = false;
+				time2 = 0;
+			}
+		}
 		current_animation = &idle2;
 		break;
 
 	case forward_:
+		secondAttackToCheck2 = false;
+		thirdAttackToCheck2 = false;
 		MoveForward();
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && down == false) {
 			state = jump_;
 			break;
 		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_REPEAT && current_animation == &forward && !secondAttackToCheck && !thirdAttackToCheck) {
+			state = firstAttack_;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_REPEAT && current_animation == &forward && secondAttackToCheck && !thirdAttackToCheck) {
+			state = secondAttack_;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_REPEAT && current_animation == &forward && thirdAttackToCheck) {
+			state = thirdAttack_;
+			break;
+		}
+
+		if (secondAttackToCheck) {
+			time2++;
+			if (time2 >= 50) {
+				secondAttackToCheck = false;
+				time2 = 0;
+			}
+		}
+
+
+		if (thirdAttackToCheck) {
+			time2++;
+			if (time2 >= 50) {
+				thirdAttackToCheck = false;
+				time2 = 0;
+			}
+		}
+
 		current_animation = &forward;
 		state = idle_;
 		break;
 
 	case backward_:
+		secondAttackToCheck = false;
+		thirdAttackToCheck = false;
 		MoveBackward();
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && down == false) {
 			state = jump2_;
 			break;
 		}
+
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_REPEAT && current_animation == &backward && !secondAttackToCheck2 && !thirdAttackToCheck2) {
+			state = firstAttack2_;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_REPEAT && current_animation == &backward && secondAttackToCheck2 && !thirdAttackToCheck2) {
+			state = secondAttack2_;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_REPEAT && current_animation == &backward && thirdAttackToCheck2) {
+			state = thirdAttack2_;
+			break;
+		}
+
+		if (secondAttackToCheck2) {
+			time2++;
+			if (time2 >= 50) {
+				secondAttackToCheck2 = false;
+				time2 = 0;
+			}
+		}
+
+
+		if (thirdAttackToCheck2) {
+			time2++;
+			if (time2 >= 50) {
+				thirdAttackToCheck2 = false;
+				time2 = 0;
+			}
+		}
+
 		current_animation = &backward;
 		state = idle2_;
 		break;
@@ -441,6 +599,10 @@ void j1Player::PlayerStateMachine() {
 		break;
 
 	case jumping_:
+		secondAttackToCheck = false;
+		thirdAttackToCheck = false;
+		secondAttackToCheck2 = false;
+		thirdAttackToCheck2 = false;
 		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && right) {
 			MoveForwardJumping();
 			current_animation = &jump;
@@ -566,6 +728,10 @@ void j1Player::PlayerStateMachine() {
 		break;
 
 	case crouch_:
+		secondAttackToCheck = false;
+		thirdAttackToCheck = false;
+		secondAttackToCheck2 = false;
+		thirdAttackToCheck2 = false;
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 			state = crouchShot_;
 			break;
@@ -575,6 +741,10 @@ void j1Player::PlayerStateMachine() {
 		break;
 
 	case crouch2_:
+		secondAttackToCheck = false;
+		thirdAttackToCheck = false;
+		secondAttackToCheck2 = false;
+		thirdAttackToCheck2 = false;
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 			state = crouchShot2_;
 			break;
@@ -584,6 +754,10 @@ void j1Player::PlayerStateMachine() {
 		break;
 
 	case shot_:
+		secondAttackToCheck = false;
+		thirdAttackToCheck = false;
+		secondAttackToCheck2 = false;
+		thirdAttackToCheck2 = false;
 		current_animation = &shot;
 		ShotRight();
 		if (stopshot == true) {
@@ -594,6 +768,10 @@ void j1Player::PlayerStateMachine() {
 		break;
 
 	case shot2_:
+		secondAttackToCheck = false;
+		thirdAttackToCheck = false;
+		secondAttackToCheck2 = false;
+		thirdAttackToCheck2 = false;
 		current_animation = &shot2;
 		ShotLeft();
 		if (stopshot == true) {
@@ -632,9 +810,83 @@ void j1Player::PlayerStateMachine() {
 		break;
 
 	case firstAttack_:
+		if (current_animation != &firstAttack)
+		App->particles->AddParticle(App->particles->firstAttack, position.x + 35, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
 		current_animation = &firstAttack;
-		if (firstAttack.Finished())
+		position.x += 0.1f;
+		if (firstAttack.Finished()) {
+			firstAttack.Reset();
+			secondAttackToCheck = true;
 			state = idle_;
+			break;
+		}
+		break;
+
+	case secondAttack_:
+		if (current_animation != &secondAttack)
+			App->particles->AddParticle(App->particles->secondAttack, position.x + 35, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
+		secondAttackToCheck = false;
+		current_animation = &secondAttack;
+		position.x += 0.1f;
+		if (secondAttack.Finished()) {
+			thirdAttackToCheck = true;
+			secondAttack.Reset();
+			state = idle_;
+			break;
+		}
+		break;
+
+	case thirdAttack_:
+		if (current_animation != &thirdAttack)
+			App->particles->AddParticle(App->particles->thirdAttack, position.x + 35, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
+		thirdAttackToCheck = false;
+		current_animation = &thirdAttack;
+		position.x += 0.1f;
+		if (thirdAttack.Finished()) {
+			thirdAttack.Reset();
+			state = idle_;
+			break;
+		}
+		break;
+
+	case firstAttack2_:
+		if (current_animation != &firstAttack2)
+			App->particles->AddParticle(App->particles->firstAttack, position.x, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
+		current_animation = &firstAttack2;
+		position.x -= 0.1f;
+		if (firstAttack2.Finished()) {
+			firstAttack2.Reset();
+			secondAttackToCheck2 = true;
+			state = idle2_;
+			break;
+		}
+		break;
+
+	case secondAttack2_:
+		if (current_animation != &secondAttack2)
+			App->particles->AddParticle(App->particles->secondAttack, position.x, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
+		secondAttackToCheck2 = false;
+		current_animation = &secondAttack2;
+		position.x -= 0.1f;
+		if (secondAttack2.Finished()) {
+			thirdAttackToCheck2 = true;
+			secondAttack2.Reset();
+			state = idle2_;
+			break;
+		}
+		break;
+
+	case thirdAttack2_:
+		if (current_animation != &thirdAttack2)
+			App->particles->AddParticle(App->particles->thirdAttack, position.x, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
+		thirdAttackToCheck2 = false;
+		current_animation = &thirdAttack2;
+		position.x -= 0.1f;
+		if (thirdAttack2.Finished()) {
+			thirdAttack2.Reset();
+			state = idle2_;
+			break;
+		}
 		break;
 
 	case punished_:

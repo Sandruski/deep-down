@@ -93,9 +93,9 @@ private:
 
 	// Movement
 	float gravity;
-	float time = 0;
+	float time = 0, time2 = 0;
 	bool checkDash;
-	bool stopshot;
+	bool stopshot, secondAttackToCheck, thirdAttackToCheck, secondAttackToCheck2, thirdAttackToCheck2;
 
 	Animation* current_animation;
 	Animation idle, idle2, forward, backward, jump, jump2, crouch, crouch2, dash, dash2, shot, shot2, crouchShot, crouchShot2, punished, punished2, firstAttack, secondAttack, thirdAttack, firstAttack2, secondAttack2, thirdAttack2;

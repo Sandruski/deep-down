@@ -27,6 +27,13 @@ j1Particles::j1Particles()
 	arrowLeft.anim.PushBack({ 900, 520, 22, 3 });
 	arrowRight.life = 10000;
 	arrowLeft.life = 10000;
+
+	firstAttack.anim.PushBack({ 1000, 1000, 10, 10 });
+	secondAttack.anim.PushBack({ 1000, 1000, 10, 10 });
+	thirdAttack.anim.PushBack({ 1000, 1000, 10, 10 });
+	firstAttack.life = 100;
+	secondAttack.life = 100;
+	thirdAttack.life = 100;
 }
 
 j1Particles::~j1Particles()

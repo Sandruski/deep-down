@@ -53,6 +53,9 @@ private:
 public:
 	Particle arrowRight;
 	Particle arrowLeft;
+	Particle firstAttack;
+	Particle secondAttack;
+	Particle thirdAttack;
 };
 
 #endif // __j1PARTICLES_H__
