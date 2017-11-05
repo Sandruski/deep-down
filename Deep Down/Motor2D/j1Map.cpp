@@ -11,6 +11,7 @@
 #include "j1Audio.h"
 #include "j1Player.h"
 #include "j1Map.h"
+#include "j1Window.h"
 
 #include <math.h>
 
@@ -38,7 +39,7 @@ void j1Map::Draw()
 {
 	if (map_loaded == false)
 		return;
-
+	
 	// TODO 5: Prepare the loop to draw all tilesets + Blit
 	p2List_item<TileSet*>* draw_tilesets = data.tilesets.start;
 	while (draw_tilesets != NULL)
@@ -46,16 +47,22 @@ void j1Map::Draw()
 		p2List_item<MapLayer*>* draw_layers = data.layers.start;
 		while (draw_layers != NULL) {
 
+			uint widht, height;
+			App->win->GetWindowSize(widht, height);
+			iPoint initialPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) + 15, (App->render->camera.y * (-1) / App->win->GetScale()) + 15);
+			iPoint finalPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) + ((int)widht / App->win->GetScale() - 15), (App->render->camera.y * (-1) / App->win->GetScale()) + ((int)height / App->win->GetScale() - 15));
+
+
 			if (draw_layers->data->index != ABOVE) {
 
-				for (int i = 0; i < draw_layers->data->width; i++) {
-					for (int j = 0; j < draw_layers->data->height; j++) {
+				for (int i = initialPoint.x; i < finalPoint.x; i++) {
+					for (int j = initialPoint.y; j < finalPoint.y; j++) {
 
 						if (draw_layers->data->Get(i, j) != 0) {
 
 							SDL_Rect rect = draw_tilesets->data->GetTileRect(draw_layers->data->Get(i, j));
-							SDL_Rect* section = &rect;
 
+							SDL_Rect* section = &rect;
 							iPoint world = MapToWorld(i, j);
 
 							if (draw_layers->data->index == PARALLAX) {
@@ -89,12 +96,18 @@ void j1Map::DrawAboveLayer()
 
 	if (aboveLayer != nullptr) {
 
+		uint widht, height;
+		App->win->GetWindowSize(widht, height);
+		iPoint initialPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) + 15, (App->render->camera.y * (-1) / App->win->GetScale()) + 15);
+		iPoint finalPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) + ((int)widht / App->win->GetScale() - 15), (App->render->camera.y * (-1) / App->win->GetScale()) + ((int)height / App->win->GetScale() - 15));
+
+
 		p2List_item<TileSet*>* draw_tilesets = data.tilesets.start;
 		while (draw_tilesets != NULL)
 		{
 
-			for (int i = 0; i < aboveLayer->width; i++) {
-				for (int j = 0; j < aboveLayer->height; j++) {
+			for (int i = initialPoint.x; i < finalPoint.x; i++) {
+				for (int j = initialPoint.y; j < finalPoint.y; j++) {
 
 					if (aboveLayer->Get(i, j) != 0) {
 
