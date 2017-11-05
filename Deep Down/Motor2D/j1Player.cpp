@@ -814,7 +814,8 @@ void j1Player::PlayerStateMachine() {
 		if (current_animation != &firstAttack)
 		App->particles->AddParticle(App->particles->firstAttack, position.x + 35, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
 		current_animation = &firstAttack;
-		position.x += 0.1f;
+		if (right)
+			position.x += 0.1f;
 		if (firstAttack.Finished()) {
 			firstAttack.Reset();
 			secondAttackToCheck = true;
@@ -828,7 +829,8 @@ void j1Player::PlayerStateMachine() {
 			App->particles->AddParticle(App->particles->secondAttack, position.x + 35, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
 		secondAttackToCheck = false;
 		current_animation = &secondAttack;
-		position.x += 0.1f;
+		if (right)
+			position.x += 0.1f;
 		if (secondAttack.Finished()) {
 			thirdAttackToCheck = true;
 			secondAttack.Reset();
@@ -842,7 +844,8 @@ void j1Player::PlayerStateMachine() {
 			App->particles->AddParticle(App->particles->thirdAttack, position.x + 35, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
 		thirdAttackToCheck = false;
 		current_animation = &thirdAttack;
-		position.x += 0.1f;
+		if(right)
+			position.x += 0.1f;
 		if (thirdAttack.Finished()) {
 			thirdAttack.Reset();
 			state = idle_;
@@ -854,6 +857,7 @@ void j1Player::PlayerStateMachine() {
 		if (current_animation != &firstAttack2)
 			App->particles->AddParticle(App->particles->firstAttack, position.x, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
 		current_animation = &firstAttack2;
+		if(left)
 		position.x -= 0.1f;
 		if (firstAttack2.Finished()) {
 			firstAttack2.Reset();
@@ -868,7 +872,8 @@ void j1Player::PlayerStateMachine() {
 			App->particles->AddParticle(App->particles->secondAttack, position.x, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
 		secondAttackToCheck2 = false;
 		current_animation = &secondAttack2;
-		position.x -= 0.1f;
+		if (left)
+			position.x -= 0.1f;
 		if (secondAttack2.Finished()) {
 			thirdAttackToCheck2 = true;
 			secondAttack2.Reset();
@@ -882,7 +887,8 @@ void j1Player::PlayerStateMachine() {
 			App->particles->AddParticle(App->particles->thirdAttack, position.x, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
 		thirdAttackToCheck2 = false;
 		current_animation = &thirdAttack2;
-		position.x -= 0.1f;
+		if (left)
+			position.x -= 0.1f;
 		if (thirdAttack2.Finished()) {
 			thirdAttack2.Reset();
 			state = idle2_;

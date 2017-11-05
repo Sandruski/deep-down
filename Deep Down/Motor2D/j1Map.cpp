@@ -39,7 +39,7 @@ void j1Map::Draw()
 {
 	if (map_loaded == false)
 		return;
-	
+
 	// TODO 5: Prepare the loop to draw all tilesets + Blit
 	p2List_item<TileSet*>* draw_tilesets = data.tilesets.start;
 	while (draw_tilesets != NULL)
@@ -53,7 +53,7 @@ void j1Map::Draw()
 			iPoint finalPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) + ((int)widht / App->win->GetScale() - 15), (App->render->camera.y * (-1) / App->win->GetScale()) + ((int)height / App->win->GetScale() - 15));
 
 
-			if (draw_layers->data->index != ABOVE) {
+			if (draw_layers->data->index != ABOVE && draw_layers->data->index != PARALLAX) {
 
 				for (int i = initialPoint.x; i < finalPoint.x; i++) {
 					for (int j = initialPoint.y; j < finalPoint.y; j++) {
@@ -81,7 +81,30 @@ void j1Map::Draw()
 							}
 						}
 					}
-				}
+				}//for
+			}
+
+			if (draw_layers->data->index == PARALLAX) {
+
+				initialPoint = WorldToMap((App->render->camera.x * draw_layers->data->speed * (-1) / App->win->GetScale()) + 15, (App->render->camera.y * draw_layers->data->speed * (-1) / App->win->GetScale()) + 15);
+				finalPoint = WorldToMap((App->render->camera.x * draw_layers->data->speed * (-1) / App->win->GetScale()) + ((int)widht / App->win->GetScale() - 15), (App->render->camera.y * draw_layers->data->speed * (-1) / App->win->GetScale()) + ((int)height / App->win->GetScale() - 15));
+
+				for (int i = initialPoint.x; i < finalPoint.x; i++) {
+					for (int j = initialPoint.y; j < finalPoint.y; j++) {
+
+						if (draw_layers->data->Get(i, j) != 0) {
+
+							SDL_Rect rect = draw_tilesets->data->GetTileRect(draw_layers->data->Get(i, j));
+
+							SDL_Rect* section = &rect;
+							iPoint world = MapToWorld(i, j);
+
+							if (draw_layers->data->index == PARALLAX) {
+								App->render->Blit(draw_tilesets->data->texture, world.x, world.y, section, draw_layers->data->speed);
+							}
+						}
+					}
+				}//for
 			}
 			draw_layers = draw_layers->next;
 		}
