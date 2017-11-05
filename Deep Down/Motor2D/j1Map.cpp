@@ -46,7 +46,7 @@ void j1Map::Draw()
 		p2List_item<MapLayer*>* draw_layers = data.layers.start;
 		while (draw_layers != NULL) {
 
-			if (draw_layers->data->name != "Above") {
+			if (draw_layers->data->index != ABOVE) {
 
 				for (int i = 0; i < draw_layers->data->width; i++) {
 					for (int j = 0; j < draw_layers->data->height; j++) {
@@ -58,14 +58,14 @@ void j1Map::Draw()
 
 							iPoint world = MapToWorld(i, j);
 
-							if (draw_layers->data->name == "Parallax") {
+							if (draw_layers->data->index == PARALLAX) {
 								App->render->Blit(draw_tilesets->data->texture, world.x, world.y, section, draw_layers->data->speed);
 							}
-							else if (draw_layers->data->name == "Collision") {
+							else if (draw_layers->data->index == COLLISION) {
 								if (App->collision->GetDebug())
 									App->render->Blit(draw_tilesets->data->texture, world.x, world.y, section, draw_layers->data->speed);
 							}
-							else if (draw_layers->data->name == "Gate") {
+							else if (draw_layers->data->index == GATE) {
 								if (App->scene->gate == false)
 									App->render->Blit(draw_tilesets->data->texture, world.x, world.y, section, draw_layers->data->speed);
 							}
@@ -549,11 +549,21 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 	layer->name = node.attribute("name").as_string();
 
-	if (layer->name == "Collision")
+	// Set layer index
+	if (layer->name == "Collision") {
 		collisionLayer = layer;
-
-	if (layer->name == "Above")
+		layer->index = COLLISION;
+	}
+	else if (layer->name == "Above") {
 		aboveLayer = layer;
+		layer->index = ABOVE;
+	}
+	else if (layer->name == "Parallax") {
+		layer->index = PARALLAX;
+	}
+	else if (layer->name == "Gate") {
+		layer->index = GATE;
+	}
 
 	layer->width = node.attribute("width").as_uint();
 	layer->height = node.attribute("height").as_uint();

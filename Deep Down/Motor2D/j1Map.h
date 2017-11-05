@@ -14,6 +14,14 @@
 
 enum playerstates;
 
+enum layerType {
+	NONE,
+	COLLISION,
+	ABOVE,
+	PARALLAX,
+	GATE
+};
+
 struct Object {
 
 	p2SString name = nullptr;
@@ -48,6 +56,8 @@ struct ObjectGroup
 struct MapLayer {
 
 	p2SString name = nullptr;
+	layerType index = NONE;
+
 	uint width = 0; //number of tiles in the x axis
 	uint height = 0; //number of tiles in the y axis
 
@@ -178,6 +188,7 @@ private:
 
 	MapLayer*			collisionLayer = nullptr;
 	MapLayer*			aboveLayer = nullptr;
+
 };
 
 #endif // __j1MAP_H__
