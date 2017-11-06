@@ -147,17 +147,17 @@ void j1Enemies::SpawnEnemy(const EnemyInfo& info)
 			break;
 		
 		case ENEMY_TYPES::CAT_PEASANT_:
-			enemies[i] = new Imp(info.x, info.y);
+			enemies[i] = new CatPeasant(info.x, info.y);
 			enemies[i]->type = ENEMY_TYPES::CAT_PEASANT_;
 			break;
 		
 		case ENEMY_TYPES::MONKEY_:
-			enemies[i] = new Imp(info.x, info.y);
+			enemies[i] = new Monkey(info.x, info.y);
 			enemies[i]->type = ENEMY_TYPES::MONKEY_;
 			break;
 		
 		case ENEMY_TYPES::PLANT_:
-			enemies[i] = new Imp(info.x, info.y);
+			enemies[i] = new Plant(info.x, info.y);
 			enemies[i]->type = ENEMY_TYPES::PLANT_;
 			break;
 		}
