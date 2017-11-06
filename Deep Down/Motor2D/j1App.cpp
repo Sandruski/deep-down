@@ -14,6 +14,7 @@
 #include "j1Particles.h"
 #include "j1Collision.h"
 #include "j1FadeToBlack.h"
+#include "j1Enemies.h"
 
 #include "j1App.h"
 
@@ -36,6 +37,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	particles = new j1Particles();
 	collision = new j1Collision();
 	fade = new j1FadeToBlack();
+	enemies = new j1Enemies();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -49,6 +51,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collision);
 	AddModule(particles);
 	AddModule(fade);
+	AddModule(enemies);
 
 	// render last to swap buffer
 	AddModule(render);

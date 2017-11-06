@@ -46,6 +46,24 @@
     <ClCompile Include="j1Scene.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="j1Enemies.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Imp.cpp">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="CatPeasant.cpp">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Monkey.cpp">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Plant.cpp">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -114,6 +132,24 @@
     <ClInclude Include="j1Scene.h">
       <Filter>Game\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="j1Enemies.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Imp.h">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="CatPeasant.h">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Monkey.h">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Plant.h">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -133,6 +169,9 @@
     </Filter>
     <Filter Include="p2">
       <UniqueIdentifier>{a8bfab6a-5472-4969-943e-861a8b493f08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Modules\Enemies">
+      <UniqueIdentifier>{22cb3b3a-d694-4d94-9cf4-e328e18aa85c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
