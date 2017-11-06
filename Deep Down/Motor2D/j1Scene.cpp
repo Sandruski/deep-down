@@ -19,10 +19,12 @@ j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
 
+	/*
 	bossAnimation.PushBack({ 0, 0, 203, 298 });
 	bossAnimation.PushBack({ 309, 0, 203, 298 });
 	bossAnimation.PushBack({ 0, 298, 203, 298 });
 	bossAnimation.speed = 0.1f;
+	*/
 }
 
 // Destructor
@@ -35,11 +37,26 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	LOG("Loading Scene %d", index);
 	bool ret = true;
 
-	map1 = config.child("map1").attribute("name").as_string();
-	song1 = config.child("song1").attribute("name").as_string();
+	// Load maps
+	for (pugi::xml_node node = config.child("maps").child("map"); node; node = node.next_sibling("map")) {
+		if (node.attribute("id").as_uint() == 1)
+			map1 = node.attribute("name").as_string();
+		if (node.attribute("id").as_uint() == 2)
+			map2 = node.attribute("name").as_string();
+	}
 
-	map2 = config.child("map2").attribute("name").as_string();
-	song2 = config.child("song2").attribute("name").as_string();
+	// Load songs
+	for (pugi::xml_node node = config.child("audio").child("songs").child("song"); node; node = node.next_sibling("song")) {
+		if (node.attribute("id").as_uint() == 1)
+			song1 = node.attribute("name").as_string();
+		if (node.attribute("id").as_uint() == 2)
+			song2 = node.attribute("name").as_string();
+	}
+
+	// Load FX
+	for (pugi::xml_node node = config.child("audio").child("songs").child("song"); node; node = node.next_sibling("song")) {
+		App->audio->LoadFx(node.attribute("name").as_string());
+	}
 
 	return ret;
 }
@@ -121,8 +138,10 @@ bool j1Scene::Update(float dt)
 	App->win->SetTitle(title.GetString());
 
 	// Scene2 boss
+	/*
 	if (index == 1 && App->player->position.y <= 1050)
-		//Boss();
+		Boss();
+	*/
 
 	return true;
 }

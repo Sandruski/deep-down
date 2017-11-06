@@ -20,184 +20,6 @@
 j1Player::j1Player()
 {
 	name.create("player");
-
-	idle.PushBack({ 1, 454, 48, 48 });
-	idle.PushBack({ 50, 454, 48, 48 });
-	idle.PushBack({ 99, 454, 48, 48 });
-	idle.PushBack({ 148, 454, 48, 48 });
-	idle.PushBack({ 197, 454, 48, 48 });
-	idle.PushBack({ 246, 454, 48, 48 });
-	idle.speed = 0.2f;
-
-	idle2.PushBack({ 686, 454, 48, 48 });
-	idle2.PushBack({ 735, 454, 48, 48 });
-	idle2.PushBack({ 784, 454, 48, 48 });
-	idle2.PushBack({ 833, 454, 48, 48 });
-	idle2.PushBack({ 882, 454, 48, 48 });
-	idle2.PushBack({ 931, 454, 48, 48 });
-	idle2.speed = 0.2f;
-
-	//forward.PushBack({ 1, 206, 48, 48 });
-	//forward.PushBack({ 50, 206, 48, 48 });
-	forward.PushBack({ 99, 206, 48, 48 });
-	forward.PushBack({ 148, 206, 48, 48 });
-	forward.PushBack({ 197, 206, 48, 48 });
-	forward.PushBack({ 246, 206, 48, 48 });
-	forward.PushBack({ 295, 206, 48, 48 });
-	forward.PushBack({ 344, 206, 48, 48 });
-	forward.PushBack({ 393, 206, 48, 48 });
-	forward.PushBack({ 442, 206, 48, 48 });
-	forward.speed = 0.2f;
-
-	//backward.PushBack({ 931, 206, 48, 48 });
-	//backward.PushBack({ 882, 206, 48, 48 });
-	backward.PushBack({ 833, 206, 48, 48 });
-	backward.PushBack({ 784, 206, 48, 48 });
-	backward.PushBack({ 735, 206, 48, 48 });
-	backward.PushBack({ 686, 206, 48, 48 });
-	backward.PushBack({ 637, 206, 48, 48 });
-	backward.PushBack({ 588, 206, 48, 48 });
-	backward.PushBack({ 539, 206, 48, 48 });
-	backward.PushBack({ 490, 206, 48, 48 });
-	backward.speed = 0.2f;
-
-	crouch.PushBack({ 99, 268, 48, 48 });
-	crouch.PushBack({ 148, 268, 48, 48 });
-	crouch.speed = 0.2f;
-
-	crouch2.PushBack({ 784, 268, 48, 48 });
-	crouch2.PushBack({ 833, 268, 48, 48 });
-	crouch2.speed = 0.2f;
-
-	shot.PushBack({ 1, 13, 48, 48 });
-	shot.PushBack({ 50, 13, 48, 48 });
-	shot.PushBack({ 99, 13, 48, 48 });
-	shot.PushBack({ 148, 13, 48, 48 });
-	shot.PushBack({ 197, 13, 48, 48 });
-	shot.PushBack({ 246, 13, 48, 48 });
-	shot.speed = 0.2f;
-
-	shot2.PushBack({ 931, 13, 48, 48 });
-	shot2.PushBack({ 882, 13, 48, 48 });
-	shot2.PushBack({ 833, 13, 48, 48 });
-	shot2.PushBack({ 784, 13, 48, 48 });
-	shot2.PushBack({ 735, 13, 48, 48 });
-	shot2.PushBack({ 686, 13, 48, 48 });
-	shot2.speed = 0.2f;
-
-	crouchShot.PushBack({ 1, 140, 48, 48 });
-	crouchShot.PushBack({ 50, 140, 48, 48 });
-	crouchShot.PushBack({ 99, 140, 48, 48 });
-	crouchShot.PushBack({ 148, 140, 48, 48 });
-	crouchShot.PushBack({ 197, 140, 48, 48 });
-	crouchShot.PushBack({ 246, 140, 48, 48 });
-	crouchShot.speed = 0.2f;
-
-	crouchShot2.PushBack({ 931, 140, 48, 48 });
-	crouchShot2.PushBack({ 882, 140, 48, 48 });
-	crouchShot2.PushBack({ 833, 140, 48, 48 });
-	crouchShot2.PushBack({ 784, 140, 48, 48 });
-	crouchShot2.PushBack({ 735, 140, 48, 48 });
-	crouchShot2.PushBack({ 686, 140, 48, 48 });
-	crouchShot2.speed = 0.2f;
-
-	jump.PushBack({ 1, 390, 48, 48 });
-	jump.PushBack({ 50, 390, 48, 48 });
-	jump.PushBack({ 99, 390, 48, 48 });
-	jump.speed = 0.2f;
-
-	jump2.PushBack({ 833, 390, 48, 48 });
-	jump2.PushBack({ 882, 390, 48, 48 });
-	jump2.PushBack({ 931, 390, 48, 48 });
-	jump2.speed = 0.2f;
-
-	punished.PushBack({ 51, 332, 48, 44 });
-	punished.PushBack({ 101, 332, 48, 44 });
-	punished.PushBack({ 151, 332, 48, 44 });
-	punished.speed = 0.1f;
-
-	punished2.PushBack({ 780, 332, 48, 44 });
-	punished2.PushBack({ 830, 332, 48, 44 });
-	punished2.PushBack({ 880, 332, 48, 44 });
-	punished2.speed = 0.1f;
-
-	dash.PushBack({ 1, 518, 48, 48 });
-	dash.speed = 0.2f;
-
-	dash2.PushBack({ 931, 518, 48, 48 });
-	dash.speed = 0.2f;
-
-	firstAttack.PushBack({ 1, 580, 48, 48 });
-	firstAttack.PushBack({ 50, 580, 48, 48 });
-	firstAttack.PushBack({ 99, 580, 48, 48 });
-	firstAttack.PushBack({ 148, 580, 48, 48 });
-	firstAttack.PushBack({ 197, 580, 48, 48 });
-	firstAttack.PushBack({ 246, 580, 48, 48 });
-	firstAttack.PushBack({ 295, 580, 48, 48 });
-	firstAttack.speed = 0.2f;
-	firstAttack.loops = false;
-
-
-	secondAttack.PushBack({ 1, 643, 48, 48 });
-	secondAttack.PushBack({ 50, 643, 48, 48 });
-	secondAttack.PushBack({ 99, 643, 48, 48 });
-	secondAttack.PushBack({ 148, 643, 48, 48 });
-	secondAttack.PushBack({ 197, 643, 48, 48 });
-	secondAttack.PushBack({ 246, 643, 48, 48 });
-	secondAttack.PushBack({ 295, 643, 48, 48 });
-	secondAttack.speed = 0.2f;
-	secondAttack.loops = false;
-
-
-	thirdAttack.PushBack({ 1, 706, 48, 48 });
-	thirdAttack.PushBack({ 50, 706, 48, 48 });
-	thirdAttack.PushBack({ 99, 706, 48, 48 });
-	thirdAttack.PushBack({ 148, 706, 48, 48 });
-	thirdAttack.PushBack({ 197, 706, 48, 48 });
-	thirdAttack.PushBack({ 246, 706, 48, 48 });
-	thirdAttack.PushBack({ 295, 706, 48, 48 });
-	thirdAttack.PushBack({ 344, 706, 48, 48 });
-	thirdAttack.PushBack({ 393, 706, 48, 48 });
-	thirdAttack.PushBack({ 442, 706, 48, 48 });
-	thirdAttack.PushBack({ 491, 706, 48, 48 });
-	thirdAttack.speed = 0.2f;
-	thirdAttack.loops = false;
-
-	firstAttack2.PushBack({ 931, 643, 48, 48 });
-	firstAttack2.PushBack({ 882, 643, 48, 48 });
-	firstAttack2.PushBack({ 833, 643, 48, 48 });
-	firstAttack2.PushBack({ 784, 643, 48, 48 });
-	firstAttack2.PushBack({ 735, 643, 48, 48 });
-	firstAttack2.PushBack({ 686, 643, 48, 48 });
-	firstAttack2.PushBack({ 637, 643, 48, 48 });
-	firstAttack2.speed = 0.2f;
-	firstAttack2.loops = false;
-
-
-	secondAttack2.PushBack({ 931, 706, 48, 48 });
-	secondAttack2.PushBack({ 882, 706, 48, 48 });
-	secondAttack2.PushBack({ 833, 706, 48, 48 });
-	secondAttack2.PushBack({ 784, 706, 48, 48 });
-	secondAttack2.PushBack({ 735, 706, 48, 48 });
-	secondAttack2.PushBack({ 686, 706, 48, 48 });
-	secondAttack2.PushBack({ 637, 706, 48, 48 });
-	secondAttack2.speed = 0.2f;
-	secondAttack2.loops = false;
-
-
-	thirdAttack2.PushBack({ 931, 582, 48, 48 });
-	thirdAttack2.PushBack({ 882, 582, 48, 48 });
-	thirdAttack2.PushBack({ 833, 582, 48, 48 });
-	thirdAttack2.PushBack({ 784, 582, 48, 48 });
-	thirdAttack2.PushBack({ 735, 582, 48, 48 });
-	thirdAttack2.PushBack({ 686, 582, 48, 48 });
-	thirdAttack2.PushBack({ 637, 582, 48, 48 });
-	thirdAttack2.PushBack({ 588, 582, 48, 48 });
-	thirdAttack2.PushBack({ 539, 582, 48, 48 });
-	thirdAttack2.PushBack({ 490, 582, 48, 48 });
-	thirdAttack2.PushBack({ 441, 582, 48, 48 });
-	thirdAttack2.speed = 0.2f;
-	thirdAttack2.loops = false;
 }
 
 j1Player::~j1Player()
@@ -206,7 +28,194 @@ j1Player::~j1Player()
 
 // Called before render is available
 bool j1Player::Awake(pugi::xml_node& config) {
+
 	bool ret = true;
+
+	// Load animations
+	pugi::xml_node animations_node = config.child("animations");
+	pugi::xml_node node;
+	
+	//idle
+	node = animations_node.child("idle");
+	idle.speed = node.attribute("speed").as_float();
+	idle.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//idle2
+	node = animations_node.child("idle2");
+	idle2.speed = node.attribute("speed").as_float();
+	idle2.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		idle2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//forward
+	node = animations_node.child("forward");
+	forward.speed = node.attribute("speed").as_float();
+	forward.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		forward.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//backward
+	node = animations_node.child("backward");
+	backward.speed = node.attribute("speed").as_float();
+	backward.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		backward.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//crouch
+	node = animations_node.child("crouch");
+	crouch.speed = node.attribute("speed").as_float();
+	crouch.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		crouch.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//crouch2
+	node = animations_node.child("crouch2");
+	crouch2.speed = node.attribute("speed").as_float();
+	crouch2.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		crouch2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//shot
+	node = animations_node.child("shot");
+	shot.speed = node.attribute("speed").as_float();
+	shot.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		shot.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//shot2
+	node = animations_node.child("shot2");
+	shot2.speed = node.attribute("speed").as_float();
+	shot2.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		shot2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//crouchShot
+	node = animations_node.child("crouchShot");
+	crouchShot.speed = node.attribute("speed").as_float();
+	crouchShot.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		crouchShot.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//crouchShot2
+	node = animations_node.child("crouchShot2");
+	crouchShot2.speed = node.attribute("speed").as_float();
+	crouchShot2.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		crouchShot2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//jump
+	node = animations_node.child("jump");
+	jump.speed = node.attribute("speed").as_float();
+	jump.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		jump.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//jump2
+	node = animations_node.child("jump2");
+	jump2.speed = node.attribute("speed").as_float();
+	jump2.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		jump2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//punished
+	node = animations_node.child("punished");
+	punished.speed = node.attribute("speed").as_float();
+	punished.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		punished.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//punished2
+	node = animations_node.child("punished2");
+	punished2.speed = node.attribute("speed").as_float();
+	punished2.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		punished2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//dash
+	node = animations_node.child("dash");
+	dash.speed = node.attribute("speed").as_float();
+	dash.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		dash.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//dash2
+	node = animations_node.child("dash2");
+	dash2.speed = node.attribute("speed").as_float();
+	dash2.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		dash2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//firstAttack
+	node = animations_node.child("firstAttack");
+	firstAttack.speed = node.attribute("speed").as_float();
+	firstAttack.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		firstAttack.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//secondAttack
+	node = animations_node.child("secondAttack");
+	secondAttack.speed = node.attribute("speed").as_float();
+	secondAttack.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		secondAttack.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//thirdAttack
+	node = animations_node.child("thirdAttack");
+	thirdAttack.speed = node.attribute("speed").as_float();
+	thirdAttack.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		thirdAttack.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//firstAttack2
+	node = animations_node.child("firstAttack2");
+	firstAttack2.speed = node.attribute("speed").as_float();
+	firstAttack2.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		firstAttack2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//secondAttack2
+	node = animations_node.child("secondAttack2");
+	secondAttack2.speed = node.attribute("speed").as_float();
+	secondAttack2.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		secondAttack2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//thirdAttack2
+	node = animations_node.child("thirdAttack2");
+	thirdAttack2.speed = node.attribute("speed").as_float();
+	thirdAttack2.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		thirdAttack2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+	//_load_animations
+
+	// Load player textures
+	LOG("Loading player textures");
+	spritesheet = config.child("spritesheets").child("spritesheet").attribute("name").as_string();
+
 
 	return ret;
 }
@@ -214,14 +223,6 @@ bool j1Player::Awake(pugi::xml_node& config) {
 // Load assets
 bool j1Player::Start()
 {
-	// Load FX
-	App->audio->LoadFx("dash.wav"); ///id == 1
-	App->audio->LoadFx("earthquake.wav"); ///id == 2
-	App->audio->LoadFx("bow.wav"); ///id == 3
-	App->audio->LoadFx("gate.wav"); ///id == 4
-	App->audio->LoadFx("scream.wav"); ///id == 5
-	//
-
 	SetState(idle_);
 	gravity = 0.1f;
 
@@ -232,8 +233,7 @@ bool j1Player::Start()
 
 	speed = { 0,0 };
 
-	LOG("Loading player textures");
-	player = App->tex->Load("Assets/Sprites/Textures/Kaho.png");
+	player = App->tex->Load(spritesheet.GetString());
 
 	return true;
 }

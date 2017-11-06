@@ -78,6 +78,7 @@ public:
 	void CalculateCollision(iPoint position, iPoint size, uint x, uint y, uint id, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state = null_);
 
 public:
+	p2SString spritesheet;
 
 	fPoint startPos = { 0,0 };
 	fPoint position = { 0,0 };

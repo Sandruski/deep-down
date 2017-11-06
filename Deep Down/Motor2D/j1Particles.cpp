@@ -22,18 +22,6 @@ j1Particles::j1Particles()
 
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 		active[i] = nullptr;
-
-	arrowRight.anim.PushBack({ 58, 520, 22, 3 });
-	arrowLeft.anim.PushBack({ 900, 520, 22, 3 });
-	arrowRight.life = 10000;
-	arrowLeft.life = 10000;
-
-	firstAttack.anim.PushBack({ 1000, 1000, 10, 10 });
-	secondAttack.anim.PushBack({ 1000, 1000, 10, 10 });
-	thirdAttack.anim.PushBack({ 1000, 1000, 10, 10 });
-	firstAttack.life = 100;
-	secondAttack.life = 100;
-	thirdAttack.life = 100;
 }
 
 j1Particles::~j1Particles()
@@ -41,7 +29,43 @@ j1Particles::~j1Particles()
 
 // Called before render is available
 bool j1Particles::Awake(pugi::xml_node& config) {
+	
 	bool ret = true;
+
+	// Load animations
+	pugi::xml_node animations_node = config.child("animations");
+	pugi::xml_node node;
+
+	//arrowRight
+	node = animations_node.child("arrowRight");
+	arrowRight.life = node.attribute("life").as_uint();
+	node = node.child("frame");
+	arrowRight.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+
+	//arrowLeft
+	node = animations_node.child("arrowLeft");
+	arrowLeft.life = node.attribute("life").as_uint();
+	node = node.child("frame");
+	arrowLeft.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+
+	//firstAttack
+	node = animations_node.child("firstAttack");
+	firstAttack.life = node.attribute("life").as_uint();
+	node = node.child("frame");
+	firstAttack.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+
+	//secondAttack
+	node = animations_node.child("secondAttack");
+	secondAttack.life = node.attribute("life").as_uint();
+	node = node.child("frame");
+	secondAttack.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+
+	//thirdAttack
+	node = animations_node.child("thirdAttack");
+	thirdAttack.life = node.attribute("life").as_uint();
+	node = node.child("frame");
+	thirdAttack.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	//_load_animations
 
 	return ret;
 }
