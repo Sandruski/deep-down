@@ -32,7 +32,6 @@ bool j1Particles::Awake(pugi::xml_node& config) {
 	
 	bool ret = true;
 
-	// Load animations
 	pugi::xml_node animations_node = config.child("animations");
 	pugi::xml_node node;
 
@@ -41,31 +40,35 @@ bool j1Particles::Awake(pugi::xml_node& config) {
 	arrowRight.life = node.attribute("life").as_uint();
 	node = node.child("frame");
 	arrowRight.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	arrowRight.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
 
 	//arrowLeft
 	node = animations_node.child("arrowLeft");
 	arrowLeft.life = node.attribute("life").as_uint();
 	node = node.child("frame");
 	arrowLeft.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	arrowLeft.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
 
 	//firstAttack
 	node = animations_node.child("firstAttack");
 	firstAttack.life = node.attribute("life").as_uint();
 	node = node.child("frame");
 	firstAttack.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	firstAttack.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
 
 	//secondAttack
 	node = animations_node.child("secondAttack");
 	secondAttack.life = node.attribute("life").as_uint();
 	node = node.child("frame");
 	secondAttack.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	secondAttack.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
 
 	//thirdAttack
 	node = animations_node.child("thirdAttack");
 	thirdAttack.life = node.attribute("life").as_uint();
 	node = node.child("frame");
 	thirdAttack.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
-	//_load_animations
+	thirdAttack.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
 
 	return ret;
 }
@@ -172,7 +175,7 @@ bool Particle::Update()
 		if (anim.Finished())
 			ret = false;
 
-	App->player->CheckCollision({ (int)position.x, (int)position.y }, { 22, 3 }, 2, up, down, left, right);
+	App->player->CheckCollision({ (int)position.x, (int)position.y }, coll_size, App->player->check_collision_offset, up, down, left, right);
 
 	if (App->map->data.CheckIfEnter("Player", "Gate", position) && App->scene->gate == false) {
 

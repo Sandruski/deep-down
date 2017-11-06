@@ -212,10 +212,20 @@ bool j1Player::Awake(pugi::xml_node& config) {
 	}
 	//_load_animations
 
-	// Load player textures
-	LOG("Loading player textures");
+	// Load textures path
 	spritesheet = config.child("spritesheets").child("spritesheet").attribute("name").as_string();
+	//_load_textures_path
 
+	// Load general info
+	pugi::xml_node general_node = config.child("general");
+
+	default_state = (playerstates)general_node.child("state").attribute("value").as_int();
+	gravity = general_node.child("gravity").attribute("value").as_float();
+	speed = { general_node.child("speed").attribute("x").as_float(),  general_node.child("speed").attribute("y").as_float() };
+	coll_offset = { general_node.child("collider").attribute("x").as_int(),  general_node.child("collider").attribute("y").as_int() };
+	coll_size = { general_node.child("collider").attribute("w").as_int(),  general_node.child("collider").attribute("h").as_int() };
+	check_collision_offset = general_node.child("check_collision").attribute("offset").as_uint();
+	//_load_general_info
 
 	return ret;
 }
@@ -223,16 +233,15 @@ bool j1Player::Awake(pugi::xml_node& config) {
 // Load assets
 bool j1Player::Start()
 {
-	SetState(idle_);
-	gravity = 0.1f;
+	// Set player animation (state)
+	SetState(default_state);
 
-	size = { 20, 38 };
-	colliderPos = { (int)position.x + 14, (int)position.y + 10 };
+	// Create player collider
+	colliderPos = { (int)position.x + coll_offset.x, (int)position.y + coll_offset.y };
+	coll = App->collision->AddCollider({ colliderPos.x, colliderPos.y, coll_size.x, coll_size.y }, COLLIDER_PLAYER, this);
 
-	coll = App->collision->AddCollider({ colliderPos.x, colliderPos.y, size.x, size.y }, COLLIDER_PLAYER, this);
-
-	speed = { 0,0 };
-
+	// Load player textures
+	LOG("Loading player textures");
 	player = App->tex->Load(spritesheet.GetString());
 
 	return true;
@@ -259,7 +268,7 @@ bool j1Player::Update(float dt)
 	down = true;
 	left = true;
 	right = true;
-	CheckCollision(colliderPos, size, 2, up, down, left, right, GetState());
+	CheckCollision(colliderPos, coll_size, check_collision_offset, up, down, left, right, GetState());
 
 	CheckIfDead();
 
@@ -270,7 +279,7 @@ bool j1Player::Update(float dt)
 	r = &current_animation->GetCurrentFrame();
 
 	// Update collider
-	colliderPos = { (int)position.x + 14, (int)position.y + 10 };
+	colliderPos = { (int)position.x + coll_offset.x, (int)position.y + coll_offset.y };
 	coll->SetPos(colliderPos.x, colliderPos.y);
 
 	return true;

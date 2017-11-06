@@ -78,29 +78,39 @@ public:
 	void CalculateCollision(iPoint position, iPoint size, uint x, uint y, uint id, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state = null_);
 
 public:
-	p2SString spritesheet;
-
-	fPoint startPos = { 0,0 };
-	fPoint position = { 0,0 };
-	iPoint colliderPos = { 0,0 };
-	iPoint size = { 0,0 };
-
-	fPoint speed;
-	SDL_Rect* r;
+	// Textures
 	SDL_Texture* player;
 
-	bool up = true, down = true, left = true, right = true;
+	// Animations
+	SDL_Rect* r;
+
+	// Collisions
+	uint check_collision_offset;
+
+	// General info
+	fPoint startPos;
+	fPoint position;
+	playerstates default_state;
 
 private:
-	// Collision stuff
+	// Textures
+	p2SString spritesheet;
+
+	// Player collider
 	Collider* coll;
+	iPoint coll_offset;
+	iPoint coll_size;
+	iPoint colliderPos;
 
 	// Movement
 	float gravity;
+	fPoint speed;
 	float time = 0, time2 = 0;
+	bool up = true, down = true, left = true, right = true;
 	bool checkDash;
 	bool stopshot, secondAttackToCheck, thirdAttackToCheck, secondAttackToCheck2, thirdAttackToCheck2;
 
+	// Animations
 	Animation* current_animation;
 	Animation idle, idle2, forward, backward, jump, jump2, crouch, crouch2, dash, dash2, shot, shot2, crouchShot, crouchShot2, punished, punished2, firstAttack, secondAttack, thirdAttack, firstAttack2, secondAttack2, thirdAttack2;
 	playerstates state;

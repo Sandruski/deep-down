@@ -21,12 +21,15 @@
   <file_system>
     <path>data.zip</path>
   </file_system>
-
-  <textures>
-    
-  </textures>
   
   <player>
+    <general>
+      <state value="2"/>
+      <gravity value="0.1"/>
+      <speed x="0" y="0"/>
+      <collider x="14" y="10" w="20" h="38"/>
+      <check_collision offset="2"/>
+    </general>
     <spritesheets>
       <spritesheet name="Assets/Sprites/Textures/Kaho.png"/>
     </spritesheets>
@@ -204,13 +207,14 @@
 
   <scene>
     <maps>
+      <index first="0"/>
       <map id="1" name="scene1.tmx"/>
       <map id="2" name="scene2.tmx"/>
     </maps>
     <audio>
       <songs>
         <song id="1" name="scene1.ogg"/>
-        <song id="2" name="scene2.ogg"/>
+        <song id="2" name="scene2.ogg" volume_adjustment="16"/>
       </songs>
       <fx>
         <fx name="dash.wav"/>
@@ -240,7 +244,6 @@
         <frame x="1000" y="1000" w="10" h="10"/>
       </thirdAttack>
     </animations>
-    
   </particles>
 
   <audio>

@@ -53,18 +53,17 @@ public:
 	uint height;
 	uint scale;
 
-	bool gate = false;
-	bool fx = false;
-	bool loading = false;
+	bool gate, fx, loading;
 
 private:
 
-	uint index = 0;
+	uint index;
 
 	p2SString map1;
 	p2SString map2;
 	p2SString song1;
 	p2SString song2;
+	uint volume_adjustment;
 
 	iPoint mouse;
 

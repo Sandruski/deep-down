@@ -34,8 +34,10 @@ j1Scene::~j1Scene()
 // Called before render is available
 bool j1Scene::Awake(pugi::xml_node& config)
 {
-	LOG("Loading Scene %d", index);
 	bool ret = true;
+
+	index = config.child("maps").child("index").attribute("first").as_uint();
+	LOG("Loading Scene %d", index);
 
 	// Load maps
 	for (pugi::xml_node node = config.child("maps").child("map"); node; node = node.next_sibling("map")) {
@@ -49,8 +51,10 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	for (pugi::xml_node node = config.child("audio").child("songs").child("song"); node; node = node.next_sibling("song")) {
 		if (node.attribute("id").as_uint() == 1)
 			song1 = node.attribute("name").as_string();
-		if (node.attribute("id").as_uint() == 2)
+		if (node.attribute("id").as_uint() == 2) {
 			song2 = node.attribute("name").as_string();
+			volume_adjustment = node.attribute("volume_adjustment").as_uint();
+		}
 	}
 
 	// Load FX
@@ -68,6 +72,7 @@ bool j1Scene::Start()
 	bossPosition = { App->player->position.x, 1200 };
 	bossColliderPos = { (int)bossPosition.x, (int)bossPosition.y };
 	bossColl = App->collision->AddCollider({ bossColliderPos.x, bossColliderPos.y, 203, 298 }, COLLIDER_BOSS, this);
+	
 	LOG("Loading boss textures");
 	boss = App->tex->Load("Assets/Sprites/Textures/Boss.png");
 
@@ -80,7 +85,7 @@ bool j1Scene::Start()
 	else {
 		App->map->Load(map2.GetString());
 		App->audio->PlayMusic(song2.GetString());
-		App->audio->SetMusicVolume(App->audio->music_volume + 16);
+		App->audio->SetMusicVolume(App->audio->music_volume + volume_adjustment);
 	}
 
 	// Camera
@@ -90,7 +95,7 @@ bool j1Scene::Start()
 	//App->player->SetState(stop_);
 
 	if (!loading) {
-		App->player->SetState(idle_);
+		App->player->SetState(App->player->default_state);
 
 		// Player start position
 		App->player->startPos = App->map->data.GetObjectPosition("Player", "StartPos");
