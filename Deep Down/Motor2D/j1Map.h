@@ -185,6 +185,7 @@ private:
 	bool				map_loaded;
 
 	MapLayer*			aboveLayer = nullptr;
+	uint				blit_offset;
 
 };
 

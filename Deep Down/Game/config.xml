@@ -203,6 +203,9 @@
   
   <map>
     <folder>Assets/Sprites/Maps/</folder>
+    <general>
+      <blit offset="15"/>
+    </general>
   </map>
 
   <scene>

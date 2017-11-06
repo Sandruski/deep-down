@@ -63,6 +63,8 @@ private:
 	p2SString map2;
 	p2SString song1;
 	p2SString song2;
+	p2SString fx_names[5];
+
 	uint volume_adjustment;
 
 	iPoint mouse;

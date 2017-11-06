@@ -58,9 +58,8 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	}
 
 	// Load FX
-	for (pugi::xml_node node = config.child("audio").child("songs").child("song"); node; node = node.next_sibling("song")) {
+	for (pugi::xml_node node = config.child("audio").child("fx").child("fx"); node; node = node.next_sibling("fx"))
 		App->audio->LoadFx(node.attribute("name").as_string());
-	}
 
 	return ret;
 }

@@ -32,6 +32,8 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 	folder.create(config.child("folder").child_value());
 
+	blit_offset = config.child("general").child("blit").attribute("offset").as_uint();
+
 	return ret;
 }
 
@@ -49,9 +51,8 @@ void j1Map::Draw()
 
 			uint widht, height;
 			App->win->GetWindowSize(widht, height);
-			iPoint initialPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale() - 15), (App->render->camera.y * (-1) / App->win->GetScale()) - 15);
-			iPoint finalPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) + 15 + ((int)widht / App->win->GetScale()), (App->render->camera.y * (-1) / App->win->GetScale()) + 15 + ((int)height / App->win->GetScale()));
-
+			iPoint initialPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale() - blit_offset), (App->render->camera.y * (-1) / App->win->GetScale()) - blit_offset);
+			iPoint finalPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) + blit_offset + ((int)widht / App->win->GetScale()), (App->render->camera.y * (-1) / App->win->GetScale()) + blit_offset + ((int)height / App->win->GetScale()));
 
 			if (draw_layers->data->index != ABOVE && draw_layers->data->index != PARALLAX) {
 
@@ -86,8 +87,8 @@ void j1Map::Draw()
 
 			if (draw_layers->data->index == PARALLAX) {
 
-				initialPoint = WorldToMap((App->render->camera.x * draw_layers->data->speed * (-1) / App->win->GetScale()) - 15, (App->render->camera.y * draw_layers->data->speed * (-1) / App->win->GetScale()) - 15);
-				finalPoint = WorldToMap((App->render->camera.x * draw_layers->data->speed * (-1) / App->win->GetScale()) + ((int)widht / App->win->GetScale() + 15), (App->render->camera.y * draw_layers->data->speed * (-1) / App->win->GetScale()) + ((int)height / App->win->GetScale() + 15));
+				initialPoint = WorldToMap((App->render->camera.x * draw_layers->data->speed * (-1) / App->win->GetScale()) - blit_offset, (App->render->camera.y * draw_layers->data->speed * (-1) / App->win->GetScale()) - blit_offset);
+				finalPoint = WorldToMap((App->render->camera.x * draw_layers->data->speed * (-1) / App->win->GetScale()) + ((int)widht / App->win->GetScale() + blit_offset), (App->render->camera.y * draw_layers->data->speed * (-1) / App->win->GetScale()) + ((int)height / App->win->GetScale() + blit_offset));
 
 				for (int i = initialPoint.x; i < finalPoint.x; i++) {
 					for (int j = initialPoint.y; j < finalPoint.y; j++) {
@@ -121,8 +122,8 @@ void j1Map::DrawAboveLayer()
 
 		uint widht, height;
 		App->win->GetWindowSize(widht, height);
-		iPoint initialPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) - 15, (App->render->camera.y * (-1) / App->win->GetScale()) - 15);
-		iPoint finalPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) + ((int)widht / App->win->GetScale() + 15), (App->render->camera.y * (-1) / App->win->GetScale()) + ((int)height / App->win->GetScale() + 15));
+		iPoint initialPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) - blit_offset, (App->render->camera.y * (-1) / App->win->GetScale()) - blit_offset);
+		iPoint finalPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) + ((int)widht / App->win->GetScale() + blit_offset), (App->render->camera.y * (-1) / App->win->GetScale()) + ((int)height / App->win->GetScale() + blit_offset));
 
 
 		p2List_item<TileSet*>* draw_tilesets = data.tilesets.start;
