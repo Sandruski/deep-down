@@ -1,5 +1,7 @@
 #include "j1App.h"
+#include "j1Enemies.h"
 #include "CatPeasant.h"
+
 #include "j1Collision.h"
 #include "j1Player.h"
 #include "j1Pathfinding.h"
@@ -15,6 +17,7 @@ CatPeasant::CatPeasant(int x, int y) : Enemy(x, y)
 	idle.PushBack({ 266, 21, 64, 64 });
 	idle.speed = 0.15f;
 
+<<<<<<< HEAD
 	idle2.PushBack({ 774, 992, 64, 64 });
 	idle2.PushBack({ 708, 992, 64, 64 });
 	idle2.PushBack({ 642, 992, 64, 64 });
@@ -109,10 +112,15 @@ CatPeasant::CatPeasant(int x, int y) : Enemy(x, y)
 	App->pathfinding->CreatePath(position, App->player->position);
 
 	catPeasantState = stateEnemies::enemyIdle_;
+=======
+	animation = &idle;
+	collider = App->collision->AddCollider({ 0, 0, 18, 18 }, COLLIDER_TYPE::COLLIDER_CATPEASANT, App->enemies);
+>>>>>>> origin/master
 }
 
 void CatPeasant::Move()
 {
+<<<<<<< HEAD
 	
 	AcualDirection();
 
@@ -185,6 +193,13 @@ void CatPeasant::SetDirectionBoolsToFalse() {
 	toForward = false;
 	toBackward = false;
 
+=======
+	// use 'start_pos' to know the start position of the enemy
+	// update their position by using 'position'
+
+	position.x = App->player->position.x;
+	position.y = start_pos.y;
+>>>>>>> origin/master
 }
 
 void CatPeasant::OnCollision(Collider* c1, Collider* c2) {

@@ -32,6 +32,7 @@ public:
 	j1Enemies();
 	virtual ~j1Enemies();
 
+	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
@@ -47,12 +48,17 @@ public:
 private:
 
 	void SpawnEnemy(const EnemyInfo& info);
-	SDL_Texture* CatPeasantTxt = nullptr;
+	SDL_Texture* CatPeasantTex = nullptr;
+	SDL_Texture* MonkeyPlantTex = nullptr;
 
 private:
 
 	EnemyInfo queue[MAX_ENEMIES];
 	Enemy* enemies[MAX_ENEMIES];
+
+	uint index;
+	p2SString CatPeasant_spritesheet;
+	p2SString MonkeyPlant_spritesheet;
 
 };
 
