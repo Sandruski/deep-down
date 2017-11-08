@@ -30,6 +30,8 @@ struct Object {
 	uint y = 0;
 	uint width = 0;
 	uint height = 0;
+
+	fPoint points[10];
 };
 
 struct ObjectGroup

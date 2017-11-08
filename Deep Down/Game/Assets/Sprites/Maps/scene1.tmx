@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="100" height="60" tilewidth="16" tileheight="16" nextobjectid="13">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="60" tilewidth="16" tileheight="16" nextobjectid="17">
  <tileset firstgid="1" name="Background" tilewidth="16" tileheight="16" tilecount="187" columns="17">
   <image source="Background.png" width="272" height="190"/>
  </tileset>
@@ -30039,5 +30039,8 @@
   <object id="1" name="StartPos" x="672" y="208" width="16" height="16"/>
   <object id="3" name="EndPos" x="1376" y="720" width="64" height="64"/>
   <object id="5" name="Gate" x="752" y="768" width="16" height="16"/>
+  <object id="14" name="Path" x="790.833" y="131.5">
+   <polyline points="0,0 -70,19.5 -144,13 -232,38.5 -280,0"/>
+  </object>
  </objectgroup>
 </map>
