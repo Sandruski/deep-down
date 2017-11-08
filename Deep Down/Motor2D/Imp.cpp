@@ -8,7 +8,7 @@
 #include "SDL/include/SDL_timer.h"
 
 Imp::Imp(int x, int y) : Enemy(x, y)
-{
+{/*
 	// Load animations
 	pugi::xml_node animations_node = config.child("types").child("cat").child("animations");
 	pugi::xml_node node;
@@ -111,6 +111,7 @@ Imp::Imp(int x, int y) : Enemy(x, y)
 
 	animation = &r_shield_idle;
 	collider = App->collision->AddCollider({ 0, 0, 18, 18 }, COLLIDER_TYPE::COLLIDER_IMP, App->enemies);
+	*/
 }
 
 void Imp::Move()

@@ -156,6 +156,9 @@
     <ClInclude Include="j1Pathfinding.h">
       <Filter>Game\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>p2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
