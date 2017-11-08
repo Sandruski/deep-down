@@ -14,6 +14,7 @@
 #include "j1Map.h"
 #include "j1Player.h"
 #include "j1Scene.h"
+#include "j1Enemies.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -67,6 +68,8 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
+
+	App->enemies->AddEnemy(CAT_PEASANT_, 700, 100);
 	//Boss
 	bossPosition = { App->player->position.x, 1200 };
 	bossColliderPos = { (int)bossPosition.x, (int)bossPosition.y };

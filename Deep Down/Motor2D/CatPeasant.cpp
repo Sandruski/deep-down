@@ -18,8 +18,8 @@ CatPeasant::CatPeasant(int x, int y) : Enemy(x, y)
 
 void CatPeasant::Move()
 {
-	position.x = App->player->position.x;
-	position.y = App->player->position.y;
+	//position.x = App->player->position.x;
+	//osition.y = App->player->position.y;
 	animation = &idle;
 }
 
