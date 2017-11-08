@@ -15,6 +15,7 @@
 #include "j1Collision.h"
 #include "j1FadeToBlack.h"
 #include "j1Enemies.h"
+#include "j1Pathfinding.h"
 
 #include "j1App.h"
 
@@ -38,6 +39,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	collision = new j1Collision();
 	fade = new j1FadeToBlack();
 	enemies = new j1Enemies();
+	pathfinding = new j1PathFinding();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -46,6 +48,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
+	AddModule(pathfinding);
 	AddModule(scene);
 	AddModule(player);
 	AddModule(collision);
