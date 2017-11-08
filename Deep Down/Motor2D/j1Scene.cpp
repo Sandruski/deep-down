@@ -68,8 +68,9 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-
+	App->enemies->AddEnemy(IMP_, 700, 100);
 	App->enemies->AddEnemy(CAT_PEASANT_, 700, 100);
+
 	//Boss
 	bossPosition = { App->player->position.x, 1200 };
 	bossColliderPos = { (int)bossPosition.x, (int)bossPosition.y };

@@ -36,12 +36,115 @@ bool j1Enemies::Awake(pugi::xml_node& config) {
 	
 	pugi::xml_node node = config.child("spritesheets").child("spritesheet");
 
-	// Load textures paths
+	// Load texture paths
 	CatPeasant_spritesheet = node.attribute("name").as_string();
 	node = node.next_sibling("spritesheet");
 	MonkeyPlant_spritesheet = node.attribute("name").as_string();
 	node = node.next_sibling("spritesheet");
 	Imp_spritesheet = node.attribute("name").as_string();
+	//_load_texture_paths
+
+	// IMP
+	// Load animations
+	pugi::xml_node animations_node = config.child("types").child("imp").child("animations");
+
+	//r_shield_idle
+	node = animations_node.child("r_shield_idle");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_shield_idle
+	node = animations_node.child("l_shield_idle");
+	imp.l_shield_idle.speed = node.attribute("speed").as_float();
+	imp.l_shield_idle.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.l_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_shield_hurt
+	node = animations_node.child("r_shield_hurt");
+	imp.r_shield_hurt.speed = node.attribute("speed").as_float();
+	imp.r_shield_hurt.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_hurt.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_shield_hurt
+	node = animations_node.child("l_shield_hurt");
+	imp.l_shield_hurt.speed = node.attribute("speed").as_float();
+	imp.l_shield_hurt.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.l_shield_hurt.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_jump
+	node = animations_node.child("r_jump");
+	imp.r_jump.speed = node.attribute("speed").as_float();
+	imp.r_jump.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_jump.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_jump
+	node = animations_node.child("l_jump");
+	imp.l_jump.speed = node.attribute("speed").as_float();
+	imp.l_jump.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.l_jump.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_throw_bomb
+	node = animations_node.child("r_throw_bomb");
+	imp.r_throw_bomb.speed = node.attribute("speed").as_float();
+	imp.r_throw_bomb.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_throw_bomb.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_throw_bomb
+	node = animations_node.child("l_throw_bomb");
+	imp.l_throw_bomb.speed = node.attribute("speed").as_float();
+	imp.l_throw_bomb.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.l_throw_bomb.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_shield_walk
+	node = animations_node.child("r_shield_walk");
+	imp.r_shield_walk.speed = node.attribute("speed").as_float();
+	imp.r_shield_walk.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_walk.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_shield_walk
+	node = animations_node.child("l_shield_walk");
+	imp.l_shield_walk.speed = node.attribute("speed").as_float();
+	imp.l_shield_walk.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.l_shield_walk.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_bomb
+	node = animations_node.child("r_bomb");
+	imp.r_bomb.speed = node.attribute("speed").as_float();
+	imp.r_bomb.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_bomb.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_bomb
+	node = animations_node.child("l_bomb");
+	imp.l_bomb.speed = node.attribute("speed").as_float();
+	imp.l_bomb.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.l_bomb.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+	//_load_animations
+	//_IMP
 
 	return ret;
 }
