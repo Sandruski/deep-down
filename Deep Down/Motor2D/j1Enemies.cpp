@@ -3,11 +3,15 @@
 #include "j1Enemies.h"
 #include "j1Render.h"
 
+#include "j1App.h"
+
 #include "Enemy.h"
 #include "Imp.h"
 #include "CatPeasant.h"
 #include "Monkey.h"
 #include "Plant.h"
+#include "j1Textures.h"
+
 
 
 #define SPAWN_MARGIN 50
@@ -25,6 +29,9 @@ j1Enemies::~j1Enemies()
 
 bool j1Enemies::Start()
 {
+
+	CatPeasantTxt = App->tex->Load("CatPeasant.png");
+
 	return true;
 }
 
@@ -36,23 +43,15 @@ bool j1Enemies::PreUpdate()
 	{
 		if (queue[i].type != ENEMY_TYPES::NO_TYPE)
 		{
-			/*if (App->fade->on == App->scene_1) {
-				if (abs(queue[i].y * SCREEN_SIZE) < App->render->camera.y + (App->render->camera.h * SCREEN_SIZE) + SPAWN_MARGIN)
-				{
-					SpawnEnemy(queue[i]);
-					queue[i].type = ENEMY_TYPES::NO_TYPE;
-					LOG("Spawning enemy at %d", queue[i].y * SCREEN_SIZE);
-				}
-			}
-			else {
+			
 				SpawnEnemy(queue[i]);
 				queue[i].type = ENEMY_TYPES::NO_TYPE;
-				LOG("Spawning enemy at %d", queue[i].y * SCREEN_SIZE);
-			}
-			*/
+				//LOG("Spawning enemy at %d", queue[i].y * App->);
 		}
-	}
-
+			
+			
+		}
+	
 	return true;
 }
 
@@ -63,7 +62,7 @@ bool j1Enemies::Update()
 		if (enemies[i] != nullptr) enemies[i]->Move();
 
 	for (uint i = 0; i < MAX_ENEMIES; ++i)
-		if (enemies[i] != nullptr) enemies[i]->Draw(nullptr /*App->TEX->sprites*/);
+		if (enemies[i] != nullptr) enemies[i]->Draw(CatPeasantTxt);
 
 	return true;
 }
@@ -79,8 +78,8 @@ bool j1Enemies::PostUpdate()
 		//	if ((enemies[i]->position.y >((App->scene_1->current_start_pos + 114) - App->scene_1->cont + 88) + SPAWN_MARGIN) || enemies[i]->Esperanza == false)
 		//	{
 		//		LOG("DeSpawning enemy at %d", enemies[i]->position.y * SCREEN_SIZE);
-				delete enemies[i];
-				enemies[i] = nullptr;
+				//delete enemies[i];
+				//enemies[i] = nullptr;
 			}
 		}
 	
@@ -107,6 +106,8 @@ bool j1Enemies::CleanUp()
 			enemies[i] = nullptr;
 		}
 	}
+
+	App->tex->UnLoad(CatPeasantTxt);
 
 	return true;
 }

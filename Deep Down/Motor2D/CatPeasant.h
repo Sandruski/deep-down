@@ -7,6 +7,8 @@ class CatPeasant : public Enemy
 {
 private:
 
+	Animation idle, idle2, forward, backward;
+
 public:
 
 	CatPeasant(int x, int y);

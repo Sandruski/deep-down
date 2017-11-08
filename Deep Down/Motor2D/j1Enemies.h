@@ -5,6 +5,8 @@
 
 #define MAX_ENEMIES 4000
 
+struct SDL_Texture;
+
 enum ENEMY_TYPES
 {
 	NO_TYPE,
@@ -45,6 +47,7 @@ public:
 private:
 
 	void SpawnEnemy(const EnemyInfo& info);
+	SDL_Texture* CatPeasantTxt = nullptr;
 
 private:
 
