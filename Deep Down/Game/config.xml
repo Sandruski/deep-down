@@ -22,7 +22,79 @@
     <spritesheets>
       <spritesheet name="Assets/Sprites/Textures/CatPeasant.png"/>
       <spritesheet name="Assets/Sprites/Textures/Monkey_Plant.png"/>
+      <spritesheet name="Assets/Sprites/Textures/Imp.png"/>
     </spritesheets>
+    <types>
+      <imp>
+        <animations>
+          <r_shield_idle speed="0.2" loops="1">
+            <frame x="276" y="21" w="32" h="32"/>
+          </r_shield_idle>
+          <l_shield_idle speed="0.2" loops="1">
+            <frame x="352" y="21" w="32" h="32"/>
+          </l_shield_idle>
+
+          <r_shield_hurt speed="0.2" loops="0">
+            <frame x="276" y="74" w="32" h="32"/>
+          </r_shield_hurt>
+          <l_shield_hurt speed="0.2" loops="0">
+            <frame x="352" y="74" w="32" h="32"/>
+          </l_shield_hurt>
+
+          <r_jump speed="0.2" loops="1">
+            <frame x="2" y="339" w="32" h="32"/>
+          </r_jump>
+          <l_jump speed="0.2" loops="1">
+            <frame x="208" y="389" w="32" h="32"/>
+          </l_jump>
+
+          <r_throw_bomb speed="0.2" loops="0">
+            <frame x="2" y="495" w="32" h="32"/>
+            <frame x="36" y="495" w="32" h="32"/>
+            <frame x="70" y="495" w="32" h="32"/>
+            <frame x="104" y="495" w="32" h="32"/>
+            <frame x="138" y="495" w="32" h="32"/>
+            <frame x="172" y="495" w="32" h="32"/>
+            <frame x="206" y="495" w="32" h="32"/>
+            <frame x="241" y="495" w="32" h="32"/>
+            <frame x="274" y="495" w="32" h="32"/>
+          </r_throw_bomb>
+          <l_throw_bomb speed="0.2" loops="0">
+            <frame x="352" y="601" w="32" h="32"/>
+            <frame x="318" y="601" w="32" h="32"/>
+            <frame x="284" y="601" w="32" h="32"/>
+            <frame x="250" y="601" w="32" h="32"/>
+            <frame x="216" y="601" w="32" h="32"/>
+            <frame x="182" y="601" w="32" h="32"/>
+            <frame x="148" y="601" w="32" h="32"/>
+            <frame x="114" y="601" w="32" h="32"/>
+            <frame x="80" y="601" w="32" h="32"/>
+          </l_throw_bomb>
+
+          <r_shield_walk speed="0.2" loops="1">
+            <frame x="2" y="654" w="32" h="32"/>
+            <frame x="36" y="654" w="32" h="32"/>
+            <frame x="70" y="654" w="32" h="32"/>
+            <frame x="104" y="654" w="32" h="32"/>
+            <frame x="138" y="654" w="32" h="32"/>
+          </r_shield_walk>
+          <l_shield_walk speed="0.2" loops="1">
+            <frame x="352" y="798" w="32" h="32"/>
+            <frame x="318" y="798" w="32" h="32"/>
+            <frame x="284" y="798" w="32" h="32"/>
+            <frame x="250" y="798" w="32" h="32"/>
+            <frame x="216" y="798" w="32" h="32"/>
+          </l_shield_walk>
+
+          <r_bomb speed="0.2" loops="0">
+            <frame x="134" y="18" w="16" h="16"/>
+          </r_bomb>
+          <l_bomb speed="0.2" loops="0">
+            <frame x="202" y="18" w="16" h="16"/>
+          </l_bomb>
+        </animations>
+      </imp>
+    </types>
   </enemies>
   
   <player>
