@@ -32,6 +32,7 @@ public:
 	j1Enemies();
 	virtual ~j1Enemies();
 
+	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
@@ -54,6 +55,10 @@ private:
 
 	EnemyInfo queue[MAX_ENEMIES];
 	Enemy* enemies[MAX_ENEMIES];
+
+	uint index;
+	p2SString CatPeasant_spritesheet;
+	p2SString MonkeyPlant_spritesheet;
 
 };
 

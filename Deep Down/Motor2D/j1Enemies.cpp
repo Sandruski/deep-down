@@ -2,11 +2,12 @@
 #include "p2Log.h"
 
 #include "j1Module.h"
+#include "j1App.h"
 
 #include "j1Enemies.h"
 #include "j1Render.h"
 
-#include "j1App.h"
+
 
 #include "Enemy.h"
 #include "Imp.h"
@@ -20,6 +21,8 @@
 
 j1Enemies::j1Enemies()
 {
+	name.create("enemies");
+
 	for (uint i = 0; i < MAX_ENEMIES; ++i)
 		enemies[i] = nullptr;
 }
@@ -29,10 +32,26 @@ j1Enemies::~j1Enemies()
 {
 }
 
+bool j1Enemies::Awake(pugi::xml_node& config) {
+
+	bool ret = true;
+	
+	pugi::xml_node node = config.child("spritesheets").child("spritesheet");
+
+	// Load textures paths
+	CatPeasant_spritesheet = node.attribute("name").as_string();
+	node = node.next_sibling("spritesheet");
+	MonkeyPlant_spritesheet = node.attribute("name").as_string();
+	
+	return ret;
+}
+
 bool j1Enemies::Start()
 {
-	CatPeasantTex = App->tex->Load("Assets/Sprites/Textures/CatPeasant.png");
-	MonkeyPlantTex = App->tex->Load("Assets/Sprites/Textures/Monkey_Plant.png");
+	// Load player textures
+	LOG("Loading enemies textures");
+	CatPeasantTex = App->tex->Load(CatPeasant_spritesheet.GetString());
+	MonkeyPlantTex = App->tex->Load(MonkeyPlant_spritesheet.GetString());
 
 	return true;
 }

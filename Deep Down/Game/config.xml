@@ -18,9 +18,12 @@
     <fullscreen_window value="false"/>
   </window>
 
-  <file_system>
-    <path>data.zip</path>
-  </file_system>
+  <enemies>
+    <spritesheets>
+      <spritesheet name="Assets/Sprites/Textures/CatPeasant.png"/>
+      <spritesheet name="Assets/Sprites/Textures/Monkey_Plant.png"/>
+    </spritesheets>
+  </enemies>
   
   <player>
     <general>
