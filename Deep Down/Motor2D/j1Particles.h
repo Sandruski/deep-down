@@ -58,6 +58,7 @@ public:
 	Particle firstAttack;
 	Particle secondAttack;
 	Particle thirdAttack;
+	Particle CatPeasantSinus;
 };
 
 #endif // __j1PARTICLES_H__

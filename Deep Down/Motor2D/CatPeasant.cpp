@@ -2,6 +2,8 @@
 #include "j1Enemies.h"
 #include "CatPeasant.h"
 
+#include "j1Input.h"
+#include "j1Particles.h"
 #include "j1Collision.h"
 #include "j1Player.h"
 #include "j1Pathfinding.h"
@@ -17,11 +19,11 @@ CatPeasant::CatPeasant(int x, int y) : Enemy(x, y)
 	idle.PushBack({ 266, 21, 64, 64 });
 	idle.speed = 0.15f;
 
-	idle2.PushBack({ 774, 992, 64, 64 });
-	idle2.PushBack({ 708, 992, 64, 64 });
-	idle2.PushBack({ 642, 992, 64, 64 });
-	idle2.PushBack({ 576, 992, 64, 64 });
-	idle2.PushBack({ 510, 992, 64, 64 });
+	idle2.PushBack({ 774, 922, 64, 64 });
+	idle2.PushBack({ 708, 922, 64, 64 });
+	idle2.PushBack({ 642, 922, 64, 64 });
+	idle2.PushBack({ 576, 922, 64, 64 });
+	idle2.PushBack({ 510, 922, 64, 64 });
 	idle2.speed = 0.15f;
 
 	idleNoStuff.PushBack({ 2, 563, 64, 64 });
@@ -48,6 +50,7 @@ CatPeasant::CatPeasant(int x, int y) : Enemy(x, y)
 	throwStuff.PushBack({ 464, 361, 64, 64 });
 	throwStuff.PushBack({ 530, 361, 64, 64 });
 	throwStuff.speed = 0.15f;
+	throwStuff.loops = false;
 
 	throwStuff2.PushBack({ 742, 1347, 64, 64 });
 	throwStuff2.PushBack({ 708, 1347, 64, 64 });
@@ -113,16 +116,38 @@ CatPeasant::CatPeasant(int x, int y) : Enemy(x, y)
 	catPeasantState = stateEnemies::enemyIdle_;
 
 	animation = &idle;
-	collider = App->collision->AddCollider({ 0, 0, 18, 18 }, COLLIDER_TYPE::COLLIDER_CATPEASANT, App->enemies);
+	collider = App->collision->AddCollider({ 0, 0, 64, 64 }, COLLIDER_TYPE::COLLIDER_CATPEASANT, App->enemies);
 
 }
 
 void CatPeasant::Move()
 {
 	
+	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT) {
 
-	if (position.x > start_pos.x - 100)
 		position.x--;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT) {
+
+		position.x++;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_REPEAT) {
+
+		position.y--;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT) {
+
+		position.y++;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_REPEAT) {
+
+		catPeasantState = enemyAttack_;
+		
+	}
 
 	ActualDirection();
 
@@ -170,9 +195,15 @@ void CatPeasant::GeneralStatesMachine() {
 		break;
 
 	case enemyAttack_:
+		animation = &throwStuff;
+		if (animation->Finished()) {
+			animation->Reset();
+			App->particles->AddParticle(App->particles->CatPeasantSinus, position.x, position.y, COLLIDER_PEASANT_SHOT, NULL, { 0,0 });
+			catPeasantState = stateEnemies::enemyIdle_;
+			break;
+		}
 
 		break;
-
 	}
 
 
@@ -204,5 +235,6 @@ void CatPeasant::SetDirectionBoolsToFalse() {
 
 void CatPeasant::OnCollision(Collider* c1, Collider* c2) {
 
+	
 
 }

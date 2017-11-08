@@ -32,5 +32,10 @@ void Enemy::Draw(SDL_Texture* sprites)
 
 void Enemy::OnCollision(Collider* collider, Collider* c2)
 {
+	if ((collider->type == COLLIDER_PEASANT_SHOT && c2->type == COLLIDER_PLAYER) || (collider->type == COLLIDER_PLAYER && c2->type == COLLIDER_PEASANT_SHOT)) {
+
+
+
+	}
 
 }

@@ -15,6 +15,7 @@ enum COLLIDER_TYPE
 	COLLIDER_BOSS,
 	COLLIDER_CATPEASANT,
 	COLLIDER_IMP,
+	COLLIDER_PEASANT_SHOT,
 
 	COLLIDER_MAX
 };
@@ -39,7 +40,6 @@ struct Collider
 	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
-	bool CheckNextCollision(const SDL_Rect& r) const;
 };
 
 class j1Collision : public j1Module

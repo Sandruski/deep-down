@@ -190,12 +190,12 @@
         <frame x="882" y="390" w="48" h="48"/>
         <frame x="931" y="390" w="48" h="48"/>
       </jump2>
-      <punished speed="0.1" loops="1">
+      <punished speed="0.1" loops="0">
         <frame x="51" y="332" w="48" h="44"/>
         <frame x="101" y="332" w="48" h="44"/>
         <frame x="151" y="332" w="48" h="44"/>
       </punished>
-      <punished2 speed="0.1" loops="1">
+      <punished2 speed="0.1" loops="0">
         <frame x="780" y="332" w="48" h="44"/>
         <frame x="830" y="332" w="48" h="44"/>
         <frame x="880" y="332" w="48" h="44"/>
@@ -316,6 +316,10 @@
       <thirdAttack life="100">
         <frame x="1000" y="1000" w="10" h="10"/>
       </thirdAttack>
+        <CatPeasantSinus life="10000">
+        <frame x="2" y="818" w="64" h="64"/>
+        <frame x="774" y="1719" w="64" h="64"/>
+      </CatPeasantSinus>
     </animations>
   </particles>
 

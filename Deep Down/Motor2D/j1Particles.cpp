@@ -8,6 +8,7 @@
 #include "j1Particles.h"
 #include "j1Collision.h"
 #include "j1Audio.h"
+#include "j1Enemies.h"
 #include "j1Player.h"
 #include "j1Scene.h"
 #include "j1Map.h"
@@ -70,6 +71,13 @@ bool j1Particles::Awake(pugi::xml_node& config) {
 	thirdAttack.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	thirdAttack.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
 
+	//CatPeasantSinus
+	node = animations_node.child("CatPeasantSinus");
+	CatPeasantSinus.life = node.attribute("life").as_uint();
+	node = node.child("frame");
+	CatPeasantSinus.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	CatPeasantSinus.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
+
 	return ret;
 }
 
@@ -115,6 +123,9 @@ bool j1Particles::Update(float dt)
 		}
 		else if (SDL_GetTicks() >= p->born)
 		{
+			if (p->collider->type == COLLIDER_PEASANT_SHOT)
+				App->render->Blit(App->enemies->CatPeasantTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
+			else
 			App->render->Blit(App->player->player, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
 		}
 	}
@@ -189,10 +200,22 @@ bool Particle::Update()
 		App->scene->gate = true;
 	}
 
-	if (left || right)
-		position.x += speed.x;
-	else
-		position.x = position.x;
+	if (collider->type == COLLIDER_ARROW) {
+		if (left || right)
+			position.x += speed.x;
+		else
+			position.x = position.x;
+	}
+	else if (collider->type == COLLIDER_PEASANT_SHOT) {
+		if (App->player->position.y < position.y)
+			position.y--;
+		else if (App->player->position.y > position.y)
+			position.y++;
+		if (App->player->position.x < position.x)
+			position.x--;
+		else if (App->player->position.x > position.x)
+			position.x++;
+	}
 
 	//position.y += speed.y;
 

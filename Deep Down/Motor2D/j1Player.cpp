@@ -912,6 +912,16 @@ void j1Player::PlayerStateMachine() {
 			current_animation = &punished2;
 		speed.y = 0;
 		speed.x = 0;
+		if (punished.Finished() && current_animation == &punished) {
+			state = idle_;
+			punished.Reset();
+			break;
+		}
+		else if (punished2.Finished() && current_animation == &punished2) {
+			state = idle2_;
+			punished.Reset();
+			break;
+		}
 		break;
 
 	}
@@ -977,6 +987,18 @@ void j1Player::OnCollision(Collider* a, Collider* b) {
 		App->player->SetState(punished_);
 		App->audio->PlayFx(5);
 		App->scene->bossPosition = { App->player->position.x, 1200 };
+	}
+
+	if ((a->type == COLLIDER_PEASANT_SHOT && b->type == COLLIDER_PLAYER) || (a->type == COLLIDER_PLAYER && b->type == COLLIDER_PEASANT_SHOT)) {
+
+		App->player->SetState(punished_);
+
+	}
+
+	if ((a->type == COLLIDER_CATPEASANT && b->type == COLLIDER_PLAYER) || (a->type == COLLIDER_PLAYER && b->type == COLLIDER_CATPEASANT)) {
+
+		App->player->SetState(punished_);
+
 	}
 }
 

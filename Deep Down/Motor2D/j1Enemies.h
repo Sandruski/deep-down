@@ -68,6 +68,8 @@ private:
 	p2SString CatPeasant_spritesheet;
 	p2SString MonkeyPlant_spritesheet;
 	p2SString Imp_spritesheet;
+
+public:
 	SDL_Texture* CatPeasantTex = nullptr;
 	SDL_Texture* MonkeyPlantTex = nullptr;
 	SDL_Texture* ImpTex = nullptr;
