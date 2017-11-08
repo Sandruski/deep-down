@@ -17,12 +17,19 @@ j1Collision::j1Collision()
 
 	matrix[COLLIDER_PLAYER][COLLIDER_ARROW] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_BOSS] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_CATPEASANT] = true;
 
 	matrix[COLLIDER_ARROW][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_ARROW][COLLIDER_BOSS] = false;
+	matrix[COLLIDER_ARROW][COLLIDER_CATPEASANT] = true;
 
 	matrix[COLLIDER_BOSS][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_BOSS][COLLIDER_ARROW] = false;
+	matrix[COLLIDER_BOSS][COLLIDER_CATPEASANT] = false;
+
+	matrix[COLLIDER_CATPEASANT][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_CATPEASANT][COLLIDER_ARROW] = true;
+	matrix[COLLIDER_CATPEASANT][COLLIDER_BOSS] = false;
 }
 
 // Destructor
@@ -110,6 +117,9 @@ void j1Collision::DebugDraw()
 			break;
 		case COLLIDER_BOSS: // red
 			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
+			break;
+		case COLLIDER_CATPEASANT: // red
+			App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
 			break;
 		}
 	}
