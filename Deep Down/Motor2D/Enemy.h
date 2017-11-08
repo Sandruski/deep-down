@@ -7,6 +7,18 @@
 struct SDL_Texture;
 struct Collider;
 
+enum stateEnemies {
+	enemyIdle_,
+	enemyIdle2_,
+	enemyForward_,
+	enemyBackward_,
+	enemyAttack_,
+	enemyPunished_,
+	enemyPunished2_,
+	enemyDeath_,
+	enemyDeath2_,
+};
+
 class Enemy
 {
 protected:
@@ -14,7 +26,8 @@ protected:
 	Collider* collider = nullptr;
 
 public:
-	fPoint position;
+	iPoint position;
+
 	fPoint start_pos;
 	int type;
 
