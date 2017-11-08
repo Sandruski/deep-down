@@ -26,12 +26,9 @@ protected:
 	Collider* collider = nullptr;
 
 public:
-<<<<<<< HEAD
 	iPoint position;
-=======
-	fPoint position;
+
 	fPoint start_pos;
->>>>>>> origin/master
 	int type;
 
 public:

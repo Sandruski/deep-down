@@ -19,7 +19,7 @@ private:
 
 private:
 
-	void AcualDirection();
+	void ActualDirection();
 	void SetDirectionBoolsToFalse();
 	void GeneralStatesMachine();
 
