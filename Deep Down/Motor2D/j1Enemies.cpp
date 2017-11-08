@@ -31,7 +31,8 @@ j1Enemies::~j1Enemies()
 
 bool j1Enemies::Start()
 {
-	CatPeasantTxt = App->tex->Load("Assets/Sprites/Textures/CatPeasant.png");
+	CatPeasantTex = App->tex->Load("Assets/Sprites/Textures/CatPeasant.png");
+	MonkeyPlantTex = App->tex->Load("Assets/Sprites/Textures/Monkey_Plant.png");
 
 	return true;
 }
@@ -58,7 +59,12 @@ bool j1Enemies::Update(float dt)
 		if (enemies[i] != nullptr) enemies[i]->Move();
 
 	for (uint i = 0; i < MAX_ENEMIES; ++i)
-		if (enemies[i] != nullptr) enemies[i]->Draw(CatPeasantTxt);
+		if (enemies[i] != nullptr) {
+			if (enemies[i]->type == ENEMY_TYPES::CAT_PEASANT_)
+				enemies[i]->Draw(CatPeasantTex);
+			else if (enemies[i]->type == ENEMY_TYPES::PLANT_)
+				enemies[i]->Draw(MonkeyPlantTex);
+		}
 
 	return true;
 }
@@ -102,7 +108,8 @@ bool j1Enemies::CleanUp()
 		}
 	}
 
-	App->tex->UnLoad(CatPeasantTxt);
+	App->tex->UnLoad(CatPeasantTex);
+	App->tex->UnLoad(MonkeyPlantTex);
 
 	return true;
 }
@@ -136,25 +143,25 @@ void j1Enemies::SpawnEnemy(const EnemyInfo& info)
 	{
 
 		switch (info.type)
-		{
-		case ENEMY_TYPES::IMP_:
-			enemies[i] = new Imp(info.x, info.y);
-			enemies[i]->type = ENEMY_TYPES::IMP_;
-			break;
-		
+		{	
 		case ENEMY_TYPES::CAT_PEASANT_:
 			enemies[i] = new CatPeasant(info.x, info.y);
 			enemies[i]->type = ENEMY_TYPES::CAT_PEASANT_;
 			break;
 		
+		case ENEMY_TYPES::PLANT_:
+			enemies[i] = new Plant(info.x, info.y);
+			enemies[i]->type = ENEMY_TYPES::PLANT_;
+			break;
+
 		case ENEMY_TYPES::MONKEY_:
 			enemies[i] = new Monkey(info.x, info.y);
 			enemies[i]->type = ENEMY_TYPES::MONKEY_;
 			break;
 		
-		case ENEMY_TYPES::PLANT_:
-			enemies[i] = new Plant(info.x, info.y);
-			enemies[i]->type = ENEMY_TYPES::PLANT_;
+		case ENEMY_TYPES::IMP_:
+			enemies[i] = new Imp(info.x, info.y);
+			enemies[i]->type = ENEMY_TYPES::IMP_;
 			break;
 		}
 	}

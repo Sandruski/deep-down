@@ -1,5 +1,7 @@
 #include "j1App.h"
+#include "j1Enemies.h"
 #include "CatPeasant.h"
+
 #include "j1Collision.h"
 #include "j1Player.h"
 
@@ -14,13 +16,17 @@ CatPeasant::CatPeasant(int x, int y) : Enemy(x, y)
 	idle.PushBack({ 266, 21, 64, 64 });
 	idle.speed = 0.25f;
 
+	animation = &idle;
+	collider = App->collision->AddCollider({ 0, 0, 18, 18 }, COLLIDER_TYPE::COLLIDER_CATPEASANT, App->enemies);
 }
 
 void CatPeasant::Move()
 {
-	//position.x = App->player->position.x;
-	//osition.y = App->player->position.y;
-	animation = &idle;
+	// use 'start_pos' to know the start position of the enemy
+	// update their position by using 'position'
+
+	position.x = App->player->position.x;
+	position.y = start_pos.y;
 }
 
 void CatPeasant::OnCollision(Collider* c1, Collider* c2) {

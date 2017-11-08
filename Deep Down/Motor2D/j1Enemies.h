@@ -47,7 +47,8 @@ public:
 private:
 
 	void SpawnEnemy(const EnemyInfo& info);
-	SDL_Texture* CatPeasantTxt = nullptr;
+	SDL_Texture* CatPeasantTex = nullptr;
+	SDL_Texture* MonkeyPlantTex = nullptr;
 
 private:
 

@@ -5,7 +5,10 @@
 #include "j1Render.h"
 
 Enemy::Enemy(int x, int y) : position(x, y)
-{}
+{
+	start_pos.x = x;
+	start_pos.y = y;
+}
 
 Enemy::~Enemy()
 {

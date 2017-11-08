@@ -6,9 +6,9 @@
 class Plant : public Enemy
 {
 private:
+	Animation idle;
 
 public:
-
 	Plant(int x, int y);
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move();

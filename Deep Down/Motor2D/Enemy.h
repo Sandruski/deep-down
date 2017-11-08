@@ -15,6 +15,7 @@ protected:
 
 public:
 	fPoint position;
+	fPoint start_pos;
 	int type;
 
 public:
