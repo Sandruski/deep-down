@@ -3,7 +3,7 @@
 
 #include "j1Module.h"
 
-#define MAX_ENEMIES 4000
+#define MAX_ENEMIES 300
 
 struct SDL_Texture;
 
@@ -34,7 +34,7 @@ public:
 
 	bool Start();
 	bool PreUpdate();
-	bool Update();
+	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
 	void OnCollision(Collider* c1, Collider* c2);

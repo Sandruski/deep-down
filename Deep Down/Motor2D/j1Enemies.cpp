@@ -1,3 +1,6 @@
+#include "p2Defs.h"
+#include "p2Log.h"
+
 #include "j1Module.h"
 
 #include "j1Enemies.h"
@@ -11,8 +14,7 @@
 #include "Monkey.h"
 #include "Plant.h"
 #include "j1Textures.h"
-
-
+#include "j1Scene.h"
 
 #define SPAWN_MARGIN 50
 
@@ -29,34 +31,28 @@ j1Enemies::~j1Enemies()
 
 bool j1Enemies::Start()
 {
-
-	CatPeasantTxt = App->tex->Load("CatPeasant.png");
+	CatPeasantTxt = App->tex->Load("Assets/Sprites/Textures/CatPeasant.png");
 
 	return true;
 }
 
 bool j1Enemies::PreUpdate()
 {
-	// check camera position to decide what to spawn
-
 	for (uint i = 0; i < MAX_ENEMIES; ++i)
 	{
 		if (queue[i].type != ENEMY_TYPES::NO_TYPE)
 		{
-			
-				SpawnEnemy(queue[i]);
-				queue[i].type = ENEMY_TYPES::NO_TYPE;
-				//LOG("Spawning enemy at %d", queue[i].y * App->);
+			SpawnEnemy(queue[i]);
+			queue[i].type = ENEMY_TYPES::NO_TYPE;
+			LOG("Spawning enemy at %d", queue[i].y * App->scene->scale);
 		}
-			
-			
-		}
+	}
 	
 	return true;
 }
 
 // Called before render is available
-bool j1Enemies::Update()
+bool j1Enemies::Update(float dt)
 {
 	for (uint i = 0; i < MAX_ENEMIES; ++i)
 		if (enemies[i] != nullptr) enemies[i]->Move();
@@ -70,7 +66,6 @@ bool j1Enemies::Update()
 bool j1Enemies::PostUpdate()
 {
 	// check camera position to decide what to spawn
-
 	for (uint i = 0; i < MAX_ENEMIES; ++i)
 	{
 		if (enemies[i] != nullptr)
@@ -89,7 +84,7 @@ bool j1Enemies::PostUpdate()
 // Called before quitting
 bool j1Enemies::CleanUp()
 {
-	//LOG("Freeing all enemies");
+	LOG("Freeing all enemies");
 
 	for (uint i = 0; i < MAX_ENEMIES; ++i)
 	{
@@ -179,8 +174,5 @@ void j1Enemies::OnCollision(Collider* c1, Collider* c2)
 			}
 		}
 		*/
-		
-
 	}
-
 }
