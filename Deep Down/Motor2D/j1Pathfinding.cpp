@@ -165,8 +165,11 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
+int j1PathFinding::CreatePath(const iPoint& origin, const fPoint& realDestination)
 {
+	iPoint destination;
+	destination.x = (float)realDestination.x;
+	destination.y = (float)realDestination.y;
 	last_path.Clear();
 	int ret = 0;
 
