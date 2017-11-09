@@ -17,15 +17,18 @@ Imp::Imp(int x, int y) : Enemy(x, y)
 	imp = App->enemies->GetImpInfo();
 
 	animation = &imp.r_shield_idle;
-	impState = ImpState::l_throw_bomb;
+	impState = ImpState::r_shield_walk;
 
 	collider = App->collision->AddCollider({ 0, 0, imp.coll_size.x + imp.coll_offset.w, imp.coll_size.y + imp.coll_offset.h }, COLLIDER_TYPE::COLLIDER_IMP, App->enemies);
 
-	// Need organization
+	// Needs organization
 	speed = { 0, 1 };
 
-	// If player is near the enemy...
-	create_path = true;
+	// Create normal path (idle path)
+
+
+
+
 }
 
 void Imp::Move()
@@ -61,7 +64,7 @@ void Imp::Move()
 	//
 
 	if (create_path) {
-		App->pathfinding->CreatePath({ 42,8 }, { 30,28 });
+		App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->player->position.x, App->player->position.y));
 		last_path = *App->pathfinding->GetLastPath();
 		create_path = false;
 	}
@@ -81,6 +84,19 @@ void Imp::Move()
 
 		if (position == to_go)
 			index++;
+	}
+	else
+		path_finished = true;
+
+	SDL_Rect enemy_pos = { position.x - 50, position.y, 100, 100 };
+	SDL_Rect player_pos = { App->player->position.x - 50, App->player->position.y - 10, 100, 200 };
+	SDL_Rect result;
+
+	// If player is near the enemy... Create path
+	if (path_finished && SDL_IntersectRect(&enemy_pos, &player_pos, &result)) {
+		create_path = true;
+		path_finished = false;
+		index = 0;
 	}
 
 	GeneralStatesMachine();

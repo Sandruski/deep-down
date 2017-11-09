@@ -288,7 +288,7 @@ void j1Enemies::OnCollision(Collider* c1, Collider* c2)
 {
 	for (uint i = 0; i < MAX_ENEMIES; ++i)
 	{
-		/*if (c1->type == COLLIDER_ITEM) { //GRENADES
+		//if (c1->type == COLLIDER_ITEM) { //GRENADES
 			if (enemies[i] != nullptr && enemies[i]->GetCollider() == c1) {
 
 				enemies[i]->OnCollision(c1, c2);
@@ -296,7 +296,7 @@ void j1Enemies::OnCollision(Collider* c1, Collider* c2)
 				enemies[i] = nullptr;
 				break;
 			}
-		}
-		*/
+		//}
+		
 	}
 }

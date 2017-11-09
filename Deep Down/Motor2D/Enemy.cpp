@@ -30,12 +30,16 @@ void Enemy::Draw(SDL_Texture* sprites)
 		App->render->Blit(sprites, position.x, position.y, &(animation->GetCurrentFrame()));
 }
 
-void Enemy::OnCollision(Collider* collider, Collider* c2)
+void Enemy::OnCollision(Collider* c1, Collider* c2)
 {
-	if ((collider->type == COLLIDER_PEASANT_SHOT && c2->type == COLLIDER_PLAYER) || (collider->type == COLLIDER_PLAYER && c2->type == COLLIDER_PEASANT_SHOT)) {
+	if ((c1->type == COLLIDER_PEASANT_SHOT && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_PEASANT_SHOT)) {
 
 
 
+	}
+
+	if ((c1->type == COLLIDER_IMP && c2->type == COLLIDER_ARROW) || (c1->type == COLLIDER_ARROW && c2->type == COLLIDER_IMP)) {
+		collider->to_delete = true;
 	}
 
 }

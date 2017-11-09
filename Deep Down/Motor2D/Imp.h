@@ -2,6 +2,7 @@
 #define __IMP_H__
 
 #include "Enemy.h"
+#include "Path.h"
 
 enum ImpState {
 	r_shield_idle,
@@ -47,6 +48,10 @@ private:
 	bool create_path;
 	p2DynArray<iPoint> last_path;
 	uint index = 0;
+	bool path_finished;
+
+	// Normal path
+	Path normal_path;
 
 };
 
