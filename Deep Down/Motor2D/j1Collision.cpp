@@ -19,26 +19,37 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_BOSS] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_CATPEASANT] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PEASANT_SHOT] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_IMP_BOMB] = true;
 
 	matrix[COLLIDER_ARROW][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_ARROW][COLLIDER_BOSS] = false;
 	matrix[COLLIDER_ARROW][COLLIDER_CATPEASANT] = true;
 	matrix[COLLIDER_ARROW][COLLIDER_PEASANT_SHOT] = false;
+	matrix[COLLIDER_ARROW][COLLIDER_IMP_BOMB] = false;
 
 	matrix[COLLIDER_BOSS][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_BOSS][COLLIDER_ARROW] = false;
 	matrix[COLLIDER_BOSS][COLLIDER_CATPEASANT] = false;
 	matrix[COLLIDER_BOSS][COLLIDER_PEASANT_SHOT] = false;
+	matrix[COLLIDER_BOSS][COLLIDER_IMP_BOMB] = false;
 
 	matrix[COLLIDER_CATPEASANT][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_CATPEASANT][COLLIDER_ARROW] = true;
 	matrix[COLLIDER_CATPEASANT][COLLIDER_BOSS] = false;
 	matrix[COLLIDER_CATPEASANT][COLLIDER_PEASANT_SHOT] = false;
+	matrix[COLLIDER_CATPEASANT][COLLIDER_IMP_BOMB] = false;
 
 	matrix[COLLIDER_PEASANT_SHOT][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_PEASANT_SHOT][COLLIDER_ARROW] = false;
 	matrix[COLLIDER_PEASANT_SHOT][COLLIDER_BOSS] = false;
 	matrix[COLLIDER_PEASANT_SHOT][COLLIDER_PEASANT_SHOT] = false;
+	matrix[COLLIDER_PEASANT_SHOT][COLLIDER_IMP_BOMB] = false;
+
+	matrix[COLLIDER_IMP_BOMB][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_IMP_BOMB][COLLIDER_ARROW] = false;
+	matrix[COLLIDER_IMP_BOMB][COLLIDER_BOSS] = false;
+	matrix[COLLIDER_IMP_BOMB][COLLIDER_CATPEASANT] = false;
+	matrix[COLLIDER_IMP_BOMB][COLLIDER_PEASANT_SHOT] = false;
 }
 
 // Destructor
@@ -127,11 +138,17 @@ void j1Collision::DebugDraw()
 		case COLLIDER_BOSS: // red
 			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
 			break;
-		case COLLIDER_CATPEASANT: // red
+		case COLLIDER_CATPEASANT:
 			App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
 			break;
-		case COLLIDER_PEASANT_SHOT: // red
+		case COLLIDER_PEASANT_SHOT:
 			App->render->DrawQuad(colliders[i]->rect, 140, 255, 140, alpha);
+			break;
+		case COLLIDER_IMP:
+			App->render->DrawQuad(colliders[i]->rect, 0, 255, 140, alpha);
+			break;
+		case COLLIDER_IMP_BOMB:
+			App->render->DrawQuad(colliders[i]->rect, 5, 100, 5, alpha);
 			break;
 		}
 	}

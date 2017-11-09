@@ -4,6 +4,8 @@
 #include "j1Module.h"
 #include "Animation.h"
 
+#include "p2Point.h"
+
 #define MAX_ENEMIES 300
 
 struct SDL_Texture;
@@ -28,7 +30,8 @@ struct ImpInfo
 	Animation r_throw_bomb, l_throw_bomb;
 	Animation r_shield_walk, l_shield_walk;
 
-	Animation r_bomb, l_bomb;
+	iPoint coll_size;
+	SDL_Rect coll_offset;
 };
 
 struct EnemyInfo

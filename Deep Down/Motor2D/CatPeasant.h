@@ -3,7 +3,17 @@
 
 #include "Enemy.h"
 
-
+enum stateEnemies {
+	enemyIdle_,
+	enemyIdle2_,
+	enemyForward_,
+	enemyBackward_,
+	enemyAttack_,
+	enemyPunished_,
+	enemyPunished2_,
+	enemyDeath_,
+	enemyDeath2_,
+};
 
 class CatPeasant : public Enemy
 {

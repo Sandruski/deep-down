@@ -45,6 +45,9 @@ bool j1Enemies::Awake(pugi::xml_node& config) {
 	//_load_texture_paths
 
 	// IMP
+	pugi::xml_node collider_node = config.child("types").child("imp").child("general").child("coll_offset");
+	imp.coll_offset = { collider_node.attribute("x").as_int(), collider_node.attribute("y").as_int(), collider_node.attribute("w").as_int(), collider_node.attribute("h").as_int() };
+	
 	// Load animations
 	pugi::xml_node animations_node = config.child("types").child("imp").child("animations");
 
@@ -52,6 +55,8 @@ bool j1Enemies::Awake(pugi::xml_node& config) {
 	node = animations_node.child("r_shield_idle");
 	imp.r_shield_idle.speed = node.attribute("speed").as_float();
 	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -126,22 +131,6 @@ bool j1Enemies::Awake(pugi::xml_node& config) {
 	imp.l_shield_walk.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.l_shield_walk.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
-	}
-
-	//r_bomb
-	node = animations_node.child("r_bomb");
-	imp.r_bomb.speed = node.attribute("speed").as_float();
-	imp.r_bomb.loops = node.attribute("loops").as_bool();
-	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_bomb.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
-	}
-
-	//l_bomb
-	node = animations_node.child("l_bomb");
-	imp.l_bomb.speed = node.attribute("speed").as_float();
-	imp.l_bomb.loops = node.attribute("loops").as_bool();
-	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.l_bomb.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 	//_load_animations
 	//_IMP

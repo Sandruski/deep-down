@@ -26,6 +26,9 @@
     </spritesheets>
     <types>
       <imp>
+        <general>
+          <coll_offset x="6" y="10" w="-8" h="-10"/>
+        </general>
         <animations>
           <r_shield_idle speed="0.2" loops="1">
             <frame x="276" y="21" w="32" h="32"/>
@@ -53,7 +56,7 @@
             <frame x="138" y="495" w="32" h="32"/>
             <frame x="172" y="495" w="32" h="32"/>
             <frame x="206" y="495" w="32" h="32"/>
-            <frame x="241" y="495" w="32" h="32"/>
+            <frame x="240" y="495" w="32" h="32"/>
             <frame x="274" y="495" w="32" h="32"/>
           </r_throw_bomb>
           <l_throw_bomb speed="0.2" loops="0">
@@ -81,12 +84,6 @@
             <frame x="250" y="798" w="32" h="32"/>
             <frame x="216" y="798" w="32" h="32"/>
           </l_shield_walk>
-          <r_bomb speed="0.2" loops="0">
-            <frame x="134" y="18" w="16" h="16"/>
-          </r_bomb>
-          <l_bomb speed="0.2" loops="0">
-            <frame x="202" y="18" w="16" h="16"/>
-          </l_bomb>
         </animations>
       </imp>
     </types>
@@ -316,10 +313,16 @@
       <thirdAttack life="100">
         <frame x="1000" y="1000" w="10" h="10"/>
       </thirdAttack>
-        <CatPeasantSinus life="10000">
+      <CatPeasantSinus life="10000">
         <frame x="2" y="818" w="64" h="64"/>
         <frame x="774" y="1719" w="64" h="64"/>
       </CatPeasantSinus>
+      <Imp_r_bomb speed="0.2" loops="0">
+        <frame x="134" y="18" w="16" h="16"/>
+      </Imp_r_bomb>
+      <Imp_l_bomb speed="0.2" loops="0">
+        <frame x="202" y="18" w="16" h="16"/>
+      </Imp_l_bomb>
     </animations>
   </particles>
 

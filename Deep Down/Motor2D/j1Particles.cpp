@@ -78,6 +78,20 @@ bool j1Particles::Awake(pugi::xml_node& config) {
 	CatPeasantSinus.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	CatPeasantSinus.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
 
+	//Imp_r_bomb
+	node = animations_node.child("Imp_r_bomb");
+	Imp_r_bomb.life = node.attribute("life").as_uint();
+	node = node.child("frame");
+	Imp_r_bomb.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	Imp_r_bomb.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
+
+	//Imp_l_bomb
+	node = animations_node.child("Imp_l_bomb");
+	Imp_l_bomb.life = node.attribute("life").as_uint();
+	node = node.child("frame");
+	Imp_l_bomb.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	Imp_l_bomb.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
+
 	return ret;
 }
 
