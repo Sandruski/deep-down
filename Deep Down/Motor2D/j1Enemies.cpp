@@ -14,6 +14,8 @@
 #include "Plant.h"
 #include "j1Textures.h"
 #include "j1Scene.h"
+#include "j1Map.h"
+#include "j1Pathfinding.h"
 
 #define SPAWN_MARGIN 50
 
@@ -145,6 +147,9 @@ bool j1Enemies::Start()
 	CatPeasantTex = App->tex->Load(CatPeasant_spritesheet.GetString());
 	MonkeyPlantTex = App->tex->Load(MonkeyPlant_spritesheet.GetString());
 	ImpTex = App->tex->Load(Imp_spritesheet.GetString());
+
+	// Pathfinding collision data
+	App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (int*)App->map->collisionLayer->data);
 
 	return true;
 }

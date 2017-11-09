@@ -26,7 +26,6 @@ Imp::Imp(int x, int y) : Enemy(x, y)
 
 	// If player is near the enemy...
 	create_path = true;
-
 }
 
 void Imp::Move()
@@ -62,7 +61,7 @@ void Imp::Move()
 	//
 
 	if (create_path) {
-		App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(900, 200));
+		App->pathfinding->CreatePath({ 42,8 }, { 30,28 });
 		last_path = *App->pathfinding->GetLastPath();
 		create_path = false;
 	}

@@ -6,8 +6,8 @@
 #include "p2DynArray.h"
 
 #define DEFAULT_PATH_LENGTH 50
-#define INVALID_WALK_CODE   1181 || 1182 || 1183
-
+#define INVALID_WALK_CODE 1181
+#define INVALID_WALK_CODES t != 1181 && t != 1182 && t != 1183
 // --------------------------------------------------
 // Recommended reading:
 // Intro: http://www.raywenderlich.com/4946/introduction-to-a-pathfinding
@@ -27,7 +27,7 @@ public:
 	bool CleanUp();
 
 	// Sets up the walkability map
-	void SetMap(uint width, uint height, uchar* data);
+	void SetMap(uint width, uint height, int* data);
 
 	// Main function to request a path from A to B
 	int CreatePath(const iPoint& origin, const iPoint& destination);
@@ -42,7 +42,7 @@ public:
 	bool IsWalkable(const iPoint& pos) const;
 
 	// Utility: return the walkability value of a tile
-	uchar GetTileAt(const iPoint& pos) const;
+	int GetTileAt(const iPoint& pos) const;
 
 private:
 
@@ -50,7 +50,7 @@ private:
 	uint width;
 	uint height;
 	// all map walkability values [0..255]
-	uchar* map;
+	int* map;
 	// we store the created path here
 	p2DynArray<iPoint> last_path;
 };

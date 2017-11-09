@@ -15,6 +15,7 @@
 #include "j1Player.h"
 #include "j1Scene.h"
 #include "j1Enemies.h"
+#include "j1Pathfinding.h"
 
 j1Scene::j1Scene() : j1Module()
 {
