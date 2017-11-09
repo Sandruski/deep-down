@@ -7,6 +7,8 @@
 #include "j1Collision.h"
 #include "j1Player.h"
 #include "j1Pathfinding.h"
+#include "j1Map.h"
+
 
 #include "SDL/include/SDL_timer.h"
 
@@ -111,7 +113,7 @@ CatPeasant::CatPeasant(int x, int y) : Enemy(x, y)
 	deathNoStuff2.PushBack({ 312, 1634, 64, 64 });
 	deathNoStuff2.speed = 0.15f;
 
-	int patata = App->pathfinding->CreatePath({700, 100}, { 900, 200 });
+	int patata = App->pathfinding->CreatePath(App->map->WorldToMap(700, 100), App->map->WorldToMap(900, 200));
 	last_path = App->pathfinding->GetLastPath();
 	catPeasantState = stateEnemies::enemyIdle_;
 
@@ -155,11 +157,13 @@ void CatPeasant::Move()
 
 	SetDirectionBoolsToFalse();
 
-	
-	position.x = last_path->At(index)->x;
-	position.y = last_path->At(index)->y;
+	if (last_path->At(index) != nullptr) {
+		iPoint newpos = App->map->MapToWorld( last_path->At(index)->x, last_path->At(index)->y);
+		position.x = newpos.x;
+		position.y = newpos.y;
 
-	index++;
+		index++;
+	}
 }
 
 void CatPeasant::GeneralStatesMachine() {

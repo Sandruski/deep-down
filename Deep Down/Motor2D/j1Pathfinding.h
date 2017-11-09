@@ -6,7 +6,7 @@
 #include "p2DynArray.h"
 
 #define DEFAULT_PATH_LENGTH 50
-#define INVALID_WALK_CODE 255
+#define INVALID_WALK_CODE   1181 || 1182 || 1183
 
 // --------------------------------------------------
 // Recommended reading:
@@ -30,7 +30,7 @@ public:
 	void SetMap(uint width, uint height, uchar* data);
 
 	// Main function to request a path from A to B
-	int CreatePath(const iPoint& origin, const fPoint& destination);
+	int CreatePath(const iPoint& origin, const iPoint& destination);
 
 	// To request all tiles involved in the last generated path
 	const p2DynArray<iPoint>* GetLastPath() const;

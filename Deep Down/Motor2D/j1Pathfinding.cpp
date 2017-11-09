@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1PathFinding.h"
+#include "j1Map.h"
 
 j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_LENGTH), width(0), height(0)
 {
@@ -53,7 +54,7 @@ bool j1PathFinding::IsWalkable(const iPoint& pos) const
 uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 {
 	if (CheckBoundaries(pos))
-		return map[(pos.y*width) + pos.x];
+		return App->map->collisionLayer->data[(pos.y*width) + pos.x];
 
 	return INVALID_WALK_CODE;
 }
@@ -122,22 +123,22 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill) const
 
 	// north
 	cell.create(pos.x, pos.y + 1);
-//	if (App->pathfinding->IsWalkable(cell))
+	if (App->pathfinding->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// south
 	cell.create(pos.x, pos.y - 1);
-	//if (App->pathfinding->IsWalkable(cell))
+	if (App->pathfinding->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// east
 	cell.create(pos.x + 1, pos.y);
-//	if (App->pathfinding->IsWalkable(cell))
+	if (App->pathfinding->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// west
 	cell.create(pos.x - 1, pos.y);
-	//if (App->pathfinding->IsWalkable(cell))
+	if (App->pathfinding->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	return list_to_fill.list.count();
@@ -165,18 +166,15 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int j1PathFinding::CreatePath(const iPoint& origin, const fPoint& realDestination)
+int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
-	iPoint destination;
-	destination.x = (int)realDestination.x;
-	destination.y = (int)realDestination.y;
 	last_path.Clear();
 	int ret = 0;
 
 	// TODO 1: if origin or destination are not walkable, return -1
-//	if (!IsWalkable(origin) || !IsWalkable(destination))
-	//	ret = -1;
-	//else {
+	if (!IsWalkable(origin) || !IsWalkable(destination))
+		ret = -1;
+	else {
 
 		// TODO 2: Create two lists: open, close
 		PathList open;
@@ -205,6 +203,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const fPoint& realDestinatio
 				// Use the Pathnode::parent and Flip() the path when you are finish
 				last_path.Flip();
 				ret = last_path.Count();
+				return ret;
 			}
 			else {
 				// TODO 5: Fill a list of all adjancent nodes
@@ -239,7 +238,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const fPoint& realDestinatio
 				}
 				neighbors.list.clear();
 			}
-		
+		}
 	}
 
 	return ret;
