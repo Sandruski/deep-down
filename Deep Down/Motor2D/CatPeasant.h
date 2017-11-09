@@ -27,6 +27,10 @@ private:
 
 	bool toBackward, toForward, toUp, toDown;
 
+	const p2DynArray<iPoint>* last_path;
+
+	uint index = 0;
+
 private:
 
 	void ActualDirection();

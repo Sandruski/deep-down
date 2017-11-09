@@ -122,22 +122,22 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill) const
 
 	// north
 	cell.create(pos.x, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
+//	if (App->pathfinding->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// south
 	cell.create(pos.x, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
+	//if (App->pathfinding->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// east
 	cell.create(pos.x + 1, pos.y);
-	if (App->pathfinding->IsWalkable(cell))
+//	if (App->pathfinding->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// west
 	cell.create(pos.x - 1, pos.y);
-	if (App->pathfinding->IsWalkable(cell))
+	//if (App->pathfinding->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	return list_to_fill.list.count();
@@ -168,23 +168,23 @@ int PathNode::CalculateF(const iPoint& destination)
 int j1PathFinding::CreatePath(const iPoint& origin, const fPoint& realDestination)
 {
 	iPoint destination;
-	destination.x = (float)realDestination.x;
-	destination.y = (float)realDestination.y;
+	destination.x = (int)realDestination.x;
+	destination.y = (int)realDestination.y;
 	last_path.Clear();
 	int ret = 0;
 
 	// TODO 1: if origin or destination are not walkable, return -1
-	if (!IsWalkable(origin) || !IsWalkable(destination))
-		ret = -1;
-	else {
+//	if (!IsWalkable(origin) || !IsWalkable(destination))
+	//	ret = -1;
+	//else {
 
 		// TODO 2: Create two lists: open, close
 		PathList open;
 		PathList close;
 
 		// Add the origin tile to open
-		PathNode origin(0, origin.DistanceTo(destination), origin, nullptr);
-		open.list.add(origin);
+		PathNode originNode(0, origin.DistanceTo(destination), origin, nullptr);
+		open.list.add(originNode);
 
 		// Iterate while we have tile in the open list
 		while (open.list.count() > 0) {
@@ -239,7 +239,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const fPoint& realDestinatio
 				}
 				neighbors.list.clear();
 			}
-		}
+		
 	}
 
 	return ret;

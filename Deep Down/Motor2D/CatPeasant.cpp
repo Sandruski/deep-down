@@ -111,8 +111,8 @@ CatPeasant::CatPeasant(int x, int y) : Enemy(x, y)
 	deathNoStuff2.PushBack({ 312, 1634, 64, 64 });
 	deathNoStuff2.speed = 0.15f;
 
-	App->pathfinding->CreatePath(position, App->player->position);
-
+	int patata = App->pathfinding->CreatePath({700, 100}, { 900, 200 });
+	last_path = App->pathfinding->GetLastPath();
 	catPeasantState = stateEnemies::enemyIdle_;
 
 	animation = &idle;
@@ -145,7 +145,7 @@ void CatPeasant::Move()
 
 	if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_REPEAT) {
 
-		catPeasantState = enemyAttack_;
+		catPeasantState = stateEnemies::enemyAttack_;
 		
 	}
 
@@ -154,8 +154,12 @@ void CatPeasant::Move()
 	GeneralStatesMachine();
 
 	SetDirectionBoolsToFalse();
-	//position = App->pathfinding->GetLastPath();
-		
+
+	
+	position.x = last_path->At(index)->x;
+	position.y = last_path->At(index)->y;
+
+	index++;
 }
 
 void CatPeasant::GeneralStatesMachine() {
