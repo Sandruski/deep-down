@@ -43,6 +43,11 @@ private:
 	// Keep track of enemy movement
 	iPoint last_pos;
 
+	// Pathfinding
+	bool create_path;
+	p2DynArray<iPoint> last_path;
+	uint index = 0;
+
 };
 
 #endif

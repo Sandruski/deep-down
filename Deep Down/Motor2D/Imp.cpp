@@ -5,6 +5,8 @@
 #include "j1Collision.h"
 #include "j1Player.h"
 #include "j1Particles.h"
+#include "j1Pathfinding.h"
+#include "j1Map.h"
 
 #include "j1Input.h"
 
@@ -21,6 +23,9 @@ Imp::Imp(int x, int y) : Enemy(x, y)
 
 	// Need organization
 	speed = { 0, 1 };
+
+	// If player is near the enemy...
+	create_path = true;
 
 }
 
@@ -56,6 +61,29 @@ void Imp::Move()
 	*/
 	//
 
+	if (create_path) {
+		App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(900, 200));
+		last_path = *App->pathfinding->GetLastPath();
+		create_path = false;
+	}
+
+	if (last_path.At(index) != nullptr) {
+
+		iPoint to_go = App->map->MapToWorld(last_path.At(index)->x, last_path.At(index)->y);
+
+		if (position.x < to_go.x)
+			position.x++;
+		else if (position.x > to_go.x)
+			position.x--;
+		if (position.y < to_go.y)
+			position.y++;
+		else if (position.y > to_go.y)
+			position.y--;
+
+		if (position == to_go)
+			index++;
+	}
+
 	GeneralStatesMachine();
 
 	// Update movement
@@ -72,9 +100,11 @@ void Imp::Move()
 	collider_pos = { position.x + imp.coll_offset.x, position.y + imp.coll_offset.y };
 	collider->SetPos(collider_pos.x, collider_pos.y);
 
+	
+
 	//position.x = App->player->position.x;
 	//position.y = App->player->position.y;
-	position.y += speed.y;
+	//position.y += speed.y;
 
 }
 
