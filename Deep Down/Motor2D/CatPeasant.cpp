@@ -113,8 +113,6 @@ CatPeasant::CatPeasant(int x, int y) : Enemy(x, y)
 	deathNoStuff2.PushBack({ 312, 1634, 64, 64 });
 	deathNoStuff2.speed = 0.15f;
 
-	int patata = App->pathfinding->CreatePath(App->map->WorldToMap(700, 100), App->map->WorldToMap(900, 200));
-	last_path = App->pathfinding->GetLastPath();
 	catPeasantState = stateEnemies::enemyIdle_;
 
 	animation = &idle;
@@ -151,18 +149,33 @@ void CatPeasant::Move()
 		
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_KP_9) == KEY_DOWN) {
+
+		int patata = App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->player->position.x, App->player->position.y));
+		last_path = App->pathfinding->GetLastPath();
+		index = 0;
+	}
+
 	ActualDirection();
 
 	GeneralStatesMachine();
 
 	SetDirectionBoolsToFalse();
+	
+	
 
-	if (last_path->At(index) != nullptr) {
-		iPoint newpos = App->map->MapToWorld( last_path->At(index)->x, last_path->At(index)->y);
-		position.x = newpos.x;
-		position.y = newpos.y;
-
-		index++;
+	if (last_path != nullptr && last_path->At(index) != nullptr) {
+	 iPoint newpos = App->map->MapToWorld( last_path->At(index)->x, last_path->At(index)->y);
+		if (position.x < newpos.x)
+			position.x++;
+		else if (position.x > newpos.x)
+			position.x--;
+		if (position.y < newpos.y)
+			position.y++;
+		else if (position.y > newpos.y)
+			position.y--;
+		if (position.x == newpos.x && position.y == newpos.y)
+			index++;	
 	}
 }
 
