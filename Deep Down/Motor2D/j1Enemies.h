@@ -32,6 +32,8 @@ struct ImpInfo
 
 	iPoint coll_size;
 	SDL_Rect coll_offset;
+
+	p2DynArray<iPoint> path1;
 };
 
 struct EnemyInfo

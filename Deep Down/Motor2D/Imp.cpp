@@ -156,6 +156,7 @@ void Imp::GeneralStatesMachine() {
 			break;
 		}
 		animation = &imp.r_shield_walk;
+		impState = ImpState::r_shield_idle;
 		break;
 
 	case l_shield_walk:
@@ -164,6 +165,7 @@ void Imp::GeneralStatesMachine() {
 			break;
 		}
 		animation = &imp.l_shield_walk;
+		impState = ImpState::l_shield_idle;
 		break;
 
 	case r_jump:
@@ -172,6 +174,7 @@ void Imp::GeneralStatesMachine() {
 			break;
 		}
 		animation = &imp.r_jump;
+		impState = ImpState::r_shield_idle;
 		break;
 
 	case l_jump:
@@ -180,6 +183,7 @@ void Imp::GeneralStatesMachine() {
 			break;
 		}
 		animation = &imp.l_jump;
+		impState = ImpState::l_shield_idle;
 		break;
 
 	case r_throw_bomb:
@@ -188,6 +192,7 @@ void Imp::GeneralStatesMachine() {
 			break;
 		}
 		animation = &imp.r_throw_bomb;
+		impState = ImpState::r_shield_idle;
 		break;
 
 	case l_throw_bomb:
@@ -196,6 +201,7 @@ void Imp::GeneralStatesMachine() {
 			break;
 		}
 		animation = &imp.l_throw_bomb;
+		impState = ImpState::l_shield_idle;
 		break;
 
 	case r_shield_hurt:
@@ -204,6 +210,7 @@ void Imp::GeneralStatesMachine() {
 			break;
 		}
 		animation = &imp.r_shield_hurt;
+		impState = ImpState::r_shield_idle;
 		break;
 
 	case l_shield_hurt:
@@ -212,6 +219,7 @@ void Imp::GeneralStatesMachine() {
 			break;
 		}
 		animation = &imp.l_shield_hurt;
+		impState = ImpState::l_shield_idle;
 		break;
 	}
 }

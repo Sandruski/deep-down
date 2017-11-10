@@ -136,6 +136,16 @@ bool j1Enemies::Awake(pugi::xml_node& config) {
 		imp.l_shield_walk.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 	//_load_animations
+
+	// Load paths
+
+
+	
+
+
+	//last_path.PushBack(iPoint);
+
+	//_load_paths
 	//_IMP
 
 	return ret;

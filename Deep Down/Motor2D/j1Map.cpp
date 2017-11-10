@@ -650,12 +650,21 @@ bool j1Map::LoadObject(pugi::xml_node& object_node, Object* object)
 	object->x = object_node.attribute("x").as_uint();
 	object->y = object_node.attribute("y").as_uint();
 
-	if (object_node.child("polyline")) {
+	pugi::xml_node polyline = object_node.child("polyline");
 
+	if (polyline) {
+
+		char* points;
+		points = new char[12];
+		//points = polyline.attribute("points").as_string();
+		
+
+		char* pch;
+		//pch = strtok(str, " ,");
+
+		//object->path1.PushBack()
 
 		//int size = object_node.child("polyline").attribute("points").
-
-
 	}
 
 
