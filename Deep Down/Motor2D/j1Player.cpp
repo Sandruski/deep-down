@@ -1024,7 +1024,6 @@ void j1Player::CheckCollision(iPoint position, iPoint size, int offset, bool &up
 void j1Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, uint id, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state) {
 
 	SDL_Rect B = { x, y, 16, 16 }; //object rectangle
-	SDL_Rect result = { 0, 0, 0, 0 };
 
 	iPoint c_up = { 0, -offset };
 	iPoint c_down = { 0, offset };
@@ -1033,7 +1032,7 @@ void j1Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, 
 
 	//UP
 	SDL_Rect A_up = { position.x + c_up.x, position.y + c_up.y, size.x, size.y }; //player rectangle
-	if (SDL_IntersectRect(&A_up, &B, &result)) {
+	if (SDL_HasIntersection(&A_up, &B)) {
 		if (id == 1181 || (id == 1182 && App->scene->gate == false))
 			up = false;
 		else if (id == 1183 && state != null_)
@@ -1042,7 +1041,7 @@ void j1Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, 
 
 	//DOWN
 	SDL_Rect A_down = { position.x + c_down.x, position.y + c_down.y, size.x, size.y }; //player rectangle
-	if (SDL_IntersectRect(&A_down, &B, &result))
+	if (SDL_HasIntersection(&A_down, &B))
 		if (id == 1181 || (id == 1182 && App->scene->gate == false))
 			down = false;
 		else if (id == 1183 && state != null_)
@@ -1050,7 +1049,7 @@ void j1Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, 
 
 	//LEFT
 	SDL_Rect A_left = { position.x + c_left.x, position.y + c_left.y, size.x, size.y }; //player rectangle
-	if (SDL_IntersectRect(&A_left, &B, &result))
+	if (SDL_HasIntersection(&A_left, &B))
 		if (id == 1181 || (id == 1182 && App->scene->gate == false))
 			left = false;
 		else if (id == 1183 && state != null_)
@@ -1058,7 +1057,7 @@ void j1Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, 
 
 	//RIGHT
 	SDL_Rect A_right = { position.x + c_right.x, position.y + c_right.y, size.x, size.y }; //player rectangle
-	if (SDL_IntersectRect(&A_right, &B, &result))
+	if (SDL_HasIntersection(&A_right, &B))
 		if (id == 1181 || (id == 1182 && App->scene->gate == false))
 			right = false;
 		else if (id == 1183 && state != null_)

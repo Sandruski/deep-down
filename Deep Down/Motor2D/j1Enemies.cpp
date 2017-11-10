@@ -16,6 +16,7 @@
 #include "j1Scene.h"
 #include "j1Map.h"
 #include "j1Pathfinding.h"
+#include "j1Collision.h"
 
 #define SPAWN_MARGIN 50
 
@@ -288,15 +289,14 @@ void j1Enemies::OnCollision(Collider* c1, Collider* c2)
 {
 	for (uint i = 0; i < MAX_ENEMIES; ++i)
 	{
-		//if (c1->type == COLLIDER_ITEM) { //GRENADES
-			if (enemies[i] != nullptr && enemies[i]->GetCollider() == c1) {
+		if (c1->type == COLLIDER_ARROW || c2->type == COLLIDER_ARROW) {
+			if (enemies[i] != nullptr && (enemies[i]->GetCollider() == c1 || enemies[i]->GetCollider() == c2)) {
 
 				enemies[i]->OnCollision(c1, c2);
 				delete enemies[i];
 				enemies[i] = nullptr;
 				break;
 			}
-		//}
-		
+		}	
 	}
 }

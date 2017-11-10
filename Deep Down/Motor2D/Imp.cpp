@@ -90,10 +90,9 @@ void Imp::Move()
 
 	SDL_Rect enemy_pos = { position.x - 50, position.y, 100, 100 };
 	SDL_Rect player_pos = { App->player->position.x - 50, App->player->position.y - 10, 100, 200 };
-	SDL_Rect result;
 
 	// If player is near the enemy... Create path
-	if (path_finished && SDL_IntersectRect(&enemy_pos, &player_pos, &result)) {
+	if (path_finished && SDL_HasIntersection(&enemy_pos, &player_pos) && App->input->GetKey(SDL_SCANCODE_0) == KEY_REPEAT) {
 		create_path = true;
 		path_finished = false;
 		index = 0;
@@ -242,6 +241,4 @@ void Imp::UpdateDirection() {
 
 void Imp::OnCollision(Collider* c1, Collider* c2) 
 {
-
-
 }
