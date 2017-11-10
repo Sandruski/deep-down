@@ -26,9 +26,6 @@ Imp::Imp(int x, int y) : Enemy(x, y)
 
 	// Create normal path (idle path)
 
-
-
-
 }
 
 void Imp::Move()
@@ -113,8 +110,6 @@ void Imp::Move()
 	// Update collider
 	collider_pos = { position.x + imp.coll_offset.x, position.y + imp.coll_offset.y };
 	collider->SetPos(collider_pos.x, collider_pos.y);
-
-	
 
 	//position.x = App->player->position.x;
 	//position.y = App->player->position.y;

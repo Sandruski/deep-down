@@ -178,7 +178,7 @@ Particle::Particle()
 
 Particle::Particle(const Particle& p) :
 	anim(p.anim), position(p.position), speed(p.speed),
-	fx(p.fx), born(p.born), life(p.life)
+	fx(p.fx), born(p.born), life(p.life), coll_size(p.coll_size)
 {}
 
 Particle::~Particle()
