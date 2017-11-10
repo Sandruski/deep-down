@@ -23,7 +23,6 @@ enum layerType {
 };
 
 struct Object {
-
 	p2SString name = nullptr;
 	uint id = 0;
 	uint x = 0;

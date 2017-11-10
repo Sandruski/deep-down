@@ -5,6 +5,7 @@
 #include "Animation.h"
 
 #include "p2Point.h"
+#include "Imp.h"
 
 #define MAX_ENEMIES 300
 
@@ -21,20 +22,6 @@ enum ENEMY_TYPES
 };
 
 class Enemy;
-
-struct ImpInfo 
-{
-	Animation r_shield_idle, l_shield_idle;
-	Animation r_shield_hurt, l_shield_hurt;
-	Animation r_jump, l_jump;
-	Animation r_throw_bomb, l_throw_bomb;
-	Animation r_shield_walk, l_shield_walk;
-
-	iPoint coll_size;
-	SDL_Rect coll_offset;
-
-	p2DynArray<iPoint> path1;
-};
 
 struct EnemyInfo
 {
@@ -57,7 +44,7 @@ public:
 	void OnCollision(Collider* c1, Collider* c2);
 	bool AddEnemy(ENEMY_TYPES type, int x, int y);
 
-	ImpInfo GetImpInfo() const { return imp; }
+	//ImpInfo GetImpInfo() const { return imp; }
 
 private:
 

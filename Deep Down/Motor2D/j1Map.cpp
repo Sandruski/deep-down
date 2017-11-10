@@ -654,17 +654,26 @@ bool j1Map::LoadObject(pugi::xml_node& object_node, Object* object)
 
 	if (polyline) {
 
-		char* points;
-		points = new char[12];
-		//points = polyline.attribute("points").as_string();
-		
+		p2SString points;
+		points = polyline.attribute("points").as_string();
 
+		int size = strlen(points.GetString()) + 1;
+
+		char* copy = new char[size];
+
+		//memset(object->copy, 0, size);
+		int r = strcpy_s(copy, sizeof(char) * size, points.GetString());
+
+		/*
+		char* delim = " ";
 		char* pch;
-		//pch = strtok(str, " ,");
+		pch = strtok_s(copy, " ,", &delim);
+		*/
 
 		//object->path1.PushBack()
 
 		//int size = object_node.child("polyline").attribute("points").
+		//delete pch;
 	}
 
 

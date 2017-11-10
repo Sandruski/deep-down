@@ -14,7 +14,7 @@
 
 Imp::Imp(int x, int y) : Enemy(x, y)
 {
-	imp = App->enemies->GetImpInfo();
+	//imp = App->enemies->GetImpInfo();
 
 	animation = &imp.r_shield_idle;
 	impState = ImpState::r_shield_walk;
