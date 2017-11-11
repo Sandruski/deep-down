@@ -186,7 +186,11 @@ private:
 	bool				map_loaded;
 
 	MapLayer*			aboveLayer = nullptr;
-	uint				blit_offset;
+
+public:
+
+	int					blit_offset;
+	bool				camera_blit;
 
 };
 

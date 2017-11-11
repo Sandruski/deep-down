@@ -49,15 +49,27 @@ void j1Map::Draw()
 		p2List_item<MapLayer*>* draw_layers = data.layers.start;
 		while (draw_layers != NULL) {
 
+			// Initial xy camera && final xy camera
 			uint widht, height;
 			App->win->GetWindowSize(widht, height);
+
 			iPoint initialPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale() - blit_offset), (App->render->camera.y * (-1) / App->win->GetScale()) - blit_offset);
 			iPoint finalPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) + blit_offset + ((int)widht / App->win->GetScale()), (App->render->camera.y * (-1) / App->win->GetScale()) + blit_offset + ((int)height / App->win->GetScale()));
+			//
 
 			if (draw_layers->data->index != ABOVE && draw_layers->data->index != PARALLAX) {
+				
+				// To blit all the map
+				if (!camera_blit) {
+					initialPoint.x = 0;
+					initialPoint.y = 0;
+					finalPoint.x = draw_layers->data->width;
+					finalPoint.y = draw_layers->data->height;
+				}
+				//
 
 				for (int i = initialPoint.x; i < finalPoint.x; i++) {
-					for (int j = initialPoint.y; j < finalPoint.y; j++) {
+					for (int j = initialPoint.y; j < finalPoint.y; j++) {							
 
 						if (draw_layers->data->Get(i, j) != 0) {
 
@@ -87,8 +99,19 @@ void j1Map::Draw()
 
 			if (draw_layers->data->index == PARALLAX) {
 
+				// Initial xy camera && final xy camera
 				initialPoint = WorldToMap((App->render->camera.x * draw_layers->data->speed * (-1) / App->win->GetScale()) - blit_offset, (App->render->camera.y * draw_layers->data->speed * (-1) / App->win->GetScale()) - blit_offset);
 				finalPoint = WorldToMap((App->render->camera.x * draw_layers->data->speed * (-1) / App->win->GetScale()) + ((int)widht / App->win->GetScale() + blit_offset), (App->render->camera.y * draw_layers->data->speed * (-1) / App->win->GetScale()) + ((int)height / App->win->GetScale() + blit_offset));
+				//
+			
+				// To blit all the map
+				if (!camera_blit) {
+					initialPoint.x = 0;
+					initialPoint.y = 0;
+					finalPoint.x = draw_layers->data->width;
+					finalPoint.y = draw_layers->data->height;
+				}
+				//
 
 				for (int i = initialPoint.x; i < finalPoint.x; i++) {
 					for (int j = initialPoint.y; j < finalPoint.y; j++) {
@@ -105,7 +128,7 @@ void j1Map::Draw()
 							}
 						}
 					}
-				}//for
+				}
 			}
 			draw_layers = draw_layers->next;
 		}
@@ -120,11 +143,23 @@ void j1Map::DrawAboveLayer()
 
 	if (aboveLayer != nullptr) {
 
+
+		// Initial xy camera && final xy camera
 		uint widht, height;
 		App->win->GetWindowSize(widht, height);
+
 		iPoint initialPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) - blit_offset, (App->render->camera.y * (-1) / App->win->GetScale()) - blit_offset);
 		iPoint finalPoint = WorldToMap((App->render->camera.x * (-1) / App->win->GetScale()) + ((int)widht / App->win->GetScale() + blit_offset), (App->render->camera.y * (-1) / App->win->GetScale()) + ((int)height / App->win->GetScale() + blit_offset));
+		//
 
+		// To blit all the map
+		if (!camera_blit) {
+			initialPoint.x = 0;
+			initialPoint.y = 0;
+			finalPoint.x = aboveLayer->width;
+			finalPoint.y = aboveLayer->height;
+		}
+		//
 
 		p2List_item<TileSet*>* draw_tilesets = data.tilesets.start;
 		while (draw_tilesets != NULL)
