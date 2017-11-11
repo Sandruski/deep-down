@@ -325,11 +325,15 @@ void j1Scene::DebugKeys() {
 
 	//camera blit
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
-		App->map->blit_offset += 15;
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->map->blit_offset < 15 && App->map->camera_blit)
+		App->map->blit_offset += 7;
 
-	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-		App->map->blit_offset -= 15;
+	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->map->blit_offset > -135 && App->map->camera_blit)
+		App->map->blit_offset -= 7;
+
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+		App->map->camera_blit = !App->map->camera_blit;
+
 }
 
 void j1Scene::Boss() {
