@@ -30,6 +30,7 @@ struct Object {
 	uint width = 0;
 	uint height = 0;
 
+	int* polyline = nullptr;
 };
 
 struct ObjectGroup

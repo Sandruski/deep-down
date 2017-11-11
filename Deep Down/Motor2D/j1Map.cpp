@@ -657,25 +657,35 @@ bool j1Map::LoadObject(pugi::xml_node& object_node, Object* object)
 		p2SString points;
 		points = polyline.attribute("points").as_string();
 
-		int size = strlen(points.GetString()) + 1;
+		int size = strlen(points.GetString());
 
-		char* copy = new char[size];
+		object->polyline = new int[size];
+		memset(object->polyline, 0, size);
 
-		//memset(object->copy, 0, size);
-		int r = strcpy_s(copy, sizeof(char) * size, points.GetString());
+		char* copy = new char[size + 1];
+		strcpy_s(copy, sizeof(char) * (size + 1), points.GetString());
+		
+		char delims[] = " ,";
+		char* token = NULL;
+		char* context = NULL;
+		token = strtok_s(copy, delims, &context);
+		
+		int i = -1;
+		int u = 0;
+		while (token != NULL) {
+			token = strtok_s(NULL, delims, &context);
 
-		/*
-		char* delim = " ";
-		char* pch;
-		pch = strtok_s(copy, " ,", &delim);
-		*/
+			if (token != NULL)
+				object->polyline[++i] = atoi(token);
+		}
 
-		//object->path1.PushBack()
+		delete[] copy;
 
-		//int size = object_node.child("polyline").attribute("points").
-		//delete pch;
+		if (token != NULL)
+			token = NULL;
+		if (context != NULL)
+			context = NULL;
 	}
-
 
 	return ret;
 }
