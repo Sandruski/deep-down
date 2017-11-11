@@ -162,6 +162,8 @@ bool j1Enemies::Start()
 	// Pathfinding collision data
 	App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (int*)App->map->collisionLayer->data);
 
+	LoadPaths();
+
 	return true;
 }
 
@@ -309,4 +311,31 @@ void j1Enemies::OnCollision(Collider* c1, Collider* c2)
 			}
 		}	
 	}
+}
+
+bool j1Enemies::LoadPaths() {
+
+	// Player start position
+	//App->player->startPos = App->map->data.GetObjectPosition("Player", "StartPos");
+	//App->player->position = App->player->startPos;
+
+	path_1.type = PATH_TYPES::PATH_1;
+
+}
+
+// -------------------------------------------------------------
+// -------------------------------------------------------------
+
+
+
+
+PathInfo::PathInfo() {}
+
+PathInfo::PathInfo(const PathInfo& i) :
+	type(i.type), start_pos(i.start_pos), path(i.path) 
+{}
+
+PathInfo::~PathInfo() {
+
+	// Delete dyn array
 }

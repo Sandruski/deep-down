@@ -30,13 +30,17 @@ struct ImpInfo
 
 	p2DynArray<iPoint> path1;
 
+	ImpInfo();
+	ImpInfo(const ImpInfo& i);
+	~ImpInfo();
+
 };
 
 class Imp : public Enemy
 {
 public:
 
-	Imp(int x, int y);
+	Imp(Path path);
 
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move();
@@ -48,7 +52,7 @@ private:
 
 private:
 
-	ImpInfo imp;
+	ImpInfo* imp;
 	ImpState impState;
 
 	bool up, down, left, right;

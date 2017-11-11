@@ -12,14 +12,15 @@
 
 #include "SDL/include/SDL_timer.h"
 
-Imp::Imp(int x, int y) : Enemy(x, y)
+Imp::Imp(Path path) : Enemy(path)
 {
-	//imp = App->enemies->GetImpInfo();
+	imp = new ImpInfo(App->enemies->GetImpInfo());
 
-	animation = &imp.r_shield_idle;
+	///
+	animation = &imp->r_shield_walk;
 	impState = ImpState::r_shield_walk;
 
-	collider = App->collision->AddCollider({ 0, 0, imp.coll_size.x + imp.coll_offset.w, imp.coll_size.y + imp.coll_offset.h }, COLLIDER_TYPE::COLLIDER_IMP, App->enemies);
+	collider = App->collision->AddCollider({ 0, 0, imp->coll_size.x + imp->coll_offset.w, imp->coll_size.y + imp->coll_offset.h }, COLLIDER_TYPE::COLLIDER_IMP, App->enemies);
 
 	// Needs organization
 	speed = { 0, 1 };
@@ -108,7 +109,7 @@ void Imp::Move()
 	UpdateDirection();
 
 	// Update collider
-	collider_pos = { position.x + imp.coll_offset.x, position.y + imp.coll_offset.y };
+	collider_pos = { position.x + imp->coll_offset.x, position.y + imp->coll_offset.y };
 	collider->SetPos(collider_pos.x, collider_pos.y);
 
 	//position.x = App->player->position.x;
@@ -130,7 +131,7 @@ void Imp::GeneralStatesMachine() {
 			impState = ImpState::l_shield_idle;
 			break;
 		}
-		animation = &imp.r_shield_idle;
+		animation = &imp->r_shield_idle;
 		break;
 
 	case l_shield_idle:
@@ -142,7 +143,7 @@ void Imp::GeneralStatesMachine() {
 			impState = ImpState::r_shield_idle;
 			break;
 		}
-		animation = &imp.l_shield_idle;
+		animation = &imp->l_shield_idle;
 		break;
 
 	case r_shield_walk:
@@ -150,7 +151,7 @@ void Imp::GeneralStatesMachine() {
 			impState = ImpState::l_shield_walk;
 			break;
 		}
-		animation = &imp.r_shield_walk;
+		animation = &imp->r_shield_walk;
 		impState = ImpState::r_shield_idle;
 		break;
 
@@ -159,7 +160,7 @@ void Imp::GeneralStatesMachine() {
 			impState = ImpState::r_shield_walk;
 			break;
 		}
-		animation = &imp.l_shield_walk;
+		animation = &imp->l_shield_walk;
 		impState = ImpState::l_shield_idle;
 		break;
 
@@ -168,7 +169,7 @@ void Imp::GeneralStatesMachine() {
 			impState = ImpState::l_jump;
 			break;
 		}
-		animation = &imp.r_jump;
+		animation = &imp->r_jump;
 		impState = ImpState::r_shield_idle;
 		break;
 
@@ -177,7 +178,7 @@ void Imp::GeneralStatesMachine() {
 			impState = ImpState::r_jump;
 			break;
 		}
-		animation = &imp.l_jump;
+		animation = &imp->l_jump;
 		impState = ImpState::l_shield_idle;
 		break;
 
@@ -186,7 +187,7 @@ void Imp::GeneralStatesMachine() {
 			impState = ImpState::l_throw_bomb;
 			break;
 		}
-		animation = &imp.r_throw_bomb;
+		animation = &imp->r_throw_bomb;
 		impState = ImpState::r_shield_idle;
 		break;
 
@@ -195,7 +196,7 @@ void Imp::GeneralStatesMachine() {
 			impState = ImpState::r_throw_bomb;
 			break;
 		}
-		animation = &imp.l_throw_bomb;
+		animation = &imp->l_throw_bomb;
 		impState = ImpState::l_shield_idle;
 		break;
 
@@ -204,7 +205,7 @@ void Imp::GeneralStatesMachine() {
 			impState = ImpState::l_shield_hurt;
 			break;
 		}
-		animation = &imp.r_shield_hurt;
+		animation = &imp->r_shield_hurt;
 		impState = ImpState::r_shield_idle;
 		break;
 
@@ -213,7 +214,7 @@ void Imp::GeneralStatesMachine() {
 			impState = ImpState::r_shield_hurt;
 			break;
 		}
-		animation = &imp.l_shield_hurt;
+		animation = &imp->l_shield_hurt;
 		impState = ImpState::l_shield_idle;
 		break;
 	}
@@ -244,4 +245,24 @@ void Imp::UpdateDirection() {
 
 void Imp::OnCollision(Collider* c1, Collider* c2) 
 {
+}
+
+// -------------------------------------------------------------
+// -------------------------------------------------------------
+
+ImpInfo::ImpInfo() {}
+
+ImpInfo::ImpInfo(const ImpInfo& i) :
+	r_shield_idle(i.r_shield_idle), l_shield_idle(i.l_shield_idle),
+	r_shield_hurt(i.r_shield_hurt), l_shield_hurt(i.l_shield_hurt),
+	r_jump(i.r_jump), l_jump(i.l_jump),
+	r_throw_bomb(i.r_throw_bomb), l_throw_bomb(i.l_throw_bomb),
+	r_shield_walk(i.r_shield_walk), l_shield_walk(i.l_shield_walk),
+	coll_size(i.coll_size), coll_offset(i.coll_offset),
+	path1(i.path1)
+{}
+
+ImpInfo::~ImpInfo() {
+
+// Delete dyn array
 }
