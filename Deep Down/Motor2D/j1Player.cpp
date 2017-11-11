@@ -1010,8 +1010,8 @@ void j1Player::CheckCollision(iPoint position, iPoint size, int offset, bool &up
 
 	App->map->culing_offset = 50;
 
-	for (int i = App->player->position.x - App->map->culing_offset; i <  App->player->position.x + App->map->culing_offset; i++) {
-		for (int j = App->player->position.y - App->map->culing_offset; j < App->player->position.y + App->map->culing_offset; j++) {
+	for (int i = position.x - App->map->culing_offset; i <  position.x + App->map->culing_offset; i++) {
+		for (int j = position.y - App->map->culing_offset; j < position.y + App->map->culing_offset; j++) {
 
 			iPoint ij = App->map->WorldToMap(i, j);
 			

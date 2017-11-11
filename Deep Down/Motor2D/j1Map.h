@@ -192,6 +192,7 @@ private:
 
 public:
 
+	int					culing_offset;
 	int					blit_offset;
 	bool				camera_blit;
 

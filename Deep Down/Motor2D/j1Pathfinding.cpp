@@ -16,7 +16,7 @@ j1PathFinding::~j1PathFinding()
 }
 
 // Called before quitting
-bool j1PathFinding::CleanUp()
+bool j1PathFinding::CleanUp() 
 {
 	LOG("Freeing pathfinding library");
 
@@ -179,7 +179,6 @@ float PathNode::Score() const
 // ----------------------------------------------------------------------------------
 float PathNode::CalculateF(const iPoint& destination)
 {
-	
 	g = parent->g + 1;
 	if (this->diagonal)
 		g = parent->g + 1.7f;
