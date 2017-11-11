@@ -317,11 +317,19 @@ void j1Scene::DebugKeys() {
 	// ---------------------------------------
 
 	// +, -: adjust music volume
-	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
 		App->audio->ChangeMusicVolume(true); //music volume + 8
 
 	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
 		App->audio->ChangeMusicVolume(false); //music volume - 8
+
+	//camera blit
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
+		App->map->blit_offset += 15;
+
+	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		App->map->blit_offset -= 15;
 }
 
 void j1Scene::Boss() {
