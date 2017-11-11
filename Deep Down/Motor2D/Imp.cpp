@@ -12,7 +12,7 @@
 
 #include "SDL/include/SDL_timer.h"
 
-Imp::Imp(Path path) : Enemy(path)
+Imp::Imp(int x, int y) : Enemy(x, y)
 {
 	imp = new ImpInfo(App->enemies->GetImpInfo());
 

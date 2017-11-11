@@ -21,32 +21,23 @@ enum ENEMY_TYPES
 	
 };
 
-enum PATH_TYPES {
-	NO_TYPE,
-	PATH_1,
-	PATH_2,
-	PATH_3
-
-};
-
 class Enemy;
-
-struct EnemyInfo
-{
-	ENEMY_TYPES type = ENEMY_TYPES::NO_TYPE;
-	int x, y;
-};
 
 struct PathInfo
 {
-	PATH_TYPES type = PATH_TYPES::NO_TYPE;
-
 	iPoint start_pos = { 0,0 };
 	iPoint* path = nullptr;
 
 	PathInfo();
 	PathInfo(const PathInfo& i);
 	~PathInfo();
+};
+
+struct EnemyInfo
+{
+	ENEMY_TYPES type = ENEMY_TYPES::NO_TYPE;
+	PathInfo* path = nullptr;
+	int x, y;
 };
 
 class j1Enemies : public j1Module
@@ -62,12 +53,14 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 	void OnCollision(Collider* c1, Collider* c2);
-
-	bool AddEnemy(ENEMY_TYPES type, int x, int y);
+	bool AddEnemy(ENEMY_TYPES type, uint path);
 	bool LoadPaths();
 
 	// Get enemies info
 	ImpInfo& GetImpInfo() { return imp; }
+
+	// Get paths info
+	PathInfo* GetPathByIndex(uint index) const;
 
 private:
 
@@ -85,10 +78,8 @@ private:
 	// Enemies info
 	ImpInfo imp;
 
-	// Paths info
-	PathInfo path_1;
-	PathInfo path_2;
-	PathInfo path_3;
+	// Paths info list
+	p2List<PathInfo*> paths;
 
 public:
 	SDL_Texture* CatPeasantTex = nullptr;

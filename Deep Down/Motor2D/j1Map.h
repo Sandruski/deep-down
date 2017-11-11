@@ -30,6 +30,7 @@ struct Object {
 	uint width = 0;
 	uint height = 0;
 
+	int size = 0;
 	int* polyline = nullptr;
 };
 
@@ -126,6 +127,8 @@ struct MapData
 
 	fPoint GetObjectPosition(p2SString groupObject, p2SString object);
 	fPoint GetObjectSize(p2SString groupObject, p2SString object);
+	Object* GetObjectByName(p2SString groupObject, p2SString object);
+
 	bool CheckIfEnter(p2SString groupObject, p2SString object, fPoint position);
 };
 

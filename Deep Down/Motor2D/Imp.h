@@ -40,7 +40,7 @@ class Imp : public Enemy
 {
 public:
 
-	Imp(Path path);
+	Imp(int x, int y);
 
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move();

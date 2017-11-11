@@ -162,8 +162,6 @@ bool j1Enemies::Start()
 	// Pathfinding collision data
 	App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (int*)App->map->collisionLayer->data);
 
-	LoadPaths();
-
 	return true;
 }
 
@@ -244,7 +242,7 @@ bool j1Enemies::CleanUp()
 	return true;
 }
 
-bool j1Enemies::AddEnemy(ENEMY_TYPES type, int x, int y)
+bool j1Enemies::AddEnemy(ENEMY_TYPES type, uint path)
 {
 	bool ret = false;
 
@@ -253,8 +251,17 @@ bool j1Enemies::AddEnemy(ENEMY_TYPES type, int x, int y)
 		if (queue[i].type == ENEMY_TYPES::NO_TYPE)
 		{
 			queue[i].type = type;
-			queue[i].x = x;
-			queue[i].y = y;
+			queue[i].path = GetPathByIndex(path);
+
+			if (queue[i].path != nullptr) {
+				queue[i].x = queue[i].path->start_pos.x;
+				queue[i].y = queue[i].path->start_pos.y;
+			}
+			else {
+				queue[i].x = 0;
+				queue[i].y = 0;
+			}
+
 			ret = true;
 			break;
 		}
@@ -315,24 +322,69 @@ void j1Enemies::OnCollision(Collider* c1, Collider* c2)
 
 bool j1Enemies::LoadPaths() {
 
-	// Player start position
-	//App->player->startPos = App->map->data.GetObjectPosition("Player", "StartPos");
-	//App->player->position = App->player->startPos;
+	bool ret = true;
 
-	path_1.type = PATH_TYPES::PATH_1;
+	int index = 1;
+	p2SString tmp("%s%d", "Path", index);
+	Object* obj = App->map->data.GetObjectByName("Player", tmp);
 
+	while (obj != nullptr) {
+
+		// Save actual path
+		PathInfo* path = new PathInfo();
+
+		path->start_pos = { (int)obj->x, (int)obj->y };
+
+		path->path = new iPoint[obj->size / 2];
+		memset(path->path, 0, obj->size);
+
+		// Create path
+		path->path[0].x = obj->polyline[0];
+		path->path[0].y = obj->polyline[1];
+
+		int i = 1;
+		while (obj->polyline[i * 2 + 0] != 0 && obj->polyline[i * 2 + 1] != 0) {
+			path->path[i].x = obj->polyline[i * 2 + 0];
+			path->path[i].y = obj->polyline[i * 2 + 1];
+			++i;
+		}
+
+		paths.add(path);
+
+		// Search next path
+		index++;
+		p2SString tmp("%s%d", "Path", index);
+		obj = App->map->data.GetObjectByName("Player", tmp);
+	}
+
+	return ret;
+}
+
+PathInfo* j1Enemies::GetPathByIndex(uint index) const {
+
+	PathInfo* path = nullptr;
+	p2List_item<PathInfo*>* iterator = paths.start;
+
+	int i = 0;
+	while (iterator != nullptr && i <= index - 1) {
+
+		if (i == index - 1)
+			path = iterator->data;
+
+		iterator = iterator->next;
+		++i;
+	}
+
+	return path;
 }
 
 // -------------------------------------------------------------
 // -------------------------------------------------------------
 
-
-
-
 PathInfo::PathInfo() {}
 
 PathInfo::PathInfo(const PathInfo& i) :
-	type(i.type), start_pos(i.start_pos), path(i.path) 
+	start_pos(i.start_pos), path(i.path) 
 {}
 
 PathInfo::~PathInfo() {

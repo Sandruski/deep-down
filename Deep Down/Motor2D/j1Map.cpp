@@ -692,21 +692,20 @@ bool j1Map::LoadObject(pugi::xml_node& object_node, Object* object)
 		p2SString points;
 		points = polyline.attribute("points").as_string();
 
-		int size = strlen(points.GetString());
+		object->size = strlen(points.GetString());
 
-		object->polyline = new int[size];
-		memset(object->polyline, 0, size);
-
-		char* copy = new char[size + 1];
-		strcpy_s(copy, sizeof(char) * (size + 1), points.GetString());
+		char* copy = new char[object->size + 1];
+		strcpy_s(copy, sizeof(char) * (object->size + 1), points.GetString());
 		
 		char delims[] = " ,";
 		char* token = NULL;
 		char* context = NULL;
 		token = strtok_s(copy, delims, &context);
+
+		object->polyline = new int[object->size];
+		memset(object->polyline, 0, object->size);
 		
 		int i = -1;
-		int u = 0;
 		while (token != NULL) {
 			token = strtok_s(NULL, delims, &context);
 
@@ -793,6 +792,40 @@ fPoint MapData::GetObjectSize(p2SString groupObject, p2SString object) {
 	}
 
 	return size;
+}
+
+Object* MapData::GetObjectByName(p2SString groupObject, p2SString object) {
+	
+	Object* obj = nullptr;
+
+	p2List_item<ObjectGroup*>* item;
+	item = objectGroups.start;
+
+	int ret = true;
+
+	while (item != NULL && ret)
+	{
+		if (item->data->name == groupObject) {
+
+			p2List_item<Object*>* item1;
+			item1 = item->data->objects.start;
+
+			while (item1 != NULL && ret)
+			{
+				if (item1->data->name == object) {
+					obj = item1->data;
+
+					ret = false;
+				}
+
+				item1 = item1->next;
+			}
+		}
+
+		item = item->next;
+	}
+
+	return obj;
 }
 
 bool MapData::CheckIfEnter(p2SString groupObject, p2SString object, fPoint position) {
