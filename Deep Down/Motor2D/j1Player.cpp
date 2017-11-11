@@ -1008,13 +1008,17 @@ void j1Player::OnCollision(Collider* a, Collider* b) {
 
 void j1Player::CheckCollision(iPoint position, iPoint size, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state) {
 
-	for (int i = 0; i < App->map->collisionLayer->width; i++) {
-		for (int j = 0; j < App->map->collisionLayer->height; j++) {
+	App->map->culing_offset = 50;
 
-			uint id = App->map->collisionLayer->Get(i, j);
+	for (int i = App->player->position.x - App->map->culing_offset; i <  App->player->position.x + App->map->culing_offset; i++) {
+		for (int j = App->player->position.y - App->map->culing_offset; j < App->player->position.y + App->map->culing_offset; j++) {
+
+			iPoint ij = App->map->WorldToMap(i, j);
+			
+			uint id = App->map->collisionLayer->Get(ij.x, ij.y);
 
 			if (id != 0) {
-				iPoint world = App->map->MapToWorld(i, j);
+				iPoint world = App->map->MapToWorld(ij.x, ij.y);
 				CalculateCollision(position, size, world.x, world.y, id, offset, up, down, left, right, state);
 			}
 		}
