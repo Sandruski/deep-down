@@ -263,6 +263,8 @@ bool j1Player::CleanUp()
 // Update: draw background
 bool j1Player::Update(float dt)
 {
+
+	this->dt = dt;
 	// Check for collisions
 	up = true;
 	down = true;
@@ -287,19 +289,19 @@ bool j1Player::Update(float dt)
 
 void j1Player::MoveForward() {
 	if (right) {
-		position.x += 2.0f;
+		position.x += 100.0f * dt;
 	}
 }
 
 void j1Player::MoveBackward() {
 	if (left) {
-		position.x -= 2.0f;
+		position.x -= 100.0f * dt;
 	}
 }
 
 void j1Player::MoveForwardJumping() {
 	if (right) {
-		position.x += 1.0f;
+		position.x += 100.0f * dt;
 	}
 }
 void j1Player::MoveBackwardJumping() {

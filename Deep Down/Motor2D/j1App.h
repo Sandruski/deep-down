@@ -5,7 +5,10 @@
 #include "p2DynArray.h"
 #include "p2SString.h"
 #include "j1Module.h"
+#include "j1PerfTimer.h"
+#include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
+
 
 // Modules
 class j1Window;
@@ -105,9 +108,7 @@ private:
 
 	p2List<j1Module*>	modules;
 	uint				frames;
-	float				dt;
-	long				last;
-	float				deltaTime;
+	double				dt;
 	int					argc;
 	char**				args;
 
@@ -118,6 +119,12 @@ private:
 	bool				want_to_load;
 	p2SString			load_game;
 	mutable p2SString	save_game;
+
+	uint64 last_frame_ms;
+	uint64 frame_count;
+	j1Timer clock;
+	j1PerfTimer perfClock;
+
 };
 
 extern j1App* App; // No student is asking me about that ... odd :-S

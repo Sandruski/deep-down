@@ -148,7 +148,7 @@ bool j1Scene::Update(float dt)
 					index, App->map->data.width, App->map->data.height,
 					App->map->data.tile_width, App->map->data.tile_height,
 					App->map->data.tilesets.count(), App->map->MouseTile(mouse.x, mouse.y));
-	App->win->SetTitle(title.GetString());
+	//App->win->SetTitle(title.GetString());
 
 	// Scene2 boss
 	/*

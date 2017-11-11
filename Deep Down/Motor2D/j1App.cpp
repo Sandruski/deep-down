@@ -22,9 +22,6 @@
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
-	frames = 0;
-	last = 0;
-	deltaTime = 0.0;
 	want_to_save = want_to_load = false;
 
 	input = new j1Input();
@@ -178,6 +175,9 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
+	clock.Start();
+	perfClock.Start();
+
 }
 
 // ---------------------------------------------
@@ -188,6 +188,35 @@ void j1App::FinishUpdate()
 
 	if (want_to_load == true)
 		LoadGameNow();
+
+	float seconds_since_startup = perfClock.ReadMs();
+	
+	uint32 actual_frame_ms = clock.Read();
+	
+	//if (actual_frame_ms > last_frame_ms) {
+	
+		last_frame_ms = actual_frame_ms;
+//	}
+
+	uint32 frames_on_last_update = 0;
+	frame_count++;
+
+	//cap frames
+	float toVsync = 1000 / 60;
+	
+	if (actual_frame_ms < toVsync) 
+		SDL_Delay(toVsync - actual_frame_ms);
+
+	double fps = 1000.0f / perfClock.ReadMs();
+
+	dt = 1.0f / fps;
+
+	static char title[256];
+	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu ",
+		fps, actual_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
+
+	App->win->SetTitle(title);
+
 }
 
 // Call modules before each loop iteration

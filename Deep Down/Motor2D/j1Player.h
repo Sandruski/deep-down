@@ -109,6 +109,7 @@ private:
 	bool up = true, down = true, left = true, right = true;
 	bool checkDash;
 	bool stopshot, secondAttackToCheck, thirdAttackToCheck, secondAttackToCheck2, thirdAttackToCheck2;
+	float dt;
 
 	// Animations
 	Animation* current_animation;
