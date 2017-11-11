@@ -27,6 +27,7 @@ struct PathInfo
 {
 	iPoint start_pos = { 0,0 };
 	iPoint* path = nullptr;
+	int path_size;
 
 	PathInfo();
 	PathInfo(const PathInfo& i);
@@ -36,8 +37,9 @@ struct PathInfo
 struct EnemyInfo
 {
 	ENEMY_TYPES type = ENEMY_TYPES::NO_TYPE;
-	PathInfo* path = nullptr;
 	int x, y;
+
+	PathInfo* path = nullptr;
 };
 
 class j1Enemies : public j1Module

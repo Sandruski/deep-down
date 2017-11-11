@@ -51,6 +51,7 @@ private:
 	void UpdateDirection();
 	void UpdatePath();
 	void UpdatePathfinding();
+	void FlipPath(PathInfo* path_info);
 
 private:
 
@@ -66,14 +67,27 @@ private:
 	iPoint last_pos;
 
 	// Pathfinding
-	bool create_path;
-	p2DynArray<iPoint> last_path;
-	uint index = 0;
-	bool path_finished;
+	uint pathfinding_index = 0;
+
+	bool create_pathfinding;
+	p2DynArray<iPoint> last_pathfinding;
+
+	bool pathfinding_finished = true;
+	bool pathfinding;
+	bool pathfinding_stop;
+
+	Collider* follow_pathfinding1;
+	Collider* follow_pathfinding2;
 
 	// Normal path
+	uint normal_path_index = 0;
+
 	Path normal_path;
-	bool repeat_path;
+	bool repeat_normal_path;
+	int last_normal_path_index;
+
+	bool create_pathfinding_back;
+	bool going_back_home;
 
 };
 

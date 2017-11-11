@@ -339,23 +339,19 @@ bool j1Enemies::LoadPaths() {
 		memset(path->path, 0, obj->size);
 
 		// Create path
-		path->path[0].x = obj->polyline[0];
-		path->path[0].y = obj->polyline[1];
+		path->path[0].x = obj->polyline[0] + path->start_pos.x;
+		path->path[0].y = obj->polyline[1] + path->start_pos.y;
+		path->path[1].x = obj->polyline[2] + path->start_pos.x;
+		path->path[1].y = obj->polyline[3] + path->start_pos.y;
 
+		path->path_size = 2;
 		int i = 1;
-		int a = 0;
-		int b = 0;
-		int c = 0;
-		int d = 0;
 
 		while (obj->polyline[i * 2 + 0] != 0 && obj->polyline[i * 2 + 1] != 0) {
 			path->path[++i].x = obj->polyline[i * 2 + 0] + path->start_pos.x;
 			path->path[i].y = obj->polyline[i * 2 + 1] + path->start_pos.y;
 
-			a = obj->polyline[i * 2 + 0];
-			b = obj->polyline[i * 2 + 1];
-			c = obj->polyline[i * 2 + 0] + path->start_pos.x;
-			d = obj->polyline[i * 2 + 1] + path->start_pos.y;
+			path->path_size++;
 		}
 
 		paths.add(path);
