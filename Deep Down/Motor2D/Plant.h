@@ -9,7 +9,7 @@ private:
 	Animation idle;
 
 public:
-	Plant(int x, int y);
+	Plant(int x, int y, PathInfo* path);
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move();
 };

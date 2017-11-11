@@ -282,22 +282,22 @@ void j1Enemies::SpawnEnemy(const EnemyInfo& info)
 		switch (info.type)
 		{	
 		case ENEMY_TYPES::CAT_PEASANT_:
-			enemies[i] = new CatPeasant(info.x, info.y);
+			enemies[i] = new CatPeasant(info.x, info.y, info.path);
 			enemies[i]->type = ENEMY_TYPES::CAT_PEASANT_;
 			break;
 
 		case ENEMY_TYPES::IMP_:
-			enemies[i] = new Imp(info.x, info.y);
+			enemies[i] = new Imp(info.x, info.y, info.path);
 			enemies[i]->type = ENEMY_TYPES::IMP_;
 			break;
 		
 		case ENEMY_TYPES::PLANT_:
-			enemies[i] = new Plant(info.x, info.y);
+			enemies[i] = new Plant(info.x, info.y, info.path);
 			enemies[i]->type = ENEMY_TYPES::PLANT_;
 			break;
 
 		case ENEMY_TYPES::MONKEY_:
-			enemies[i] = new Monkey(info.x, info.y);
+			enemies[i] = new Monkey(info.x, info.y, info.path);
 			enemies[i]->type = ENEMY_TYPES::MONKEY_;
 			break;
 		}
@@ -343,10 +343,19 @@ bool j1Enemies::LoadPaths() {
 		path->path[0].y = obj->polyline[1];
 
 		int i = 1;
+		int a = 0;
+		int b = 0;
+		int c = 0;
+		int d = 0;
+
 		while (obj->polyline[i * 2 + 0] != 0 && obj->polyline[i * 2 + 1] != 0) {
-			path->path[i].x = obj->polyline[i * 2 + 0];
-			path->path[i].y = obj->polyline[i * 2 + 1];
-			++i;
+			path->path[++i].x = obj->polyline[i * 2 + 0] + path->start_pos.x;
+			path->path[i].y = obj->polyline[i * 2 + 1] + path->start_pos.y;
+
+			a = obj->polyline[i * 2 + 0];
+			b = obj->polyline[i * 2 + 1];
+			c = obj->polyline[i * 2 + 0] + path->start_pos.x;
+			d = obj->polyline[i * 2 + 1] + path->start_pos.y;
 		}
 
 		paths.add(path);

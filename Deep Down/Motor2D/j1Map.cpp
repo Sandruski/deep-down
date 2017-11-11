@@ -700,12 +700,14 @@ bool j1Map::LoadObject(pugi::xml_node& object_node, Object* object)
 		char delims[] = " ,";
 		char* token = NULL;
 		char* context = NULL;
-		token = strtok_s(copy, delims, &context);
 
 		object->polyline = new int[object->size];
 		memset(object->polyline, 0, object->size);
-		
+
 		int i = -1;
+		token = strtok_s(copy, delims, &context);
+		object->polyline[++i] = atoi(token);
+		
 		while (token != NULL) {
 			token = strtok_s(NULL, delims, &context);
 

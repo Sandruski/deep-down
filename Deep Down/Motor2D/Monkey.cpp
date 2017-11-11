@@ -6,7 +6,7 @@
 #include "j1Player.h"
 
 #include "SDL/include/SDL_timer.h"
-Monkey::Monkey(int x, int y) : Enemy(x, y)
+Monkey::Monkey(int x, int y, PathInfo* path) : Enemy(x, y, path)
 {
 
 }

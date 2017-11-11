@@ -40,7 +40,7 @@ class Imp : public Enemy
 {
 public:
 
-	Imp(int x, int y);
+	Imp(int x, int y, PathInfo* path);
 
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move();
@@ -49,6 +49,8 @@ private:
 
 	void GeneralStatesMachine();
 	void UpdateDirection();
+	void UpdatePath();
+	void UpdatePathfinding();
 
 private:
 
@@ -71,6 +73,7 @@ private:
 
 	// Normal path
 	Path normal_path;
+	bool repeat_path;
 
 };
 

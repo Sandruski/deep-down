@@ -12,7 +12,7 @@
 
 #include "SDL/include/SDL_timer.h"
 
-Imp::Imp(int x, int y) : Enemy(x, y)
+Imp::Imp(int x, int y, PathInfo* path) : Enemy(x, y, path)
 {
 	imp = new ImpInfo(App->enemies->GetImpInfo());
 
@@ -61,40 +61,9 @@ void Imp::Move()
 	*/
 	//
 
-	if (create_path) {
-		App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->player->position.x, App->player->position.y));
-		last_path = *App->pathfinding->GetLastPath();
-		create_path = false;
-	}
+	UpdatePath();
 
-	if (last_path.At(index) != nullptr) {
-
-		iPoint to_go = App->map->MapToWorld(last_path.At(index)->x, last_path.At(index)->y);
-
-		if (position.x < to_go.x)
-			position.x++;
-		else if (position.x > to_go.x)
-			position.x--;
-		if (position.y < to_go.y)
-			position.y++;
-		else if (position.y > to_go.y)
-			position.y--;
-
-		if (position == to_go)
-			index++;
-	}
-	else
-		path_finished = true;
-
-	SDL_Rect enemy_pos = { position.x - 50, position.y, 100, 100 };
-	SDL_Rect player_pos = { App->player->position.x - 50, App->player->position.y - 10, 100, 200 };
-
-	// If player is near the enemy... Create path
-	if (path_finished && SDL_HasIntersection(&enemy_pos, &player_pos) && App->input->GetKey(SDL_SCANCODE_0) == KEY_REPEAT) {
-		create_path = true;
-		path_finished = false;
-		index = 0;
-	}
+	//UpdatePathfinding();
 
 	GeneralStatesMachine();
 
@@ -245,6 +214,71 @@ void Imp::UpdateDirection() {
 
 void Imp::OnCollision(Collider* c1, Collider* c2) 
 {
+}
+
+void Imp::UpdatePath() 
+{
+	if (path_info->path != nullptr) {
+
+		iPoint to_go = path_info->path[index];
+
+		if (position.x < to_go.x)
+			position.x++;
+		else if (position.x > to_go.x)
+			position.x--;
+		if (position.y < to_go.y)
+			position.y++;
+		else if (position.y > to_go.y)
+			position.y--;
+
+		if (position == to_go)
+			index++;
+	}
+	else
+		repeat_path = true;
+
+	if (repeat_path) {
+		index = 0;
+	}
+
+}
+
+void Imp::UpdatePathfinding() 
+{
+	if (create_path) {
+		App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->player->position.x, App->player->position.y));
+		last_path = *App->pathfinding->GetLastPath();
+		create_path = false;
+	}
+
+	if (last_path.At(index) != nullptr) {
+
+		iPoint to_go = App->map->MapToWorld(last_path.At(index)->x, last_path.At(index)->y);
+
+		if (position.x < to_go.x)
+			position.x++;
+		else if (position.x > to_go.x)
+			position.x--;
+		if (position.y < to_go.y)
+			position.y++;
+		else if (position.y > to_go.y)
+			position.y--;
+
+		if (position == to_go)
+			index++;
+	}
+	else
+		path_finished = true;
+
+	SDL_Rect enemy_pos = { position.x - 50, position.y, 100, 100 };
+	SDL_Rect player_pos = { App->player->position.x - 50, App->player->position.y - 10, 100, 200 };
+
+	// If player is near the enemy... Create path
+	if (path_finished && SDL_HasIntersection(&enemy_pos, &player_pos) && App->input->GetKey(SDL_SCANCODE_0) == KEY_REPEAT) {
+		create_path = true;
+		path_finished = false;
+		index = 0;
+	}
 }
 
 // -------------------------------------------------------------

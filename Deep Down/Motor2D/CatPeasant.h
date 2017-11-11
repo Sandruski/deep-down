@@ -39,7 +39,7 @@ private:
 
 public:
 
-	CatPeasant(int x, int y);
+	CatPeasant(int x, int y, PathInfo* path);
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move();
 };
