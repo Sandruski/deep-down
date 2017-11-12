@@ -265,6 +265,8 @@ bool j1Player::Update(float dt)
 {
 
 	this->dt = dt;
+
+	gravity = 10.0f * dt;
 	// Check for collisions
 	up = true;
 	down = true;
@@ -280,6 +282,31 @@ bool j1Player::Update(float dt)
 
 	r = &current_animation->GetCurrentFrame();
 
+	idle.speed = 10.0f * dt;
+	idle2.speed = 10.0f * dt;
+	forward.speed = 10.0f * dt;;
+	backward.speed = 10.0f * dt;;
+	jump.speed = 10.0f * dt;;
+	jump2.speed = 10.0f * dt;;
+	crouch.speed = 10.0f * dt;;
+	crouch2.speed = 10.0f * dt;;
+	dash.speed = 10.0f * dt;;
+	dash2.speed = 10.0f * dt;;
+	shot.speed = 10.0f * dt;;
+	shot2.speed = 10.0f * dt;;
+	crouchShot.speed = 10.0f * dt;;
+	crouchShot2.speed = 10.0f * dt;;
+	punished.speed = 10.0f * dt;;
+	punished2.speed = 10.0f * dt;;
+	firstAttack.speed = 10.0f * dt;;
+	secondAttack.speed = 10.0f * dt;;
+	thirdAttack.speed = 10.0f * dt;;
+	firstAttack2.speed = 10.0f * dt;;
+	secondAttack2.speed = 10.0f * dt;;
+	thirdAttack2.speed = 10.0f * dt;;
+
+
+
 	// Update collider
 	colliderPos = { (int)position.x + coll_offset.x, (int)position.y + coll_offset.y };
 	coll->SetPos(colliderPos.x, colliderPos.y);
@@ -289,29 +316,29 @@ bool j1Player::Update(float dt)
 
 void j1Player::MoveForward() {
 	if (right) {
-		position.x += 100.0f * dt;
+		position.x += 125.0f * dt;
 	}
 }
 
 void j1Player::MoveBackward() {
 	if (left) {
-		position.x -= 100.0f * dt;
+		position.x -= 125.0f * dt;
 	}
 }
 
 void j1Player::MoveForwardJumping() {
 	if (right) {
-		position.x += 100.0f * dt;
+		position.x += 75.0f * dt;
 	}
 }
 void j1Player::MoveBackwardJumping() {
 	if (left) {
-		position.x -= 1.0f;
+		position.x -= 75.0f * dt;
 	}
 }
 
 float j1Player::Jump() {
-	return -3;
+	return -3.75f;
 }
 
 void j1Player::SetState(playerstates state) {
@@ -320,14 +347,14 @@ void j1Player::SetState(playerstates state) {
 
 void j1Player::DashForward() {
 	if (right)
-		position.x += 2.0f;
+		position.x += 125.0f * dt;
 	
 	speed.y = 0;
 }
 
 void j1Player::DashBackward() {
 	if (left)
-		position.x -= 2.0f;
+		position.x -= 125.0f * dt;
 
 	speed.y = 0;
 }
@@ -360,36 +387,36 @@ void j1Player::ApplySpeed() {
 }
 
 void j1Player::ShotRight() {
-	time += 0.1f;
 
-	if (time >= 1.2f) {
+	if (shot.Finished() || crouchShot.Finished()) {
 		App->audio->PlayFx(3);
 		if (state == shot_)
 			App->particles->AddParticle(App->particles->arrowRight, position.x + 5, position.y + 22, COLLIDER_ARROW, NULL, { 2,0 });
 		else if (state == crouchShot_)
 			App->particles->AddParticle(App->particles->arrowRight, position.x + 5, position.y + 38, COLLIDER_ARROW, NULL, { 2,0 });
 		stopshot = true;
-		time = 0;
+		shot.Reset();
+		crouchShot.Reset();
 	}
 }
 
 void j1Player::ShotLeft() {
-	time += 0.1f;
 
-	if (time >= 1.2f) {
+	if (shot2.Finished() || crouchShot2.Finished()) {
 		App->audio->PlayFx(3);
 		if (state == shot2_)
 			App->particles->AddParticle(App->particles->arrowLeft, position.x + 15, position.y + 22, COLLIDER_ARROW, NULL, { -2,0 });
 		else if (state == crouchShot2_)
 			App->particles->AddParticle(App->particles->arrowLeft, position.x + 5, position.y + 38, COLLIDER_ARROW, NULL, { -2,0 });
 		stopshot = true;
-		time = 0;
+		shot2.Reset();
+		crouchShot2.Reset();
 	}
 }
 
 void j1Player::CheckIfDead() {
 	if (App->player->GetState() == punished_)
-		time += 0.1f;
+		time += 1 * dt;
 
 	if (time >= 3.0f) {
 		App->player->position = App->player->startPos;
@@ -439,8 +466,8 @@ void j1Player::PlayerStateMachine() {
 		}
 
 		if (secondAttackToCheck) {
-			time2++;
-			if (time2 >= 50) {
+			time2 += 1.0f * dt;
+			if (time2 >= 0.2f) {
 				secondAttackToCheck = false;
 				time2 = 0;
 			}
@@ -448,8 +475,8 @@ void j1Player::PlayerStateMachine() {
 
 
 		if (thirdAttackToCheck) {
-			time2++;
-			if (time2 >= 50) {
+			time2 += 1.0f * dt;
+			if (time2 >= 0.2f) {
 				thirdAttackToCheck = false;
 				time2 = 0;
 			}
@@ -495,8 +522,8 @@ void j1Player::PlayerStateMachine() {
 		}
 
 		if (secondAttackToCheck2) {
-			time2++;
-			if (time2 >= 50) {
+			time2 += 1.0f * dt;
+			if (time2 >= 0.2f) {
 				secondAttackToCheck2 = false;
 				time2 = 0;
 			}
@@ -504,8 +531,8 @@ void j1Player::PlayerStateMachine() {
 
 
 		if (thirdAttackToCheck2) {
-			time2++;
-			if (time2 >= 50) {
+			time2 += 1.0f * dt;
+			if (time2 >= 0.2f) {
 				thirdAttackToCheck2 = false;
 				time2 = 0;
 			}
@@ -535,8 +562,8 @@ void j1Player::PlayerStateMachine() {
 		}
 
 		if (secondAttackToCheck) {
-			time2++;
-			if (time2 >= 50) {
+			time2 += 1.0f * dt;
+			if (time2 >= 0.2f) {
 				secondAttackToCheck = false;
 				time2 = 0;
 			}
@@ -544,8 +571,8 @@ void j1Player::PlayerStateMachine() {
 
 
 		if (thirdAttackToCheck) {
-			time2++;
-			if (time2 >= 50) {
+			time2 += 1.0f * dt;
+			if (time2 >= 0.2f) {
 				thirdAttackToCheck = false;
 				time2 = 0;
 			}
@@ -578,8 +605,8 @@ void j1Player::PlayerStateMachine() {
 		}
 
 		if (secondAttackToCheck2) {
-			time2++;
-			if (time2 >= 50) {
+			time2 += 1.0f * dt;
+			if (time2 >= 0.2f) {
 				secondAttackToCheck2 = false;
 				time2 = 0;
 			}
@@ -587,8 +614,8 @@ void j1Player::PlayerStateMachine() {
 
 
 		if (thirdAttackToCheck2) {
-			time2++;
-			if (time2 >= 50) {
+			time2 += 1.0f * dt;
+			if (time2 >= 0.2f) {
 				thirdAttackToCheck2 = false;
 				time2 = 0;
 			}
@@ -712,9 +739,9 @@ void j1Player::PlayerStateMachine() {
 			App->audio->PlayFx(1);
 
 		current_animation = &dash;
-		time += 0.1f;
+		time += 1.0f * dt;
 		DashForward();
-		if (time >= 2) {
+		if (time >= 0.4f) {
 			checkDash = true;
 			current_animation = &jump;
 			state = jumping_;
@@ -728,9 +755,9 @@ void j1Player::PlayerStateMachine() {
 			App->audio->PlayFx(1);
 
 		current_animation = &dash2;
-		time += 0.1f;
+		time += 1.0f * dt;
 		DashBackward();
-		if (time >= 2) {
+		if (time >= 0.4f) {
 			checkDash = true;
 			current_animation = &jump2;
 			state = jumping2_;
@@ -826,7 +853,7 @@ void j1Player::PlayerStateMachine() {
 		App->particles->AddParticle(App->particles->firstAttack, position.x + 35, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
 		current_animation = &firstAttack;
 		if (right)
-			position.x += 0.1f;
+			position.x += 10.0f * dt;
 		if (firstAttack.Finished()) {
 			firstAttack.Reset();
 			secondAttackToCheck = true;
@@ -841,7 +868,7 @@ void j1Player::PlayerStateMachine() {
 		secondAttackToCheck = false;
 		current_animation = &secondAttack;
 		if (right)
-			position.x += 0.1f;
+			position.x += 10.0f * dt;
 		if (secondAttack.Finished()) {
 			thirdAttackToCheck = true;
 			secondAttack.Reset();
@@ -856,7 +883,7 @@ void j1Player::PlayerStateMachine() {
 		thirdAttackToCheck = false;
 		current_animation = &thirdAttack;
 		if(right)
-			position.x += 0.1f;
+			position.x += 10.0f * dt;
 		if (thirdAttack.Finished()) {
 			thirdAttack.Reset();
 			state = idle_;
@@ -869,7 +896,7 @@ void j1Player::PlayerStateMachine() {
 			App->particles->AddParticle(App->particles->firstAttack, position.x, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
 		current_animation = &firstAttack2;
 		if(left)
-		position.x -= 0.1f;
+		position.x -= 10.0f * dt;
 		if (firstAttack2.Finished()) {
 			firstAttack2.Reset();
 			secondAttackToCheck2 = true;
@@ -884,7 +911,7 @@ void j1Player::PlayerStateMachine() {
 		secondAttackToCheck2 = false;
 		current_animation = &secondAttack2;
 		if (left)
-			position.x -= 0.1f;
+			position.x -= 10.0f * dt;
 		if (secondAttack2.Finished()) {
 			thirdAttackToCheck2 = true;
 			secondAttack2.Reset();
@@ -899,7 +926,7 @@ void j1Player::PlayerStateMachine() {
 		thirdAttackToCheck2 = false;
 		current_animation = &thirdAttack2;
 		if (left)
-			position.x -= 0.1f;
+			position.x -= 10.0f * dt;
 		if (thirdAttack2.Finished()) {
 			thirdAttack2.Reset();
 			state = idle2_;
