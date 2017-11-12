@@ -15,6 +15,7 @@
 #include "j1Particles.h"
 #include "j1Player.h"
 
+#include "Brofiler\Brofiler.h"
 #include <math.h>
 
 j1Player::j1Player()
@@ -1036,6 +1037,8 @@ void j1Player::OnCollision(Collider* a, Collider* b) {
 }
 
 void j1Player::CheckCollision(iPoint position, iPoint size, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state) {
+
+	BROFILER_CATEGORY("CheckForCollision", Profiler::Color::Azure);
 
 	App->map->culing_offset = 50;
 

@@ -17,6 +17,8 @@
 #include "j1Enemies.h"
 #include "j1Pathfinding.h"
 
+#include"Brofiler\Brofiler.h"
+
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
@@ -133,15 +135,9 @@ bool j1Scene::Update(float dt)
 	// Move camera
 	MoveCamera();
 
-	// Draw map
-	App->map->Draw();
-
-	// Draw player
-	App->render->Blit(App->player->player, App->player->position.x, App->player->position.y, App->player->r);
+	// Draw
+	DrawEverything();
 	
-	// Draw Above layer
-	App->map->DrawAboveLayer();
-
 	// Set window title
 	App->input->GetMousePosition(mouse.x, mouse.y);
 	p2SString title("DEEP DOWN - Map %d:%dx%d Tiles:%dx%d Tilesets:%d Mouse (camera coords):%d,%d",					
@@ -337,6 +333,21 @@ void j1Scene::DebugKeys() {
 
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 		App->map->camera_blit = !App->map->camera_blit;
+
+}
+
+void  j1Scene::DrawEverything() {
+
+	BROFILER_CATEGORY("DrawEverything", Profiler::Color::Azure);
+
+	// Draw Map
+	App->map->Draw();
+
+	// Draw player
+	App->render->Blit(App->player->player, App->player->position.x, App->player->position.y, App->player->r);
+
+	// Draw Above layer
+	App->map->DrawAboveLayer();
 
 }
 

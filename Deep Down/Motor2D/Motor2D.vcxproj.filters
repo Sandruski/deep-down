@@ -68,10 +68,10 @@
       <Filter>Game\Modules</Filter>
     </ClCompile>
     <ClCompile Include="j1PerfTimer.cpp">
-      <Filter>Game\Scenes</Filter>
+      <Filter>Game\Tools</Filter>
     </ClCompile>
     <ClCompile Include="j1Timer.cpp">
-      <Filter>Game\Scenes</Filter>
+      <Filter>Game\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -166,10 +166,10 @@
       <Filter>p2</Filter>
     </ClInclude>
     <ClInclude Include="j1PerfTimer.h">
-      <Filter>Game\Scenes</Filter>
+      <Filter>Game\Tools</Filter>
     </ClInclude>
     <ClInclude Include="j1Timer.h">
-      <Filter>Game\Scenes</Filter>
+      <Filter>Game\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -47,6 +47,8 @@ public:
 	// Scene2 boss
 	void Boss();
 
+	void DrawEverything();
+
 	// Camera
 	float up, down, left, right;
 	uint width;
