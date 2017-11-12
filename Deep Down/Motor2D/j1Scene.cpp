@@ -108,12 +108,9 @@ bool j1Scene::Start()
 		fx = false;
 	}
 
-	// Load all paths
-	if (App->enemies->LoadPaths()) {
-		// Add enemies
-		App->enemies->AddEnemy(IMP_, 1);
-		App->enemies->AddEnemy(CAT_PEASANT_, 2);
-	}
+	// Load enemies
+	if (App->enemies->LoadPathsInfo())
+		App->enemies->AddEnemies();
 
 	loading = false;
 
