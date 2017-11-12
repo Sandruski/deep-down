@@ -7,19 +7,21 @@
 		<volume default="16" />
 	</audio>
 	<map />
+	<pathfinding />
 	<scene>
-		<index index="1" />
+		<index index="0" />
 		<gate opened="false" fx="false" />
 	</scene>
 	<player>
-		<position position.x="1491" position.y="894.293518" />
-		<state state="12" />
-		<speed speed.x="0" speed.y="2" />
+		<position position.x="469.10553" position.y="719.594055" />
+		<state state="3" />
+		<speed speed.x="0" speed.y="0" />
 	</player>
 	<collision />
 	<particles />
 	<fade />
+	<enemies />
 	<renderer>
-		<camera x="-4173" y="-2226" />
+		<camera x="-1107" y="-1707" />
 	</renderer>
 </game_state>
