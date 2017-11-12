@@ -11,7 +11,7 @@
   </renderer>
 
   <window>
-    <resolution width="1024" height="768" scale="3"/>
+    <resolution width="1024" height="768" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
@@ -95,7 +95,7 @@
       <gravity value="0.1"/>
       <speed x="0" y="0"/>
       <collider x="14" y="10" w="20" h="38"/>
-      <check_collision offset="2"/>
+      <check_collision offset="3"/>
     </general>
     <spritesheets>
       <spritesheet name="Assets/Sprites/Textures/Kaho.png"/>

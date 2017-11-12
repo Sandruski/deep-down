@@ -274,6 +274,7 @@ void Imp::UpdatePathfinding()
 		if (!SDL_HasIntersection(&enemy_pos, &player_pos) && pathfinding) {
 			pathfinding = false;
 			pathfinding_stop = true;
+			pathfinding_finished = true;
 			LOG("Pathfinding stop");
 		}
 		// If when enemy reaches the end of the path, it finds the player -> Create a new pathfinding
@@ -334,8 +335,10 @@ void Imp::Pathfind()
 	else if (position.y > to_go.y)
 		position.y--;
 
-	if (position == to_go)
-		pathfinding_index++;
+	if (position == to_go) {
+		if (pathfinding_index < DEFAULT_PATH_LENGTH)
+			pathfinding_index++;
+	}
 }
 
 bool Imp::DoNormalPath() 

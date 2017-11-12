@@ -85,6 +85,7 @@ private:
 	iPoint last_pos;
 
 	// Pathfinding
+	const p2DynArray<iPoint>* last_pathfinding;
 	uint pathfinding_index = 0;
 
 	bool create_pathfinding;

@@ -14,7 +14,6 @@ protected:
 	Animation* animation = nullptr;
 	Collider* collider = nullptr;
 	PathInfo* path_info = nullptr;
-	const p2DynArray<iPoint>* last_pathfinding;
 
 public:
 	iPoint position;
