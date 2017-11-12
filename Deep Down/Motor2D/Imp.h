@@ -27,8 +27,6 @@ struct ImpInfo
 	iPoint coll_size;
 	SDL_Rect coll_offset;
 
-	p2DynArray<iPoint> path1;
-
 	ImpInfo();
 	ImpInfo(const ImpInfo& i);
 	~ImpInfo();
@@ -71,6 +69,8 @@ private:
 
 private:
 
+	const p2DynArray<iPoint>* last_pathfinding;
+
 	ImpInfo* imp;
 	ImpState impState;
 
@@ -85,7 +85,6 @@ private:
 	iPoint last_pos;
 
 	// Pathfinding
-	const p2DynArray<iPoint>* last_pathfinding;
 	uint pathfinding_index = 0;
 
 	bool create_pathfinding;

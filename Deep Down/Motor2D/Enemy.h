@@ -13,13 +13,14 @@ class Enemy
 protected:
 	Animation* animation = nullptr;
 	Collider* collider = nullptr;
-	PathInfo* path_info = nullptr;
 
 public:
 	iPoint position;
 	iPoint start_pos;
 
 	iPoint collider_pos;
+
+	PathInfo* path_info = nullptr;
 
 	int type;
 

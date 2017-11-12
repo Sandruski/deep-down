@@ -6,8 +6,9 @@
 
 #include "p2Point.h"
 #include "Imp.h"
+#include "Monkey.h"
 
-#define MAX_ENEMIES 300
+#define MAX_ENEMIES 4
 
 struct SDL_Texture;
 
@@ -26,6 +27,8 @@ class Enemy;
 struct PathInfo
 {
 	iPoint start_pos = { 0,0 };
+	iPoint end_pos = { 0,0 };
+
 	iPoint* path = nullptr;
 	int path_size = 0;
 
@@ -68,6 +71,7 @@ public:
 
 	// Get enemies info
 	ImpInfo& GetImpInfo() { return imp; }
+	MonkeyInfo& GetMonkeyInfo() { return monkey; }
 
 	// Get paths info
 	PathInfo* GetPathByIndex(uint index) const;
@@ -87,6 +91,7 @@ private:
 
 	// Enemies info
 	ImpInfo imp;
+	MonkeyInfo monkey;
 
 	// Paths info list
 	p2List<PathInfo*> paths;

@@ -13,8 +13,8 @@
 		<gate opened="false" fx="false" />
 	</scene>
 	<player>
-		<position position.x="469.10553" position.y="719.594055" />
-		<state state="3" />
+		<position position.x="672" position.y="222.928726" />
+		<state state="2" />
 		<speed speed.x="0" speed.y="0" />
 	</player>
 	<collision />
@@ -22,6 +22,6 @@
 	<fade />
 	<enemies />
 	<renderer>
-		<camera x="-1107" y="-1707" />
+		<camera x="-572" y="-72" />
 	</renderer>
 </game_state>

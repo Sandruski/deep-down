@@ -86,6 +86,52 @@
           </l_shield_walk>
         </animations>
       </imp>
+
+      <monkey>
+        <general>
+          <coll_offset x="5" y="9" w="-9" h="-9"/>
+        </general>
+        <animations>
+          <r_idle speed="0.2" loops="1">
+            <frame x="186" y="17" w="44" h="32"/>
+            <frame x="232" y="17" w="44" h="32"/>
+          </r_idle>
+          <l_idle speed="0.2" loops="1">
+            <frame x="340" y="17" w="44" h="32"/>
+            <frame x="294" y="17" w="44" h="32"/>
+          </l_idle>     
+          <r_hurt speed="0.2" loops="0">
+            <frame x="548" y="56" w="32" h="32"/>
+            <frame x="594" y="56" w="32" h="32"/>
+          </r_hurt>
+          <l_hurt speed="0.2" loops="0">
+            <frame x="688" y="56" w="32" h="32"/>
+            <frame x="642" y="56" w="32" h="32"/>
+          </l_hurt>
+          <r_hit speed="0.2" loops="0">
+            <frame x="2" y="163" w="80" h="48"/>
+            <frame x="84" y="163" w="80" h="48"/>
+            <frame x="166" y="163" w="80" h="48"/>
+            <frame x="248" y="163" w="80" h="48"/>
+            <frame x="330" y="163" w="80" h="48"/>
+            <frame x="412" y="163" w="80" h="48"/>
+            <frame x="494" y="163" w="80" h="48"/>
+            <frame x="576" y="163" w="80" h="48"/>
+            <frame x="658" y="163" w="80" h="48"/>
+          </r_hit>
+          <l_hit speed="0.2" loops="0">
+            <frame x="658" y="93" w="80" h="48"/>
+            <frame x="576" y="93" w="80" h="48"/>
+            <frame x="494" y="93" w="80" h="48"/>
+            <frame x="412" y="93" w="80" h="48"/>
+            <frame x="330" y="93" w="80" h="48"/>
+            <frame x="248" y="93" w="80" h="48"/>
+            <frame x="166" y="93" w="80" h="48"/>
+            <frame x="84" y="93" w="80" h="48"/>
+            <frame x="2" y="93" w="80" h="48"/>
+          </l_hit> 
+        </animations>
+      </monkey>
     </types>
   </enemies>
   

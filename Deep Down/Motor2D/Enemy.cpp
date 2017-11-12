@@ -4,7 +4,7 @@
 #include "j1Particles.h"
 #include "j1Render.h"
 
-Enemy::Enemy(int x, int y, PathInfo* path) : position(x, y), start_pos(x, y), path_info(path)  {}
+Enemy::Enemy(int x, int y, PathInfo* path) : position(x, y), start_pos(x, y), path_info(path) {}
 
 Enemy::~Enemy()
 {

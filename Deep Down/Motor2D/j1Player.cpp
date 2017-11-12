@@ -1034,6 +1034,10 @@ void j1Player::OnCollision(Collider* a, Collider* b) {
 	if ((a->type == COLLIDER_IMP_BOMB && b->type == COLLIDER_PLAYER) || (a->type == COLLIDER_PLAYER && b->type == COLLIDER_IMP_BOMB)) {
 		App->player->SetState(punished_);
 	}
+
+	if ((a->type == COLLIDER_MONKEY && b->type == COLLIDER_PLAYER) || (a->type == COLLIDER_PLAYER && b->type == COLLIDER_MONKEY)) {
+		//App->player->SetState(punished_);
+	}
 }
 
 void j1Player::CheckCollision(iPoint position, iPoint size, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state) {

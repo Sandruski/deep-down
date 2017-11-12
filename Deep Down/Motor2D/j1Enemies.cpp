@@ -59,7 +59,6 @@ bool j1Enemies::Awake(pugi::xml_node& config) {
 	imp.r_shield_idle.speed = node.attribute("speed").as_float();
 	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
 	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
-
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -136,17 +135,65 @@ bool j1Enemies::Awake(pugi::xml_node& config) {
 		imp.l_shield_walk.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 	//_load_animations
-
-	// Load paths
-
-
-	
-
-
-	//last_path.PushBack(iPoint);
-
-	//_load_paths
 	//_IMP
+
+	// MONKEY
+	collider_node = config.child("types").child("monkey").child("general").child("coll_offset");
+	monkey.coll_offset = { collider_node.attribute("x").as_int(), collider_node.attribute("y").as_int(), collider_node.attribute("w").as_int(), collider_node.attribute("h").as_int() };
+
+	// Load animations
+	animations_node = config.child("types").child("monkey").child("animations");
+
+	//r_idle
+	node = animations_node.child("r_idle");
+	monkey.r_idle.speed = node.attribute("speed").as_float();
+	monkey.r_idle.loops = node.attribute("loops").as_bool();
+	monkey.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		monkey.r_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_idle
+	node = animations_node.child("l_idle");
+	monkey.l_idle.speed = node.attribute("speed").as_float();
+	monkey.l_idle.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		monkey.l_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_hurt
+	node = animations_node.child("r_hurt");
+	monkey.r_hurt.speed = node.attribute("speed").as_float();
+	monkey.r_hurt.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		monkey.r_hurt.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_hurt
+	node = animations_node.child("l_hurt");
+	monkey.l_hurt.speed = node.attribute("speed").as_float();
+	monkey.l_hurt.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		monkey.l_hurt.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_hit
+	node = animations_node.child("r_hit");
+	monkey.r_hit.speed = node.attribute("speed").as_float();
+	monkey.r_hit.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		monkey.r_hit.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_hit
+	node = animations_node.child("l_hit");
+	monkey.l_hit.speed = node.attribute("speed").as_float();
+	monkey.l_hit.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		monkey.l_hit.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+	//_load_animations
+	//_MONKEY
 
 	return ret;
 }
@@ -183,8 +230,12 @@ bool j1Enemies::PreUpdate()
 // Called before render is available
 bool j1Enemies::Update(float dt)
 {
-	for (uint i = 0; i < MAX_ENEMIES; ++i)
-		if (enemies[i] != nullptr) enemies[i]->Move();
+	for (uint i = 0; i < MAX_ENEMIES; ++i) {
+		if (enemies[i] != nullptr) {
+			LOG("ENEMY[%d]: ", i);
+			enemies[i]->Move();
+		}
+	}
 
 	for (uint i = 0; i < MAX_ENEMIES; ++i)
 		if (enemies[i] != nullptr) {
@@ -192,6 +243,8 @@ bool j1Enemies::Update(float dt)
 				enemies[i]->Draw(CatPeasantTex);
 			else if (enemies[i]->type == ENEMY_TYPES::IMP_)
 				enemies[i]->Draw(ImpTex);
+			else if (enemies[i]->type == ENEMY_TYPES::MONKEY_)
+				enemies[i]->Draw(MonkeyPlantTex);
 		}
 
 	return true;
@@ -290,7 +343,6 @@ void j1Enemies::SpawnEnemy(const EnemyInfo& info)
 
 	if (i != MAX_ENEMIES)
 	{
-
 		switch (info.type)
 		{	
 		case ENEMY_TYPES::CAT_PEASANT_:
@@ -332,10 +384,11 @@ void j1Enemies::OnCollision(Collider* c1, Collider* c2)
 	}
 }
 
-bool j1Enemies::LoadPathsInfo() 
+bool j1Enemies::LoadPathsInfo()
 {
 	bool ret = false;
 
+	// Repetitive paths
 	int index = 1;
 	p2SString tmp("%s%d", "Enemy", index);
 	Object* obj = App->map->data.GetObjectByName("Enemies", tmp);
@@ -376,6 +429,34 @@ bool j1Enemies::LoadPathsInfo()
 		p2SString tmp("%s%d", "Enemy", index);
 		obj = App->map->data.GetObjectByName("Enemies", tmp);
 	}
+	//_repetitive_paths
+
+	// Start-end paths
+	p2SString tmp1("%s%d%s", "Enemy", index, "S");
+	obj = App->map->data.GetObjectByName("Enemies", tmp1);
+
+	while (obj != nullptr) {
+
+		// Save actual path
+		PathInfo* path = new PathInfo();
+
+		path->start_pos = { (int)obj->x, (int)obj->y };
+
+		p2SString tmp("%s%d%s", "Enemy", index, "E");
+		obj = App->map->data.GetObjectByName("Enemies", tmp);
+
+		if (obj != nullptr)
+			path->end_pos = { (int)obj->x, (int)obj->y };
+
+		paths.add(path);
+		ret = true;
+
+		// Search next path
+		index++;
+		p2SString tmp1("%s%d", "Enemy", index);
+		obj = App->map->data.GetObjectByName("Enemies", tmp1);
+	}
+	//_start-end_paths
 
 	return ret;
 }
@@ -397,6 +478,20 @@ bool j1Enemies::AddEnemies()
 		index++;
 		p2SString tmp("%s%d", "Enemy", index);
 		obj = App->map->data.GetObjectByName("Enemies", tmp);
+	}
+
+	p2SString tmp1("%s%d%s", "Enemy", index, "S");
+	obj = App->map->data.GetObjectByName("Enemies", tmp1);
+
+	while (obj != nullptr) {
+		// Add enemy
+		AddEnemy((ENEMY_TYPES)obj->type, index);
+		ret = true;
+
+		// Search next enemy
+		index++;
+		p2SString tmp1("%s%d%s", "Enemy", index, "S");
+		obj = App->map->data.GetObjectByName("Enemies", tmp1);
 	}
 
 	return ret;
@@ -426,5 +521,5 @@ PathInfo* j1Enemies::GetPathByIndex(uint index) const {
 PathInfo::PathInfo() {}
 
 PathInfo::PathInfo(const PathInfo& i) :
-	start_pos(i.start_pos), path(i.path) 
+	start_pos(i.start_pos), path(i.path), path_size(i.path_size)
 {}
