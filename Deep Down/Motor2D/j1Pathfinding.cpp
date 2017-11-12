@@ -118,51 +118,69 @@ PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), 
 // PathNode -------------------------------------------------------------------------
 // Fills a list (PathList) of all valid adjacent pathnodes
 // ----------------------------------------------------------------------------------
-uint PathNode::FindWalkableAdjacents(PathList& list_to_fill) const
+uint PathNode::FindWalkableAdjacents(PathList& list_to_fill, const bool flying) const
 {
 	iPoint cell;
 	uint before = list_to_fill.list.count();
 
-	// north
-	cell.create(pos.x, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+	// flying characters
+	if (flying) {
+		// north
+		cell.create(pos.x, pos.y + 1);
+		if (App->pathfinding->IsWalkable(cell))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
-	// south
-	cell.create(pos.x, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+		// south
+		cell.create(pos.x, pos.y - 1);
+		if (App->pathfinding->IsWalkable(cell))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
-	// east
-	cell.create(pos.x + 1, pos.y);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+		// east
+		cell.create(pos.x + 1, pos.y);
+		if (App->pathfinding->IsWalkable(cell))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
-	// west
-	cell.create(pos.x - 1, pos.y);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+		// west
+		cell.create(pos.x - 1, pos.y);
+		if (App->pathfinding->IsWalkable(cell))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
-	// north-west
-	cell.create(pos.x + 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
+		// north-west
+		cell.create(pos.x + 1, pos.y - 1);
+		if (App->pathfinding->IsWalkable(cell))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
 
-	// south-west
-	cell.create(pos.x - 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
+		// south-west
+		cell.create(pos.x - 1, pos.y - 1);
+		if (App->pathfinding->IsWalkable(cell))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
 
-	// north-west
-	cell.create(pos.x + 1, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
+		// north-west
+		cell.create(pos.x + 1, pos.y + 1);
+		if (App->pathfinding->IsWalkable(cell))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
 
-	// south-est
-	cell.create(pos.x - 1, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
+		// south-est
+		cell.create(pos.x - 1, pos.y + 1);
+		if (App->pathfinding->IsWalkable(cell))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
+	}
 
+	// non-flying characters
+	else {
+	
+		// east
+		cell.create(pos.x + 1, pos.y);
+		if (App->pathfinding->IsWalkable(cell))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+		// west
+		cell.create(pos.x - 1, pos.y);
+		if (App->pathfinding->IsWalkable(cell))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+	
+	}
 	return list_to_fill.list.count();
 }
 
@@ -190,7 +208,7 @@ float PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
+int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, const bool flying)
 {
 	last_path.Clear();
 	int ret = 0;
@@ -232,7 +250,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 			else {
 				// TODO 5: Fill a list of all adjancent nodes
 				PathList neighbors;
-				close.list.end->data.FindWalkableAdjacents(neighbors);
+				close.list.end->data.FindWalkableAdjacents(neighbors, flying);
 
 				// TODO 6: Iterate adjancent nodes:
 				p2List_item<PathNode>* iterator = neighbors.list.start;
