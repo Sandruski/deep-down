@@ -13,6 +13,8 @@
 #include "j1Map.h"
 #include "j1Window.h"
 
+#include "Brofiler\Brofiler.h"
+
 #include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -39,6 +41,8 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
+	BROFILER_CATEGORY("Draw(notAbove)", Profiler::Color::Azure);
+
 	if (map_loaded == false)
 		return;
 
@@ -138,6 +142,8 @@ void j1Map::Draw()
 
 void j1Map::DrawAboveLayer()
 {
+	BROFILER_CATEGORY("DrawAboveLayer", Profiler::Color::Azure);
+
 	if (map_loaded == false)
 		return;
 
