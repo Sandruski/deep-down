@@ -2,7 +2,6 @@
 #define __IMP_H__
 
 #include "Enemy.h"
-#include "Path.h"
 
 enum ImpState {
 	r_shield_idle,
@@ -49,9 +48,26 @@ private:
 
 	void GeneralStatesMachine();
 	void UpdateDirection();
-	void UpdatePath();
+
+	// Pathfinding
 	void UpdatePathfinding();
+
+	void UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player);
+	bool ResetPathfindingVariables();
+	bool CreatePathfinding();
+	void Pathfind();
+	//_pathfinding
+
+	// Normal path
+	void UpdatePath();
+
+	bool ResetPathfindingBackVariables();
+	bool CreatePathfindingBack();
+
+	bool DoNormalPath();
+	void RecalculatePath();
 	void FlipPath(PathInfo* path_info);
+	//_normal_path
 
 private:
 
@@ -62,7 +78,9 @@ private:
 	bool stop_x, stop_y;
 	bool throw_bomb;
 
+	// Gravity
 	fPoint speed;
+
 	// Keep track of enemy movement
 	iPoint last_pos;
 
@@ -70,25 +88,23 @@ private:
 	uint pathfinding_index = 0;
 
 	bool create_pathfinding;
-	p2DynArray<iPoint> last_pathfinding;
-
 	bool pathfinding_finished = true;
 	bool pathfinding;
 	bool pathfinding_stop;
-
+	
 	Collider* follow_pathfinding1;
 	Collider* follow_pathfinding2;
+	//_pathfinding
 
 	// Normal path
 	uint normal_path_index = 0;
 
-	Path normal_path;
 	bool repeat_normal_path;
 	int last_normal_path_index;
 
 	bool create_pathfinding_back;
 	bool going_back_home;
-
+	//_normal_path
 };
 
 #endif

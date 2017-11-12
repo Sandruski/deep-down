@@ -162,9 +162,6 @@
     <ClInclude Include="j1Pathfinding.h">
       <Filter>Game\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Path.h">
-      <Filter>p2</Filter>
-    </ClInclude>
     <ClInclude Include="j1PerfTimer.h">
       <Filter>Game\Scenes</Filter>
     </ClInclude>

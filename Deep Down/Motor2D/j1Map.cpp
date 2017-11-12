@@ -684,6 +684,7 @@ bool j1Map::LoadObject(pugi::xml_node& object_node, Object* object)
 	object->height = object_node.attribute("height").as_uint();
 	object->x = object_node.attribute("x").as_uint();
 	object->y = object_node.attribute("y").as_uint();
+	object->type = object_node.attribute("type").as_uint();
 
 	pugi::xml_node polyline = object_node.child("polyline");
 

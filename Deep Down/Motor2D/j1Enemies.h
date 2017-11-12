@@ -27,19 +27,25 @@ struct PathInfo
 {
 	iPoint start_pos = { 0,0 };
 	iPoint* path = nullptr;
-	int path_size;
+	int path_size = 0;
 
 	PathInfo();
 	PathInfo(const PathInfo& i);
-	~PathInfo();
+
+	~PathInfo() {
+		RELEASE_ARRAY(path);
+	}
 };
 
 struct EnemyInfo
 {
 	ENEMY_TYPES type = ENEMY_TYPES::NO_TYPE;
 	int x, y;
-
 	PathInfo* path = nullptr;
+
+	~EnemyInfo() {
+		RELEASE_ARRAY(path);
+	}
 };
 
 class j1Enemies : public j1Module
@@ -55,8 +61,10 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 	void OnCollision(Collider* c1, Collider* c2);
+
+	bool LoadPathsInfo();
+	bool AddEnemies();
 	bool AddEnemy(ENEMY_TYPES type, uint path);
-	bool LoadPaths();
 
 	// Get enemies info
 	ImpInfo& GetImpInfo() { return imp; }

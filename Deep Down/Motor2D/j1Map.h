@@ -29,9 +29,14 @@ struct Object {
 	uint y = 0;
 	uint width = 0;
 	uint height = 0;
+	uint type = 0;
 
 	int size = 0;
 	int* polyline = nullptr;
+
+	~Object() {
+		RELEASE_ARRAY(polyline);
+	}
 };
 
 struct ObjectGroup

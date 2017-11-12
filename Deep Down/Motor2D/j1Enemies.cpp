@@ -220,6 +220,21 @@ bool j1Enemies::CleanUp()
 {
 	LOG("Freeing all enemies");
 
+	// Remove all paths
+	p2List_item<PathInfo*>* item;
+	item = paths.start;
+
+	while (item != NULL)
+	{
+		RELEASE(item->data);
+		item = item->next;
+	}
+	paths.clear();
+
+	App->tex->UnLoad(CatPeasantTex);
+	App->tex->UnLoad(MonkeyPlantTex);
+	App->tex->UnLoad(ImpTex);
+
 	for (uint i = 0; i < MAX_ENEMIES; ++i)
 	{
 		if (queue[i].type != ENEMY_TYPES::NO_TYPE)
@@ -236,9 +251,6 @@ bool j1Enemies::CleanUp()
 		}
 	}
 
-	App->tex->UnLoad(CatPeasantTex);
-	App->tex->UnLoad(MonkeyPlantTex);
-
 	return true;
 }
 
@@ -250,8 +262,8 @@ bool j1Enemies::AddEnemy(ENEMY_TYPES type, uint path)
 	{
 		if (queue[i].type == ENEMY_TYPES::NO_TYPE)
 		{
-			queue[i].type = type;
 			queue[i].path = GetPathByIndex(path);
+			queue[i].type = type;
 
 			if (queue[i].path != nullptr) {
 				queue[i].x = queue[i].path->start_pos.x;
@@ -320,13 +332,13 @@ void j1Enemies::OnCollision(Collider* c1, Collider* c2)
 	}
 }
 
-bool j1Enemies::LoadPaths() {
-
-	bool ret = true;
+bool j1Enemies::LoadPathsInfo() 
+{
+	bool ret = false;
 
 	int index = 1;
-	p2SString tmp("%s%d", "Path", index);
-	Object* obj = App->map->data.GetObjectByName("Player", tmp);
+	p2SString tmp("%s%d", "Enemy", index);
+	Object* obj = App->map->data.GetObjectByName("Enemies", tmp);
 
 	while (obj != nullptr) {
 
@@ -339,27 +351,52 @@ bool j1Enemies::LoadPaths() {
 		memset(path->path, 0, obj->size);
 
 		// Create path
-		path->path[0].x = obj->polyline[0] + path->start_pos.x;
-		path->path[0].y = obj->polyline[1] + path->start_pos.y;
-		path->path[1].x = obj->polyline[2] + path->start_pos.x;
-		path->path[1].y = obj->polyline[3] + path->start_pos.y;
+		if (obj->polyline != nullptr) {
+			path->path[0].x = obj->polyline[0] + path->start_pos.x;
+			path->path[0].y = obj->polyline[1] + path->start_pos.y;
+			path->path[1].x = obj->polyline[2] + path->start_pos.x;
+			path->path[1].y = obj->polyline[3] + path->start_pos.y;
 
-		path->path_size = 2;
-		int i = 1;
+			path->path_size = 2;
+			int i = 1;
 
-		while (obj->polyline[i * 2 + 0] != 0 && obj->polyline[i * 2 + 1] != 0) {
-			path->path[++i].x = obj->polyline[i * 2 + 0] + path->start_pos.x;
-			path->path[i].y = obj->polyline[i * 2 + 1] + path->start_pos.y;
+			while (obj->polyline[i * 2 + 0] != 0 && obj->polyline[i * 2 + 1] != 0) {
+				path->path[++i].x = obj->polyline[i * 2 + 0] + path->start_pos.x;
+				path->path[i].y = obj->polyline[i * 2 + 1] + path->start_pos.y;
 
-			path->path_size++;
+				path->path_size++;
+			}
 		}
 
 		paths.add(path);
+		ret = true;
 
 		// Search next path
 		index++;
-		p2SString tmp("%s%d", "Path", index);
-		obj = App->map->data.GetObjectByName("Player", tmp);
+		p2SString tmp("%s%d", "Enemy", index);
+		obj = App->map->data.GetObjectByName("Enemies", tmp);
+	}
+
+	return ret;
+}
+
+bool j1Enemies::AddEnemies() 
+{
+	bool ret = false;
+
+	int index = 1;
+	p2SString tmp("%s%d", "Enemy", index);
+	Object* obj = App->map->data.GetObjectByName("Enemies", tmp);
+
+	while (obj != nullptr) {
+		// Add enemy
+		AddEnemy((ENEMY_TYPES)obj->type, index);
+		ret = true;
+
+		// Search next enemy
+		index++;
+		p2SString tmp("%s%d", "Enemy", index);
+		obj = App->map->data.GetObjectByName("Enemies", tmp);
 	}
 
 	return ret;
@@ -391,8 +428,3 @@ PathInfo::PathInfo() {}
 PathInfo::PathInfo(const PathInfo& i) :
 	start_pos(i.start_pos), path(i.path) 
 {}
-
-PathInfo::~PathInfo() {
-
-	// Delete dyn array
-}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="60" tilewidth="16" tileheight="16" nextobjectid="22">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="60" tilewidth="16" tileheight="16" nextobjectid="33">
  <tileset firstgid="1" name="Background" tilewidth="16" tileheight="16" tilecount="187" columns="17">
   <image source="Background.png" width="272" height="190"/>
  </tileset>
@@ -30039,17 +30039,13 @@
   <object id="1" name="StartPos" x="672" y="208" width="16" height="16"/>
   <object id="3" name="EndPos" x="1376" y="720" width="64" height="64"/>
   <object id="5" name="Gate" x="752" y="768" width="16" height="16"/>
-  <object id="14" name="Path1" x="790.833" y="131.5">
-   <polyline points="0,0 -70,19.5 -144,13 -232,38.5 -280,0"/>
+ </objectgroup>
+ <objectgroup name="Enemies">
+  <object id="23" name="Enemy1" type="1" x="528" y="104">
+   <polyline points="0,0 59,47 -11,48 -72,83 -71,117 5,133 60,109 106,47 106,2 69,-14"/>
   </object>
-  <object id="17" name="Path2" x="538" y="80">
-   <polyline points="0,0 -7.33333,24.6667 12.6667,39.3333 -3.33333,57.3333 54,154.667 56.6667,-32 -6,-25.3333 8,-10"/>
-  </object>
-  <object id="18" name="Path3" x="844.667" y="104.667">
-   <polyline points="0,0 -95.3333,122.667 40,40.6667"/>
-  </object>
-  <object id="20" name="Path4" x="572" y="318">
-   <polyline points="0,0 36.6667,-21.3333 107.333,-25.3333 144.667,-19.3333 134,18.6667 79.3333,14 18.6667,16"/>
+  <object id="31" name="Enemy2" type="1" x="807" y="70">
+   <polyline points="0,0 54,3 43,79 -9,93 -59,45 -10,22 -40,113"/>
   </object>
  </objectgroup>
 </map>
