@@ -30,6 +30,7 @@ private:
 	const p2DynArray<iPoint>* last_path;
 
 	uint index = 0;
+	uint enemy_index = 0;
 
 private:
 
@@ -41,7 +42,7 @@ public:
 
 	CatPeasant(int x, int y, PathInfo* path);
 	void OnCollision(Collider* c1, Collider* c2);
-	void Move();
+	void Move(uint index);
 };
 
 #endif

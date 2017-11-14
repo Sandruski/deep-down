@@ -32,8 +32,9 @@ Imp::Imp(int x, int y, PathInfo* path) : Enemy(x, y, path)
 	speed = { 0, 1 };
 }
 
-void Imp::Move()
+void Imp::Move(uint index)
 {
+	enemy_index = index;
 	// Lab
 	/*
 	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT) {
@@ -61,10 +62,6 @@ void Imp::Move()
 	// Update path/pathfinding
 	if (!pathfinding)
 		UpdatePath();
-
-	SDL_Rect enemy_pos;
-	SDL_Rect player_pos;
-	UpdatePathfindingAffectArea(enemy_pos, player_pos);
 
 	UpdatePathfinding();
 
@@ -315,8 +312,8 @@ bool Imp::CreatePathfinding()
 {
 	bool ret = false;
 
-	if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->player->position.x, App->player->position.y)))
-		last_pathfinding = App->pathfinding->GetLastPath();
+	if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->player->position.x, App->player->position.y), true, enemy_index))
+		last_pathfinding = App->pathfinding->GetLastPath(enemy_index);
 
 	if (last_pathfinding != nullptr)
 		ret = true;
@@ -401,11 +398,9 @@ bool Imp::CreatePathfindingBack()
 		normal_path_index++;
 
 	iPoint to_go = path_info->path[normal_path_index];
-	LOG("TO_GO.X: %d", to_go.x);
-	LOG("TO_GO.Y: %d", to_go.y);
 
-	if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(to_go.x, to_go.y)))
-		last_pathfinding = App->pathfinding->GetLastPath();
+	if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(to_go.x, to_go.y), true, enemy_index))
+		last_pathfinding = App->pathfinding->GetLastPath(enemy_index);
 
 	if (last_pathfinding != nullptr) {
 		pathfinding_index = 1;

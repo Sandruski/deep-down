@@ -20,7 +20,7 @@ Plant::Plant(int x, int y, PathInfo* path) : Enemy(x, y, path)
 	collider = App->collision->AddCollider({ 0, 0, 18, 18 }, COLLIDER_TYPE::COLLIDER_CATPEASANT, App->enemies);
 }
 
-void Plant::Move()
+void Plant::Move(uint index)
 {
 	// use 'start_pos' to know the start position of the enemy
 	// update their position by using 'position'

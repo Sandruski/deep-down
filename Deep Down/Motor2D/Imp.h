@@ -40,7 +40,7 @@ public:
 	Imp(int x, int y, PathInfo* path);
 
 	void OnCollision(Collider* c1, Collider* c2);
-	void Move();
+	void Move(uint index);
 
 private:
 
@@ -68,6 +68,8 @@ private:
 	//_normal_path
 
 private:
+
+	uint enemy_index = 0;
 
 	const p2DynArray<iPoint>* last_pathfinding;
 

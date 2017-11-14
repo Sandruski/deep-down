@@ -30047,7 +30047,7 @@
   <object id="31" name="Enemy2" type="1" x="807" y="70">
    <polyline points="0,0 54,3 43,79 -9,93 -59,45 -10,22 -40,113"/>
   </object>
-  <object id="33" name="Enemy1S" type="3" x="448" y="272" width="16" height="16"/>
-  <object id="34" name="Enemy1E" type="1" x="336" y="752" width="16" height="16"/>
+  <object id="33" name="Enemy3Sa" type="3" x="448" y="272" width="16" height="16"/>
+  <object id="34" name="Enemy3Ea" type="1" x="336" y="752" width="16" height="16"/>
  </objectgroup>
 </map>

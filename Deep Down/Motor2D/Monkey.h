@@ -34,7 +34,7 @@ public:
 	Monkey(int x, int y, PathInfo* path);
 
 	void OnCollision(Collider* c1, Collider* c2);
-	void Move();
+	void Move(uint index);
 
 private:
 
@@ -46,16 +46,22 @@ private:
 
 	void UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player);
 	bool ResetPathfindingVariables();
-	const p2DynArray<iPoint>* CreatePathfinding(iPoint end_pos);
-	bool Pathfind(uint& index);
+	bool CreatePathfinding(iPoint end_pos);
+	void Pathfind();
 	//_pathfinding
 
 	// Normal path
 	void UpdatePath();
+
+	bool ResetPathfindingBackVariables();
+
+	bool DoNormalPath();
+	void RecalculatePath();
 	//_normal_path
 
 private:
 
+	uint enemy_index = 0;
 	const p2DynArray<iPoint>* last_pathfinding;
 
 	MonkeyInfo* monkey;
@@ -72,20 +78,24 @@ private:
 	bool create_pathfinding;
 	bool pathfinding_finished = true;
 	bool pathfinding;
+	bool pathfinding_stop;
 
 	Collider* follow_pathfinding1;
 	Collider* follow_pathfinding2;
 	//_pathfinding
 
 	// Normal path
-	uint path_index = 0;
-	
+	uint normal_path_index = 0;
+
+	bool repeat_normal_path;
+	int last_normal_path_index;
+
 	bool create_path = true;
-	bool path;
 
+	bool do_path;
+
+	bool goal_is_start;
 	iPoint goal;
-	bool goal_is_end = true;
-
 
 	//_normal_path
 };

@@ -29,19 +29,15 @@ Monkey::Monkey(int x, int y, PathInfo* path) : Enemy(x, y, path)
 	follow_pathfinding2 = App->collision->AddCollider({ (int)App->player->position.x - 50, (int)App->player->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
 }
 
-void Monkey::Move()
+void Monkey::Move(uint index)
 {
-	// Update path/pathfinding
-	SDL_Rect enemy_pos;
-	SDL_Rect player_pos;
-	UpdatePathfindingAffectArea(enemy_pos, player_pos);
+	enemy_index = index;
 
-	if (SDL_HasIntersection(&enemy_pos, &player_pos)) {
-		UpdatePathfinding();
-	}
-	else {
+	// Update path/pathfinding
+	if (!pathfinding)
 		UpdatePath();
-	}
+
+	UpdatePathfinding();
 
 	// Update state
 	GeneralStatesMachine();
@@ -141,56 +137,83 @@ void Monkey::OnCollision(Collider* c1, Collider* c2)
 
 void Monkey::UpdatePath()
 {
-	if (path_info->end_pos.x != 0 && path_info->end_pos.y != 0
-		&& path_info->start_pos.x != 0 && path_info->start_pos.y != 0) {
+	if (path_info->start_pos.x != 0 && path_info->start_pos.y != 0
+		&& path_info->end_pos.x != 0 && path_info->end_pos.x != 0) {
+
+		if (pathfinding_stop) {
+			//Create new path towards start or end pos
+			if (ResetPathfindingBackVariables())
+				create_path = true;
+		}
 
 		if (create_path) {
 
-			if (goal_is_end) {
-				goal = path_info->end_pos;
-			}
-			else
+			if (goal_is_start)
 				goal = path_info->start_pos;
+			else
+				goal = path_info->end_pos;
 
-			if (CreatePathfinding(goal)) {
-				create_path = false;
-				path = true;
-			}
+			if (CreatePathfinding(goal))
+				do_path = true;
 		}
-	}
 
-	if (path) {
-		if (!Pathfind(path_index)) {
-			// If the enemy reaches the end of the path, go back to its origin
-			goal_is_end = !goal_is_end;
-			create_path = true;
-			path = false;
-			pathfinding_index = 0;
+		// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
+		if (last_pathfinding != nullptr && do_path) {
+			//LOG("Pathfinding");
+			Pathfind();
+		}
+		else {
+			do_path = false;
+			//LOG("Update path");
+			//LOG("Normal path index: %d", normal_path_index);
+			if (!DoNormalPath())
+				RecalculatePath();
 		}
 	}
 }
 
 void Monkey::UpdatePathfinding()
 {
-	if (pathfinding_finished) {
+	SDL_Rect enemy_pos;
+	SDL_Rect player_pos;
+	UpdatePathfindingAffectArea(enemy_pos, player_pos);
+
+	// If player is near the enemy... Set create path to true
+	if (pathfinding_finished && SDL_HasIntersection(&enemy_pos, &player_pos)) {
+		//LOG("Reset pathfinding variables");
 		if (ResetPathfindingVariables())
 			create_pathfinding = true;
 	}
 
+	/*
+	// Create path
 	if (create_pathfinding) {
-		iPoint player_pos;
-		player_pos.x = (int)App->player->position.x;
-		player_pos.y = (int)App->player->position.y;
-
-		const p2DynArray<iPoint>* path = CreatePathfinding(player_pos);
+		//LOG("Create new pathfinding");
+		if (CreatePathfinding())
+			pathfinding = true;
 	}
+	*/
 
-	if (last_pathfinding != nullptr && pathfinding) {
-		Pathfind(pathfinding_index);
+	// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
+	if (last_pathfinding != nullptr && last_pathfinding->At(pathfinding_index) != nullptr && SDL_HasIntersection(&enemy_pos, &player_pos) && pathfinding) {
+		//LOG("Pathfinding");
+		Pathfind();
 	}
 	else {
-		pathfinding = false;
-		pathfinding_finished = true;
+		// If when enemy reaches the end of the path, it doesn't find the player -> Stop pathfinding and go back home
+		if (!SDL_HasIntersection(&enemy_pos, &player_pos) && pathfinding) {
+			pathfinding = false;
+			pathfinding_stop = true;
+			pathfinding_finished = true;
+			//pathfinding_finished = true;
+			//LOG("Pathfinding stop");
+		}
+		// If when enemy reaches the end of the path, it finds the player -> Create a new pathfinding
+		else if (pathfinding) {
+			pathfinding = false;
+			pathfinding_finished = true;
+			//LOG("Pathfinding finished");
+		}
 	}
 }
 
@@ -208,29 +231,31 @@ bool Monkey::ResetPathfindingVariables()
 	bool ret = true;
 
 	pathfinding_finished = false;
+	pathfinding_stop = false;
 	pathfinding_index = 1;
+	last_normal_path_index = normal_path_index;
 
 	return ret;
 }
 
-const p2DynArray<iPoint>* Monkey::CreatePathfinding(iPoint end_pos)
+bool Monkey::CreatePathfinding(iPoint end_pos)
 {
-	App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(end_pos.x, end_pos.y));
-	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+	bool ret = false;
 
-	if (path != nullptr) {
-		pathfinding = true;
-		return path;
-	}
-	else
-		return nullptr;
+	if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->player->position.x, App->player->position.y), true, enemy_index))
+		last_pathfinding = App->pathfinding->GetLastPath(enemy_index);
+
+	if (last_pathfinding != nullptr)
+		ret = true;
+
+	create_pathfinding = false;
+
+	return ret;
 }
 
-bool Monkey::Pathfind(uint& index)
+void Monkey::Pathfind()
 {
-	bool ret = true;
-
-	iPoint to_go = App->map->MapToWorld(last_pathfinding->At(index)->x, last_pathfinding->At(index)->y);
+	iPoint to_go = App->map->MapToWorld(last_pathfinding->At(pathfinding_index)->x, last_pathfinding->At(pathfinding_index)->y);
 
 	if (position.x < to_go.x)
 		position.x++;
@@ -242,15 +267,80 @@ bool Monkey::Pathfind(uint& index)
 		position.y--;
 
 	if (position == to_go) {
-		if (index < DEFAULT_PATH_LENGTH - 1)
-			index++;
+		if (pathfinding_index < DEFAULT_PATH_LENGTH)
+			pathfinding_index++;
 	}
+}
 
-	if (position == goal)
-		ret = false;
+bool Monkey::DoNormalPath()
+{
+	bool ret = false;
+
+	iPoint to_go = path_info->path[normal_path_index];
+
+	if (to_go.x != 0 && to_go.y != 0) {
+		if (position.x < to_go.x)
+			position.x++;
+		else if (position.x > to_go.x)
+			position.x--;
+		if (position.y < to_go.y)
+			position.y++;
+		else if (position.y > to_go.y)
+			position.y--;
+
+		if (position == to_go) {
+			if (normal_path_index < path_info->path_size)
+				normal_path_index++;
+		}
+
+		ret = true;
+	}
 
 	return ret;
 }
+
+void Monkey::RecalculatePath()
+{
+	normal_path_index = 0;
+}
+
+bool Monkey::ResetPathfindingBackVariables()
+{
+	bool ret = true;
+
+	normal_path_index = 1;
+	pathfinding_stop = false;
+	repeat_normal_path = false;
+
+	return ret;
+}
+
+/*
+bool Monkey::CreatePathfindingBack()
+{
+	bool ret = false;
+
+	if (normal_path_index > 0)
+		normal_path_index--;
+	else
+		normal_path_index++;
+
+	iPoint to_go = path_info->path[normal_path_index];
+
+	if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(to_go.x, to_go.y), true, enemy_index))
+		last_pathfinding = App->pathfinding->GetLastPath(enemy_index);
+
+	if (last_pathfinding != nullptr) {
+		pathfinding_index = 1;
+
+		ret = true;
+	}
+
+	create_pathfinding_back = false;
+
+	return ret;
+}
+*/
 
 // -------------------------------------------------------------
 // -------------------------------------------------------------
