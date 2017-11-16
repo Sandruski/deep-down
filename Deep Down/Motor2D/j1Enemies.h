@@ -66,6 +66,9 @@ public:
 	void OnCollision(Collider* c1, Collider* c2);
 
 	bool LoadPathsInfo();
+	bool SaveRepetitivePaths(uint& index);
+	bool SaveStartEndPaths(uint& index);
+
 	bool AddEnemies();
 	bool AddEnemy(ENEMY_TYPES type, uint path);
 

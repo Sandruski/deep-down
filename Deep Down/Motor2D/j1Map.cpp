@@ -696,27 +696,27 @@ bool j1Map::LoadObject(pugi::xml_node& object_node, Object* object)
 
 	pugi::xml_node polyline = object_node.child("polyline");
 
-	if (polyline) {
+	if (polyline != nullptr) {
 
 		p2SString points;
 		points = polyline.attribute("points").as_string();
 
-		object->size = strlen(points.GetString());
+		uint size = strlen(points.GetString()) + 1;
 
-		char* copy = new char[object->size + 1];
-		strcpy_s(copy, sizeof(char) * (object->size + 1), points.GetString());
+		char* copy = new char[size];
+		strcpy_s(copy, sizeof(char) * (size), points.GetString());
 		
 		char delims[] = " ,";
 		char* token = NULL;
 		char* context = NULL;
 
-		object->polyline = new int[object->size];
-		memset(object->polyline, 0, object->size);
+		object->polyline = new int[POLYLINE_SIZE];
+		memset(object->polyline, 0, sizeof(int) * POLYLINE_SIZE);
 
-		int i = -1;
 		token = strtok_s(copy, delims, &context);
-		object->polyline[++i] = atoi(token);
+		object->polyline[0] = atoi(token);
 		
+		int i = 0;
 		while (token != NULL) {
 			token = strtok_s(NULL, delims, &context);
 
@@ -724,12 +724,17 @@ bool j1Map::LoadObject(pugi::xml_node& object_node, Object* object)
 				object->polyline[++i] = atoi(token);
 		}
 
-		delete[] copy;
+		if (copy != nullptr)
+			delete[] copy;
+		copy = nullptr;
 
-		if (token != NULL)
-			token = NULL;
-		if (context != NULL)
-			context = NULL;
+		if (token != nullptr)
+			delete token;
+		token = nullptr;
+
+		if (context != nullptr)
+			context = nullptr;
+		context = nullptr;
 	}
 
 	return ret;

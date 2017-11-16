@@ -12,6 +12,9 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "SDL\include\SDL.h"
 
+#define MAX_POLYLINE_POINTS 50 
+#define POLYLINE_SIZE 2 * MAX_POLYLINE_POINTS
+
 enum playerstates;
 
 enum layerType {
@@ -31,11 +34,11 @@ struct Object {
 	uint height = 0;
 	uint type = 0;
 
-	int size = 0;
 	int* polyline = nullptr;
 
 	~Object() {
-		RELEASE_ARRAY(polyline);
+		if (polyline != nullptr)
+			RELEASE_ARRAY(polyline);
 	}
 };
 

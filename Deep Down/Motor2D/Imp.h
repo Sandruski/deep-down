@@ -52,26 +52,22 @@ private:
 
 	void UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player);
 	bool ResetPathfindingVariables();
-	bool CreatePathfinding();
+	bool CreatePathfinding(iPoint destination);
 	void Pathfind();
 	//_pathfinding
 
 	// Normal path
 	void UpdatePath();
 
-	bool ResetPathfindingBackVariables();
-	bool CreatePathfindingBack();
-
 	bool DoNormalPath();
 	void RecalculatePath();
 	void FlipPath(PathInfo* path_info);
 	//_normal_path
 
-private:
+	void UpdateMovement(iPoint to_go);
 
-	const p2DynArray<iPoint>* last_pathfinding;
-	p2DynArray<iPoint> mlast_pathfinding;
-	bool s = true;
+
+private:
 
 	ImpInfo imp;
 	ImpState impState;
@@ -88,10 +84,12 @@ private:
 
 	// Pathfinding
 	uint pathfinding_index = 0;
+	uint pathfinding_size = 0;
 
 	bool create_pathfinding;
 	bool pathfinding_finished = true;
 	bool pathfinding;
+
 	bool pathfinding_stop;
 	
 	Collider* follow_pathfinding1;
@@ -100,9 +98,7 @@ private:
 
 	// Normal path
 	uint normal_path_index = 0;
-
-	bool repeat_normal_path;
-	int last_normal_path_index;
+	uint last_normal_path_index = 0;
 
 	bool create_pathfinding_back;
 	bool going_back_home;

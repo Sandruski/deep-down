@@ -24,6 +24,9 @@ public:
 
 	int type;
 
+	const p2DynArray<iPoint>* last_pathfinding;
+	p2DynArray<iPoint> mlast_pathfinding;
+
 public:
 	Enemy(int x, int y, PathInfo* path);
 	virtual ~Enemy();

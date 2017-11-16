@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="60" tilewidth="16" tileheight="16" nextobjectid="35">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="60" tilewidth="16" tileheight="16" nextobjectid="37">
  <tileset firstgid="1" name="Background" tilewidth="16" tileheight="16" tilecount="187" columns="17">
   <image source="Background.png" width="272" height="190"/>
  </tileset>
@@ -30047,7 +30047,9 @@
   <object id="31" name="Enemy2" type="1" x="807" y="70">
    <polyline points="0,0 54,3 43,79 -9,93 -59,45 -10,22 -40,113"/>
   </object>
-  <object id="33" name="Enemy3Sa" type="3" x="448" y="272" width="16" height="16"/>
-  <object id="34" name="Enemy3Ea" type="1" x="336" y="752" width="16" height="16"/>
+  <object id="33" name="Enemy3S" type="3" x="448" y="272" width="16" height="16"/>
+  <object id="34" name="Enemy3E" type="1" x="336" y="752" width="16" height="16"/>
+  <object id="35" name="Enemy2S" type="3" x="480" y="272" width="16" height="16"/>
+  <object id="36" name="Enemy2E" type="3" x="432" y="64" width="16" height="16"/>
  </objectgroup>
 </map>
