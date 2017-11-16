@@ -207,7 +207,7 @@ bool j1Enemies::Start()
 	ImpTex = App->tex->Load(Imp_spritesheet.GetString());
 
 	// Pathfinding collision data
-	App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (int*)App->map->collisionLayer->data);
+	App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (uchar*)App->map->collisionLayer->data);
 
 	return true;
 }
@@ -233,7 +233,7 @@ bool j1Enemies::Update(float dt)
 	for (uint i = 0; i < MAX_ENEMIES; ++i) {
 		if (enemies[i] != nullptr) {
 			LOG("ENEMY[%d]: ", i);
-			enemies[i]->Move(i);
+			enemies[i]->Move();
 		}
 	}
 
@@ -413,8 +413,9 @@ bool j1Enemies::LoadPathsInfo()
 			path->path_size = 2;
 			int i = 1;
 
-			while (obj->polyline[i * 2 + 0] != 0 && obj->polyline[i * 2 + 1] != 0) {
-				path->path[++i].x = obj->polyline[i * 2 + 0] + path->start_pos.x;
+			while (obj->polyline[i * 2 + 0] != 0 && obj->polyline[i * 2 + 1] != 0 && i < obj->size / 2) {
+				++i;
+				path->path[i].x = obj->polyline[i * 2 + 0] + path->start_pos.x;
 				path->path[i].y = obj->polyline[i * 2 + 1] + path->start_pos.y;
 
 				path->path_size++;

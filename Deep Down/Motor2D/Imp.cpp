@@ -15,15 +15,15 @@
 
 #include "SDL/include/SDL_timer.h"
 
-Imp::Imp(int x, int y, PathInfo* path) : Enemy(x, y, path)
+Imp::Imp(int x, int y, PathInfo* path) : Enemy(x, y, path), mlast_pathfinding(DEFAULT_PATH_LENGTH)
 {
-	imp = new ImpInfo(App->enemies->GetImpInfo());
+	imp = App->enemies->GetImpInfo();
 
 	///
-	animation = &imp->r_shield_walk;
-	impState = ImpState::r_shield_walk;
+	animation = &imp.r_shield_idle;
+	impState = ImpState::r_shield_idle;
 
-	collider = App->collision->AddCollider({ 0, 0, imp->coll_size.x + imp->coll_offset.w, imp->coll_size.y + imp->coll_offset.h }, COLLIDER_TYPE::COLLIDER_IMP, App->enemies);
+	collider = App->collision->AddCollider({ 0, 0, imp.coll_size.x + imp.coll_offset.w, imp.coll_size.y + imp.coll_offset.h }, COLLIDER_TYPE::COLLIDER_IMP, App->enemies);
 
 	follow_pathfinding1 = App->collision->AddCollider({ position.x - 50, position.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
 	follow_pathfinding2 = App->collision->AddCollider({ (int)App->player->position.x - 50, (int)App->player->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
@@ -32,9 +32,15 @@ Imp::Imp(int x, int y, PathInfo* path) : Enemy(x, y, path)
 	speed = { 0, 1 };
 }
 
-void Imp::Move(uint index)
+void Imp::Move()
 {
-	enemy_index = index;
+	if (s) {
+		memset(&mlast_pathfinding, 0, DEFAULT_PATH_LENGTH);
+		s = false;
+	}
+
+	animation = &imp.r_shield_idle;
+
 	// Lab
 	/*
 	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT) {
@@ -63,10 +69,10 @@ void Imp::Move(uint index)
 	if (!pathfinding)
 		UpdatePath();
 
-	UpdatePathfinding();
+	//UpdatePathfinding();
 
 	// Update state
-	GeneralStatesMachine();
+	//GeneralStatesMachine();
 
 	// Update movement
 	up = false;
@@ -79,7 +85,7 @@ void Imp::Move(uint index)
 	UpdateDirection();
 
 	// Update collider
-	collider_pos = { position.x + imp->coll_offset.x, position.y + imp->coll_offset.y };
+	collider_pos = { position.x + imp.coll_offset.x, position.y + imp.coll_offset.y };
 	collider->SetPos(collider_pos.x, collider_pos.y);
 }
 
@@ -91,24 +97,26 @@ void Imp::GeneralStatesMachine()
 		if (throw_bomb) {
 			App->particles->AddParticle(App->particles->Imp_r_bomb, position.x, position.y, COLLIDER_IMP_BOMB, NULL, { 0,0 });
 			impState = ImpState::r_throw_bomb;
+			break;
 		}
 		if (stop_x && left) {
 			impState = ImpState::l_shield_idle;
 			break;
 		}
-		animation = &imp->r_shield_idle;
+		animation = &imp.r_shield_walk;
 		break;
 
 	case l_shield_idle:
 		if (throw_bomb) {
 			App->particles->AddParticle(App->particles->Imp_l_bomb, position.x, position.y, COLLIDER_IMP_BOMB, NULL, { 0,0 });
 			impState = ImpState::l_throw_bomb;
+			break;
 		}
 		if (stop_x && right) {
 			impState = ImpState::r_shield_idle;
 			break;
 		}
-		animation = &imp->l_shield_idle;
+		animation = &imp.l_shield_walk;
 		break;
 
 	case r_shield_walk:
@@ -116,7 +124,7 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::l_shield_walk;
 			break;
 		}
-		animation = &imp->r_shield_walk;
+		animation = &imp.r_shield_walk;
 		impState = ImpState::r_shield_idle;
 		break;
 
@@ -125,7 +133,7 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::r_shield_walk;
 			break;
 		}
-		animation = &imp->l_shield_walk;
+		animation = &imp.l_shield_walk;
 		impState = ImpState::l_shield_idle;
 		break;
 
@@ -134,7 +142,7 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::l_jump;
 			break;
 		}
-		animation = &imp->r_jump;
+		animation = &imp.r_jump;
 		impState = ImpState::r_shield_idle;
 		break;
 
@@ -143,7 +151,7 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::r_jump;
 			break;
 		}
-		animation = &imp->l_jump;
+		animation = &imp.l_jump;
 		impState = ImpState::l_shield_idle;
 		break;
 
@@ -152,7 +160,7 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::l_throw_bomb;
 			break;
 		}
-		animation = &imp->r_throw_bomb;
+		animation = &imp.r_throw_bomb;
 		impState = ImpState::r_shield_idle;
 		break;
 
@@ -161,7 +169,7 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::r_throw_bomb;
 			break;
 		}
-		animation = &imp->l_throw_bomb;
+		animation = &imp.l_throw_bomb;
 		impState = ImpState::l_shield_idle;
 		break;
 
@@ -170,7 +178,7 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::l_shield_hurt;
 			break;
 		}
-		animation = &imp->r_shield_hurt;
+		animation = &imp.r_shield_hurt;
 		impState = ImpState::r_shield_idle;
 		break;
 
@@ -179,7 +187,7 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::r_shield_hurt;
 			break;
 		}
-		animation = &imp->l_shield_hurt;
+		animation = &imp.l_shield_hurt;
 		impState = ImpState::l_shield_idle;
 		break;
 	}
@@ -230,7 +238,7 @@ void Imp::UpdatePath()
 		}
 
 		// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
-		if (last_pathfinding != nullptr && last_pathfinding->At(pathfinding_index) != nullptr && going_back_home) {
+		if (going_back_home) {
 			//LOG("Pathfinding");
 			Pathfind();
 		}
@@ -265,7 +273,7 @@ void Imp::UpdatePathfinding()
 	}
 
 	// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
-	if (last_pathfinding != nullptr && last_pathfinding->At(pathfinding_index) != nullptr && SDL_HasIntersection(&enemy_pos, &player_pos) && pathfinding) {
+	if (SDL_HasIntersection(&enemy_pos, &player_pos) && pathfinding) {
 		//LOG("Pathfinding");
 		Pathfind();
 	}
@@ -312,8 +320,14 @@ bool Imp::CreatePathfinding()
 {
 	bool ret = false;
 
-	if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->player->position.x, App->player->position.y), true, enemy_index))
-		last_pathfinding = App->pathfinding->GetLastPath(enemy_index);
+	if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->player->position.x, App->player->position.y), true)) {
+		last_pathfinding = App->pathfinding->GetLastPath();
+
+		mlast_pathfinding.Clear();
+
+		for (int i = 0; i < last_pathfinding->Count(); ++i)
+			mlast_pathfinding.PushBack(*last_pathfinding->At(i));
+	}
 
 	if (last_pathfinding != nullptr)
 		ret = true;
@@ -325,7 +339,7 @@ bool Imp::CreatePathfinding()
 
 void Imp::Pathfind() 
 {
-	iPoint to_go = App->map->MapToWorld(last_pathfinding->At(pathfinding_index)->x, last_pathfinding->At(pathfinding_index)->y);
+	iPoint to_go = App->map->MapToWorld(mlast_pathfinding[pathfinding_index].x, mlast_pathfinding[pathfinding_index].y);
 
 	if (position.x < to_go.x)
 		position.x++;
@@ -399,8 +413,14 @@ bool Imp::CreatePathfindingBack()
 
 	iPoint to_go = path_info->path[normal_path_index];
 
-	if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(to_go.x, to_go.y), true, enemy_index))
-		last_pathfinding = App->pathfinding->GetLastPath(enemy_index);
+	if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(to_go.x, to_go.y), true)) {
+		last_pathfinding = App->pathfinding->GetLastPath();
+
+		mlast_pathfinding.Clear();
+
+		for (int i = 0; i < last_pathfinding->Count(); ++i)
+			mlast_pathfinding.PushBack(*last_pathfinding->At(i));
+	}
 
 	if (last_pathfinding != nullptr) {
 		pathfinding_index = 1;

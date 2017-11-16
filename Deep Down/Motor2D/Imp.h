@@ -40,7 +40,7 @@ public:
 	Imp(int x, int y, PathInfo* path);
 
 	void OnCollision(Collider* c1, Collider* c2);
-	void Move(uint index);
+	void Move();
 
 private:
 
@@ -69,11 +69,11 @@ private:
 
 private:
 
-	uint enemy_index = 0;
-
 	const p2DynArray<iPoint>* last_pathfinding;
+	p2DynArray<iPoint> mlast_pathfinding;
+	bool s = true;
 
-	ImpInfo* imp;
+	ImpInfo imp;
 	ImpState impState;
 
 	bool up, down, left, right;

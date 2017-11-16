@@ -34,34 +34,15 @@ public:
 	Monkey(int x, int y, PathInfo* path);
 
 	void OnCollision(Collider* c1, Collider* c2);
-	void Move(uint index);
+	void Move();
 
 private:
 
 	void GeneralStatesMachine();
 	void UpdateDirection();
 
-	// Pathfinding
-	void UpdatePathfinding();
-
-	void UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player);
-	bool ResetPathfindingVariables();
-	bool CreatePathfinding(iPoint end_pos);
-	void Pathfind();
-	//_pathfinding
-
-	// Normal path
-	void UpdatePath();
-
-	bool ResetPathfindingBackVariables();
-
-	bool DoNormalPath();
-	void RecalculatePath();
-	//_normal_path
-
 private:
 
-	uint enemy_index = 0;
 	const p2DynArray<iPoint>* last_pathfinding;
 
 	MonkeyInfo* monkey;

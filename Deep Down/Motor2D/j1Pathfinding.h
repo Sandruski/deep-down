@@ -27,13 +27,13 @@ public:
 	bool CleanUp();
 
 	// Sets up the walkability map
-	void SetMap(uint width, uint height, int* data);
+	void SetMap(uint width, uint height, uchar* data);
 
 	// Main function to request a path from A to B
-	int CreatePath(const iPoint& origin, const iPoint& destination, const bool flying = true, uint enemy_index = 0);
+	int CreatePath(const iPoint& origin, const iPoint& destination, const bool flying = true);
 
 	// To request all tiles involved in the last generated path
-	const p2DynArray<iPoint>* GetLastPath(uint enemy_index) const;
+	const p2DynArray<iPoint>* GetLastPath() const;
 
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
@@ -50,9 +50,9 @@ private:
 	uint width;
 	uint height;
 	// all map walkability values [0..255]
-	int* map;
+	uchar* map;
 	// we store the created path here
-	p2DynArray<iPoint>* last_path;
+	p2DynArray<iPoint> last_path;
 };
 
 // forward declaration

@@ -11,7 +11,7 @@ private:
 public:
 	Plant(int x, int y, PathInfo* path);
 	void OnCollision(Collider* c1, Collider* c2);
-	void Move(uint index);
+	void Move();
 };
 
 #endif

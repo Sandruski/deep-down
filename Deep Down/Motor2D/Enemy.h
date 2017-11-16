@@ -30,7 +30,7 @@ public:
 
 	const Collider* GetCollider() const;
 
-	virtual void Move(uint index) {};
+	virtual void Move() {};
 	virtual void UpdatePath() {};
 	virtual void UpdatePathfinding() {};
 	virtual void Draw(SDL_Texture* sprites);

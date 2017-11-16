@@ -120,10 +120,8 @@ CatPeasant::CatPeasant(int x, int y, PathInfo* path) : Enemy(x, y, path)
 
 }
 
-void CatPeasant::Move(uint index)
+void CatPeasant::Move()
 {
-	enemy_index = index;
-
 	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT) {
 
 		position.x--;
@@ -156,7 +154,7 @@ void CatPeasant::Move(uint index)
 	if (App->input->GetKey(SDL_SCANCODE_KP_9) == KEY_DOWN && SDL_HasIntersection(&enemy_pos, &player_pos)) {
 
 		int patata = App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->player->position.x, App->player->position.y));
-		last_path = App->pathfinding->GetLastPath(enemy_index);
+		last_path = App->pathfinding->GetLastPath();
 		index = 0;
 
 	}

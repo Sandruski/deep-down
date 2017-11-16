@@ -5,14 +5,8 @@
 #include "j1Enemies.h"
 #include "j1Map.h"
 
-j1PathFinding::j1PathFinding() : j1Module(), map(NULL), width(0), height(0)
+j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_LENGTH), width(0), height(0)
 {
-	last_path = new p2DynArray<iPoint>[MAX_ENEMIES];
-
-	for (int i = 0; i < MAX_ENEMIES; ++i) {
-		last_path[i] = last_path[DEFAULT_PATH_LENGTH];
-	}
-
 	name.create("pathfinding");
 }
 
@@ -23,26 +17,23 @@ j1PathFinding::~j1PathFinding()
 }
 
 // Called before quitting
-bool j1PathFinding::CleanUp() 
+bool j1PathFinding::CleanUp()
 {
 	LOG("Freeing pathfinding library");
 
-	for (int i = 0; i < MAX_ENEMIES; ++i) {
-		last_path[i].Clear();
-	}
-
+	last_path.Clear();
 	RELEASE_ARRAY(map);
 	return true;
 }
 
 // Sets up the walkability map
-void j1PathFinding::SetMap(uint width, uint height, int* data)
+void j1PathFinding::SetMap(uint width, uint height, uchar* data)
 {
 	this->width = width;
 	this->height = height;
 
 	RELEASE_ARRAY(map);
-	map = new int[width*height];
+	map = new uchar[width*height];
 	memcpy(map, data, width*height);
 
 }
@@ -72,9 +63,9 @@ int j1PathFinding::GetTileAt(const iPoint& pos) const
 }
 
 // To request all tiles involved in the last generated path
-const p2DynArray<iPoint>* j1PathFinding::GetLastPath(uint enemy_index) const
+const p2DynArray<iPoint>* j1PathFinding::GetLastPath() const
 {
-	return &last_path[enemy_index];
+	return &last_path;
 }
 
 // PathList ------------------------------------------------------------------------
@@ -218,9 +209,9 @@ float PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, const bool flying, uint enemy_index)
+int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, const bool flying)
 {
-	last_path[enemy_index].Clear();
+	last_path.Clear();
 	int ret = 0;
 
 	// TODO 1: if origin or destination are not walkable, return -1
@@ -248,13 +239,13 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 			// Backtrack to create the final path
 			if (close.list.end->data.pos == destination) {
 				for (p2List_item<PathNode>* iterator = close.list.end; iterator->data.parent != nullptr; iterator = close.Find(iterator->data.parent->pos)) {
-					last_path[enemy_index].PushBack(iterator->data.pos);
+					last_path.PushBack(iterator->data.pos);
 				}
 
-				last_path[enemy_index].PushBack(close.list.start->data.pos);
+				last_path.PushBack(close.list.start->data.pos);
 				// Use the Pathnode::parent and Flip() the path when you are finish
-				last_path[enemy_index].Flip();
-				ret = last_path[enemy_index].Count();
+				last_path.Flip();
+				ret = last_path.Count();
 				return ret;
 			}
 			else {
