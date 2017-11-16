@@ -207,10 +207,14 @@ void j1App::FinishUpdate()
 	frame_count++;
 
 	//cap frames
-	float toVsync = 1000 / capFrames;
-	
-	if (actual_frame_ms < toVsync) 
-		SDL_Delay(toVsync - actual_frame_ms);
+	if (!App->render->vsync) {
+
+		float toVsync = 1000 / capFrames;
+
+		if (actual_frame_ms < toVsync)
+			SDL_Delay(toVsync - actual_frame_ms);
+
+	}
 
 	double fps = 1000.0f / perfClock.ReadMs();
 

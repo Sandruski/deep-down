@@ -12,12 +12,47 @@
   </renderer>
 
   <window>
-    <resolution width="1024" height="768" scale="1"/>
+    <resolution width="1024" height="768" scale="3"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
     <fullscreen_window value="false"/>
   </window>
+
+  <map>
+    <folder>Assets/Sprites/Maps/</folder>
+    <general>
+      <blit offset="15"/>
+      <camera_blit value="true"/>
+    </general>
+  </map>
+
+  <audio>
+    <music_folder>Assets/Audio/Music/</music_folder>
+    <fx_folder>Assets/Audio/FX/</fx_folder>
+    <volume default="16"/>
+  </audio>
+
+  <scene>
+    <maps>
+      <index first="0"/>
+      <map id="1" name="scene1.tmx"/>
+      <map id="2" name="scene2.tmx"/>
+    </maps>
+    <audio>
+      <songs>
+        <song id="1" name="scene1.ogg"/>
+        <song id="2" name="scene2.ogg" volume_adjustment="16"/>
+      </songs>
+      <fx>
+        <fx name="dash.wav"/>
+        <fx name="earthquake.wav"/>
+        <fx name="bow.wav"/>
+        <fx name="gate.wav"/>
+        <fx name="scream.wav"/>
+      </fx>
+    </audio>
+  </scene>
 
   <enemies>
     <spritesheets>
@@ -361,34 +396,6 @@
       </thirdAttack2>
     </animations>
   </player>
-  
-  <map>
-    <folder>Assets/Sprites/Maps/</folder>
-    <general>
-      <blit offset="15"/>
-    </general>
-  </map>
-
-  <scene>
-    <maps>
-      <index first="0"/>
-      <map id="1" name="scene1.tmx"/>
-      <map id="2" name="scene2.tmx"/>
-    </maps>
-    <audio>
-      <songs>
-        <song id="1" name="scene1.ogg"/>
-        <song id="2" name="scene2.ogg" volume_adjustment="16"/>
-      </songs>
-      <fx>
-        <fx name="dash.wav"/>
-        <fx name="earthquake.wav"/>
-        <fx name="bow.wav"/>
-        <fx name="gate.wav"/>
-        <fx name="scream.wav"/>
-      </fx>
-    </audio>
-  </scene>
 
   <particles>
     <animations>
@@ -419,11 +426,5 @@
       </Imp_l_bomb>
     </animations>
   </particles>
-
-  <audio>
-    <music_folder>Assets/Audio/Music/</music_folder>
-    <fx_folder>Assets/Audio/FX/</fx_folder>
-    <volume default="16"/>
-  </audio>
 
 </config>

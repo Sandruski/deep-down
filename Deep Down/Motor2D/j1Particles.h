@@ -30,7 +30,7 @@ struct Particle
 	Particle();
 	Particle(const Particle& p);
 	~Particle();
-	bool Update();
+	bool Update(float dt);
 };
 
 class j1Particles : public j1Module

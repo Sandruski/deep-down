@@ -392,9 +392,9 @@ void j1Player::ShotRight() {
 	if (shot.Finished() || crouchShot.Finished()) {
 		App->audio->PlayFx(3);
 		if (state == shot_)
-			App->particles->AddParticle(App->particles->arrowRight, position.x + 5, position.y + 22, COLLIDER_ARROW, NULL, { 2,0 });
+			App->particles->AddParticle(App->particles->arrowRight, position.x + 5, position.y + 22, COLLIDER_ARROW, NULL, { 200,0 });
 		else if (state == crouchShot_)
-			App->particles->AddParticle(App->particles->arrowRight, position.x + 5, position.y + 38, COLLIDER_ARROW, NULL, { 2,0 });
+			App->particles->AddParticle(App->particles->arrowRight, position.x + 5, position.y + 38, COLLIDER_ARROW, NULL, { 200,0 });
 		stopshot = true;
 		shot.Reset();
 		crouchShot.Reset();
@@ -406,9 +406,9 @@ void j1Player::ShotLeft() {
 	if (shot2.Finished() || crouchShot2.Finished()) {
 		App->audio->PlayFx(3);
 		if (state == shot2_)
-			App->particles->AddParticle(App->particles->arrowLeft, position.x + 15, position.y + 22, COLLIDER_ARROW, NULL, { -2,0 });
+			App->particles->AddParticle(App->particles->arrowLeft, position.x + 15, position.y + 22, COLLIDER_ARROW, NULL, { -200,0 });
 		else if (state == crouchShot2_)
-			App->particles->AddParticle(App->particles->arrowLeft, position.x + 5, position.y + 38, COLLIDER_ARROW, NULL, { -2,0 });
+			App->particles->AddParticle(App->particles->arrowLeft, position.x + 5, position.y + 38, COLLIDER_ARROW, NULL, { -200,0 });
 		stopshot = true;
 		shot2.Reset();
 		crouchShot2.Reset();

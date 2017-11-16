@@ -130,7 +130,7 @@ bool j1Particles::Update(float dt)
 		if (p == nullptr)
 			continue;
 
-		if (p->Update() == false)
+		if (p->Update(dt) == false)
 		{
 			delete p;
 			active[i] = nullptr;
@@ -187,7 +187,7 @@ Particle::~Particle()
 		collider->to_delete = true;
 }
 
-bool Particle::Update()
+bool Particle::Update(float dt)
 {
 	bool ret = true;
 
@@ -216,11 +216,12 @@ bool Particle::Update()
 
 	if (collider->type == COLLIDER_ARROW) {
 		if (left || right)
-			position.x += speed.x;
+			position.x += speed.x * dt;
 		else
 			position.x = position.x;
 	}
 	else if (collider->type == COLLIDER_PEASANT_SHOT) {
+
 		if (App->player->position.y < position.y)
 			position.y--;
 		else if (App->player->position.y > position.y)
@@ -229,6 +230,9 @@ bool Particle::Update()
 			position.x--;
 		else if (App->player->position.x > position.x)
 			position.x++;
+
+		if (App->player->position.x == position.x && App->player->position.y == position.y)
+			Particle::~Particle();
 	}
 
 	//position.y += speed.y;
