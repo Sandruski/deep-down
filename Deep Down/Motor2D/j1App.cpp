@@ -104,6 +104,7 @@ bool j1App::Awake()
 		app_config = config.child("app");
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
+		capFrames = config.child("renderer").child("CapFrames").attribute("value").as_uint();
 	}
 
 	if (ret == true)
@@ -177,7 +178,7 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
-	clock.Start();
+
 	perfClock.Start();
 
 }
@@ -193,9 +194,9 @@ void j1App::FinishUpdate()
 	if (want_to_load == true)
 		LoadGameNow();
 
-	float seconds_since_startup = perfClock.ReadMs();
+	float seconds_since_startup = clock.Read() / 1000;
 	
-	uint32 actual_frame_ms = clock.Read();
+	uint32 actual_frame_ms = perfClock.ReadMs();
 	
 	//if (actual_frame_ms > last_frame_ms) {
 	
@@ -206,7 +207,7 @@ void j1App::FinishUpdate()
 	frame_count++;
 
 	//cap frames
-	float toVsync = 1000 / 60;
+	float toVsync = 1000 / capFrames;
 	
 	if (actual_frame_ms < toVsync) 
 		SDL_Delay(toVsync - actual_frame_ms);

@@ -124,6 +124,7 @@ private:
 	uint64 frame_count;
 	j1Timer clock;
 	j1PerfTimer perfClock;
+	uint capFrames;
 
 };
 
