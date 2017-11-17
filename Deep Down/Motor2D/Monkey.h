@@ -31,7 +31,7 @@ class Monkey : public Enemy
 {
 public:
 
-	Monkey(int x, int y, PathInfo* path);
+	Monkey(float x, float y, PathInfo* path);
 
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move();

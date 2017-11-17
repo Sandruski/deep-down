@@ -7,7 +7,7 @@
 #include "j1Render.h"
 #include "j1Pathfinding.h"
 
-Enemy::Enemy(int x, int y, PathInfo* path) : position(x, y), start_pos(x, y), path_info(path), mlast_pathfinding(DEFAULT_PATH_LENGTH)
+Enemy::Enemy(float x, float y, PathInfo* path) : position(x, y), start_pos(x, y), path_info(path), mlast_pathfinding(DEFAULT_PATH_LENGTH)
 {
 	last_pathfinding = nullptr;
 }

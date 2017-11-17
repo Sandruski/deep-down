@@ -7,7 +7,7 @@
 
 #include "SDL/include/SDL_timer.h"
 
-Plant::Plant(int x, int y, PathInfo* path) : Enemy(x, y, path)
+Plant::Plant(float x, float y, PathInfo* path) : Enemy(x, y, path)
 {
 	idle.PushBack({ 2, 21, 64, 64 });
 	idle.PushBack({ 68, 21, 64, 64 });

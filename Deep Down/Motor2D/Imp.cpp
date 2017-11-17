@@ -15,7 +15,7 @@
 
 #include "SDL/include/SDL_timer.h"
 
-Imp::Imp(int x, int y, PathInfo* path) : Enemy(x, y, path) 
+Imp::Imp(float x, float y, PathInfo* path) : Enemy(x, y, path) 
 {
 	imp = App->enemies->GetImpInfo();
 
@@ -25,15 +25,18 @@ Imp::Imp(int x, int y, PathInfo* path) : Enemy(x, y, path)
 
 	collider = App->collision->AddCollider({ 0, 0, imp.coll_size.x + imp.coll_offset.w, imp.coll_size.y + imp.coll_offset.h }, COLLIDER_TYPE::COLLIDER_IMP, App->enemies);
 
-	follow_pathfinding1 = App->collision->AddCollider({ position.x - 50, position.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
+	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
 	follow_pathfinding2 = App->collision->AddCollider({ (int)App->player->position.x - 50, (int)App->player->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
 
 	// Needs organization
-	speed = { 0, 1 };
+	speed = { 0.8f, 1 };
 }
 
 void Imp::Move()
 {
+	i_pos.x = (int)position.x;
+	i_pos.y = (int)position.y;
+
 	// Update path/pathfinding
 	if (!pathfinding)
 		UpdatePath();
@@ -54,7 +57,7 @@ void Imp::Move()
 	UpdateDirection();
 
 	// Update collider
-	collider_pos = { position.x + imp.coll_offset.x, position.y + imp.coll_offset.y };
+	collider_pos = { i_pos.x + imp.coll_offset.x, i_pos.y + imp.coll_offset.y };
 	collider->SetPos(collider_pos.x, collider_pos.y);
 }
 
@@ -180,25 +183,26 @@ void Imp::GeneralStatesMachine()
 
 void Imp::UpdateDirection() {
 
-	if (position.x != last_pos.x) {
-		if (position.x < last_pos.x)
+	if (i_pos.x != last_pos.x) {
+		if (i_pos.x < last_pos.x)
 			left = true;
-		else if (position.x > last_pos.x)
+		else if (i_pos.x > last_pos.x)
 			right = true;
 	}
 	else
 		stop_x = true;
 
-	if (position.y != last_pos.y) {
-		if (position.y < last_pos.y)
+	if (i_pos.y != last_pos.y) {
+		if (i_pos.y < last_pos.y)
 			up = true;
-		else if (position.y > last_pos.y)
+		else if (i_pos.y > last_pos.y)
 			down = true;
 	}
 	else
 		stop_y = true;
 
-	last_pos = position;
+	last_pos.x = (int)position.x;
+	last_pos.y = (int)position.y;
 }
 
 void Imp::OnCollision(Collider* c1, Collider* c2) 
@@ -230,8 +234,6 @@ void Imp::UpdatePath()
 
 		// If it has to go back home and hasn't reached home yet, update the pathfinding back
 		if (going_back_home) {
-			Pathfind();
-
 			if (!Pathfind())
 				going_back_home = false;
 		}
@@ -292,10 +294,10 @@ void Imp::UpdatePathfinding()
 
 void Imp::UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player)
 {
-	follow_pathfinding1->SetPos(position.x - 30, position.y - 30);
-	follow_pathfinding2->SetPos(App->player->position.x - 25, App->player->position.y - 50);
+	follow_pathfinding1->SetPos(i_pos.x - 30, i_pos.y - 30);
+	follow_pathfinding2->SetPos((int)App->player->position.x - 25, (int)App->player->position.y - 50);
 
-	enemy = { position.x - 30, position.y - 30, 100, 100 };
+	enemy = { i_pos.x - 30, i_pos.y - 30, 100, 100 };
 	player = { (int)App->player->position.x - 25, (int)App->player->position.y - 50, 100, 200 };
 }
 
@@ -316,7 +318,7 @@ bool Imp::CreatePathfinding(iPoint destination)
 {
 	bool ret = false;
 
-	if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(destination.x, destination.y), true)) {
+	if (App->pathfinding->CreatePath(App->map->WorldToMap(i_pos.x, i_pos.y), App->map->WorldToMap(destination.x, destination.y), true)) {
 		last_pathfinding = App->pathfinding->GetLastPath();
 
 		pathfinding_size = last_pathfinding->Count();
@@ -336,14 +338,14 @@ bool Imp::CreatePathfinding(iPoint destination)
 
 void Imp::UpdateMovement(iPoint to_go)
 {
-	if (position.x < to_go.x)
-		position.x++;
-	else if (position.x > to_go.x)
-		position.x--;
-	if (position.y < to_go.y)
-		position.y++;
-	else if (position.y > to_go.y)
-		position.y--;
+	if (i_pos.x < to_go.x)
+		position.x += speed.x;
+	else if (i_pos.x > to_go.x)
+		position.x -= speed.x;
+	if (i_pos.y < to_go.y)
+		position.y += speed.x;
+	else if (i_pos.y > to_go.y)
+		position.y -= speed.x;
 }
 
 bool Imp::Pathfind() 
@@ -355,12 +357,12 @@ bool Imp::Pathfind()
 
 		UpdateMovement(to_go);
 
-		if (position == to_go) {
+		if (i_pos == to_go) {
 			if (pathfinding_index < pathfinding_size - 1)
 				pathfinding_index++;
 		}
 
-		if (position == App->map->MapToWorld(mlast_pathfinding[pathfinding_size - 1].x, mlast_pathfinding[pathfinding_size - 1].y))
+		if (i_pos == App->map->MapToWorld(mlast_pathfinding[pathfinding_size - 1].x, mlast_pathfinding[pathfinding_size - 1].y))
 			ret = false;
 	}
 	else
@@ -381,7 +383,7 @@ bool Imp::DoNormalPath()
 
 		ret = true;
 
-		if (position == to_go) {
+		if (i_pos == to_go) {
 			if (normal_path_index < path_info->path_size - 1)
 				normal_path_index++;
 			else

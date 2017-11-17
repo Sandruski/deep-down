@@ -15,7 +15,7 @@
 
 #include "SDL/include/SDL_timer.h"
 
-Monkey::Monkey(int x, int y, PathInfo* path) : Enemy(x, y, path)
+Monkey::Monkey(float x, float y, PathInfo* path) : Enemy(x, y, path)
 {
 	monkey = new MonkeyInfo(App->enemies->GetMonkeyInfo());
 
@@ -25,12 +25,15 @@ Monkey::Monkey(int x, int y, PathInfo* path) : Enemy(x, y, path)
 
 	collider = App->collision->AddCollider({ 0, 0, monkey->coll_size.x + monkey->coll_offset.w, monkey->coll_size.y + monkey->coll_offset.h }, COLLIDER_TYPE::COLLIDER_MONKEY, App->enemies);
 
-	follow_pathfinding1 = App->collision->AddCollider({ position.x - 50, position.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
+	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
 	follow_pathfinding2 = App->collision->AddCollider({ (int)App->player->position.x - 50, (int)App->player->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
 }
 
 void Monkey::Move()
 {
+	i_pos.x = (int)position.x;
+	i_pos.y = (int)position.y;
+
 	// Update path/pathfinding
 	if (!pathfinding)
 		UpdatePath();
@@ -48,7 +51,7 @@ void Monkey::Move()
 	UpdateDirection();
 
 	// Update collider
-	collider_pos = { position.x + monkey->coll_offset.x, position.y + monkey->coll_offset.y };
+	collider_pos = { i_pos.x + monkey->coll_offset.x, i_pos.y + monkey->coll_offset.y };
 	collider->SetPos(collider_pos.x, collider_pos.y);
 }
 
@@ -112,21 +115,23 @@ void Monkey::GeneralStatesMachine()
 
 void Monkey::UpdateDirection() 
 {
-	if (position.x == last_pos.x) {
-		if (position.x < last_pos.x)
+	if (i_pos.x == last_pos.x) {
+		if (i_pos.x < last_pos.x)
 			left = true;
-		else if (position.x > last_pos.x)
+		else if (i_pos.x > last_pos.x)
 			right = true;
 	}
 
-	if (position.y == last_pos.y) {
-		if (position.y < last_pos.y)
+	if (i_pos.y == last_pos.y) {
+		if (i_pos.y < last_pos.y)
 			up = true;
-		else if (position.y > last_pos.y)
+		else if (i_pos.y > last_pos.y)
 			down = true;
 	}
 
-	last_pos = position;
+
+	last_pos.x = (int)position.x;
+	last_pos.y = (int)position.y;
 }
 
 void Monkey::OnCollision(Collider* c1, Collider* c2) 

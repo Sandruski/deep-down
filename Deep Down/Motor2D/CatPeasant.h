@@ -23,7 +23,7 @@ private:
 
 	stateEnemies catPeasantState;
 
-	iPoint lastPosition;
+	fPoint lastPosition;
 
 	bool toBackward, toForward, toUp, toDown;
 
@@ -39,7 +39,7 @@ private:
 
 public:
 
-	CatPeasant(int x, int y, PathInfo* path);
+	CatPeasant(float x, float y, PathInfo* path);
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move();
 };

@@ -37,7 +37,7 @@ class Imp : public Enemy
 {
 public:
 
-	Imp(int x, int y, PathInfo* path);
+	Imp(float x, float y, PathInfo* path);
 
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move();
@@ -68,6 +68,7 @@ private:
 
 
 private:
+	float dt;
 
 	ImpInfo imp;
 	ImpState impState;
@@ -77,7 +78,7 @@ private:
 	bool throw_bomb;
 
 	// Gravity
-	fPoint speed;
+
 
 	// Keep track of enemy movement
 	iPoint last_pos;

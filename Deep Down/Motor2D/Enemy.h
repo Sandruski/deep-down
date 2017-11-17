@@ -14,21 +14,25 @@ protected:
 	Animation* animation = nullptr;
 	Collider* collider = nullptr;
 
-public:
-	iPoint position;
-	iPoint start_pos;
-
-	iPoint collider_pos;
-
 	PathInfo* path_info = nullptr;
-
-	int type;
-
 	const p2DynArray<iPoint>* last_pathfinding;
 	p2DynArray<iPoint> mlast_pathfinding;
 
 public:
-	Enemy(int x, int y, PathInfo* path);
+	int type;
+
+	// Enemy movement
+	fPoint position;
+	iPoint i_pos;
+	iPoint start_pos;
+
+	fPoint speed;
+	//_enemy_movement
+
+	iPoint collider_pos;
+
+public:
+	Enemy(float x, float y, PathInfo* path);
 	virtual ~Enemy();
 
 	const Collider* GetCollider() const;
