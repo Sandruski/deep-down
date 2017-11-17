@@ -727,8 +727,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	int i = 0;
 
 	for (pugi::xml_node tile_gid = node.child("data").child("tile"); tile_gid; tile_gid =  tile_gid.next_sibling("tile")) {
-		layer->data[i] = tile_gid.attribute("gid").as_uint();
-		i++;
+		layer->data[i++] = tile_gid.attribute("gid").as_uint();
 	}
 
 	// Read layer properties

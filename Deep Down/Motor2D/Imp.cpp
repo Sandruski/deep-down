@@ -10,6 +10,7 @@
 #include "j1Particles.h"
 #include "j1Pathfinding.h"
 #include "j1Map.h"
+#include "j1Player.h"
 
 #include "j1Input.h"
 
@@ -36,7 +37,7 @@ void Imp::Move()
 {
 	i_pos.x = (int)position.x;
 	i_pos.y = (int)position.y;
-
+	App->player->CheckCollision(i_pos, imp.coll_size, 1, up, down, left, right);
 	// Update path/pathfinding
 	if (!pathfinding)
 		UpdatePath();
@@ -51,8 +52,11 @@ void Imp::Move()
 	UpdateDirection();
 
 	// Update collider
-	collider_pos = { i_pos.x + imp.coll_offset.x, i_pos.y + imp.coll_offset.y };
-	collider->SetPos(collider_pos.x, collider_pos.y);
+	//collider_pos = { i_pos.x + imp.coll_offset.x, i_pos.y + imp.coll_offset.y };
+	//collider->SetPos(collider_pos.x, collider_pos.y);
+
+	// Debug
+	collider->SetPos(i_pos.x, i_pos.y);
 }
 
 void Imp::GeneralStatesMachine() 
@@ -396,13 +400,13 @@ bool Imp::CreatePathfinding(iPoint destination)
 
 void Imp::UpdateMovement(iPoint to_go)
 {
-	if (i_pos.x < to_go.x)
+	if (right && i_pos.x < to_go.x)
 		position.x += speed.x;
-	else if (i_pos.x > to_go.x)
+	else if (left && i_pos.x > to_go.x)
 		position.x -= speed.x;
-	if (i_pos.y < to_go.y)
+	if (down && i_pos.y < to_go.y)
 		position.y += speed.x;
-	else if (i_pos.y > to_go.y)
+	else if (up && i_pos.y > to_go.y)
 		position.y -= speed.x;
 }
 
