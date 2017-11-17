@@ -239,7 +239,6 @@ void Imp::UpdatePath()
 
 			if (CreatePathfinding(to_go)) {
 				going_back_home = true;
-				pathfinding_finished = true;
 				do_normal_path = true;
 				create_pathfinding_back = false;
 			}
@@ -266,8 +265,11 @@ void Imp::UpdatePath()
 
 		// If it has to go back home and hasn't reached home yet, update the pathfinding back
 		if (going_back_home) {
-			if (!Pathfind())
+			if (!Pathfind()) {
+				RecalculatePath();
 				going_back_home = false;
+				pathfinding_finished = true;
+			}
 		}
 		// If it is home, update the normal path
 		else if (do_normal_path) {
@@ -315,6 +317,7 @@ void Imp::UpdatePathfinding()
 		if (CreatePathfinding(dest)) {
 			pathfinding = true;
 			create_pathfinding = false;
+			go = true;
 		}
 		else {
 			pathfinding_stop = true;
@@ -322,13 +325,18 @@ void Imp::UpdatePathfinding()
 		}
 	}
 
+	if (go && SDL_HasIntersection(&enemy_pos, &player_pos)) {
+		pathfind = true;
+		go = false;
+	}
+
 	if (pathfinding) {
 		// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
-		if (SDL_HasIntersection(&enemy_pos, &player_pos) && pathfind) {
+		if (pathfind) {
 			if (!Pathfind())
 				pathfind = false;
 		}
-		else {
+		else if (!pathfind) {
 			// If the enemy reaches the end of the path and doesn't see the player anymore, stop pathfinding and go back home
 			if (!SDL_HasIntersection(&enemy_pos, &player_pos)) {
 				pathfinding = false;
@@ -380,12 +388,15 @@ bool Imp::CreatePathfinding(iPoint destination)
 {
 	bool ret = false;
 
-	if (App->pathfinding->CreatePath(App->map->WorldToMap(i_pos.x, i_pos.y), App->map->WorldToMap(destination.x, destination.y), true)) {
+	if (App->pathfinding->CreatePath(App->map->WorldToMap(i_pos.x, i_pos.y), App->map->WorldToMap(destination.x, destination.y), Distance::DISTANCE_TO, true) > -1) {
 		last_pathfinding = App->pathfinding->GetLastPath();
 
 		pathfinding_size = last_pathfinding->Count();
 
-		pathfinding_index = 1;
+		if (pathfinding_size > 1)
+			pathfinding_index = 1;
+		else
+			pathfinding_index = 0;
 
 		mlast_pathfinding.Clear();
 
@@ -400,13 +411,13 @@ bool Imp::CreatePathfinding(iPoint destination)
 
 void Imp::UpdateMovement(iPoint to_go)
 {
-	if (right && i_pos.x < to_go.x)
+	if (i_pos.x < to_go.x)
 		position.x += speed.x;
-	else if (left && i_pos.x > to_go.x)
+	else if (i_pos.x > to_go.x)
 		position.x -= speed.x;
-	if (down && i_pos.y < to_go.y)
+	if (i_pos.y < to_go.y)
 		position.y += speed.x;
-	else if (up && i_pos.y > to_go.y)
+	else if (i_pos.y > to_go.y)
 		position.y -= speed.x;
 }
 
@@ -414,20 +425,16 @@ bool Imp::Pathfind()
 {
 	bool ret = true;
 
-	if (pathfinding_size > 1) {
-		iPoint to_go = App->map->MapToWorld(mlast_pathfinding[pathfinding_index].x, mlast_pathfinding[pathfinding_index].y);
+	iPoint to_go = App->map->MapToWorld(mlast_pathfinding[pathfinding_index].x, mlast_pathfinding[pathfinding_index].y);
 
-		UpdateMovement(to_go);
+	UpdateMovement(to_go);
 
-		if (i_pos == to_go) {
-			if (pathfinding_index < pathfinding_size - 1)
-				pathfinding_index++;
-		}
-
-		if (i_pos == App->map->MapToWorld(mlast_pathfinding[pathfinding_size - 1].x, mlast_pathfinding[pathfinding_size - 1].y))
-			ret = false;
+	if (i_pos == to_go) {
+		if (pathfinding_index < pathfinding_size - 1)
+			pathfinding_index++;
 	}
-	else
+
+	if (i_pos == App->map->MapToWorld(mlast_pathfinding[pathfinding_size - 1].x, mlast_pathfinding[pathfinding_size - 1].y))
 		ret = false;
 
 	return ret;
@@ -435,16 +442,14 @@ bool Imp::Pathfind()
 
 void Imp::RecalculatePath()
 {
-	switch (last_normal_path_index) {
+	switch (normal_path_index) {
 	case StartEndPath::start:
-		last_normal_path_index = StartEndPath::end;
+		normal_path_index = StartEndPath::end;
 		break;
 	case StartEndPath::end:
-		last_normal_path_index = StartEndPath::start;
+		normal_path_index = StartEndPath::start;
 		break;
 	default:
 		break;
 	}
-
-	normal_path_index = last_normal_path_index;
 }

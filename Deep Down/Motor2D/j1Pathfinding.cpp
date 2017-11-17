@@ -145,7 +145,7 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill, const bool flying) 
 		cell.create(pos.x - 1, pos.y);
 		if (App->pathfinding->IsWalkable(cell))
 			list_to_fill.list.add(PathNode(-1, -1, cell, this));
-
+		
 		// north-west
 		cell.create(pos.x + 1, pos.y - 1);
 		if (App->pathfinding->IsWalkable(cell))
@@ -166,10 +166,8 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill, const bool flying) 
 		if (App->pathfinding->IsWalkable(cell))
 			list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
 	}
-
 	// non-flying characters
 	else {
-	
 		// east
 		cell.create(pos.x + 1, pos.y);
 		if (App->pathfinding->IsWalkable(cell))
@@ -180,8 +178,12 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill, const bool flying) 
 		if (App->pathfinding->IsWalkable(cell))
 			list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
-	
+		// south
+		cell.create(pos.x, pos.y - 1);
+		if (App->pathfinding->IsWalkable(cell))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this));
 	}
+
 	return list_to_fill.list.count();
 }
 
@@ -196,12 +198,12 @@ float PathNode::Score() const
 // PathNode -------------------------------------------------------------------------
 // Calculate the F for a specific destination tile
 // ----------------------------------------------------------------------------------
-float PathNode::CalculateF(const iPoint& destination)
+float PathNode::CalculateF(const iPoint& destination, Distance distance_type)
 {
 	g = parent->g + 1;
 	if (this->diagonal)
-		g = parent->g + 1.7f;
-	h = pos.DistanceTo(destination);
+	g = parent->g + 1.7f;
+	h = CalculateDistance(pos, destination, distance_type);
 
 	return g + h;
 }
@@ -209,13 +211,10 @@ float PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, const bool flying)
+int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, Distance distance_type, const bool flying)
 {
 	last_path.Clear();
 	int ret = 0;
-
-	bool o = IsWalkable(origin);
-	bool d = IsWalkable(destination);
 
 	// TODO 1: if origin or destination are not walkable, return -1
 	if (!IsWalkable(origin) || !IsWalkable(destination))
@@ -227,7 +226,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 		PathList close;
 
 		// Add the origin tile to open
-		PathNode originNode(0, origin.DistanceTo(destination), origin, nullptr);
+		PathNode originNode(0, CalculateDistance(origin, destination, distance_type), origin, nullptr);
 		open.list.add(originNode);
 
 		// Iterate while we have tile in the open list
@@ -266,7 +265,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 						continue;
 					}
 
-					iterator->data.CalculateF(destination);
+					iterator->data.CalculateF(destination, distance_type);
 					// If it is already in the open list, check if it is a better path (compare G)
 					if (open.Find(iterator->data.pos) != NULL) {
 
@@ -290,3 +289,21 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 	return ret;
 }
 
+int CalculateDistance(iPoint origin, iPoint destination, Distance distance_type)
+{
+	int distance = 0;
+
+	switch (distance_type) {
+	case DISTANCE_TO:
+		distance = origin.DistanceTo(destination);
+		break;
+	case DISTANCE_NO_SQRT:
+		distance = origin.DistanceNoSqrt(destination);
+		break;
+	case MANHATTAN:
+		distance = origin.DistanceManhattan(destination);
+		break;
+	}
+
+	return distance;
+}

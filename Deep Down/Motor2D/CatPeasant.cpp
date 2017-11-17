@@ -153,7 +153,7 @@ void CatPeasant::Move()
 
 	if (App->input->GetKey(SDL_SCANCODE_KP_9) == KEY_DOWN && SDL_HasIntersection(&enemy_pos, &player_pos)) {
 
-		int patata = App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->player->position.x, App->player->position.y));
+		int patata = App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->player->position.x, App->player->position.y), Distance::DISTANCE_TO);
 		last_path = App->pathfinding->GetLastPath();
 		index = 0;
 

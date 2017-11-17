@@ -136,7 +136,6 @@ void Monkey::UpdateDirection()
 		}
 	}
 
-
 	last_pos.x = (int)position.x;
 	last_pos.y = (int)position.y;
 }
@@ -254,7 +253,7 @@ bool Monkey::CreatePathfinding(iPoint destination)
 {
 	bool ret = false;
 
-	if (App->pathfinding->CreatePath(App->map->WorldToMap(i_pos.x, i_pos.y), App->map->WorldToMap(destination.x, destination.y), true)) {
+	if (App->pathfinding->CreatePath(App->map->WorldToMap(i_pos.x, i_pos.y), App->map->WorldToMap(destination.x, destination.y), Distance::DISTANCE_TO)) {
 		last_pathfinding = App->pathfinding->GetLastPath();
 
 		pathfinding_size = last_pathfinding->Count();
