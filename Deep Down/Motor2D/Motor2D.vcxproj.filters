@@ -70,7 +70,11 @@
     <ClCompile Include="j1Timer.cpp">
       <Filter>Game\Tools</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="Player.cpp">
+=======
     <ClCompile Include="Monkey.cpp">
+>>>>>>> 45f71d63337d4a1405585aa6ff789487ec0ff0a9
       <Filter>Game\Modules\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
@@ -165,7 +169,11 @@
     <ClInclude Include="j1Timer.h">
       <Filter>Game\Tools</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="Player.h">
+=======
     <ClInclude Include="Monkey.h">
+>>>>>>> 45f71d63337d4a1405585aa6ff789487ec0ff0a9
       <Filter>Game\Modules\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
