@@ -1,5 +1,5 @@
 #include "j1App.h"
-#include "j1Enemies.h"
+#include "j1EntityFactory.h"
 #include "CatPeasant.h"
 
 #include "j1Input.h"
@@ -11,7 +11,7 @@
 
 #include "SDL/include/SDL_timer.h"
 
-CatPeasant::CatPeasant(float x, float y, PathInfo* path) : Enemy(x, y, path)
+CatPeasant::CatPeasant(float x, float y, PathInfo* path) : Entity(x, y, path)
 {
 	idle.PushBack({ 2, 21, 64, 64 });
 	idle.PushBack({ 68, 21, 64, 64 });
@@ -115,7 +115,7 @@ CatPeasant::CatPeasant(float x, float y, PathInfo* path) : Enemy(x, y, path)
 	catPeasantState = stateEnemies::enemyIdle_;
 
 	animation = &idle;
-	collider = App->collision->AddCollider({ 0, 0, 64, 64 }, COLLIDER_TYPE::COLLIDER_CATPEASANT, App->enemies);
+	collider = App->collision->AddCollider({ 0, 0, 64, 64 }, COLLIDER_TYPE::COLLIDER_CATPEASANT, App->entities);
 
 }
 
@@ -148,11 +148,11 @@ void CatPeasant::Move()
 	}
 
 	SDL_Rect enemy_pos = { position.x - 50, position.y, 150, 150 };
-	SDL_Rect player_pos = { App->enemies->playerData->position.x - 50, App->enemies->playerData->position.y - 10, 100, 200 };
+	SDL_Rect player_pos = { App->entities->playerData->position.x - 50, App->entities->playerData->position.y - 10, 100, 200 };
 
 	if (App->input->GetKey(SDL_SCANCODE_KP_9) == KEY_DOWN && SDL_HasIntersection(&enemy_pos, &player_pos)) {
 
-		int patata = App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->enemies->playerData->position.x, App->enemies->playerData->position.y), Distance::DISTANCE_TO);
+		int patata = App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->entities->playerData->position.x, App->entities->playerData->position.y), Distance::DISTANCE_TO);
 		last_path = App->pathfinding->GetLastPath();
 		index = 0;
 

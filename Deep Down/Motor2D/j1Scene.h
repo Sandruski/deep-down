@@ -50,7 +50,7 @@ public:
 	uint height;
 	uint scale;
 
-	bool gate, fx, loading;
+	bool gate, fx, loading = true;
 
 private:
 

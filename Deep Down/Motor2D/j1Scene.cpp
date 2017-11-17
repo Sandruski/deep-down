@@ -13,7 +13,7 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "j1Scene.h"
-#include "j1Enemies.h"
+#include "j1EntityFactory.h"
 #include "j1Pathfinding.h"
 
 #include"Brofiler\Brofiler.h"
@@ -89,28 +89,12 @@ bool j1Scene::Start()
 
 	//App->player->SetState(stop_);
 
-	// Load enemies
-	if (App->enemies->LoadPathsInfo())
-		App->enemies->AddEnemies();
-
-	loading = false;
-
-	if (!loading && App->enemies->playerData != nullptr) {
-		App->enemies->playerData->player.SetState(App->enemies->playerData->default_state);
-
-		// Player start position
-		App->enemies->playerData->start_pos = App->map->data.GetObjectPosition("Player", "StartPos");
-		App->enemies->playerData->position = App->enemies->playerData->start_pos;
-
-		gate = false;
-		fx = false;
-	}	
-
-
+	// Load entities
+	if (App->entities->LoadPathsInfo())
+		App->entities->AddEntities();
 
 	// Pathfinding collision data
 	App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (uchar*)App->map->collisionLayer->data);
-
 
 	return true;
 }
@@ -118,6 +102,19 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
+	if (loading) {
+		//App->entities->playerData->player.SetState(App->entities->playerData->default_state);
+
+		// Player start position
+		App->entities->playerData->start_pos = App->map->data.GetObjectPosition("Player", "StartPos");
+		App->entities->playerData->position = App->entities->playerData->start_pos;
+
+		gate = false;
+		fx = false;
+
+		loading = false;
+	}
+
 	return true;
 }
 
@@ -178,14 +175,14 @@ void j1Scene::MoveCamera() {
 	else if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) //move camera right (debug functionality)
 		App->render->camera.x -= 5;
 	else
-		App->render->camera.x = (int)(App->enemies->playerData->position.x - 100) * (-1) * App->win->GetScale();
+		App->render->camera.x = (int)(App->entities->playerData->position.x - 100) * (-1) * App->win->GetScale();
 
 	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_REPEAT) //move camera up (debug functionality)
 		App->render->camera.y += 5;
 	else if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT) //move camera down (debug functionality)
 		App->render->camera.y -= 5;
 	else
-		App->render->camera.y = (int)(App->enemies->playerData->position.y - 150) * (-1) *  App->win->GetScale();
+		App->render->camera.y = (int)(App->entities->playerData->position.y - 150) * (-1) *  App->win->GetScale();
 }
 
 // Save
@@ -216,7 +213,7 @@ bool j1Scene::Save(pugi::xml_node& save) const {
 bool j1Scene::Load(pugi::xml_node& save) {
 	bool ret = false;
 
-	App->enemies->playerData->player.SetState(stop_);
+	App->entities->playerData->player.SetState(stop_);
 
 	if (save.child("gate") != NULL) {
 		gate = save.child("gate").attribute("opened").as_bool();
@@ -239,12 +236,12 @@ bool j1Scene::Load(pugi::xml_node& save) {
 void j1Scene::DebugKeys() {
 	// F1: start from the beginning of the first level
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { 
-		if (App->enemies->playerData->player.GetState() == forward_ || App->enemies->playerData->player.GetState() == backward_
-			|| App->enemies->playerData->player.GetState() == idle_ || App->enemies->playerData->player.GetState() == idle2_) {
-			App->enemies->playerData->player.SetState(stop_);
+		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
+			|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
+			App->entities->playerData->player.SetState(stop_);
 
 			if (index == 0) {
-				App->enemies->playerData->position = App->enemies->playerData->start_pos;
+				App->entities->playerData->position = App->entities->playerData->start_pos;
 				gate = false;
 				fx = false;
 			}
@@ -257,11 +254,11 @@ void j1Scene::DebugKeys() {
 
 	// F2: start from the beginning of the current level
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) { 
-		if (App->enemies->playerData->player.GetState() == forward_ || App->enemies->playerData->player.GetState() == backward_
-			|| App->enemies->playerData->player.GetState() == idle_ || App->enemies->playerData->player.GetState() == idle2_) {
-			App->enemies->playerData->player.SetState(stop_);
-			App->enemies->playerData->position = App->enemies->playerData->start_pos;
-			App->scene->bossPosition = { App->enemies->playerData->position.x, 1200 };
+		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
+			|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
+			App->entities->playerData->player.SetState(stop_);
+			App->entities->playerData->position = App->entities->playerData->start_pos;
+			App->scene->bossPosition = { App->entities->playerData->position.x, 1200 };
 			gate = false;
 			fx = false;
 		}
@@ -270,15 +267,15 @@ void j1Scene::DebugKeys() {
 	// F3: show colliders
 
 	// F4: change between maps
-	if ((App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || App->map->data.CheckIfEnter("Player", "EndPos", App->enemies->playerData->position)) && App->fade->GetStep() == 0) {
-		if (App->enemies->playerData->player.GetState() == forward_ || App->enemies->playerData->player.GetState() == backward_
-			|| App->enemies->playerData->player.GetState() == idle_ || App->enemies->playerData->player.GetState() == idle2_) {
+	if ((App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || App->map->data.CheckIfEnter("Player", "EndPos", App->entities->playerData->position)) && App->fade->GetStep() == 0) {
+		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
+			|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
 			if (index == 0)
 				index = 1;
 			else
 				index = 0;
 
-			App->enemies->playerData->player.SetState(stop_);
+			App->entities->playerData->player.SetState(stop_);
 			App->fade->FadeToBlack(this, this, 1);
 		}
 	}
@@ -289,7 +286,7 @@ void j1Scene::DebugKeys() {
 
 	// F6: load the previous state
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		App->scene->bossPosition = { App->enemies->playerData->position.x, 1200 };
+		App->scene->bossPosition = { App->entities->playerData->position.x, 1200 };
 		App->LoadGame();
 	}
 

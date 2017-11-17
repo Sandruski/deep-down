@@ -1,5 +1,5 @@
-#ifndef __j1Enemies_H__
-#define __j1Enemies_H__
+#ifndef __j1EntityFactory_H__
+#define __j1EntityFactory_H__
 
 #include "j1Module.h"
 #include "Animation.h"
@@ -9,11 +9,11 @@
 #include "Monkey.h"
 #include "Player.h"
 
-#define MAX_ENEMIES 10
+#define MAX_ENTITIES 10
 
 struct SDL_Texture;
 
-enum ENEMY_TYPES
+enum ENTITY_TYPES
 {
 	NO_TYPE,
 	IMP_,
@@ -24,7 +24,7 @@ enum ENEMY_TYPES
 	
 };
 
-class Enemy;
+class Entity;
 
 struct PathInfo
 {
@@ -42,23 +42,23 @@ struct PathInfo
 	}
 };
 
-struct EnemyInfo
+struct EntityInfo
 {
-	ENEMY_TYPES type = ENEMY_TYPES::NO_TYPE;
+	ENTITY_TYPES type = ENTITY_TYPES::NO_TYPE;
 	int x, y;
 	PathInfo* path = nullptr;
 
-	~EnemyInfo() {
+	~EntityInfo() {
 		RELEASE_ARRAY(path);
 	}
 };
 
-class j1Enemies : public j1Module
+class j1EntityFactory : public j1Module
 {
 public:
 
-	j1Enemies();
-	virtual ~j1Enemies();
+	j1EntityFactory();
+	virtual ~j1EntityFactory();
 	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool PreUpdate();
@@ -71,10 +71,10 @@ public:
 	bool SaveRepetitivePaths(uint& index);
 	bool SaveStartEndPaths(uint& index);
 
-	bool AddEnemies();
-	bool AddEnemy(ENEMY_TYPES type, uint path);
+	bool AddEntities();
+	bool AddEntity(ENTITY_TYPES type, uint path);
 
-	// Get enemies info
+	// Get entities info
 	ImpInfo& GetImpInfo() { return imp; }
 	MonkeyInfo& GetMonkeyInfo() { return monkey; }
 	PlayerInfo& GetPlayerInfo() { return player; }
@@ -84,12 +84,12 @@ public:
 
 private:
 
-	void SpawnEnemy(const EnemyInfo& info);
+	void SpawnEntity(const EntityInfo& info);
 
 private:
 
-	EnemyInfo queue[MAX_ENEMIES];
-	Enemy* enemies[MAX_ENEMIES];
+	EntityInfo queue[MAX_ENTITIES];
+	Entity* entities[MAX_ENTITIES];
 
 	p2SString CatPeasant_spritesheet;
 	p2SString MonkeyPlant_spritesheet;
@@ -114,4 +114,4 @@ public:
 
 };
 
-#endif // __j1Enemies_H__
+#endif // __j1EntityFactory_H__

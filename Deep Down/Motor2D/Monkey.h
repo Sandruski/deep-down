@@ -1,7 +1,7 @@
 #ifndef __Monkey_H__
 #define __Monkey_H__
 
-#include "Enemy.h"
+#include "Entity.h"
 
 enum MonkeyState {
 	r_idle,
@@ -22,7 +22,7 @@ struct MonkeyInfo
 	SDL_Rect coll_offset;
 };
 
-class Monkey : public Enemy
+class Monkey : public Entity
 {
 public:
 

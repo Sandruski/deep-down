@@ -8,7 +8,7 @@
 #include "j1Particles.h"
 #include "j1Collision.h"
 #include "j1Audio.h"
-#include "j1Enemies.h"
+#include "j1EntityFactory.h"
 #include "j1Scene.h"
 #include "j1Map.h"
 
@@ -137,9 +137,9 @@ bool j1Particles::Update(float dt)
 		else if (SDL_GetTicks() >= p->born)
 		{
 			if (p->collider->type == COLLIDER_PEASANT_SHOT)
-				App->render->Blit(App->enemies->CatPeasantTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
+				App->render->Blit(App->entities->CatPeasantTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
 			else
-			App->render->Blit(App->enemies->PlayerTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
+			App->render->Blit(App->entities->PlayerTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
 		}
 	}
 
@@ -199,7 +199,7 @@ bool Particle::Update(float dt)
 		if (anim.Finished())
 			ret = false;
 
-	App->enemies->playerData->CheckCollision({ (int)position.x, (int)position.y }, coll_size, App->enemies->playerData->player.check_collision_offset, up, down, left, right);
+	App->entities->playerData->CheckCollision({ (int)position.x, (int)position.y }, coll_size, App->entities->playerData->player.check_collision_offset, up, down, left, right);
 
 	if (App->map->data.CheckIfEnter("Player", "Gate", position) && App->scene->gate == false) {
 
@@ -221,16 +221,16 @@ bool Particle::Update(float dt)
 	}
 	else if (collider->type == COLLIDER_PEASANT_SHOT) {
 
-		if (App->enemies->playerData->position.y < position.y)
+		if (App->entities->playerData->position.y < position.y)
 			position.y--;
-		else if (App->enemies->playerData->position.y > position.y)
+		else if (App->entities->playerData->position.y > position.y)
 			position.y++;
-		if (App->enemies->playerData->position.x < position.x)
+		if (App->entities->playerData->position.x < position.x)
 			position.x--;
-		else if (App->enemies->playerData->position.x > position.x)
+		else if (App->entities->playerData->position.x > position.x)
 			position.x++;
 
-		if (App->enemies->playerData->position.x == position.x && App->enemies->playerData->position.y == position.y)
+		if (App->entities->playerData->position.x == position.x && App->entities->playerData->position.y == position.y)
 			Particle::~Particle();
 	}
 

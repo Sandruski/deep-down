@@ -81,10 +81,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CatPeasant.cpp" />
-    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Imp.cpp" />
     <ClCompile Include="j1Collision.cpp" />
-    <ClCompile Include="j1Enemies.cpp" />
+    <ClCompile Include="j1EntityFactory.cpp" />
     <ClCompile Include="j1FadeToBlack.cpp" />
     <ClCompile Include="j1Main.cpp" />
     <ClCompile Include="j1App.cpp" />
@@ -101,17 +101,16 @@
     <ClCompile Include="j1Render.cpp" />
     <ClCompile Include="j1Textures.cpp" />
     <ClCompile Include="j1Window.cpp" />
-    <ClCompile Include="Plant.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="CatPeasant.h" />
-    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Imp.h" />
     <ClInclude Include="j1Collision.h" />
-    <ClInclude Include="j1Enemies.h" />
+    <ClInclude Include="j1EntityFactory.h" />
     <ClInclude Include="j1FadeToBlack.h" />
     <ClInclude Include="j1Map.h" />
     <ClInclude Include="j1Particles.h" />
@@ -133,7 +132,6 @@
     <ClInclude Include="j1Textures.h" />
     <ClInclude Include="j1Window.h" />
     <ClInclude Include="p2SString.h" />
-    <ClInclude Include="Plant.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />

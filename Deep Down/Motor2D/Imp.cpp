@@ -1,5 +1,5 @@
 #include "j1App.h"
-#include "j1Enemies.h"
+#include "j1EntityFactory.h"
 #include "Imp.h"
 
 #include "p2Defs.h"
@@ -14,19 +14,19 @@
 
 #include "SDL/include/SDL_timer.h"
 
-Imp::Imp(float x, float y, PathInfo* path) : Enemy(x, y, path) 
+Imp::Imp(float x, float y, PathInfo* path) : Entity(x, y, path)
 {
-	imp = App->enemies->GetImpInfo();
+	imp = App->entities->GetImpInfo();
 
 	///
 	animation = &imp.r_shield_idle;
 	impState = ImpState::r_shield_idle;
 
-	collider = App->collision->AddCollider({ 0, 0, imp.coll_size.x + imp.coll_offset.w, imp.coll_size.y + imp.coll_offset.h }, COLLIDER_TYPE::COLLIDER_IMP, App->enemies);
+	collider = App->collision->AddCollider({ 0, 0, imp.coll_size.x + imp.coll_offset.w, imp.coll_size.y + imp.coll_offset.h }, COLLIDER_TYPE::COLLIDER_IMP, App->entities);
 	collider_size = imp.coll_size;
 
-	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
-	follow_pathfinding2 = App->collision->AddCollider({ (int)App->enemies->playerData->position.x - 50, (int)App->enemies->playerData->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
+	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
+	follow_pathfinding2 = App->collision->AddCollider({ (int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
 
 	speed = { 60.0f, 2 };
 }
@@ -353,8 +353,8 @@ void Imp::UpdatePathfinding()
 	// Create pathfinding
 	if (create_pathfinding) {
 		iPoint dest;
-		dest.x = (int)App->enemies->playerData->position.x;
-		dest.y = (int)App->enemies->playerData->position.y;
+		dest.x = (int)App->entities->playerData->position.x;
+		dest.y = (int)App->entities->playerData->position.y;
 
 		if (CreatePathfinding(dest)) {
 			pathfinding = true;
@@ -396,10 +396,10 @@ void Imp::UpdatePathfinding()
 void Imp::UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player)
 {
 	follow_pathfinding1->SetPos(i_pos.x - 30, i_pos.y - 30);
-	follow_pathfinding2->SetPos((int)App->enemies->playerData->position.x - 25, (int)App->enemies->playerData->position.y - 50);
+	follow_pathfinding2->SetPos((int)App->entities->playerData->position.x - 25, (int)App->entities->playerData->position.y - 50);
 
 	enemy = { i_pos.x - 30, i_pos.y - 30, 100, 100 };
-	player = { (int)App->enemies->playerData->position.x - 25, (int)App->enemies->playerData->position.y - 50, 100, 200 };
+	player = { (int)App->entities->playerData->position.x - 25, (int)App->entities->playerData->position.y - 50, 100, 200 };
 }
 
 bool Imp::ResetPathfindingVariables()

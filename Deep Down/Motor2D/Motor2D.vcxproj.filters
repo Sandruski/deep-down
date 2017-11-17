@@ -25,9 +25,6 @@
     <ClCompile Include="j1Collision.cpp">
       <Filter>Game\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="j1Enemies.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1FadeToBlack.cpp">
       <Filter>Game\Modules</Filter>
     </ClCompile>
@@ -52,26 +49,26 @@
     <ClCompile Include="j1Window.cpp">
       <Filter>Game\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="CatPeasant.cpp">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Game\Modules\Enemies</Filter>
+      <Filter>Game\Modules\Entities</Filter>
     </ClCompile>
     <ClCompile Include="Imp.cpp">
-      <Filter>Game\Modules\Enemies</Filter>
+      <Filter>Game\Modules\Entities</Filter>
     </ClCompile>
     <ClCompile Include="Monkey.cpp">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Plant.cpp">
-      <Filter>Game\Modules\Enemies</Filter>
+      <Filter>Game\Modules\Entities</Filter>
     </ClCompile>
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Game\Tools\PugiXML</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityFactory.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Game\Modules\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game\Modules\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,9 +114,6 @@
     <ClInclude Include="j1Collision.h">
       <Filter>Game\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="j1Enemies.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="j1FadeToBlack.h">
       <Filter>Game\Modules</Filter>
     </ClInclude>
@@ -144,29 +138,29 @@
     <ClInclude Include="j1Window.h">
       <Filter>Game\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="CatPeasant.h">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Game\Modules\Enemies</Filter>
+      <Filter>Game\Modules\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Imp.h">
-      <Filter>Game\Modules\Enemies</Filter>
+      <Filter>Game\Modules\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Monkey.h">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Plant.h">
-      <Filter>Game\Modules\Enemies</Filter>
+      <Filter>Game\Modules\Entities</Filter>
     </ClInclude>
     <ClInclude Include="PugiXml\src\pugiconfig.hpp">
       <Filter>Game\Tools\PugiXML</Filter>
     </ClInclude>
     <ClInclude Include="PugiXml\src\pugixml.hpp">
       <Filter>Game\Tools\PugiXML</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityFactory.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Game\Modules\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Game\Modules\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -185,11 +179,11 @@
     <Filter Include="Game\Tools">
       <UniqueIdentifier>{7a1de275-2740-456e-93a3-d48992566a87}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Modules\Enemies">
-      <UniqueIdentifier>{3d9caea6-5dbe-4bd6-a9a5-eb7ae2657fc3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Tools\PugiXML">
       <UniqueIdentifier>{d4be428c-f990-42eb-a048-aa10f9825fae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Modules\Entities">
+      <UniqueIdentifier>{3d9caea6-5dbe-4bd6-a9a5-eb7ae2657fc3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

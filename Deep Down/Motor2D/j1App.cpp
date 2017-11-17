@@ -13,7 +13,7 @@
 #include "j1Particles.h"
 #include "j1Collision.h"
 #include "j1FadeToBlack.h"
-#include "j1Enemies.h"
+#include "j1EntityFactory.h"
 #include "j1Pathfinding.h"
 
 #include "j1App.h"
@@ -35,7 +35,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	particles = new j1Particles();
 	collision = new j1Collision();
 	fade = new j1FadeToBlack();
-	enemies = new j1Enemies();
+	entities = new j1EntityFactory();
 	pathfinding = new j1PathFinding();
 
 	// Ordered for awake / Start / Update
@@ -46,7 +46,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(pathfinding);
-	AddModule(enemies);
+	AddModule(entities);
 	AddModule(particles);
 	AddModule(collision);
 	AddModule(scene);
@@ -194,17 +194,19 @@ void j1App::FinishUpdate()
 	float seconds_since_startup = clock.Read() / 1000;
 	
 	uint32 actual_frame_ms = perfClock.ReadMs();
+
 	
-	//if (actual_frame_ms > last_frame_ms) {
-	
-		last_frame_ms = actual_frame_ms;
-//	}
+	last_frame_ms = actual_frame_ms;
+
 
 	uint32 frames_on_last_update = 0;
 	frame_count++;
 
+	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN && (App->entities->playerData->animationPlayer == &App->entities->playerData->player.idle || App->entities->playerData->animationPlayer == &App->entities->playerData->player.idle2))
+		toCap = !toCap;
+
 	//cap frames
-	if (!App->render->vsync) {
+	if (!App->render->vsync && toCap) {
 
 		float toVsync = 1000 / capFrames;
 

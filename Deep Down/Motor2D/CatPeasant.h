@@ -1,7 +1,7 @@
 #ifndef __CATPEASANT_H__
 #define __CATPEASANT_H__
 
-#include "Enemy.h"
+#include "Entity.h"
 
 enum stateEnemies {
 	enemyIdle_,
@@ -15,7 +15,7 @@ enum stateEnemies {
 	enemyDeath2_,
 };
 
-class CatPeasant : public Enemy
+class CatPeasant : public Entity
 {
 private:
 

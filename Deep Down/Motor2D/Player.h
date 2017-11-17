@@ -1,7 +1,8 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
-#include "Enemy.h"
+#include "Entity.h"
+#include "Animation.h"
 
 enum playerstates {
 	null_,
@@ -52,7 +53,7 @@ struct PlayerInfo
 
 };
 
-class Player : public Enemy
+class Player : public Entity
 {
 
 public:
@@ -77,30 +78,26 @@ public:
 	void CheckCollision(iPoint position, iPoint size, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state = null_);
 	void CalculateCollision(iPoint position, iPoint size, uint x, uint y, uint id, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state = null_);
 
-	// Textures
-
 public:
 
 	// General info
 	playerstates default_state;
+	Animation* animationPlayer;
 
 private:
 	// Textures
 	p2SString spritesheet;
 
-	// Player collider
-
 	// Movement
-	
 	float time = 0, time2 = 0;
-	bool up = true, down = true, left = true, right = true;
+	bool up = true, down = true, left = true, right = true, gravitySpeed;
 	bool checkDash;
 	bool stopshot, secondAttackToCheck, thirdAttackToCheck, secondAttackToCheck2, thirdAttackToCheck2;
 	float dt;
 
-	// Animations
 public:
 	PlayerInfo player;
+
 };
 
 #endif

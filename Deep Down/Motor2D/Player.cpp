@@ -1,5 +1,5 @@
 #include "j1App.h"
-#include "j1Enemies.h"
+#include "j1EntityFactory.h"
 #include "Player.h"
 
 #include "j1Input.h"
@@ -19,9 +19,9 @@
 
 #include "SDL/include/SDL_timer.h"
 
-Player::Player(float x, float y, PathInfo* path) : Enemy(x, y, path)
+Player::Player(float x, float y, PathInfo* path) : Entity(x, y, path)
 {
-	player = App->enemies->GetPlayerInfo();
+	player = App->entities->GetPlayerInfo();
 
 	// Set player animation (state)
 	player.SetState(idle_);
@@ -30,9 +30,7 @@ Player::Player(float x, float y, PathInfo* path) : Enemy(x, y, path)
 	position = { 600, 100 };
 
 	collider_pos = { (int)position.x + player.coll_offset.x, (int)position.y + player.coll_offset.y };
-	collider = App->collision->AddCollider({ collider_pos.x, collider_pos.y, player.coll_size.x + player.coll_offset.w, player.coll_size.y + player.coll_offset.h }, COLLIDER_PLAYER, App->enemies);
-
-	
+	collider = App->collision->AddCollider({ collider_pos.x, collider_pos.y, player.coll_size.x + player.coll_offset.w, player.coll_size.y + player.coll_offset.h }, COLLIDER_PLAYER, App->entities);	
 }
 
 void Player::Move(float dt)
@@ -40,7 +38,7 @@ void Player::Move(float dt)
 	
 	this->dt = dt;
 
-	player.gravity = 10.0f * dt;
+	player.gravity = 125.0f * dt;
 	// Check for collisions
 	up = true;
 	down = true;
@@ -82,7 +80,7 @@ void Player::Move(float dt)
 	collider_pos = { (int)position.x + player.coll_offset.x, (int)position.y + player.coll_offset.y };
 	collider->SetPos(collider_pos.x, collider_pos.y);
 
-
+	animationPlayer = animation;
 }
 
 void Player::OnCollision(Collider* c1, Collider* c2) {
@@ -139,7 +137,7 @@ void Player::MoveBackwardJumping() {
 }
 
 float Player::Jump() {
-	return -3.75f;
+	return -100.0f;
 }
 
 void PlayerInfo::SetState(playerstates state) {
@@ -166,24 +164,30 @@ void Player::ApplySpeed() {
 		if (!up)
 			speed.y = 0;
 		speed.y += player.gravity;
-		if (speed.y >= 2.0f)
-			speed.y = 2.0f;
-		position.y += speed.y;
+		if (speed.y >= 100.0f && !gravitySpeed) {
+			speed.y = 100.0f * dt;
+			gravitySpeed = true;
+		}
+		position.y += speed.y * dt;
 	}
 	else {
 		//no jump
 		if (down) { //down == true, there isn't floor
 			speed.y += player.gravity;
-			if (speed.y >= 2.0f)
-				speed.y = 2.0f;
+			if (speed.y >= 100.0f && !gravitySpeed) {
+				speed.y = 100.0f * dt;
+				gravitySpeed = true;
+			}
 			if (player.state == forward_ || player.state == idle_)
 				animation = &player.jump;
 			else if (player.state == backward_ || player.state == idle2_)
 				animation = &player.jump2;
-			position.y += speed.y;
+			position.y += speed.y * dt;
 		}
-		else if (down == false) //down == false, there is floor
+		else if (down == false) {//down == false, there is floor
 			speed.y = 0;
+			gravitySpeed = false;
+		}
 	}
 }
 
@@ -837,8 +841,7 @@ PlayerInfo::PlayerInfo(const PlayerInfo& i) :
 	thirdAttack(i.thirdAttack), thirdAttack2(i.thirdAttack2),
 	coll_size(i.coll_size), coll_offset(i.coll_offset),
 	gravity(i.gravity), speed(i.speed), state(i.state),
-	check_collision_offset(i.check_collision_offset)
-	
+	check_collision_offset(i.check_collision_offset)	
 {}
 
 PlayerInfo::~PlayerInfo() {}

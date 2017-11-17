@@ -1,5 +1,5 @@
 #include "j1App.h"
-#include "j1Enemies.h"
+#include "j1EntityFactory.h"
 #include "Monkey.h"
 
 #include "p2Defs.h"
@@ -14,19 +14,19 @@
 
 #include "SDL/include/SDL_timer.h"
 
-Monkey::Monkey(float x, float y, PathInfo* path) : Enemy(x, y, path)
+Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y, path)
 {
-	monkey = App->enemies->GetMonkeyInfo();
+	monkey = App->entities->GetMonkeyInfo();
 
 	///
 	animation = &monkey.r_idle;
 	monkeyState = MonkeyState::r_idle;
 
-	collider = App->collision->AddCollider({ 0, 0, monkey.coll_size.x + monkey.coll_offset.w, monkey.coll_size.y + monkey.coll_offset.h }, COLLIDER_TYPE::COLLIDER_MONKEY, App->enemies);
+	collider = App->collision->AddCollider({ 0, 0, monkey.coll_size.x + monkey.coll_offset.w, monkey.coll_size.y + monkey.coll_offset.h }, COLLIDER_TYPE::COLLIDER_MONKEY, App->entities);
 	collider_size = monkey.coll_size;
 
-	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
-	follow_pathfinding2 = App->collision->AddCollider({ (int)App->enemies->playerData->position.x - 50, (int)App->enemies->playerData->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
+	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
+	follow_pathfinding2 = App->collision->AddCollider({ (int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
 
 	speed = { 0.8f,0 };
 }
@@ -209,8 +209,8 @@ void Monkey::UpdatePathfinding()
 	// Create pathfinding
 	if (create_pathfinding) {
 		iPoint dest;
-		dest.x = (int)App->enemies->playerData->position.x;
-		dest.y = (int)App->enemies->playerData->position.y;
+		dest.x = (int)App->entities->playerData->position.x;
+		dest.y = (int)App->entities->playerData->position.y;
 
 		if (CreatePathfinding(dest)) {
 			pathfinding = true;
@@ -242,10 +242,10 @@ void Monkey::UpdatePathfinding()
 void Monkey::UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player)
 {
 	follow_pathfinding1->SetPos(i_pos.x - 30, i_pos.y - 30);
-	follow_pathfinding2->SetPos((int)App->enemies->playerData->position.x - 25, (int)App->enemies->playerData->position.y - 50);
+	follow_pathfinding2->SetPos((int)App->entities->playerData->position.x - 25, (int)App->entities->playerData->position.y - 50);
 
 	enemy = { i_pos.x - 30, i_pos.y - 30, 100, 100 };
-	player = { (int)App->enemies->playerData->position.x - 25, (int)App->enemies->playerData->position.y - 50, 100, 200 };
+	player = { (int)App->entities->playerData->position.x - 25, (int)App->entities->playerData->position.y - 50, 100, 200 };
 }
 
 bool Monkey::ResetPathfindingVariables()

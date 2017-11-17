@@ -21,8 +21,8 @@ class j1Map;
 class j1Particles;
 class j1Collision;
 class j1FadeToBlack;
-class j1Enemies;
 class j1PathFinding;
+class j1EntityFactory;
 
 class j1App
 {
@@ -99,7 +99,7 @@ public:
 	j1Particles*		particles;
 	j1Collision*		collision;
 	j1FadeToBlack*		fade;
-	j1Enemies*			enemies;
+	j1EntityFactory*	entities;
 	j1PathFinding*		pathfinding;
 
 private:
@@ -123,6 +123,7 @@ private:
 	j1Timer clock;
 	j1PerfTimer perfClock;
 	uint capFrames;
+	bool toCap = true;
 
 };
 

@@ -1,5 +1,5 @@
-#ifndef __ENEMY_H__
-#define __ENEMY_H__
+#ifndef __ENTITY_H__
+#define __ENTITY_H__
 
 #include "p2Point.h"
 #include "Animation.h"
@@ -8,17 +8,19 @@ struct SDL_Texture;
 struct Collider;
 struct PathInfo;
 
-class Enemy
+class Entity
 {
 protected:
-	Animation* animation = nullptr;
+	
 	Collider* collider = nullptr;
 
 	PathInfo* path_info = nullptr;
 	const p2DynArray<iPoint>* last_pathfinding;
 	p2DynArray<iPoint> mlast_pathfinding;
+	Animation* animation = nullptr;
 
 public:
+	
 
 	float deltaTime;
 
@@ -41,8 +43,8 @@ public:
 	iPoint collider_size;
 
 public:
-	Enemy(float x, float y, PathInfo* path);
-	virtual ~Enemy();
+	Entity(float x, float y, PathInfo* path);
+	virtual ~Entity();
 
 	const Collider* GetCollider() const;
 
@@ -54,4 +56,4 @@ public:
 	virtual void OnCollision(Collider* collider, Collider* c2);
 };
 
-#endif // __ENEMY_H__
+#endif // __ENTITY_H__

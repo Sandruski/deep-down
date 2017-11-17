@@ -1,7 +1,7 @@
 #ifndef __IMP_H__
 #define __IMP_H__
 
-#include "Enemy.h"
+#include "Entity.h"
 
 enum ImpState {
 	r_shield_idle,
@@ -33,7 +33,7 @@ struct ImpInfo
 	SDL_Rect coll_offset;
 };
 
-class Imp : public Enemy
+class Imp : public Entity
 {
 public:
 

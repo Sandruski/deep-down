@@ -4,14 +4,13 @@
 #include "j1Module.h"
 #include "j1App.h"
 
-#include "j1Enemies.h"
+#include "j1EntityFactory.h"
 #include "j1Render.h"
 
-#include "Enemy.h"
+#include "Entity.h"
 #include "Imp.h"
 #include "CatPeasant.h"
 #include "Monkey.h"
-#include "Plant.h"
 #include "j1Textures.h"
 #include "j1Scene.h"
 #include "j1Map.h"
@@ -20,20 +19,20 @@
 
 #define SPAWN_MARGIN 50
 
-j1Enemies::j1Enemies()
+j1EntityFactory::j1EntityFactory()
 {
 	name.create("enemies");
 
-	for (uint i = 0; i < MAX_ENEMIES; ++i)
-		enemies[i] = nullptr;
+	for (uint i = 0; i < MAX_ENTITIES; ++i)
+		entities[i] = nullptr;
 }
 
 // Destructor
-j1Enemies::~j1Enemies()
+j1EntityFactory::~j1EntityFactory()
 {
 }
 
-bool j1Enemies::Awake(pugi::xml_node& config) {
+bool j1EntityFactory::Awake(pugi::xml_node& config) {
 
 	bool ret = true;
 	
@@ -388,28 +387,27 @@ bool j1Enemies::Awake(pugi::xml_node& config) {
 	return ret;
 }
 
-bool j1Enemies::Start()
+bool j1EntityFactory::Start()
 {
 	// Load player textures
-	LOG("Loading enemies textures");
+	LOG("Loading entities textures");
 	CatPeasantTex = App->tex->Load(CatPeasant_spritesheet.GetString());
 	MonkeyPlantTex = App->tex->Load(MonkeyPlant_spritesheet.GetString());
 	ImpTex = App->tex->Load(Imp_spritesheet.GetString());
 	PlayerTex = App->tex->Load(Player_spritesheet.GetString());
 
-
 	return true;
 }
 
-bool j1Enemies::PreUpdate()
+bool j1EntityFactory::PreUpdate()
 {
-	for (uint i = 0; i < MAX_ENEMIES; ++i)
+	for (uint i = 0; i < MAX_ENTITIES; ++i)
 	{
-		if (queue[i].type != ENEMY_TYPES::NO_TYPE)
+		if (queue[i].type != ENTITY_TYPES::NO_TYPE)
 		{
-			SpawnEnemy(queue[i]);
-			queue[i].type = ENEMY_TYPES::NO_TYPE;
-			LOG("Spawning enemy at %d", queue[i].y * App->scene->scale);
+			SpawnEntity(queue[i]);
+			queue[i].type = ENTITY_TYPES::NO_TYPE;
+			LOG("Spawning entity at %d", queue[i].y * App->scene->scale);
 		}
 	}
 	
@@ -417,28 +415,27 @@ bool j1Enemies::PreUpdate()
 }
 
 // Called before render is available
-bool j1Enemies::Update(float dt)
+bool j1EntityFactory::Update(float dt)
 {
-	for (uint i = 0; i < MAX_ENEMIES; ++i) {
-		if (enemies[i] != nullptr) {
-			LOG("ENEMY[%d]: ", i);
-			enemies[i]->Move(dt);
+	for (uint i = 0; i < MAX_ENTITIES; ++i) {
+		if (entities[i] != nullptr) {
+			entities[i]->Move(dt);
 		}
 	}
 
 	// Draw Map
 	App->map->Draw();
 
-	for (uint i = 0; i < MAX_ENEMIES; ++i)
-		if (enemies[i] != nullptr) {
-			if (enemies[i]->type == ENEMY_TYPES::CAT_PEASANT_)
-				enemies[i]->Draw(CatPeasantTex);
-			else if (enemies[i]->type == ENEMY_TYPES::IMP_)
-				enemies[i]->Draw(ImpTex);
-			else if (enemies[i]->type == ENEMY_TYPES::MONKEY_)
-				enemies[i]->Draw(MonkeyPlantTex);
-			else if (enemies[i]->type == ENEMY_TYPES::PLAYER_)
-				enemies[i]->Draw(PlayerTex);
+	for (uint i = 0; i < MAX_ENTITIES; ++i)
+		if (entities[i] != nullptr) {
+			if (entities[i]->type == ENTITY_TYPES::CAT_PEASANT_)
+				entities[i]->Draw(CatPeasantTex);
+			else if (entities[i]->type == ENTITY_TYPES::IMP_)
+				entities[i]->Draw(ImpTex);
+			else if (entities[i]->type == ENTITY_TYPES::MONKEY_)
+				entities[i]->Draw(MonkeyPlantTex);
+			else if (entities[i]->type == ENTITY_TYPES::PLAYER_)
+				entities[i]->Draw(PlayerTex);
 		}
 
 	// Draw Above layer
@@ -447,12 +444,12 @@ bool j1Enemies::Update(float dt)
 	return true;
 }
 
-bool j1Enemies::PostUpdate()
+bool j1EntityFactory::PostUpdate()
 {
 	// check camera position to decide what to spawn
-	for (uint i = 0; i < MAX_ENEMIES; ++i)
+	for (uint i = 0; i < MAX_ENTITIES; ++i)
 	{
-		if (enemies[i] != nullptr)
+		if (entities[i] != nullptr)
 		{
 		//	if ((enemies[i]->position.y >((App->scene_1->current_start_pos + 114) - App->scene_1->cont + 88) + SPAWN_MARGIN) || enemies[i]->Esperanza == false)
 		//	{
@@ -466,9 +463,9 @@ bool j1Enemies::PostUpdate()
 }
 
 // Called before quitting
-bool j1Enemies::CleanUp()
+bool j1EntityFactory::CleanUp()
 {
-	LOG("Freeing all enemies");
+	LOG("Freeing all entities");
 
 	// Remove all paths
 	p2List_item<PathInfo*>* item;
@@ -486,32 +483,32 @@ bool j1Enemies::CleanUp()
 	App->tex->UnLoad(ImpTex);
 	App->tex->UnLoad(PlayerTex);
 
-	for (uint i = 0; i < MAX_ENEMIES; ++i)
+	for (uint i = 0; i < MAX_ENTITIES; ++i)
 	{
-		if (queue[i].type != ENEMY_TYPES::NO_TYPE)
+		if (queue[i].type != ENTITY_TYPES::NO_TYPE)
 		{
-			queue[i].type = ENEMY_TYPES::NO_TYPE;
+			queue[i].type = ENTITY_TYPES::NO_TYPE;
 			queue[i].x = NULL;
 			queue[i].y = NULL;
 		}
 
-		if (enemies[i] != nullptr)
+		if (entities[i] != nullptr)
 		{
-			delete enemies[i];
-			enemies[i] = nullptr;
+			delete entities[i];
+			entities[i] = nullptr;
 		}
 	}
 
 	return true;
 }
 
-bool j1Enemies::AddEnemy(ENEMY_TYPES type, uint path)
+bool j1EntityFactory::AddEntity(ENTITY_TYPES type, uint path)
 {
 	bool ret = false;
 
-	for (uint i = 0; i < MAX_ENEMIES; ++i)
+	for (uint i = 0; i < MAX_ENTITIES; ++i)
 	{
-		if (queue[i].type == ENEMY_TYPES::NO_TYPE)
+		if (queue[i].type == ENTITY_TYPES::NO_TYPE)
 		{
 			queue[i].path = GetPathByIndex(path);
 			queue[i].type = type;
@@ -533,63 +530,58 @@ bool j1Enemies::AddEnemy(ENEMY_TYPES type, uint path)
 	return ret;
 }
 
-void j1Enemies::SpawnEnemy(const EnemyInfo& info)
+void j1EntityFactory::SpawnEntity(const EntityInfo& info)
 {
-	// find room for the new enemy
+	// find room for the new entity
 	uint i = 0;
-	for (; enemies[i] != nullptr && i < MAX_ENEMIES; ++i);
+	for (; entities[i] != nullptr && i < MAX_ENTITIES; ++i);
 
-	if (i != MAX_ENEMIES)
+	if (i != MAX_ENTITIES)
 	{
 		switch (info.type)
 		{	
-		case ENEMY_TYPES::CAT_PEASANT_:
-			enemies[i] = new CatPeasant(info.x, info.y, info.path);
-			enemies[i]->type = ENEMY_TYPES::CAT_PEASANT_;
+		case ENTITY_TYPES::CAT_PEASANT_:
+			entities[i] = new CatPeasant(info.x, info.y, info.path);
+			entities[i]->type = ENTITY_TYPES::CAT_PEASANT_;
 			break;
 
-		case ENEMY_TYPES::IMP_:
-			enemies[i] = new Imp(info.x, info.y, info.path);
-			enemies[i]->type = ENEMY_TYPES::IMP_;
-			break;
-		
-		case ENEMY_TYPES::PLANT_:
-			enemies[i] = new Plant(info.x, info.y, info.path);
-			enemies[i]->type = ENEMY_TYPES::PLANT_;
+		case ENTITY_TYPES::IMP_:
+			entities[i] = new Imp(info.x, info.y, info.path);
+			entities[i]->type = ENTITY_TYPES::IMP_;
 			break;
 
-		case ENEMY_TYPES::MONKEY_:
-			enemies[i] = new Monkey(info.x, info.y, info.path);
-			enemies[i]->type = ENEMY_TYPES::MONKEY_;
+		case ENTITY_TYPES::MONKEY_:
+			entities[i] = new Monkey(info.x, info.y, info.path);
+			entities[i]->type = ENTITY_TYPES::MONKEY_;
 			break;
 
-		case ENEMY_TYPES::PLAYER_:
+		case ENTITY_TYPES::PLAYER_:
 			playerData = new Player(info.x, info.y, info.path);
-			enemies[i] = playerData;
-			enemies[i]->type = ENEMY_TYPES::PLAYER_;
+			entities[i] = playerData;
+			entities[i]->type = ENTITY_TYPES::PLAYER_;
 
 			break;
 		}
 	}
 }
 
-void j1Enemies::OnCollision(Collider* c1, Collider* c2)
+void j1EntityFactory::OnCollision(Collider* c1, Collider* c2)
 {
-	for (uint i = 0; i < MAX_ENEMIES; ++i)
+	for (uint i = 0; i < MAX_ENTITIES; ++i)
 	{
 		if (c1->type == COLLIDER_ARROW || c2->type == COLLIDER_ARROW) {
-			if (enemies[i] != nullptr && (enemies[i]->GetCollider() == c1 || enemies[i]->GetCollider() == c2)) {
+			if (entities[i] != nullptr && (entities[i]->GetCollider() == c1 || entities[i]->GetCollider() == c2)) {
 
-				enemies[i]->OnCollision(c1, c2);
-				delete enemies[i];
-				enemies[i] = nullptr;
+				entities[i]->OnCollision(c1, c2);
+				delete entities[i];
+				entities[i] = nullptr;
 				break;
 			}
 		}	
 	}
 }
 
-bool j1Enemies::LoadPathsInfo()
+bool j1EntityFactory::LoadPathsInfo()
 {
 	bool ret = false;
 
@@ -606,7 +598,7 @@ bool j1Enemies::LoadPathsInfo()
 	return ret;
 }
 
-bool j1Enemies::SaveRepetitivePaths(uint& index) 
+bool j1EntityFactory::SaveRepetitivePaths(uint& index)
 {
 	bool ret = false;
 
@@ -656,7 +648,7 @@ bool j1Enemies::SaveRepetitivePaths(uint& index)
 	return ret;
 }
 
-bool j1Enemies::SaveStartEndPaths(uint& index) 
+bool j1EntityFactory::SaveStartEndPaths(uint& index)
 {
 	bool ret = false;
 
@@ -692,22 +684,22 @@ bool j1Enemies::SaveStartEndPaths(uint& index)
 	return ret;
 }
 
-bool j1Enemies::AddEnemies()
+bool j1EntityFactory::AddEntities()
 {
 	bool ret = false;
 
-	AddEnemy(PLAYER_, 0);
+	AddEntity(PLAYER_, 0);
 
 	int index = 1;
 	p2SString tmp("%s%d", "Enemy", index);
 	Object* obj = App->map->data.GetObjectByName("Enemies", tmp);
 
 	while (obj != nullptr) {
-		// Add enemy
-		AddEnemy((ENEMY_TYPES)obj->type, index);
+		// Add entity
+		AddEntity((ENTITY_TYPES)obj->type, index);
 		ret = true;
 
-		// Search next enemy
+		// Search next entity
 		index++;
 		p2SString tmp("%s%d", "Enemy", index);
 		obj = App->map->data.GetObjectByName("Enemies", tmp);
@@ -717,11 +709,11 @@ bool j1Enemies::AddEnemies()
 	obj = App->map->data.GetObjectByName("Enemies", tmp1);
 
 	while (obj != nullptr) {
-		// Add enemy
-		AddEnemy((ENEMY_TYPES)obj->type, index);
+		// Add entity
+		AddEntity((ENTITY_TYPES)obj->type, index);
 		ret = true;
 
-		// Search next enemy
+		// Search next entity
 		index++;
 		p2SString tmp1("%s%d%s", "Enemy", index, "S");
 		obj = App->map->data.GetObjectByName("Enemies", tmp1);
@@ -733,7 +725,7 @@ bool j1Enemies::AddEnemies()
 	return ret;
 }
 
-PathInfo* j1Enemies::GetPathByIndex(uint index) const {
+PathInfo* j1EntityFactory::GetPathByIndex(uint index) const {
 
 	PathInfo* path = nullptr;
 	p2List_item<PathInfo*>* iterator = paths.start;
