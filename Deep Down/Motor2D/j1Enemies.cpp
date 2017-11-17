@@ -45,6 +45,8 @@ bool j1Enemies::Awake(pugi::xml_node& config) {
 	MonkeyPlant_spritesheet = node.attribute("name").as_string();
 	node = node.next_sibling("spritesheet");
 	Imp_spritesheet = node.attribute("name").as_string();
+	node = node.next_sibling("spritesheet");
+	Player_spritesheet = node.attribute("name").as_string();
 	//_load_texture_paths
 
 	// IMP
@@ -195,6 +197,214 @@ bool j1Enemies::Awake(pugi::xml_node& config) {
 	//_load_animations
 	//_MONKEY
 
+	//PLAYER
+	collider_node = config.child("types").child("player").child("general");
+	player.coll_offset = { collider_node.child("collider").attribute("x").as_int(), collider_node.child("collider").attribute("y").as_int(), collider_node.child("collider").attribute("w").as_int(), collider_node.child("collider").attribute("h").as_int() };
+	player.gravity = collider_node.child("gravity").attribute("value").as_float();
+	player.speed = { collider_node.child("speed").attribute("x").as_float(), collider_node.child("speed").attribute("y").as_float() };
+
+	//idle
+	node = animations_node.child("idle");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//idle2
+	node = animations_node.child("idle2");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//forward
+	node = animations_node.child("forward");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//backward
+	node = animations_node.child("backward");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//crouch
+	node = animations_node.child("crouch");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//crouch2
+	node = animations_node.child("crouch2");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//shot
+	node = animations_node.child("shot");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//shot2
+	node = animations_node.child("shot2");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//crouchShot
+	node = animations_node.child("crouchShot");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//crouchShot2
+	node = animations_node.child("crouchShot2");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//jump
+	node = animations_node.child("jump");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//jump2
+	node = animations_node.child("jump2");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//punished
+	node = animations_node.child("punished");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//punished2
+	node = animations_node.child("punished2");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+
+	//dash
+	node = animations_node.child("dash");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//dash2
+	node = animations_node.child("dash2");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//firstAttack
+	node = animations_node.child("firstAttack");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//firstAttack2
+	node = animations_node.child("firstAttack2");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//secondAttack
+	node = animations_node.child("secondAttack");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//secondAttack2
+	node = animations_node.child("secondAttack2");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//thirdAttack
+	node = animations_node.child("thirdAttack");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//thirdAttack2
+	node = animations_node.child("thirdAttack2");
+	imp.r_shield_idle.speed = node.attribute("speed").as_float();
+	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+
+
+
 	return ret;
 }
 
@@ -205,6 +415,7 @@ bool j1Enemies::Start()
 	CatPeasantTex = App->tex->Load(CatPeasant_spritesheet.GetString());
 	MonkeyPlantTex = App->tex->Load(MonkeyPlant_spritesheet.GetString());
 	ImpTex = App->tex->Load(Imp_spritesheet.GetString());
+	PlayerTex = App->tex->Load(Player_spritesheet.GetString());
 
 	// Pathfinding collision data
 	App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (uchar*)App->map->collisionLayer->data);
@@ -233,7 +444,7 @@ bool j1Enemies::Update(float dt)
 	for (uint i = 0; i < MAX_ENEMIES; ++i) {
 		if (enemies[i] != nullptr) {
 			LOG("ENEMY[%d]: ", i);
-			enemies[i]->Move();
+			enemies[i]->Move(dt);
 		}
 	}
 
@@ -245,6 +456,8 @@ bool j1Enemies::Update(float dt)
 				enemies[i]->Draw(ImpTex);
 			else if (enemies[i]->type == ENEMY_TYPES::MONKEY_)
 				enemies[i]->Draw(MonkeyPlantTex);
+			else if (enemies[i]->type == ENEMY_TYPES::PLAYER_)
+				enemies[i]->Draw(PlayerTex);
 		}
 
 	return true;
@@ -287,6 +500,7 @@ bool j1Enemies::CleanUp()
 	App->tex->UnLoad(CatPeasantTex);
 	App->tex->UnLoad(MonkeyPlantTex);
 	App->tex->UnLoad(ImpTex);
+	App->tex->UnLoad(PlayerTex);
 
 	for (uint i = 0; i < MAX_ENEMIES; ++i)
 	{
@@ -363,6 +577,13 @@ void j1Enemies::SpawnEnemy(const EnemyInfo& info)
 		case ENEMY_TYPES::MONKEY_:
 			enemies[i] = new Monkey(info.x, info.y, info.path);
 			enemies[i]->type = ENEMY_TYPES::MONKEY_;
+			break;
+
+		case ENEMY_TYPES::PLAYER_:
+			playerData = new Player(info.x, info.y, info.path);
+			enemies[i] = playerData;
+			enemies[i]->type = ENEMY_TYPES::PLAYER_;
+
 			break;
 		}
 	}
@@ -519,6 +740,8 @@ bool j1Enemies::AddEnemies()
 		p2SString tmp1("%s%d%s", "Enemy", index, "S");
 		obj = App->map->data.GetObjectByName("Enemies", tmp1);
 	}
+
+	AddEnemy(PLAYER_, 0);
 
 	if (obj != nullptr)
 		RELEASE(obj);

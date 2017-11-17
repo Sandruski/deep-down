@@ -7,8 +7,9 @@
 #include "p2Point.h"
 #include "Imp.h"
 #include "Monkey.h"
+#include "Player.h"
 
-#define MAX_ENEMIES 4
+#define MAX_ENEMIES 10
 
 struct SDL_Texture;
 
@@ -19,6 +20,7 @@ enum ENEMY_TYPES
 	CAT_PEASANT_,
 	MONKEY_,
 	PLANT_,
+	PLAYER_,
 	
 };
 
@@ -75,6 +77,7 @@ public:
 	// Get enemies info
 	ImpInfo& GetImpInfo() { return imp; }
 	MonkeyInfo& GetMonkeyInfo() { return monkey; }
+	PlayerInfo& GetPlayerInfo() { return player; }
 
 	// Get paths info
 	PathInfo* GetPathByIndex(uint index) const;
@@ -91,10 +94,12 @@ private:
 	p2SString CatPeasant_spritesheet;
 	p2SString MonkeyPlant_spritesheet;
 	p2SString Imp_spritesheet;
+	p2SString Player_spritesheet;
 
 	// Enemies info
 	ImpInfo imp;
 	MonkeyInfo monkey;
+	PlayerInfo player;
 
 	// Paths info list
 	p2List<PathInfo*> paths;
@@ -103,6 +108,9 @@ public:
 	SDL_Texture* CatPeasantTex = nullptr;
 	SDL_Texture* MonkeyPlantTex = nullptr;
 	SDL_Texture* ImpTex = nullptr;
+	SDL_Texture* PlayerTex = nullptr;
+
+	Player* playerData;
 
 };
 

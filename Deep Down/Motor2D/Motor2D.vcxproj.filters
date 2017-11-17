@@ -73,6 +73,9 @@
     <ClCompile Include="j1Timer.cpp">
       <Filter>Game\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -167,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="j1Timer.h">
       <Filter>Game\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Game\Modules\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
