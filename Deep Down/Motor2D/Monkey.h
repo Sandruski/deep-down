@@ -12,6 +12,11 @@ enum MonkeyState {
 	l_hit
 };
 
+enum StartEndPath {
+	start,
+	end
+};
+
 struct MonkeyInfo
 {
 	Animation r_idle, l_idle;
@@ -20,11 +25,6 @@ struct MonkeyInfo
 
 	iPoint coll_size;
 	SDL_Rect coll_offset;
-
-	MonkeyInfo();
-	MonkeyInfo(const MonkeyInfo& i);
-	~MonkeyInfo();
-
 };
 
 class Monkey : public Enemy
@@ -41,43 +41,57 @@ private:
 	void GeneralStatesMachine();
 	void UpdateDirection();
 
+	// Pathfinding
+	void UpdatePathfinding();
+
+	void UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player);
+	bool ResetPathfindingVariables();
+	void UpdateMovement(iPoint to_go);
+	bool CreatePathfinding(iPoint destination);
+	bool Pathfind();
+	//_pathfinding
+
+	// Normal path
+	void UpdatePath();
+
+	bool ResetNormalPathVariables();
+	void RecalculatePath();
+	void FindDestination(iPoint& to_go);
+	//_normal_path
+
 private:
 
-	const p2DynArray<iPoint>* last_pathfinding;
+	float dt;
 
-	MonkeyInfo* monkey;
+	MonkeyInfo monkey;
 	MonkeyState monkeyState;
 
 	bool up, down, left, right;
 
-	// Keep track of enemy movement
-	iPoint last_pos;
-
 	// Pathfinding
 	uint pathfinding_index = 0;
+	uint pathfinding_size = 0;
 
 	bool create_pathfinding;
+	bool pathfinding_stop;
 	bool pathfinding_finished = true;
 	bool pathfinding;
-	bool pathfinding_stop;
+	bool pathfind;
 
 	Collider* follow_pathfinding1;
 	Collider* follow_pathfinding2;
 	//_pathfinding
 
 	// Normal path
-	uint normal_path_index = 0;
+	StartEndPath normal_path_index = StartEndPath::start;
+	StartEndPath last_normal_path_index = StartEndPath::end;
 
-	bool repeat_normal_path;
-	int last_normal_path_index;
+	bool normal_path_finished = true;
+	bool create_normal_path;
+	bool do_normal_path;
 
-	bool create_path = true;
-
-	bool do_path;
-
-	bool goal_is_start;
-	iPoint goal;
-
+	bool create_pathfinding_back;
+	bool going_back_home;
 	//_normal_path
 };
 

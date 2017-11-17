@@ -26,7 +26,11 @@ public:
 	iPoint i_pos;
 	iPoint start_pos;
 
-	fPoint speed;
+	fPoint speed = { 1,1 };
+
+	// Keep track of enemy movement
+	iPoint last_pos;
+
 	//_enemy_movement
 
 	iPoint collider_pos;

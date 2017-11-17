@@ -26,11 +26,6 @@ struct ImpInfo
 
 	iPoint coll_size;
 	SDL_Rect coll_offset;
-
-	ImpInfo();
-	ImpInfo(const ImpInfo& i);
-	~ImpInfo();
-
 };
 
 class Imp : public Enemy
@@ -52,6 +47,7 @@ private:
 
 	void UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player);
 	bool ResetPathfindingVariables();
+	void UpdateMovement(iPoint to_go);
 	bool CreatePathfinding(iPoint destination);
 	bool Pathfind();
 	//_pathfinding
@@ -64,10 +60,8 @@ private:
 	void FlipPath(PathInfo* path_info);
 	//_normal_path
 
-	void UpdateMovement(iPoint to_go);
-
-
 private:
+
 	float dt;
 
 	ImpInfo imp;
@@ -77,24 +71,17 @@ private:
 	bool stop_x, stop_y;
 	bool throw_bomb;
 
-	// Gravity
 
-
-	// Keep track of enemy movement
-	iPoint last_pos;
 
 	// Pathfinding
 	uint pathfinding_index = 0;
 	uint pathfinding_size = 0;
 
 	bool create_pathfinding;
+	bool pathfinding_stop;
 	bool pathfinding_finished = true;
 	bool pathfinding;
 	bool pathfind;
-
-	bool pathfinding_stop;
-
-
 	
 	Collider* follow_pathfinding1;
 	Collider* follow_pathfinding2;

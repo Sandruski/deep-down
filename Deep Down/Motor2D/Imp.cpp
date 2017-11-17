@@ -28,7 +28,6 @@ Imp::Imp(float x, float y, PathInfo* path) : Enemy(x, y, path)
 	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
 	follow_pathfinding2 = App->collision->AddCollider({ (int)App->player->position.x - 50, (int)App->player->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
 
-	// Needs organization
 	speed = { 0.8f, 1 };
 }
 
@@ -409,19 +408,3 @@ void Imp::FlipPath(PathInfo* path_info) {
 	while (start < end)
 		SWAP(*start++, *end--);
 }
-
-// -------------------------------------------------------------
-// -------------------------------------------------------------
-
-ImpInfo::ImpInfo() {}
-
-ImpInfo::ImpInfo(const ImpInfo& i) :
-	r_shield_idle(i.r_shield_idle), l_shield_idle(i.l_shield_idle),
-	r_shield_hurt(i.r_shield_hurt), l_shield_hurt(i.l_shield_hurt),
-	r_jump(i.r_jump), l_jump(i.l_jump),
-	r_throw_bomb(i.r_throw_bomb), l_throw_bomb(i.l_throw_bomb),
-	r_shield_walk(i.r_shield_walk), l_shield_walk(i.l_shield_walk),
-	coll_size(i.coll_size), coll_offset(i.coll_offset)
-{}
-
-ImpInfo::~ImpInfo() {}
