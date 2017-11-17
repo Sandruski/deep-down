@@ -9,7 +9,6 @@
 #include "j1Collision.h"
 #include "j1Scene.h"
 #include "j1Audio.h"
-#include "j1Player.h"
 #include "j1Map.h"
 #include "j1Window.h"
 

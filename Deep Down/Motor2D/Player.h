@@ -37,6 +37,7 @@ struct PlayerInfo
 
 	iPoint coll_size;
 	SDL_Rect coll_offset;
+	uint check_collision_offset;
 
 	playerstates state;
 	float gravity;
@@ -80,9 +81,6 @@ public:
 
 public:
 
-	// Collisions
-	uint check_collision_offset;
-
 	// General info
 	playerstates default_state;
 
@@ -101,6 +99,7 @@ private:
 	float dt;
 
 	// Animations
+public:
 	PlayerInfo player;
 };
 

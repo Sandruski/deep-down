@@ -3,7 +3,6 @@
 #include "Plant.h"
 
 #include "j1Collision.h"
-#include "j1Player.h"
 
 #include "SDL/include/SDL_timer.h"
 
@@ -25,7 +24,7 @@ void Plant::Move()
 	// use 'start_pos' to know the start position of the enemy
 	// update their position by using 'position'
 
-	position.x = App->player->position.x;
+	position.x = App->enemies->playerData->position.x;
 	position.y = start_pos.y;
 
 }

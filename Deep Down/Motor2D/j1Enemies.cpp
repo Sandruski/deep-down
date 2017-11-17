@@ -202,7 +202,7 @@ bool j1Enemies::Awake(pugi::xml_node& config) {
 	player.coll_offset = { collider_node.child("collider").attribute("x").as_int(), collider_node.child("collider").attribute("y").as_int(), collider_node.child("collider").attribute("w").as_int(), collider_node.child("collider").attribute("h").as_int() };
 	player.gravity = collider_node.child("gravity").attribute("value").as_float();
 	player.speed = { collider_node.child("speed").attribute("x").as_float(), collider_node.child("speed").attribute("y").as_float() };
-
+	player.check_collision_offset = collider_node.child("check_collision").attribute("offset").as_uint();
 	// Load animations
 	animations_node = config.child("types").child("player").child("animations");
 
@@ -397,8 +397,6 @@ bool j1Enemies::Start()
 	ImpTex = App->tex->Load(Imp_spritesheet.GetString());
 	PlayerTex = App->tex->Load(Player_spritesheet.GetString());
 
-	// Pathfinding collision data
-	App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (uchar*)App->map->collisionLayer->data);
 
 	return true;
 }
@@ -428,6 +426,9 @@ bool j1Enemies::Update(float dt)
 		}
 	}
 
+	// Draw Map
+	App->map->Draw();
+
 	for (uint i = 0; i < MAX_ENEMIES; ++i)
 		if (enemies[i] != nullptr) {
 			if (enemies[i]->type == ENEMY_TYPES::CAT_PEASANT_)
@@ -439,6 +440,9 @@ bool j1Enemies::Update(float dt)
 			else if (enemies[i]->type == ENEMY_TYPES::PLAYER_)
 				enemies[i]->Draw(PlayerTex);
 		}
+
+	// Draw Above layer
+	App->map->DrawAboveLayer();
 
 	return true;
 }
@@ -692,6 +696,8 @@ bool j1Enemies::AddEnemies()
 {
 	bool ret = false;
 
+	AddEnemy(PLAYER_, 0);
+
 	int index = 1;
 	p2SString tmp("%s%d", "Enemy", index);
 	Object* obj = App->map->data.GetObjectByName("Enemies", tmp);
@@ -720,8 +726,6 @@ bool j1Enemies::AddEnemies()
 		p2SString tmp1("%s%d%s", "Enemy", index, "S");
 		obj = App->map->data.GetObjectByName("Enemies", tmp1);
 	}
-
-	AddEnemy(PLAYER_, 0);
 
 	if (obj != nullptr)
 		RELEASE(obj);

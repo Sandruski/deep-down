@@ -12,7 +12,6 @@
 #include "j1Render.h"
 #include "j1Window.h"
 #include "j1Map.h"
-#include "j1Player.h"
 #include "j1Scene.h"
 #include "j1Enemies.h"
 #include "j1Pathfinding.h"
@@ -71,13 +70,6 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	//Boss
-	bossPosition = { App->player->position.x, 1200 };
-	bossColliderPos = { (int)bossPosition.x, (int)bossPosition.y };
-	bossColl = App->collision->AddCollider({ bossColliderPos.x, bossColliderPos.y, 203, 298 }, COLLIDER_BOSS, this);
-	
-	LOG("Loading boss textures");
-	boss = App->tex->Load("Assets/Sprites/Textures/Boss.png");
 
 	// Change between maps
 	if (index == 0) {
@@ -97,22 +89,28 @@ bool j1Scene::Start()
 
 	//App->player->SetState(stop_);
 
-	if (!loading) {
-		App->player->SetState(App->player->default_state);
-
-		// Player start position
-		App->player->startPos = App->map->data.GetObjectPosition("Player", "StartPos");
-		App->player->position = App->player->startPos;
-
-		gate = false;
-		fx = false;
-	}
-
 	// Load enemies
 	if (App->enemies->LoadPathsInfo())
 		App->enemies->AddEnemies();
 
 	loading = false;
+
+	if (!loading && App->enemies->playerData != nullptr) {
+		App->enemies->playerData->player.SetState(App->enemies->playerData->default_state);
+
+		// Player start position
+		App->enemies->playerData->start_pos = App->map->data.GetObjectPosition("Player", "StartPos");
+		App->enemies->playerData->position = App->enemies->playerData->start_pos;
+
+		gate = false;
+		fx = false;
+	}	
+
+
+
+	// Pathfinding collision data
+	App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (uchar*)App->map->collisionLayer->data);
+
 
 	return true;
 }
@@ -131,9 +129,6 @@ bool j1Scene::Update(float dt)
 
 	// Move camera
 	MoveCamera();
-
-	// Draw
-	DrawEverything();
 	
 	// Set window title
 	App->input->GetMousePosition(mouse.x, mouse.y);
@@ -169,7 +164,6 @@ bool j1Scene::CleanUp()
 	LOG("Freeing Scene %d", index);
 	App->audio->PauseMusic();
 	App->map->UnLoad();
-	App->tex->UnLoad(boss);
 
 	if (bossColl != nullptr)
 		App->collision->EraseCollider(bossColl);
@@ -222,7 +216,7 @@ bool j1Scene::Save(pugi::xml_node& save) const {
 bool j1Scene::Load(pugi::xml_node& save) {
 	bool ret = false;
 
-	App->player->SetState(stop_);
+	App->enemies->playerData->player.SetState(stop_);
 
 	if (save.child("gate") != NULL) {
 		gate = save.child("gate").attribute("opened").as_bool();
@@ -245,12 +239,12 @@ bool j1Scene::Load(pugi::xml_node& save) {
 void j1Scene::DebugKeys() {
 	// F1: start from the beginning of the first level
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { 
-		if (App->player->GetState() == forward_ || App->player->GetState() == backward_
-			|| App->player->GetState() == idle_ || App->player->GetState() == idle2_) {
-			App->player->SetState(stop_);
+		if (App->enemies->playerData->player.GetState() == forward_ || App->enemies->playerData->player.GetState() == backward_
+			|| App->enemies->playerData->player.GetState() == idle_ || App->enemies->playerData->player.GetState() == idle2_) {
+			App->enemies->playerData->player.SetState(stop_);
 
 			if (index == 0) {
-				App->player->position = App->player->startPos;
+				App->enemies->playerData->position = App->enemies->playerData->start_pos;
 				gate = false;
 				fx = false;
 			}
@@ -263,11 +257,11 @@ void j1Scene::DebugKeys() {
 
 	// F2: start from the beginning of the current level
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) { 
-		if (App->player->GetState() == forward_ || App->player->GetState() == backward_
-			|| App->player->GetState() == idle_ || App->player->GetState() == idle2_) {
-			App->player->SetState(stop_);
-			App->player->position = App->player->startPos;
-			App->scene->bossPosition = { App->player->position.x, 1200 };
+		if (App->enemies->playerData->player.GetState() == forward_ || App->enemies->playerData->player.GetState() == backward_
+			|| App->enemies->playerData->player.GetState() == idle_ || App->enemies->playerData->player.GetState() == idle2_) {
+			App->enemies->playerData->player.SetState(stop_);
+			App->enemies->playerData->position = App->enemies->playerData->start_pos;
+			App->scene->bossPosition = { App->enemies->playerData->position.x, 1200 };
 			gate = false;
 			fx = false;
 		}
@@ -276,15 +270,15 @@ void j1Scene::DebugKeys() {
 	// F3: show colliders
 
 	// F4: change between maps
-	if ((App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || App->map->data.CheckIfEnter("Player", "EndPos", App->player->position)) && App->fade->GetStep() == 0) {
-		if (App->player->GetState() == forward_ || App->player->GetState() == backward_
-			|| App->player->GetState() == idle_ || App->player->GetState() == idle2_) {
+	if ((App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || App->map->data.CheckIfEnter("Player", "EndPos", App->enemies->playerData->position)) && App->fade->GetStep() == 0) {
+		if (App->enemies->playerData->player.GetState() == forward_ || App->enemies->playerData->player.GetState() == backward_
+			|| App->enemies->playerData->player.GetState() == idle_ || App->enemies->playerData->player.GetState() == idle2_) {
 			if (index == 0)
 				index = 1;
 			else
 				index = 0;
 
-			App->player->SetState(stop_);
+			App->enemies->playerData->player.SetState(stop_);
 			App->fade->FadeToBlack(this, this, 1);
 		}
 	}
@@ -295,7 +289,7 @@ void j1Scene::DebugKeys() {
 
 	// F6: load the previous state
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		App->scene->bossPosition = { App->player->position.x, 1200 };
+		App->scene->bossPosition = { App->enemies->playerData->position.x, 1200 };
 		App->LoadGame();
 	}
 
@@ -331,32 +325,4 @@ void j1Scene::DebugKeys() {
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 		App->map->camera_blit = !App->map->camera_blit;
 
-}
-
-void  j1Scene::DrawEverything() {
-
-	BROFILER_CATEGORY("DrawEverything", Profiler::Color::Azure);
-
-	// Draw Map
-	App->map->Draw();
-
-	// Draw player
-	App->render->Blit(App->player->player, App->player->position.x, App->player->position.y, App->player->r);
-
-	// Draw Above layer
-	App->map->DrawAboveLayer();
-
-}
-
-void j1Scene::Boss() {
-
-	bossColliderPos = { (int)bossPosition.x, (int)bossPosition.y };
-	bossColl->SetPos(bossColliderPos.x - (203 / 2), bossColliderPos.y + 10);
-
-	bossPosition.x = App->player->position.x;
-
-	current_animation = &bossAnimation;
-	App->player->r = &current_animation->GetCurrentFrame();
-	App->render->Blit(boss, bossPosition.x - (203 / 2), bossPosition.y, App->player->r);
-	bossPosition.y -= 0.3;
 }

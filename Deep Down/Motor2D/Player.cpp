@@ -30,8 +30,9 @@ Player::Player(float x, float y, PathInfo* path) : Enemy(x, y, path)
 	position = { 600, 100 };
 
 	collider_pos = { (int)position.x + player.coll_offset.x, (int)position.y + player.coll_offset.y };
-	collider = App->collision->AddCollider({ collider_pos.x, collider_pos.y, player.coll_size.x, player.coll_size.y }, COLLIDER_PLAYER, App->enemies);
+	collider = App->collision->AddCollider({ collider_pos.x, collider_pos.y, player.coll_size.x + player.coll_offset.w, player.coll_size.y + player.coll_offset.h }, COLLIDER_PLAYER, App->enemies);
 
+	
 }
 
 void Player::Move(float dt)
@@ -40,13 +41,13 @@ void Player::Move(float dt)
 	this->dt = dt;
 
 	player.gravity = 10.0f * dt;
-	player.gravity = 0;
 	// Check for collisions
 	up = true;
 	down = true;
 	left = true;
 	right = true;
-	CheckCollision(collider_pos, player.coll_size, check_collision_offset, up, down, left, right, player.GetState());
+
+	CheckCollision(collider_pos, { player.coll_size.x + player.coll_offset.w, player.coll_size.y + player.coll_offset.h }, player.check_collision_offset, up, down, left, right, player.GetState());
 
 	CheckIfDead();
 
@@ -81,10 +82,36 @@ void Player::Move(float dt)
 	collider_pos = { (int)position.x + player.coll_offset.x, (int)position.y + player.coll_offset.y };
 	collider->SetPos(collider_pos.x, collider_pos.y);
 
+
 }
 
 void Player::OnCollision(Collider* c1, Collider* c2) {
 
+	if ((c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_BOSS) || (c1->type == COLLIDER_BOSS && c2->type == COLLIDER_PLAYER)) {
+		player.SetState(punished_);
+		App->audio->PlayFx(5);
+		App->scene->bossPosition = { position.x, 1200 };
+	}
+
+	if ((c1->type == COLLIDER_PEASANT_SHOT && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_PEASANT_SHOT)) {
+		player.SetState(punished_);
+	}
+
+	if ((c1->type == COLLIDER_CATPEASANT && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_CATPEASANT)) {
+		player.SetState(punished_);
+	}
+
+	if ((c1->type == COLLIDER_IMP && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP)) {
+		//App->player->SetState(punished_);
+	}
+
+	if ((c1->type == COLLIDER_IMP_BOMB && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP_BOMB)) {
+		player.SetState(punished_);
+	}
+
+	if (( c1->type == COLLIDER_MONKEY && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_MONKEY)) {
+		//App->player->SetState(punished_);
+	}
 
 }
 
@@ -732,7 +759,7 @@ void Player::PlayerStateMachine() {
 
 void Player::CheckCollision(iPoint position, iPoint size, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state) {
 
-	BROFILER_CATEGORY("CheckForCollision", Profiler::Color::Azure);
+	BROFILER_CATEGORY("CheckForCollision2", Profiler::Color::Azure);
 
 	App->map->culing_offset = 50;
 
@@ -809,7 +836,8 @@ PlayerInfo::PlayerInfo(const PlayerInfo& i) :
 	secondAttack(i.secondAttack), secondAttack2(i.secondAttack2),
 	thirdAttack(i.thirdAttack), thirdAttack2(i.thirdAttack2),
 	coll_size(i.coll_size), coll_offset(i.coll_offset),
-	gravity(i.gravity), speed(i.speed), state(i.state)
+	gravity(i.gravity), speed(i.speed), state(i.state),
+	check_collision_offset(i.check_collision_offset)
 	
 {}
 

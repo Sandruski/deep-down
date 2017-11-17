@@ -43,9 +43,6 @@
     <ClCompile Include="j1Pathfinding.cpp">
       <Filter>Game\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="j1Player.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1Render.cpp">
       <Filter>Game\Modules</Filter>
     </ClCompile>
@@ -136,9 +133,6 @@
       <Filter>Game\Modules</Filter>
     </ClInclude>
     <ClInclude Include="j1Pathfinding.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Player.h">
       <Filter>Game\Modules</Filter>
     </ClInclude>
     <ClInclude Include="j1Render.h">

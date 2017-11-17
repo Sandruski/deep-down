@@ -9,7 +9,6 @@
 #include "j1Collision.h"
 #include "j1Audio.h"
 #include "j1Enemies.h"
-#include "j1Player.h"
 #include "j1Scene.h"
 #include "j1Map.h"
 
@@ -140,7 +139,7 @@ bool j1Particles::Update(float dt)
 			if (p->collider->type == COLLIDER_PEASANT_SHOT)
 				App->render->Blit(App->enemies->CatPeasantTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
 			else
-			App->render->Blit(App->player->player, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
+			App->render->Blit(App->enemies->PlayerTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
 		}
 	}
 
@@ -200,7 +199,7 @@ bool Particle::Update(float dt)
 		if (anim.Finished())
 			ret = false;
 
-	App->player->CheckCollision({ (int)position.x, (int)position.y }, coll_size, App->player->check_collision_offset, up, down, left, right);
+	App->enemies->playerData->CheckCollision({ (int)position.x, (int)position.y }, coll_size, App->enemies->playerData->player.check_collision_offset, up, down, left, right);
 
 	if (App->map->data.CheckIfEnter("Player", "Gate", position) && App->scene->gate == false) {
 
@@ -222,16 +221,16 @@ bool Particle::Update(float dt)
 	}
 	else if (collider->type == COLLIDER_PEASANT_SHOT) {
 
-		if (App->player->position.y < position.y)
+		if (App->enemies->playerData->position.y < position.y)
 			position.y--;
-		else if (App->player->position.y > position.y)
+		else if (App->enemies->playerData->position.y > position.y)
 			position.y++;
-		if (App->player->position.x < position.x)
+		if (App->enemies->playerData->position.x < position.x)
 			position.x--;
-		else if (App->player->position.x > position.x)
+		else if (App->enemies->playerData->position.x > position.x)
 			position.x++;
 
-		if (App->player->position.x == position.x && App->player->position.y == position.y)
+		if (App->enemies->playerData->position.x == position.x && App->enemies->playerData->position.y == position.y)
 			Particle::~Particle();
 	}
 

@@ -10,7 +10,6 @@
 #include "j1Audio.h"
 #include "j1Scene.h"
 #include "j1Map.h"
-#include "j1Player.h"
 #include "j1Particles.h"
 #include "j1Collision.h"
 #include "j1FadeToBlack.h"
@@ -33,7 +32,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new j1Audio();
 	scene = new j1Scene();
 	map = new j1Map();
-	player = new j1Player();
 	particles = new j1Particles();
 	collision = new j1Collision();
 	fade = new j1FadeToBlack();
@@ -48,12 +46,11 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(pathfinding);
-	AddModule(scene);
-	AddModule(player);
-	AddModule(collision);
-	AddModule(particles);
-	AddModule(fade);
 	AddModule(enemies);
+	AddModule(particles);
+	AddModule(collision);
+	AddModule(scene);
+	AddModule(fade);
 
 	// render last to swap buffer
 	AddModule(render);
