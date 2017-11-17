@@ -6,11 +6,9 @@
 #include "p2Log.h"
 
 #include "j1Collision.h"
-#include "j1Player.h"
 #include "j1Particles.h"
 #include "j1Pathfinding.h"
 #include "j1Map.h"
-#include "j1Player.h"
 
 #include "j1Input.h"
 
@@ -28,7 +26,7 @@ Imp::Imp(float x, float y, PathInfo* path) : Enemy(x, y, path)
 	collider_size = imp.coll_size;
 
 	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
-	follow_pathfinding2 = App->collision->AddCollider({ (int)App->player->position.x - 50, (int)App->player->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
+	follow_pathfinding2 = App->collision->AddCollider({ (int)App->enemies->playerData->position.x - 50, (int)App->enemies->playerData->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
 
 	speed = { 60.0f, 2 };
 }
@@ -355,8 +353,8 @@ void Imp::UpdatePathfinding()
 	// Create pathfinding
 	if (create_pathfinding) {
 		iPoint dest;
-		dest.x = (int)App->player->position.x;
-		dest.y = (int)App->player->position.y;
+		dest.x = (int)App->enemies->playerData->position.x;
+		dest.y = (int)App->enemies->playerData->position.y;
 
 		if (CreatePathfinding(dest)) {
 			pathfinding = true;
@@ -398,10 +396,10 @@ void Imp::UpdatePathfinding()
 void Imp::UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player)
 {
 	follow_pathfinding1->SetPos(i_pos.x - 30, i_pos.y - 30);
-	follow_pathfinding2->SetPos((int)App->player->position.x - 25, (int)App->player->position.y - 50);
+	follow_pathfinding2->SetPos((int)App->enemies->playerData->position.x - 25, (int)App->enemies->playerData->position.y - 50);
 
 	enemy = { i_pos.x - 30, i_pos.y - 30, 100, 100 };
-	player = { (int)App->player->position.x - 25, (int)App->player->position.y - 50, 100, 200 };
+	player = { (int)App->enemies->playerData->position.x - 25, (int)App->enemies->playerData->position.y - 50, 100, 200 };
 }
 
 bool Imp::ResetPathfindingVariables()

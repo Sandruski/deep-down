@@ -5,7 +5,6 @@
 #include "j1Input.h"
 #include "j1Particles.h"
 #include "j1Collision.h"
-#include "j1Player.h"
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 
@@ -149,11 +148,11 @@ void CatPeasant::Move()
 	}
 
 	SDL_Rect enemy_pos = { position.x - 50, position.y, 150, 150 };
-	SDL_Rect player_pos = { App->player->position.x - 50, App->player->position.y - 10, 100, 200 };
+	SDL_Rect player_pos = { App->enemies->playerData->position.x - 50, App->enemies->playerData->position.y - 10, 100, 200 };
 
 	if (App->input->GetKey(SDL_SCANCODE_KP_9) == KEY_DOWN && SDL_HasIntersection(&enemy_pos, &player_pos)) {
 
-		int patata = App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->player->position.x, App->player->position.y), Distance::DISTANCE_TO);
+		int patata = App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->enemies->playerData->position.x, App->enemies->playerData->position.y), Distance::DISTANCE_TO);
 		last_path = App->pathfinding->GetLastPath();
 		index = 0;
 

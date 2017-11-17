@@ -178,14 +178,14 @@ void j1Scene::MoveCamera() {
 	else if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) //move camera right (debug functionality)
 		App->render->camera.x -= 5;
 	else
-		App->render->camera.x = (int)(App->player->position.x - 100) * (-1) * App->win->GetScale();
+		App->render->camera.x = (int)(App->enemies->playerData->position.x - 100) * (-1) * App->win->GetScale();
 
 	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_REPEAT) //move camera up (debug functionality)
 		App->render->camera.y += 5;
 	else if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT) //move camera down (debug functionality)
 		App->render->camera.y -= 5;
 	else
-		App->render->camera.y = (int)(App->player->position.y - 150) * (-1) *  App->win->GetScale();
+		App->render->camera.y = (int)(App->enemies->playerData->position.y - 150) * (-1) *  App->win->GetScale();
 }
 
 // Save
