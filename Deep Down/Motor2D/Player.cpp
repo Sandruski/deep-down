@@ -13,7 +13,6 @@
 #include "j1Window.h"
 #include "j1Particles.h"
 
-
 #include "Player.h"
 #include "Brofiler\Brofiler.h"
 #include <math.h>

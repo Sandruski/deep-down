@@ -29,7 +29,7 @@ public:
 	Monkey(float x, float y, PathInfo* path);
 
 	void OnCollision(Collider* c1, Collider* c2);
-	void Move();
+	void Move(float dt);
 
 private:
 

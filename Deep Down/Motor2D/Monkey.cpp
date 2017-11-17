@@ -32,7 +32,7 @@ Monkey::Monkey(float x, float y, PathInfo* path) : Enemy(x, y, path)
 	speed = { 0.8f,0 };
 }
 
-void Monkey::Move()
+void Monkey::Move(float dt)
 {
 	i_pos.x = (int)position.x;
 	i_pos.y = (int)position.y;

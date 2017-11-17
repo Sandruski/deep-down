@@ -1,68 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="j1Window.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Audio.cpp">
-      <Filter>Game\Modules</Filter>
+    <ClCompile Include="p2Log.cpp">
+      <Filter>p2</Filter>
     </ClCompile>
     <ClCompile Include="j1App.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="j1Input.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1Main.cpp">
       <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Render.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Textures.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="p2Log.cpp">
-      <Filter>p2</Filter>
-    </ClCompile>
-    <ClCompile Include="PugiXml\src\pugixml.cpp">
-      <Filter>Game\Tools\PuguiXML</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Map.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Player.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Particles.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Collision.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1FadeToBlack.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Scene.cpp">
-      <Filter>Game\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Enemies.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Imp.cpp">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="CatPeasant.cpp">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Plant.cpp">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Pathfinding.cpp">
-      <Filter>Game\Modules</Filter>
     </ClCompile>
     <ClCompile Include="j1PerfTimer.cpp">
       <Filter>Game\Tools</Filter>
@@ -70,37 +16,75 @@
     <ClCompile Include="j1Timer.cpp">
       <Filter>Game\Tools</Filter>
     </ClCompile>
-<<<<<<< HEAD
+    <ClCompile Include="j1Scene.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Audio.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Collision.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Enemies.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1FadeToBlack.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Input.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Map.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Particles.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Pathfinding.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Player.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Render.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Textures.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Window.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
     <ClCompile Include="Player.cpp">
-=======
-    <ClCompile Include="Monkey.cpp">
->>>>>>> 45f71d63337d4a1405585aa6ff789487ec0ff0a9
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="CatPeasant.cpp">
       <Filter>Game\Modules\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Imp.cpp">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Monkey.cpp">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Plant.cpp">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="PugiXml\src\pugixml.cpp">
+      <Filter>Game\Tools\PugiXML</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="j1Window.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Audio.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1App.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Input.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Module.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Render.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Textures.h">
-      <Filter>Game\Modules</Filter>
+    <ClInclude Include="Animation.h">
+      <Filter>p2</Filter>
     </ClInclude>
     <ClInclude Include="p2Defs.h">
+      <Filter>p2</Filter>
+    </ClInclude>
+    <ClInclude Include="p2DynArray.h">
       <Filter>p2</Filter>
     </ClInclude>
     <ClInclude Include="p2List.h">
@@ -109,59 +93,17 @@
     <ClInclude Include="p2Log.h">
       <Filter>p2</Filter>
     </ClInclude>
-    <ClInclude Include="p2SString.h">
-      <Filter>p2</Filter>
-    </ClInclude>
     <ClInclude Include="p2Point.h">
       <Filter>p2</Filter>
     </ClInclude>
-    <ClInclude Include="p2DynArray.h">
+    <ClInclude Include="p2SString.h">
       <Filter>p2</Filter>
     </ClInclude>
-    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
-      <Filter>Game\Tools\PuguiXML</Filter>
+    <ClInclude Include="j1App.h">
+      <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="PugiXml\src\pugixml.hpp">
-      <Filter>Game\Tools\PuguiXML</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Map.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Player.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Particles.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Collision.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1FadeToBlack.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>p2</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Scene.h">
-      <Filter>Game\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Enemies.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Imp.h">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="CatPeasant.h">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Plant.h">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Pathfinding.h">
-      <Filter>Game\Modules</Filter>
+    <ClInclude Include="j1Module.h">
+      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="j1PerfTimer.h">
       <Filter>Game\Tools</Filter>
@@ -169,35 +111,91 @@
     <ClInclude Include="j1Timer.h">
       <Filter>Game\Tools</Filter>
     </ClInclude>
-<<<<<<< HEAD
+    <ClInclude Include="j1Scene.h">
+      <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Audio.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Collision.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Enemies.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1FadeToBlack.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Input.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Map.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Particles.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Pathfinding.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Player.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Render.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Textures.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Window.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
     <ClInclude Include="Player.h">
-=======
-    <ClInclude Include="Monkey.h">
->>>>>>> 45f71d63337d4a1405585aa6ff789487ec0ff0a9
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="CatPeasant.h">
       <Filter>Game\Modules\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Imp.h">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Monkey.h">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Plant.h">
+      <Filter>Game\Modules\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
+      <Filter>Game\Tools\PugiXML</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugixml.hpp">
+      <Filter>Game\Tools\PugiXML</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
-      <UniqueIdentifier>{cb944693-b9d0-484c-bad2-02d5a7cdbec6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Tools">
-      <UniqueIdentifier>{42c748be-4a37-49de-970f-5be811d06b38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Tools\PuguiXML">
-      <UniqueIdentifier>{7cb78d67-17cc-45eb-af97-e2106becce7b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Scenes">
-      <UniqueIdentifier>{e07660eb-d36f-4cc9-af59-324d31c2f2f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Modules">
-      <UniqueIdentifier>{244722d1-90ce-423d-8e7a-556211865a32}</UniqueIdentifier>
+      <UniqueIdentifier>{a20e62d4-7235-4bf2-9b0c-afc3cd56020d}</UniqueIdentifier>
     </Filter>
     <Filter Include="p2">
-      <UniqueIdentifier>{a8bfab6a-5472-4969-943e-861a8b493f08}</UniqueIdentifier>
+      <UniqueIdentifier>{ac559920-c2e4-4f67-afa2-2613b2b1231d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Modules">
+      <UniqueIdentifier>{050952ea-33eb-4534-ae2f-4cf9466865b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Scenes">
+      <UniqueIdentifier>{4c0bac79-9e74-468c-9629-3f55686be912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Tools">
+      <UniqueIdentifier>{7a1de275-2740-456e-93a3-d48992566a87}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Modules\Enemies">
-      <UniqueIdentifier>{22cb3b3a-d694-4d94-9cf4-e328e18aa85c}</UniqueIdentifier>
+      <UniqueIdentifier>{3d9caea6-5dbe-4bd6-a9a5-eb7ae2657fc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Tools\PugiXML">
+      <UniqueIdentifier>{d4be428c-f990-42eb-a048-aa10f9825fae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

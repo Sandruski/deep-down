@@ -203,207 +203,187 @@ bool j1Enemies::Awake(pugi::xml_node& config) {
 	player.gravity = collider_node.child("gravity").attribute("value").as_float();
 	player.speed = { collider_node.child("speed").attribute("x").as_float(), collider_node.child("speed").attribute("y").as_float() };
 
+	// Load animations
+	animations_node = config.child("types").child("player").child("animations");
+
 	//idle
 	node = animations_node.child("idle");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.idle.speed = node.attribute("speed").as_float();
+	player.idle.loops = node.attribute("loops").as_bool();
+	player.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//idle2
 	node = animations_node.child("idle2");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.idle2.speed = node.attribute("speed").as_float();
+	player.idle2.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.idle2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//forward
 	node = animations_node.child("forward");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.forward.speed = node.attribute("speed").as_float();
+	player.forward.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.forward.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//backward
 	node = animations_node.child("backward");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.backward.speed = node.attribute("speed").as_float();
+	player.backward.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.backward.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//crouch
 	node = animations_node.child("crouch");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.crouch.speed = node.attribute("speed").as_float();
+	player.crouch.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.crouch.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//crouch2
 	node = animations_node.child("crouch2");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.crouch2.speed = node.attribute("speed").as_float();
+	player.crouch2.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.crouch2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//shot
 	node = animations_node.child("shot");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.shot.speed = node.attribute("speed").as_float();
+	player.shot.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.shot.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//shot2
 	node = animations_node.child("shot2");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.shot2.speed = node.attribute("speed").as_float();
+	player.shot2.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.shot2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//crouchShot
 	node = animations_node.child("crouchShot");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.crouchShot.speed = node.attribute("speed").as_float();
+	player.crouchShot.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.crouchShot.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//crouchShot2
 	node = animations_node.child("crouchShot2");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.crouchShot2.speed = node.attribute("speed").as_float();
+	player.crouchShot2.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.crouchShot2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//jump
 	node = animations_node.child("jump");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.jump.speed = node.attribute("speed").as_float();
+	player.jump.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.jump.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//jump2
 	node = animations_node.child("jump2");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.jump2.speed = node.attribute("speed").as_float();
+	player.jump2.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.jump2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//punished
 	node = animations_node.child("punished");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.punished.speed = node.attribute("speed").as_float();
+	player.punished.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.punished.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//punished2
 	node = animations_node.child("punished2");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.punished2.speed = node.attribute("speed").as_float();
+	player.punished2.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.punished2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 
 	//dash
 	node = animations_node.child("dash");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.dash.speed = node.attribute("speed").as_float();
+	player.dash.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.dash.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//dash2
 	node = animations_node.child("dash2");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.dash2.speed = node.attribute("speed").as_float();
+	player.dash2.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.dash2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//firstAttack
 	node = animations_node.child("firstAttack");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.firstAttack.speed = node.attribute("speed").as_float();
+	player.firstAttack.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.firstAttack.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//firstAttack2
 	node = animations_node.child("firstAttack2");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.firstAttack2.speed = node.attribute("speed").as_float();
+	player.firstAttack2.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.firstAttack2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//secondAttack
 	node = animations_node.child("secondAttack");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.secondAttack.speed = node.attribute("speed").as_float();
+	player.secondAttack.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.secondAttack.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//secondAttack2
 	node = animations_node.child("secondAttack2");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.secondAttack2.speed = node.attribute("speed").as_float();
+	player.secondAttack2.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.secondAttack2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//thirdAttack
 	node = animations_node.child("thirdAttack");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.thirdAttack.speed = node.attribute("speed").as_float();
+	player.thirdAttack.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.thirdAttack.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//thirdAttack2
 	node = animations_node.child("thirdAttack2");
-	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
-	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	player.thirdAttack2.speed = node.attribute("speed").as_float();
+	player.thirdAttack2.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
-		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+		player.thirdAttack2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
-
-
-
+	//_PLAYER
 
 	return ret;
 }

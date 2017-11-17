@@ -33,11 +33,11 @@ Imp::Imp(float x, float y, PathInfo* path) : Enemy(x, y, path)
 	speed = { 0.8f, 1 };
 }
 
-void Imp::Move()
+void Imp::Move(float dt)
 {
 	i_pos.x = (int)position.x;
 	i_pos.y = (int)position.y;
-	App->player->CheckCollision(i_pos, imp.coll_size, 1, up, down, left, right);
+
 	// Update path/pathfinding
 	if (!pathfinding)
 		UpdatePath();

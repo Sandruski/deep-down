@@ -88,7 +88,7 @@
             <frame x="882" y="454" w="48" h="48"/>
             <frame x="931" y="454" w="48" h="48"/>
           </idle2>
-          <forward speed="1" loops="1">
+          <forward speed="100" loops="1">
             <frame x="99" y="206" w="48" h="48"/>
             <frame x="148" y="206" w="48" h="48"/>
             <frame x="197" y="206" w="48" h="48"/>
@@ -98,7 +98,7 @@
             <frame x="393" y="206" w="48" h="48"/>
             <frame x="442" y="206" w="48" h="48"/>
           </forward>
-          <backward speed="1" loops="1">
+          <backward speed="100" loops="1">
             <frame x="833" y="206" w="48" h="48"/>
             <frame x="784" y="206" w="48" h="48"/>
             <frame x="735" y="206" w="48" h="48"/>
@@ -108,15 +108,15 @@
             <frame x="539" y="206" w="48" h="48"/>
             <frame x="490" y="206" w="48" h="48"/>
           </backward>
-          <crouch speed="1" loops="1">
+          <crouch speed="100" loops="1">
             <frame x="99" y="268" w="48" h="48"/>
             <frame x="148" y="268" w="48" h="48"/>
           </crouch>
-          <crouch2 speed="1" loops="1">
+          <crouch2 speed="100" loops="1">
             <frame x="784" y="268" w="48" h="48"/>
             <frame x="833" y="268" w="48" h="48"/>
           </crouch2>
-          <shot speed="1" loops="0">
+          <shot speed="100" loops="0">
             <frame x="1" y="13" w="48" h="48"/>
             <frame x="50" y="13" w="48" h="48"/>
             <frame x="99" y="13" w="48" h="48"/>
@@ -124,7 +124,7 @@
             <frame x="197" y="13" w="48" h="48"/>
             <frame x="246" y="13" w="48" h="48"/>
           </shot>
-          <shot2 speed="1" loops="0">
+          <shot2 speed="100" loops="0">
             <frame x="931" y="13" w="48" h="48"/>
             <frame x="882" y="13" w="48" h="48"/>
             <frame x="833" y="13" w="48" h="48"/>
@@ -132,7 +132,7 @@
             <frame x="735" y="13" w="48" h="48"/>
             <frame x="686" y="13" w="48" h="48"/>
           </shot2>
-          <crouchShot speed="1" loops="0">
+          <crouchShot speed="100" loops="0">
             <frame x="1" y="140" w="48" h="48"/>
             <frame x="50" y="140" w="48" h="48"/>
             <frame x="99" y="140" w="48" h="48"/>
@@ -140,7 +140,7 @@
             <frame x="197" y="140" w="48" h="48"/>
             <frame x="246" y="140" w="48" h="48"/>
           </crouchShot>
-          <crouchShot2 speed="1" loops="0">
+          <crouchShot2 speed="100" loops="0">
             <frame x="931" y="140" w="48" h="48"/>
             <frame x="882" y="140" w="48" h="48"/>
             <frame x="833" y="140" w="48" h="48"/>
@@ -148,33 +148,33 @@
             <frame x="735" y="140" w="48" h="48"/>
             <frame x="686" y="140" w="48" h="48"/>
           </crouchShot2>
-          <jump speed="1" loops="1">
+          <jump speed="100" loops="1">
             <frame x="1" y="390" w="48" h="48"/>
             <frame x="50" y="390" w="48" h="48"/>
             <frame x="99" y="390" w="48" h="48"/>
           </jump>
-          <jump2 speed="1" loops="1">
+          <jump2 speed="100" loops="1">
             <frame x="833" y="390" w="48" h="48"/>
             <frame x="882" y="390" w="48" h="48"/>
             <frame x="931" y="390" w="48" h="48"/>
           </jump2>
-          <punished speed="1" loops="0">
+          <punished speed="100" loops="0">
             <frame x="51" y="332" w="48" h="44"/>
             <frame x="101" y="332" w="48" h="44"/>
             <frame x="151" y="332" w="48" h="44"/>
           </punished>
-          <punished2 speed="1" loops="0">
+          <punished2 speed="100" loops="0">
             <frame x="780" y="332" w="48" h="44"/>
             <frame x="830" y="332" w="48" h="44"/>
             <frame x="880" y="332" w="48" h="44"/>
           </punished2>
-          <dash speed="1" loops="1">
+          <dash speed="100" loops="1">
             <frame x="1" y="518" w="48" h="48"/>
           </dash>
-          <dash2 speed="1" loops="1">
+          <dash2 speed="100" loops="1">
             <frame x="931" y="518" w="48" h="48"/>
           </dash2>
-          <firstAttack speed="1" loops="0">
+          <firstAttack speed="100" loops="0">
             <frame x="1" y="580" w="48" h="48"/>
             <frame x="50" y="580" w="48" h="48"/>
             <frame x="99" y="580" w="48" h="48"/>
@@ -183,7 +183,7 @@
             <frame x="246" y="580" w="48" h="48"/>
             <frame x="295" y="580" w="48" h="48"/>
           </firstAttack>
-          <secondAttack speed="1" loops="0">
+          <secondAttack speed="100" loops="0">
             <frame x="1" y="643" w="48" h="48"/>
             <frame x="50" y="643" w="48" h="48"/>
             <frame x="99" y="643" w="48" h="48"/>
@@ -192,7 +192,7 @@
             <frame x="246" y="643" w="48" h="48"/>
             <frame x="295" y="643" w="48" h="48"/>
           </secondAttack>
-          <thirdAttack speed="1" loops="0">
+          <thirdAttack speed="100" loops="0">
             <frame x="1" y="706" w="48" h="48"/>
             <frame x="50" y="706" w="48" h="48"/>
             <frame x="99" y="706" w="48" h="48"/>
@@ -205,7 +205,7 @@
             <frame x="442" y="706" w="48" h="48"/>
             <frame x="491" y="706" w="48" h="48"/>
           </thirdAttack>
-          <firstAttack2 speed="1" loops="0">
+          <firstAttack2 speed="100" loops="0">
             <frame x="931" y="643" w="48" h="48"/>
             <frame x="882" y="643" w="48" h="48"/>
             <frame x="833" y="643" w="48" h="48"/>
@@ -214,7 +214,7 @@
             <frame x="686" y="643" w="48" h="48"/>
             <frame x="637" y="643" w="48" h="48"/>
           </firstAttack2>
-          <secondAttack2 speed="1" loops="0">
+          <secondAttack2 speed="100" loops="0">
             <frame x="931" y="706" w="48" h="48"/>
             <frame x="882" y="706" w="48" h="48"/>
             <frame x="833" y="706" w="48" h="48"/>
@@ -223,7 +223,7 @@
             <frame x="686" y="706" w="48" h="48"/>
             <frame x="637" y="706" w="48" h="48"/>
           </secondAttack2>
-          <thirdAttack2 speed="1" loops="0">
+          <thirdAttack2 speed="100" loops="0">
             <frame x="931" y="582" w="48" h="48"/>
             <frame x="882" y="582" w="48" h="48"/>
             <frame x="833" y="582" w="48" h="48"/>
