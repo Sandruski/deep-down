@@ -8,11 +8,20 @@
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 1181
 #define INVALID_WALK_CODES t != 1181 && t != 1182 && t != 1183 && t != 1180
+
+enum Distance {
+	DISTANCE_TO,
+	DISTANCE_NO_SQRT,
+	MANHATTAN
+};
+
 // --------------------------------------------------
 // Recommended reading:
 // Intro: http://www.raywenderlich.com/4946/introduction-to-a-pathfinding
 // Details: http://theory.stanford.edu/~amitp/GameProgramming/
 // --------------------------------------------------
+
+struct PathNode;
 
 class j1PathFinding : public j1Module
 {
@@ -30,7 +39,7 @@ public:
 	void SetMap(uint width, uint height, uchar* data);
 
 	// Main function to request a path from A to B
-	int CreatePath(const iPoint& origin, const iPoint& destination, const bool flying = true);
+	int CreatePath(const iPoint& origin, const iPoint& destination, Distance distance_type, const bool flying = true);
 
 	// To request all tiles involved in the last generated path
 	const p2DynArray<iPoint>* GetLastPath() const;
@@ -73,7 +82,7 @@ struct PathNode
 	// Calculates this tile score
 	float Score() const;
 	// Calculate the F for a specific destination tile
-	float CalculateF(const iPoint& destination);
+	float CalculateF(const iPoint& destination, Distance distance_type);
 
 	// -----------
 	float g;
@@ -99,6 +108,7 @@ struct PathList
 	p2List<PathNode> list;
 };
 
-
+// Utility: calculate a specific distance
+int CalculateDistance(iPoint origin, iPoint destination, Distance distance_type);
 
 #endif // __j1PATHFINDING_H__

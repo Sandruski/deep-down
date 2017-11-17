@@ -41,6 +41,7 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move(float dt);
+	void UpdateAnimations(float dt);
 
 private:
 
@@ -67,12 +68,9 @@ private:
 
 private:
 
-	float dt;
-
 	ImpInfo imp;
 	ImpState impState;
 
-	bool stop_x, stop_y;
 	bool throw_bomb;
 
 	// Pathfinding
@@ -84,14 +82,14 @@ private:
 	bool pathfinding_finished = true;
 	bool pathfinding;
 	bool pathfind;
+	bool go;
 
 	Collider* follow_pathfinding1;
 	Collider* follow_pathfinding2;
 	//_pathfinding
 
 	// Normal path
-	StartEndPath normal_path_index = StartEndPath::start;
-	StartEndPath last_normal_path_index = StartEndPath::end;
+	StartEndPath normal_path_index = StartEndPath::end;
 
 	bool normal_path_finished = true;
 	bool create_normal_path;
