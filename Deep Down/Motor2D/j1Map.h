@@ -37,8 +37,7 @@ struct Object {
 	int* polyline = nullptr;
 
 	~Object() {
-		if (polyline != nullptr)
-			RELEASE_ARRAY(polyline);
+		RELEASE_ARRAY(polyline);
 	}
 };
 

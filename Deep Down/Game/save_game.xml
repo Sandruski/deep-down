@@ -13,15 +13,15 @@
 		<gate opened="false" fx="false" />
 	</scene>
 	<player>
-		<position position.x="672" position.y="222.928726" />
+		<position position.x="672" position.y="223.527847" />
 		<state state="2" />
-		<speed speed.x="0" speed.y="0" />
+		<speed speed.x="0" speed.y="2" />
 	</player>
 	<collision />
 	<particles />
 	<fade />
 	<enemies />
 	<renderer>
-		<camera x="-572" y="-72" />
+		<camera x="-1716" y="-213" />
 	</renderer>
 </game_state>

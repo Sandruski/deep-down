@@ -20,8 +20,8 @@ Imp::Imp(int x, int y, PathInfo* path) : Enemy(x, y, path)
 	imp = App->enemies->GetImpInfo();
 
 	///
-	animation = &imp.r_jump;
-	impState = ImpState::l_shield_hurt;
+	animation = &imp.r_shield_idle;
+	impState = ImpState::r_shield_idle;
 
 	collider = App->collision->AddCollider({ 0, 0, imp.coll_size.x + imp.coll_offset.w, imp.coll_size.y + imp.coll_offset.h }, COLLIDER_TYPE::COLLIDER_IMP, App->enemies);
 
@@ -71,7 +71,15 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::l_shield_idle;
 			break;
 		}
-		animation = &imp.r_shield_walk;
+		if (right) {
+			impState = ImpState::r_shield_walk;
+			break;
+		}
+		if (left) {
+			impState = ImpState::l_shield_walk;
+			break;
+		}
+		animation = &imp.r_shield_idle;
 		break;
 
 	case l_shield_idle:
@@ -83,7 +91,15 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::r_shield_idle;
 			break;
 		}
-		animation = &imp.l_shield_walk;
+		if (right) {
+			impState = ImpState::r_shield_walk;
+			break;
+		}
+		if (left) {
+			impState = ImpState::l_shield_walk;
+			break;
+		}
+		animation = &imp.l_shield_idle;
 		break;
 
 	case r_shield_walk:
@@ -164,7 +180,7 @@ void Imp::GeneralStatesMachine()
 
 void Imp::UpdateDirection() {
 
-	if (position.x == last_pos.x) {
+	if (position.x != last_pos.x) {
 		if (position.x < last_pos.x)
 			left = true;
 		else if (position.x > last_pos.x)
@@ -173,7 +189,7 @@ void Imp::UpdateDirection() {
 	else
 		stop_x = true;
 
-	if (position.y == last_pos.y) {
+	if (position.y != last_pos.y) {
 		if (position.y < last_pos.y)
 			up = true;
 		else if (position.y > last_pos.y)
@@ -193,8 +209,8 @@ void Imp::UpdatePath()
 {
 	if (path_info->path != nullptr) {
 
+		// If enemy was pathfinding towards the player and doesn't see it anymore, create a pathfinding back home
 		if (pathfinding_stop) {
-			//LOG("Reset pathfinding back variables");
 			if (ResetPathfindingVariables()) {
 				normal_path_index = last_normal_path_index;
 				create_pathfinding_back = true;
@@ -203,24 +219,24 @@ void Imp::UpdatePath()
 
 		// Create pathfinding back
 		if (create_pathfinding_back) {
-			//LOG("Create new pathfinding back");
-			iPoint dest = path_info->path[normal_path_index];
+			home = path_info->path[normal_path_index];
 
-			if (CreatePathfinding(dest)) {
+			if (CreatePathfinding(home)) {
 				going_back_home = true;
+				pathfinding_finished = true;
 				create_pathfinding_back = false;
 			}
 		}
 
-		// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
+		// If it has to go back home and hasn't reached home yet, update the pathfinding back
 		if (going_back_home) {
-			//LOG("Pathfinding");
 			Pathfind();
+
+			if (!Pathfind())
+				going_back_home = false;
 		}
-		else {
-			going_back_home = false;
-			//LOG("Update path");
-			//LOG("Normal path index: %d", normal_path_index);
+		// If it is home, update the normal path
+		else { 
 			if (!DoNormalPath())
 				RecalculatePath();
 		}
@@ -233,18 +249,16 @@ void Imp::UpdatePathfinding()
 	SDL_Rect player_pos;
 	UpdatePathfindingAffectArea(enemy_pos, player_pos);
 
-	// If player is near the enemy... Set create path to true
+	// If player is near the enemy... Create a pathfinding towards it
 	if (pathfinding_finished && SDL_HasIntersection(&enemy_pos, &player_pos)) {
-		//LOG("Reset pathfinding variables");
 		if (ResetPathfindingVariables()) {
 			last_normal_path_index = normal_path_index;
 			create_pathfinding = true;
 		}
 	}
 
-	// Create path
+	// Create pathfinding
 	if (create_pathfinding) {
-		//LOG("Create new pathfinding");
 		iPoint dest;
 		dest.x = (int)App->player->position.x;
 		dest.y = (int)App->player->position.y;
@@ -255,25 +269,23 @@ void Imp::UpdatePathfinding()
 		}
 	}
 
-	// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
-	if (SDL_HasIntersection(&enemy_pos, &player_pos) && pathfinding) {
-		//LOG("Pathfinding");
-		Pathfind();
-	}
-	else {
-		// If when enemy reaches the end of the path, it doesn't find the player -> Stop pathfinding and go back home
-		if (!SDL_HasIntersection(&enemy_pos, &player_pos) && pathfinding) {
-			pathfinding = false;
-			pathfinding_stop = true;
-			pathfinding_finished = true;
-			//pathfinding_finished = true;
-			//LOG("Pathfinding stop");
+	if (pathfinding) {
+		// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
+		if (SDL_HasIntersection(&enemy_pos, &player_pos) && pathfind) {
+			if (!Pathfind())
+				pathfind = false;
 		}
-		// If when enemy reaches the end of the path, it finds the player -> Create a new pathfinding
-		else if (pathfinding) {
-			pathfinding = false;
-			pathfinding_finished = true;
-			//LOG("Pathfinding finished");
+		else {
+			// If the enemy reaches the end of the path and doesn't see the player anymore, stop pathfinding and go back home
+			if (!SDL_HasIntersection(&enemy_pos, &player_pos)) {
+				pathfinding = false;
+				pathfinding_stop = true;
+			}
+			// If the enemy reaches the end of the path and continues seeing the player, create a new pathfinding towards him
+			else {
+				pathfinding = false;
+				pathfinding_finished = true;
+			}
 		}
 	}
 }
@@ -287,16 +299,74 @@ void Imp::UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player)
 	player = { (int)App->player->position.x - 25, (int)App->player->position.y - 50, 100, 200 };
 }
 
-void Imp::Pathfind() 
+bool Imp::ResetPathfindingVariables()
 {
-	iPoint to_go = App->map->MapToWorld(mlast_pathfinding[pathfinding_index].x, mlast_pathfinding[pathfinding_index].y);
+	bool ret = true;
 
-	UpdateMovement(to_go);
+	pathfinding_finished = false;
+	pathfinding_stop = false;
+	pathfinding = false;
+	pathfind = true;
+	pathfinding_size = 0;
 
-	if (position == to_go) {
-		if (pathfinding_index < pathfinding_size - 1)
-			pathfinding_index++;
+	return ret;
+}
+
+bool Imp::CreatePathfinding(iPoint destination)
+{
+	bool ret = false;
+
+	if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(destination.x, destination.y), true)) {
+		last_pathfinding = App->pathfinding->GetLastPath();
+
+		pathfinding_size = last_pathfinding->Count();
+
+		pathfinding_index = 1;
+
+		mlast_pathfinding.Clear();
+
+		for (int i = 0; i < pathfinding_size; ++i) {
+			mlast_pathfinding.PushBack(*last_pathfinding->At(i));
+			ret = true;
+		}
 	}
+
+	return ret;
+}
+
+void Imp::UpdateMovement(iPoint to_go)
+{
+	if (position.x < to_go.x)
+		position.x++;
+	else if (position.x > to_go.x)
+		position.x--;
+	if (position.y < to_go.y)
+		position.y++;
+	else if (position.y > to_go.y)
+		position.y--;
+}
+
+bool Imp::Pathfind() 
+{
+	bool ret = true;
+
+	if (pathfinding_size > 1) {
+		iPoint to_go = App->map->MapToWorld(mlast_pathfinding[pathfinding_index].x, mlast_pathfinding[pathfinding_index].y);
+
+		UpdateMovement(to_go);
+
+		if (position == to_go) {
+			if (pathfinding_index < pathfinding_size - 1)
+				pathfinding_index++;
+		}
+
+		if (position == App->map->MapToWorld(mlast_pathfinding[pathfinding_size - 1].x, mlast_pathfinding[pathfinding_size - 1].y))
+			ret = false;
+	}
+	else
+		ret = false;
+
+	return ret;
 }
 
 bool Imp::DoNormalPath()
@@ -318,26 +388,8 @@ bool Imp::DoNormalPath()
 				ret = false;
 		}
 	}
-	else {
-		if (normal_path_index < path_info->path_size - 1) {
-			normal_path_index++;
-			ret = true;
-		}
-	}
 
 	return ret;
-}
-
-void Imp::UpdateMovement(iPoint to_go) 
-{
-	if (position.x < to_go.x)
-		position.x++;
-	else if (position.x > to_go.x)
-		position.x--;
-	if (position.y < to_go.y)
-		position.y++;
-	else if (position.y > to_go.y)
-		position.y--;
 }
 
 void Imp::RecalculatePath()
@@ -346,38 +398,6 @@ void Imp::RecalculatePath()
 
 	// Flip path
 	FlipPath(path_info);
-}
-
-bool Imp::ResetPathfindingVariables()
-{
-	bool ret = true;
-
-	pathfinding_finished = false;
-	pathfinding_stop = false;
-	pathfinding = false;
-	pathfinding_index = 1;
-	pathfinding_size = 0;
-
-	return ret;
-}
-
-bool Imp::CreatePathfinding(iPoint destination)
-{
-	bool ret = false;
-
-	if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(destination.x, destination.y), true)) {
-		last_pathfinding = App->pathfinding->GetLastPath();
-
-		pathfinding_size = last_pathfinding->Count();
-		mlast_pathfinding.Clear();
-
-		for (int i = 0; i < pathfinding_size; ++i) {
-			mlast_pathfinding.PushBack(*last_pathfinding->At(i));
-			ret = true;
-		}
-	}
-
-	return ret;
 }
 
 void Imp::FlipPath(PathInfo* path_info) {

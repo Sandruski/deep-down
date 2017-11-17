@@ -53,7 +53,7 @@ private:
 	void UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player);
 	bool ResetPathfindingVariables();
 	bool CreatePathfinding(iPoint destination);
-	void Pathfind();
+	bool Pathfind();
 	//_pathfinding
 
 	// Normal path
@@ -89,8 +89,11 @@ private:
 	bool create_pathfinding;
 	bool pathfinding_finished = true;
 	bool pathfinding;
+	bool pathfind;
 
 	bool pathfinding_stop;
+
+
 	
 	Collider* follow_pathfinding1;
 	Collider* follow_pathfinding2;
@@ -102,6 +105,7 @@ private:
 
 	bool create_pathfinding_back;
 	bool going_back_home;
+	iPoint home;
 	//_normal_path
 };
 

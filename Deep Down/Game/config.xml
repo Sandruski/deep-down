@@ -23,7 +23,7 @@
     <folder>Assets/Sprites/Maps/</folder>
     <general>
       <blit offset="15"/>
-      <camera_blit value="true"/>
+      <camera_blit value="1"/>
     </general>
   </map>
 
