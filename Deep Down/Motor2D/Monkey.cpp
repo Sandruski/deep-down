@@ -49,6 +49,9 @@ void Monkey::Move(float dt)
 	// Update movement
 	UpdateDirection();
 
+	// Update animations speed
+	UpdateAnimations();
+
 	// Update collider
 	collider_pos = { i_pos.x + monkey.coll_offset.x, i_pos.y + monkey.coll_offset.y };
 	collider->SetPos(collider_pos.x, collider_pos.y);
@@ -138,6 +141,16 @@ void Monkey::UpdateDirection()
 
 	last_pos.x = (int)position.x;
 	last_pos.y = (int)position.y;
+}
+
+void Monkey::UpdateAnimations() 
+{
+	monkey.r_idle.speed = 100.0f * dt;
+	monkey.l_idle.speed = 100.0f * dt;
+	monkey.r_hurt.speed = 100.0f * dt;
+	monkey.l_hurt.speed = 100.0f * dt;
+	monkey.r_hit.speed = 100.0f * dt;
+	monkey.l_hit.speed = 100.0f * dt;
 }
 
 void Monkey::OnCollision(Collider* c1, Collider* c2) 
@@ -337,7 +350,8 @@ void Monkey::RecalculatePath()
 	FlipPath(path_info);
 }
 
-void Monkey::FlipPath(PathInfo* path_info) {
+void Monkey::FlipPath(PathInfo* path_info) 
+{
 	iPoint* start = &path_info->path[0];
 	iPoint* end = &path_info->path[path_info->path_size - 1];
 

@@ -30,32 +30,39 @@ Imp::Imp(float x, float y, PathInfo* path) : Enemy(x, y, path)
 	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
 	follow_pathfinding2 = App->collision->AddCollider({ (int)App->player->position.x - 50, (int)App->player->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
 
-	speed = { 0.8f, 1 };
+	speed = { 60.0f, 2 };
 }
 
 void Imp::Move(float dt)
 {
+	deltaTime = dt;
+
 	i_pos.x = (int)position.x;
 	i_pos.y = (int)position.y;
+
+	// Update animations speed
+	UpdateAnimations(dt);
+
+	// Update movement
+	throw_bomb = false;
+	up = false;
+	down = false;
+	left = false;
+	right = false;
+	UpdateDirection();
 
 	// Update path/pathfinding
 	if (!pathfinding)
 		UpdatePath();
 
-	UpdatePathfinding();
+	//UpdatePathfinding();
 
 	// Update state
 	GeneralStatesMachine();
 
-	// Update movement
-	throw_bomb = false;
-	UpdateDirection();
-
 	// Update collider
 	//collider_pos = { i_pos.x + imp.coll_offset.x, i_pos.y + imp.coll_offset.y };
 	//collider->SetPos(collider_pos.x, collider_pos.y);
-
-	// Debug
 	collider->SetPos(i_pos.x, i_pos.y);
 }
 
@@ -66,10 +73,6 @@ void Imp::GeneralStatesMachine()
 	case r_shield_idle:
 		if (throw_bomb) {
 			impState = ImpState::r_throw_bomb;
-			break;
-		}
-		if (stop_x && left) {
-			impState = ImpState::l_shield_idle;
 			break;
 		}
 		if (right) {
@@ -88,10 +91,6 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::l_throw_bomb;
 			break;
 		}
-		if (stop_x && right) {
-			impState = ImpState::r_shield_idle;
-			break;
-		}
 		if (right) {
 			impState = ImpState::r_shield_walk;
 			break;
@@ -104,21 +103,31 @@ void Imp::GeneralStatesMachine()
 		break;
 
 	case r_shield_walk:
+		if (down) {
+			impState = ImpState::r_jump;
+			break;
+		}
 		if (left) {
 			impState = ImpState::l_shield_walk;
 			break;
-		}
+		}	
 		animation = &imp.r_shield_walk;
-		impState = ImpState::r_shield_idle;
+		if(!right && !left)
+			impState = ImpState::r_shield_idle;
 		break;
 
 	case l_shield_walk:
+		if (down) {
+			impState = ImpState::l_jump;
+			break;
+		}
 		if (right) {
 			impState = ImpState::r_shield_walk;
 			break;
 		}
 		animation = &imp.l_shield_walk;
-		impState = ImpState::l_shield_idle;
+		if (!right && !left)
+			impState = ImpState::l_shield_idle;
 		break;
 
 	case r_jump:
@@ -127,7 +136,8 @@ void Imp::GeneralStatesMachine()
 			break;
 		}
 		animation = &imp.r_jump;
-		impState = ImpState::r_shield_idle;
+		if (!right && !left && !up && !down)
+			impState = ImpState::r_shield_idle;
 		break;
 
 	case l_jump:
@@ -136,7 +146,8 @@ void Imp::GeneralStatesMachine()
 			break;
 		}
 		animation = &imp.l_jump;
-		impState = ImpState::l_shield_idle;
+		if (!right && !left && !up && !down)
+			impState = ImpState::l_shield_idle;
 		break;
 
 	case r_throw_bomb:
@@ -181,38 +192,71 @@ void Imp::GeneralStatesMachine()
 
 void Imp::UpdateDirection() {
 
-	if (i_pos.x != last_pos.x) {
-		stop_x = false;
-
-		if (i_pos.x < last_pos.x) {
-			left = true;
-			right = false;
-		}
-		else if (i_pos.x > last_pos.x) {
-			right = true;
-			left = false;
-		}
+	if (position.x < last_pos.x) {
+		left = true;
 	}
-	else
-		stop_x = true;
-
-	if (i_pos.y != last_pos.y) {
-		stop_y = false;
-
-		if (i_pos.y < last_pos.y) {
-			up = true;
-			down = false;
-		}
-		else if (i_pos.y > last_pos.y) {
-			down = true;
-			up = false;
-		}
+	else if (position.x > last_pos.x) {
+		right = true;
 	}
-	else
-		stop_y = true;
 
-	last_pos.x = i_pos.x;
-	last_pos.y = i_pos.y;
+	if (position.y < last_pos.y) {
+		up = true;
+	}
+	else if (position.y > last_pos.y) {
+		down = true;
+	}
+
+	last_pos.x = position.x;
+	last_pos.y = position.y;
+}
+
+/*
+if (i_pos.x != last_pos.x) {
+stop_x = false;
+
+if (i_pos.x < last_pos.x) {
+left = true;
+right = false;
+}
+else if (i_pos.x > last_pos.x) {
+right = true;
+left = false;
+}
+}
+else
+stop_x = true;
+
+if (i_pos.y != last_pos.y) {
+stop_y = false;
+
+if (i_pos.y < last_pos.y) {
+up = true;
+down = false;
+}
+else if (i_pos.y > last_pos.y) {
+down = true;
+up = false;
+}
+}
+else
+stop_y = true;
+
+last_pos.x = i_pos.x;
+last_pos.y = i_pos.y;
+*/
+
+void Imp::UpdateAnimations(float dt)
+{
+	float speed = 10.0f;
+
+	imp.r_shield_idle.speed = speed * dt;
+	imp.l_shield_idle.speed = speed * dt;
+	imp.r_shield_hurt.speed = speed * dt;
+	imp.l_jump.speed = speed * dt;
+	imp.r_throw_bomb.speed = speed * dt;
+	imp.l_throw_bomb.speed = speed * dt;
+	imp.r_shield_walk.speed = speed * dt;
+	imp.l_shield_walk.speed = speed * dt;
 }
 
 void Imp::OnCollision(Collider* c1, Collider* c2) 
@@ -388,7 +432,7 @@ bool Imp::CreatePathfinding(iPoint destination)
 {
 	bool ret = false;
 
-	if (App->pathfinding->CreatePath(App->map->WorldToMap(i_pos.x, i_pos.y), App->map->WorldToMap(destination.x, destination.y), Distance::DISTANCE_TO, true) > -1) {
+	if (App->pathfinding->CreatePath(App->map->WorldToMap(i_pos.x, i_pos.y), App->map->WorldToMap(destination.x, destination.y), Distance::MANHATTAN) > -1) {
 		last_pathfinding = App->pathfinding->GetLastPath();
 
 		pathfinding_size = last_pathfinding->Count();
@@ -412,13 +456,13 @@ bool Imp::CreatePathfinding(iPoint destination)
 void Imp::UpdateMovement(iPoint to_go)
 {
 	if (i_pos.x < to_go.x)
-		position.x += speed.x;
+		position.x += speed.x * deltaTime;
 	else if (i_pos.x > to_go.x)
-		position.x -= speed.x;
+		position.x -= speed.x * deltaTime;
 	if (i_pos.y < to_go.y)
-		position.y += speed.x;
+		position.y += speed.x * deltaTime;
 	else if (i_pos.y > to_go.y)
-		position.y -= speed.x;
+		position.y -= speed.x * deltaTime;
 }
 
 bool Imp::Pathfind()

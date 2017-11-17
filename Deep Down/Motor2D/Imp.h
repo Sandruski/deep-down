@@ -41,6 +41,7 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move(float dt);
+	void UpdateAnimations(float dt);
 
 private:
 
@@ -67,12 +68,9 @@ private:
 
 private:
 
-	float dt;
-
 	ImpInfo imp;
 	ImpState impState;
 
-	bool stop_x, stop_y;
 	bool throw_bomb;
 
 	// Pathfinding
