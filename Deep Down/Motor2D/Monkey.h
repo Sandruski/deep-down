@@ -12,11 +12,6 @@ enum MonkeyState {
 	l_hit
 };
 
-enum StartEndPath {
-	start,
-	end
-};
-
 struct MonkeyInfo
 {
 	Animation r_idle, l_idle;
@@ -54,9 +49,9 @@ private:
 	// Normal path
 	void UpdatePath();
 
-	bool ResetNormalPathVariables();
+	bool DoNormalPath();
 	void RecalculatePath();
-	void FindDestination(iPoint& to_go);
+	void FlipPath(PathInfo* path_info);
 	//_normal_path
 
 private:
@@ -65,8 +60,6 @@ private:
 
 	MonkeyInfo monkey;
 	MonkeyState monkeyState;
-
-	bool up, down, left, right;
 
 	// Pathfinding
 	uint pathfinding_index = 0;
@@ -83,15 +76,12 @@ private:
 	//_pathfinding
 
 	// Normal path
-	StartEndPath normal_path_index = StartEndPath::start;
-	StartEndPath last_normal_path_index = StartEndPath::end;
-
-	bool normal_path_finished = true;
-	bool create_normal_path;
-	bool do_normal_path;
+	uint normal_path_index = 0;
+	uint last_normal_path_index = 0;
 
 	bool create_pathfinding_back;
 	bool going_back_home;
+	iPoint home;
 	//_normal_path
 };
 

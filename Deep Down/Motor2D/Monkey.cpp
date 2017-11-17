@@ -24,6 +24,7 @@ Monkey::Monkey(float x, float y, PathInfo* path) : Enemy(x, y, path)
 	monkeyState = MonkeyState::r_idle;
 
 	collider = App->collision->AddCollider({ 0, 0, monkey.coll_size.x + monkey.coll_offset.w, monkey.coll_size.y + monkey.coll_offset.h }, COLLIDER_TYPE::COLLIDER_MONKEY, App->enemies);
+	collider_size = monkey.coll_size;
 
 	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
 	follow_pathfinding2 = App->collision->AddCollider({ (int)App->player->position.x - 50, (int)App->player->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
@@ -46,10 +47,6 @@ void Monkey::Move()
 	GeneralStatesMachine();
 
 	// Update movement
-	up = false;
-	down = false;
-	left = false;
-	right = false;
 	UpdateDirection();
 
 	// Update collider
@@ -118,17 +115,25 @@ void Monkey::GeneralStatesMachine()
 void Monkey::UpdateDirection() 
 {
 	if (i_pos.x == last_pos.x) {
-		if (i_pos.x < last_pos.x)
+		if (i_pos.x < last_pos.x) {
 			left = true;
-		else if (i_pos.x > last_pos.x)
+			right = false;
+		}
+		else if (i_pos.x > last_pos.x) {
 			right = true;
+			left = false;
+		}
 	}
 
 	if (i_pos.y == last_pos.y) {
-		if (i_pos.y < last_pos.y)
+		if (i_pos.y < last_pos.y) {
 			up = true;
-		else if (i_pos.y > last_pos.y)
+			down = false;
+		}
+		else if (i_pos.y > last_pos.y) {
 			down = true;
+			up = false;
+		}
 	}
 
 
@@ -142,46 +147,24 @@ void Monkey::OnCollision(Collider* c1, Collider* c2)
 
 void Monkey::UpdatePath()
 {
-	if (path_info->end_pos.x != NULL && path_info->end_pos.y != NULL) {
+	if (path_info->path != nullptr) {
 
 		// If enemy was pathfinding towards the player and doesn't see it anymore, create a pathfinding back home
 		if (pathfinding_stop) {
-			if (ResetNormalPathVariables()) {
+			if (ResetPathfindingVariables()) {
+				normal_path_index = last_normal_path_index;
 				create_pathfinding_back = true;
-				pathfinding_stop = false;
 			}
 		}
 
 		// Create pathfinding back
 		if (create_pathfinding_back) {
-			iPoint to_go;
+			home = path_info->path[normal_path_index];
 
-			FindDestination(to_go);
-
-			if (CreatePathfinding(to_go)) {
+			if (CreatePathfinding(home)) {
 				going_back_home = true;
 				pathfinding_finished = true;
-				do_normal_path = true;
 				create_pathfinding_back = false;
-			}
-		}
-
-		// If the enemy doesn't see the player, create its normal path
-		if (normal_path_finished && !pathfinding) {
-			if (ResetNormalPathVariables()) {
-				create_normal_path = true;
-			}
-		}
-
-		// Create normal path
-		if (create_normal_path) {
-			iPoint to_go;
-
-			FindDestination(to_go);
-
-			if (CreatePathfinding(to_go)) {
-				do_normal_path = true;
-				create_normal_path = false;
 			}
 		}
 
@@ -191,26 +174,10 @@ void Monkey::UpdatePath()
 				going_back_home = false;
 		}
 		// If it is home, update the normal path
-		else if (do_normal_path) {
-			if (!Pathfind()) {
+		else {
+			if (!DoNormalPath())
 				RecalculatePath();
-				normal_path_finished = true;
-			}
 		}
-	}
-}
-
-void Monkey::FindDestination(iPoint& to_go)
-{
-	switch (normal_path_index) {
-	case StartEndPath::start:
-		to_go = path_info->start_pos;
-		break;
-	case StartEndPath::end:
-		to_go = path_info->end_pos;
-		break;
-	default:
-		to_go = { 0,0 };
 	}
 }
 
@@ -223,6 +190,7 @@ void Monkey::UpdatePathfinding()
 	// If player is near the enemy... Create a pathfinding towards it
 	if (pathfinding_finished && SDL_HasIntersection(&enemy_pos, &player_pos)) {
 		if (ResetPathfindingVariables()) {
+			last_normal_path_index = normal_path_index;
 			create_pathfinding = true;
 		}
 	}
@@ -277,17 +245,6 @@ bool Monkey::ResetPathfindingVariables()
 	pathfinding_stop = false;
 	pathfinding = false;
 	pathfind = true;
-	pathfinding_size = 0;
-
-	return ret;
-}
-
-bool Monkey::ResetNormalPathVariables()
-{
-	bool ret = true;
-
-	do_normal_path = false;
-	normal_path_finished = false;
 	pathfinding_size = 0;
 
 	return ret;
@@ -350,18 +307,41 @@ bool Monkey::Pathfind()
 	return ret;
 }
 
-void Monkey::RecalculatePath()
+bool Monkey::DoNormalPath()
 {
-	switch (last_normal_path_index) {
-	case StartEndPath::start:
-		last_normal_path_index = StartEndPath::end;
-		break;
-	case StartEndPath::end:
-		last_normal_path_index = StartEndPath::start;
-		break;
-	default:
-		break;
+	bool ret = true;
+
+	iPoint to_go = path_info->path[normal_path_index];
+
+	if (to_go.x != NULL && to_go.y != NULL) {
+
+		UpdateMovement(to_go);
+
+		ret = true;
+
+		if (i_pos == to_go) {
+			if (normal_path_index < path_info->path_size - 1)
+				normal_path_index++;
+			else
+				ret = false;
+		}
 	}
 
-	normal_path_index = last_normal_path_index;
+	return ret;
+}
+
+void Monkey::RecalculatePath()
+{
+	normal_path_index = 0;
+
+	// Flip path
+	FlipPath(path_info);
+}
+
+void Monkey::FlipPath(PathInfo* path_info) {
+	iPoint* start = &path_info->path[0];
+	iPoint* end = &path_info->path[path_info->path_size - 1];
+
+	while (start < end)
+		SWAP(*start++, *end--);
 }

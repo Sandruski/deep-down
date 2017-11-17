@@ -58,9 +58,6 @@
     <ClCompile Include="CatPeasant.cpp">
       <Filter>Game\Modules\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Monkey.cpp">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="Plant.cpp">
       <Filter>Game\Modules\Enemies</Filter>
     </ClCompile>
@@ -72,6 +69,9 @@
     </ClCompile>
     <ClCompile Include="j1Timer.cpp">
       <Filter>Game\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Monkey.cpp">
+      <Filter>Game\Modules\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -153,9 +153,6 @@
     <ClInclude Include="CatPeasant.h">
       <Filter>Game\Modules\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Monkey.h">
-      <Filter>Game\Modules\Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="Plant.h">
       <Filter>Game\Modules\Enemies</Filter>
     </ClInclude>
@@ -167,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="j1Timer.h">
       <Filter>Game\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Monkey.h">
+      <Filter>Game\Modules\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

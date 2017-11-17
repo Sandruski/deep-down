@@ -16,6 +16,11 @@ enum ImpState {
 	l_shield_walk
 };
 
+enum StartEndPath {
+	start,
+	end
+};
+
 struct ImpInfo
 {
 	Animation r_shield_idle, l_shield_idle;
@@ -55,9 +60,9 @@ private:
 	// Normal path
 	void UpdatePath();
 
-	bool DoNormalPath();
+	bool ResetNormalPathVariables();
 	void RecalculatePath();
-	void FlipPath(PathInfo* path_info);
+	void FindDestination(iPoint& to_go);
 	//_normal_path
 
 private:
@@ -67,11 +72,8 @@ private:
 	ImpInfo imp;
 	ImpState impState;
 
-	bool up, down, left, right;
 	bool stop_x, stop_y;
 	bool throw_bomb;
-
-
 
 	// Pathfinding
 	uint pathfinding_index = 0;
@@ -82,18 +84,21 @@ private:
 	bool pathfinding_finished = true;
 	bool pathfinding;
 	bool pathfind;
-	
+
 	Collider* follow_pathfinding1;
 	Collider* follow_pathfinding2;
 	//_pathfinding
 
 	// Normal path
-	uint normal_path_index = 0;
-	uint last_normal_path_index = 0;
+	StartEndPath normal_path_index = StartEndPath::start;
+	StartEndPath last_normal_path_index = StartEndPath::end;
+
+	bool normal_path_finished = true;
+	bool create_normal_path;
+	bool do_normal_path;
 
 	bool create_pathfinding_back;
 	bool going_back_home;
-	iPoint home;
 	//_normal_path
 };
 

@@ -24,6 +24,7 @@ Imp::Imp(float x, float y, PathInfo* path) : Enemy(x, y, path)
 	impState = ImpState::r_shield_idle;
 
 	collider = App->collision->AddCollider({ 0, 0, imp.coll_size.x + imp.coll_offset.w, imp.coll_size.y + imp.coll_offset.h }, COLLIDER_TYPE::COLLIDER_IMP, App->enemies);
+	collider_size = imp.coll_size;
 
 	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
 	follow_pathfinding2 = App->collision->AddCollider({ (int)App->player->position.x - 50, (int)App->player->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->enemies);
@@ -46,12 +47,6 @@ void Imp::Move()
 	GeneralStatesMachine();
 
 	// Update movement
-	up = false;
-	down = false;
-	left = false;
-	right = false;
-	stop_x = false;
-	stop_y = false;
 	throw_bomb = false;
 	UpdateDirection();
 
@@ -183,25 +178,37 @@ void Imp::GeneralStatesMachine()
 void Imp::UpdateDirection() {
 
 	if (i_pos.x != last_pos.x) {
-		if (i_pos.x < last_pos.x)
+		stop_x = false;
+
+		if (i_pos.x < last_pos.x) {
 			left = true;
-		else if (i_pos.x > last_pos.x)
+			right = false;
+		}
+		else if (i_pos.x > last_pos.x) {
 			right = true;
+			left = false;
+		}
 	}
 	else
 		stop_x = true;
 
 	if (i_pos.y != last_pos.y) {
-		if (i_pos.y < last_pos.y)
+		stop_y = false;
+
+		if (i_pos.y < last_pos.y) {
 			up = true;
-		else if (i_pos.y > last_pos.y)
+			down = false;
+		}
+		else if (i_pos.y > last_pos.y) {
 			down = true;
+			up = false;
+		}
 	}
 	else
 		stop_y = true;
 
-	last_pos.x = (int)position.x;
-	last_pos.y = (int)position.y;
+	last_pos.x = i_pos.x;
+	last_pos.y = i_pos.y;
 }
 
 void Imp::OnCollision(Collider* c1, Collider* c2) 
@@ -210,24 +217,46 @@ void Imp::OnCollision(Collider* c1, Collider* c2)
 
 void Imp::UpdatePath()
 {
-	if (path_info->path != nullptr) {
+	if (path_info->end_pos.x != NULL && path_info->end_pos.y != NULL) {
 
 		// If enemy was pathfinding towards the player and doesn't see it anymore, create a pathfinding back home
 		if (pathfinding_stop) {
-			if (ResetPathfindingVariables()) {
-				normal_path_index = last_normal_path_index;
+			if (ResetNormalPathVariables()) {
 				create_pathfinding_back = true;
+				pathfinding_stop = false;
 			}
 		}
 
 		// Create pathfinding back
 		if (create_pathfinding_back) {
-			home = path_info->path[normal_path_index];
+			iPoint to_go;
 
-			if (CreatePathfinding(home)) {
+			FindDestination(to_go);
+
+			if (CreatePathfinding(to_go)) {
 				going_back_home = true;
 				pathfinding_finished = true;
+				do_normal_path = true;
 				create_pathfinding_back = false;
+			}
+		}
+
+		// If the enemy doesn't see the player, create its normal path
+		if (normal_path_finished && !pathfinding) {
+			if (ResetNormalPathVariables()) {
+				create_normal_path = true;
+			}
+		}
+
+		// Create normal path
+		if (create_normal_path) {
+			iPoint to_go;
+
+			FindDestination(to_go);
+
+			if (CreatePathfinding(to_go)) {
+				do_normal_path = true;
+				create_normal_path = false;
 			}
 		}
 
@@ -237,10 +266,26 @@ void Imp::UpdatePath()
 				going_back_home = false;
 		}
 		// If it is home, update the normal path
-		else { 
-			if (!DoNormalPath())
+		else if (do_normal_path) {
+			if (!Pathfind()) {
 				RecalculatePath();
+				normal_path_finished = true;
+			}
 		}
+	}
+}
+
+void Imp::FindDestination(iPoint& to_go)
+{
+	switch (normal_path_index) {
+	case StartEndPath::start:
+		to_go = path_info->start_pos;
+		break;
+	case StartEndPath::end:
+		to_go = path_info->end_pos;
+		break;
+	default:
+		to_go = { 0,0 };
 	}
 }
 
@@ -253,7 +298,6 @@ void Imp::UpdatePathfinding()
 	// If player is near the enemy... Create a pathfinding towards it
 	if (pathfinding_finished && SDL_HasIntersection(&enemy_pos, &player_pos)) {
 		if (ResetPathfindingVariables()) {
-			last_normal_path_index = normal_path_index;
 			create_pathfinding = true;
 		}
 	}
@@ -266,6 +310,10 @@ void Imp::UpdatePathfinding()
 
 		if (CreatePathfinding(dest)) {
 			pathfinding = true;
+			create_pathfinding = false;
+		}
+		else {
+			pathfinding_stop = true;
 			create_pathfinding = false;
 		}
 	}
@@ -313,6 +361,17 @@ bool Imp::ResetPathfindingVariables()
 	return ret;
 }
 
+bool Imp::ResetNormalPathVariables()
+{
+	bool ret = true;
+
+	do_normal_path = false;
+	normal_path_finished = false;
+	pathfinding_size = 0;
+
+	return ret;
+}
+
 bool Imp::CreatePathfinding(iPoint destination)
 {
 	bool ret = false;
@@ -347,7 +406,7 @@ void Imp::UpdateMovement(iPoint to_go)
 		position.y -= speed.x;
 }
 
-bool Imp::Pathfind() 
+bool Imp::Pathfind()
 {
 	bool ret = true;
 
@@ -370,41 +429,18 @@ bool Imp::Pathfind()
 	return ret;
 }
 
-bool Imp::DoNormalPath()
-{
-	bool ret = true;
-
-	iPoint to_go = path_info->path[normal_path_index];
-
-	if (to_go.x != NULL && to_go.y != NULL) {
-
-		UpdateMovement(to_go);
-
-		ret = true;
-
-		if (i_pos == to_go) {
-			if (normal_path_index < path_info->path_size - 1)
-				normal_path_index++;
-			else
-				ret = false;
-		}
-	}
-
-	return ret;
-}
-
 void Imp::RecalculatePath()
 {
-	normal_path_index = 0;
+	switch (last_normal_path_index) {
+	case StartEndPath::start:
+		last_normal_path_index = StartEndPath::end;
+		break;
+	case StartEndPath::end:
+		last_normal_path_index = StartEndPath::start;
+		break;
+	default:
+		break;
+	}
 
-	// Flip path
-	FlipPath(path_info);
-}
-
-void Imp::FlipPath(PathInfo* path_info) {
-	iPoint* start = &path_info->path[0];
-	iPoint* end = &path_info->path[path_info->path_size - 1];
-
-	while (start < end)
-		SWAP(*start++, *end--);
+	normal_path_index = last_normal_path_index;
 }

@@ -24,16 +24,18 @@ public:
 	// Enemy movement
 	fPoint position;
 	iPoint i_pos;
-	iPoint start_pos;
+	fPoint start_pos;
 
 	fPoint speed = { 1,1 };
 
 	// Keep track of enemy movement
 	iPoint last_pos;
+	bool up, down, left, right;
 
 	//_enemy_movement
 
 	iPoint collider_pos;
+	iPoint collider_size;
 
 public:
 	Enemy(float x, float y, PathInfo* path);
