@@ -4,12 +4,9 @@
 #include "Entity.h"
 
 enum MonkeyState {
-	r_idle,
-	l_idle,
-	r_hurt,
-	l_hurt,
-	r_hit,
-	l_hit
+	mr_idle, ml_idle,
+	mr_hurt, ml_hurt,
+	mr_hit,	ml_hit
 };
 
 struct MonkeyInfo
@@ -59,8 +56,6 @@ private:
 	void DoHit();
 
 private:
-
-	float dt;
 
 	MonkeyInfo monkey;
 	MonkeyState monkeyState;

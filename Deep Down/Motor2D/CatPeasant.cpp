@@ -21,252 +21,355 @@ CAT PEASANT (enemy):
 
 CatPeasant::CatPeasant(float x, float y, PathInfo* path) : Entity(x, y, path)
 {
-	idle.PushBack({ 2, 21, 64, 64 });
-	idle.PushBack({ 68, 21, 64, 64 });
-	idle.PushBack({ 134, 21, 64, 64 });
-	idle.PushBack({ 200, 21, 64, 64 });
-	idle.PushBack({ 266, 21, 64, 64 });
-	idle.speed = 0.15f;
+	catPeasant = App->entities->GetCatPeasantInfo();
 
-	idle2.PushBack({ 774, 922, 64, 64 });
-	idle2.PushBack({ 708, 922, 64, 64 });
-	idle2.PushBack({ 642, 922, 64, 64 });
-	idle2.PushBack({ 576, 922, 64, 64 });
-	idle2.PushBack({ 510, 922, 64, 64 });
-	idle2.speed = 0.15f;
-
-	idleNoStuff.PushBack({ 2, 563, 64, 64 });
-	idleNoStuff.PushBack({ 68, 563, 64, 64 });
-	idleNoStuff.PushBack({ 134, 563, 64, 64 });
-	idleNoStuff.PushBack({ 200, 563, 64, 64 });
-	idleNoStuff.PushBack({ 266, 563, 64, 64 });
-	idleNoStuff.speed = 0.15f;
-
-	idleNoStuff2.PushBack({ 774, 1464, 64, 64 });
-	idleNoStuff2.PushBack({ 708, 1464, 64, 64 });
-	idleNoStuff2.PushBack({ 642, 1464, 64, 64 });
-	idleNoStuff2.PushBack({ 576, 1464, 64, 64 });
-	idleNoStuff2.PushBack({ 510, 1464, 64, 64 });
-	idleNoStuff2.speed = 0.15f;
-
-	throwStuff.PushBack({ 2, 361, 64, 64 });
-	throwStuff.PushBack({ 68, 361, 64, 64 });
-	throwStuff.PushBack({ 134, 361, 64, 64 });
-	throwStuff.PushBack({ 200, 361, 64, 64 });
-	throwStuff.PushBack({ 266, 361, 64, 64 });
-	throwStuff.PushBack({ 332, 361, 64, 64 });
-	throwStuff.PushBack({ 398, 361, 64, 64 });
-	throwStuff.PushBack({ 464, 361, 64, 64 });
-	throwStuff.PushBack({ 530, 361, 64, 64 });
-	throwStuff.speed = 0.15f;
-	throwStuff.loops = false;
-
-	throwStuff2.PushBack({ 742, 1347, 64, 64 });
-	throwStuff2.PushBack({ 708, 1347, 64, 64 });
-	throwStuff2.PushBack({ 642, 1347, 64, 64 });
-	throwStuff2.PushBack({ 576, 1347, 64, 64 });
-	throwStuff2.PushBack({ 510, 1347, 64, 64 });
-	throwStuff2.PushBack({ 444, 1347, 64, 64 });
-	throwStuff2.PushBack({ 378, 1347, 64, 64 });
-	throwStuff2.PushBack({ 312, 1347, 64, 64 });
-	throwStuff2.PushBack({ 246, 1347, 64, 64 });
-	throwStuff2.speed = 0.15f;
-
-	hurt.PushBack({ 2, 106, 64, 64 });
-
-	hurt2.PushBack({ 742, 1007, 64, 64 });
-
-	hurtNoStuff.PushBack({ 2, 648, 64, 64 });
-
-	hurtNoStuff2.PushBack({ 742, 1549, 64, 64 });
-
-	death.PushBack({ 2, 276, 64, 64 });
-	death.PushBack({ 68, 276, 64, 64 });
-	death.PushBack({ 134, 276, 64, 64 });
-	death.PushBack({ 200, 276, 64, 64 });
-	death.PushBack({ 266, 276, 64, 64 });
-	death.PushBack({ 332, 276, 64, 64 });
-	death.PushBack({ 398, 276, 64, 64 });
-	death.PushBack({ 464, 276, 64, 64 });
-	death.speed = 0.15f;
-
-	death2.PushBack({ 742, 1177, 64, 64 });
-	death2.PushBack({ 708, 1177, 64, 64 });
-	death2.PushBack({ 642, 1177, 64, 64 });
-	death2.PushBack({ 576, 1177, 64, 64 });
-	death2.PushBack({ 510, 1177, 64, 64 });
-	death2.PushBack({ 444, 1177, 64, 64 });
-	death2.PushBack({ 378, 1177, 64, 64 });
-	death2.PushBack({ 312, 1177, 64, 64 });
-	death2.speed = 0.15f;
-
-	deathNoStuff.PushBack({ 2, 276, 64, 64 });
-	deathNoStuff.PushBack({ 68, 276, 64, 64 });
-	deathNoStuff.PushBack({ 134, 276, 64, 64 });
-	deathNoStuff.PushBack({ 200, 276, 64, 64 });
-	deathNoStuff.PushBack({ 266, 276, 64, 64 });
-	deathNoStuff.PushBack({ 332, 276, 64, 64 });
-	deathNoStuff.PushBack({ 398, 276, 64, 64 });
-	deathNoStuff.PushBack({ 464, 276, 64, 64 });
-	deathNoStuff.speed = 0.15f;
-
-	deathNoStuff2.PushBack({ 742, 1634, 64, 64 });
-	deathNoStuff2.PushBack({ 708, 1634, 64, 64 });
-	deathNoStuff2.PushBack({ 642, 1634, 64, 64 });
-	deathNoStuff2.PushBack({ 576, 1634, 64, 64 });
-	deathNoStuff2.PushBack({ 510, 1634, 64, 64 });
-	deathNoStuff2.PushBack({ 444, 1634, 64, 64 });
-	deathNoStuff2.PushBack({ 378, 1634, 64, 64 });
-	deathNoStuff2.PushBack({ 312, 1634, 64, 64 });
-	deathNoStuff2.speed = 0.15f;
+	///
+	animation = &catPeasant.r_idle;
+	catPeasantState = CatPeasantState::r_idle;
 
 	lives = 2;
 
-	catPeasantState = stateEnemies::enemyIdle_;
+	collider = App->collision->AddCollider({ 0, 0, catPeasant.coll_size.x + catPeasant.coll_offset.w, catPeasant.coll_size.y + catPeasant.coll_offset.h }, COLLIDER_TYPE::COLLIDER_CATPEASANT, App->entities);
+	collider_size = catPeasant.coll_size;
 
-	animation = &idle;
-	collider = App->collision->AddCollider({ 0, 0, 64, 64 }, COLLIDER_TYPE::COLLIDER_CATPEASANT, App->entities);
-
+	speed = { 60.0f, 0 };
+	seconds_to_wait = 6.0f;
 }
 
-void CatPeasant::Move()
+void CatPeasant::Move(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT) {
+	deltaTime = dt;
 
-		position.x--;
-	}
+	i_pos.x = (int)position.x;
+	i_pos.y = (int)position.y;
 
-	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT) {
+	// Update animations speed
+	UpdateAnimations(dt);
 
-		position.x++;
-	}
+	// Update movement
+	up = false;
+	down = false;
+	left = false;
+	right = false;
+	UpdateDirection();
 
-	if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_REPEAT) {
+	// Update path (which is a pathfinding)
+	DoHit();
+	CoolDown();
 
-		position.y--;
-	}
+	UpdatePath();
+	//_update_path
 
-	if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT) {
-
-		position.y++;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_REPEAT) {
-
-		catPeasantState = stateEnemies::enemyAttack_;
-		
-	}
-
-	SDL_Rect enemy_pos = { position.x - 50, position.y, 150, 150 };
-	SDL_Rect player_pos = { App->entities->playerData->position.x - 50, App->entities->playerData->position.y - 10, 100, 200 };
-
-	if (App->input->GetKey(SDL_SCANCODE_KP_9) == KEY_DOWN && SDL_HasIntersection(&enemy_pos, &player_pos)) {
-
-		int patata = App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y), App->map->WorldToMap(App->entities->playerData->position.x, App->entities->playerData->position.y), Distance::DISTANCE_TO);
-		last_path = App->pathfinding->GetLastPath();
-		index = 0;
-
-	}
-
-	ActualDirection();
-
+	// Update state
 	GeneralStatesMachine();
 
-	SetDirectionBoolsToFalse();
-	
-	if (last_path != nullptr && last_path->At(index) != nullptr) {
-	 iPoint newpos = App->map->MapToWorld( last_path->At(index)->x, last_path->At(index)->y);
-		if (position.x < newpos.x)
-			position.x++;
-		else if (position.x > newpos.x)
-			position.x--;
-		if (position.y < newpos.y)
-			position.y++;
-		else if (position.y > newpos.y)
-			position.y--;
-		if (position.x == newpos.x && position.y == newpos.y)
-			index++;	
-	}
-
+	// Update collider
+	//collider_pos = { i_pos.x + imp.coll_offset.x, i_pos.y + imp.coll_offset.y };
+	//collider->SetPos(collider_pos.x, collider_pos.y);
+	collider->SetPos(i_pos.x, i_pos.y);
 }
 
 void CatPeasant::GeneralStatesMachine() {
 
 	switch (catPeasantState) {
 
-	case enemyIdle_:
-		if (toBackward == true) {
-			catPeasantState = stateEnemies::enemyIdle2_;
+	case CatPeasantState::r_idle:
+		if (right_hit) {
+			catPeasantState = CatPeasantState::r_attack;
 			break;
 		}
-		animation = &idle;
-		break;
-
-	case enemyIdle2_:
-		if (toForward == true) {
-			catPeasantState = stateEnemies::enemyIdle_;
-			break;
-		}	
-		animation = &idle2;
-		break;
-
-	case enemyPunished_:
-		animation = &hurt;
-		break;
-
-	case enemyPunished2_:
-		animation = &hurt2;
-		break;
-
-	case enemyDeath_:
-		animation = &death;
-		break;
-
-	case enemyDeath2_:
-		animation = &death2;
-		break;
-
-	case enemyAttack_:
-		animation = &throwStuff;
-		if (animation->Finished()) {
-			animation->Reset();
-			App->particles->AddParticle(App->particles->CatPeasantSinus, position.x, position.y, COLLIDER_PEASANT_SHOT, NULL, { 0,0 });
-			catPeasantState = stateEnemies::enemyIdle_;
+		if (left) {
+			catPeasantState = CatPeasantState::l_idle;
 			break;
 		}
+		animation = &catPeasant.r_idle;
+		break;
 
+	case CatPeasantState::l_idle:
+		if (left_hit) {
+			catPeasantState = CatPeasantState::l_attack;
+			break;
+		}
+		if (right) {
+			catPeasantState = CatPeasantState::r_idle;
+			break;
+		}
+		animation = &catPeasant.l_idle;
+		break;
+
+	case CatPeasantState::r_attack:
+		if (left) {
+			catPeasantState = CatPeasantState::l_attack;
+			break;
+		}
+		animation = &catPeasant.r_throw_staff;
+
+		catPeasantState = CatPeasantState::r_idle;
+		break;
+
+	case CatPeasantState::l_attack:
+		if (right) {
+			catPeasantState = CatPeasantState::r_attack;
+			break;
+		}
+		animation = &catPeasant.l_throw_staff;
+
+		catPeasantState = CatPeasantState::l_idle;
+		break;
+
+	case CatPeasantState::r_hurt:
+		if (left) {
+			catPeasantState = CatPeasantState::l_hurt;
+			break;
+		}
+		animation = &catPeasant.r_hurt;
+
+		catPeasantState = CatPeasantState::r_idle;
+		break;
+
+	case CatPeasantState::l_hurt:
+		if (right) {
+			catPeasantState = CatPeasantState::r_hurt;
+			break;
+		}
+		animation = &catPeasant.l_hurt;
+
+		catPeasantState = CatPeasantState::l_idle;
 		break;
 	}
-
-
 }
 
-void CatPeasant::ActualDirection() {
+void CatPeasant::UpdateDirection() {
 
-	if (position.x < lastPosition.x)
-		toBackward = true;
-	else if (position.x > lastPosition.x)
-		toForward = true;
-	if (position.y < lastPosition.y)
-		toUp = true;
-	else if (position.y > lastPosition.y)
-		toDown = true;
+	if (position.x < last_pos.x) {
+		left = true;
+	}
+	else if (position.x > last_pos.x) {
+		right = true;
+	}
 
-	lastPosition = position;
+	if (position.y < last_pos.y) {
+		up = true;
+	}
+	else if (position.y > last_pos.y) {
+		down = true;
+	}
 
+	last_pos = position;
 }
 
-void CatPeasant::SetDirectionBoolsToFalse() {
+void CatPeasant::UpdateAnimations(float dt)
+{
+	float speed = 10.0f;
 
-	toUp = false;
-	toDown = false;
-	toForward = false;
-	toBackward = false;
-
+	catPeasant.r_idle.speed = speed * dt;
+	catPeasant.l_idle.speed = speed * dt;
+	catPeasant.r_idle_no_staff.speed = speed * dt;
+	catPeasant.l_idle_no_staff.speed = speed * dt;
+	catPeasant.r_hurt.speed = speed * dt;
+	catPeasant.l_hurt.speed = speed * dt;
+	catPeasant.r_hurt_no_staff.speed = speed * dt;
+	catPeasant.l_hurt_no_staff.speed = speed * dt;
+	catPeasant.r_dead.speed = speed * dt;
+	catPeasant.l_dead.speed = speed * dt;
+	catPeasant.r_dead_no_staff.speed = speed * dt;
+	catPeasant.l_dead_no_staff.speed = speed * dt;
+	catPeasant.r_throw_staff.speed = speed * dt;
+	catPeasant.l_throw_staff.speed = speed * dt;
 }
 
-void CatPeasant::OnCollision(Collider* c1, Collider* c2) {
-
-	
-
+void CatPeasant::OnCollision(Collider* c1, Collider* c2)
+{
 }
+
+void CatPeasant::UpdatePath()
+{
+	if (path_info->end_pos.x != NULL && path_info->end_pos.y != NULL) {
+
+		// If the enemy doesn't see the player, create its normal path
+		if (normal_path_finished) {
+			if (ResetNormalPathVariables()) {
+				create_normal_path = true;
+			}
+		}
+
+		// Create normal path
+		if (create_normal_path) {
+			iPoint to_go;
+
+			FindDestination(to_go);
+
+			if (CreatePathfinding(to_go)) {
+				do_normal_path = true;
+				create_normal_path = false;
+			}
+		}
+
+		// If it is home, update the normal path
+		if (do_normal_path) {
+
+			// If she sees the player, she throws her staff towards him
+			if (position.DistanceTo(App->entities->playerData->position) < 100.0f && cooldown <= 0) {
+				Hit();
+				wait = true;
+				cool = true;
+				cooldown = seconds_to_wait;
+			}
+
+			if (!wait) {
+				if (!Pathfind()) {
+					RecalculatePath();
+					normal_path_finished = true;
+				}
+			}
+		}
+	}
+}
+
+void CatPeasant::FindDestination(iPoint& to_go)
+{
+	switch (normal_path_index) {
+	case StartEndPath::start:
+		to_go = path_info->start_pos;
+		break;
+	case StartEndPath::end:
+		to_go = path_info->end_pos;
+		break;
+	default:
+		to_go = { 0,0 };
+	}
+}
+
+void CatPeasant::Hit()
+{
+	if (do_hit) {
+		if (right)
+			right_hit = true;
+		else if (left)
+			left_hit = true;
+		else
+			right_hit = true;
+
+		do_hit = false;
+	}
+}
+
+void CatPeasant::DoHit()
+{
+	if (right_hit) {
+		if (catPeasant.r_throw_staff.Finished()) {
+			// Add particle
+			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + 20, COLLIDER_PEASANT_SHOT, NULL, { 80.0f,80.0f });
+
+			// Reset variables
+			right_hit = false;
+			catPeasant.r_throw_staff.Reset();
+			do_hit = true;
+			wait = false;
+		}
+	}
+	else if (left_hit) {
+		if (catPeasant.l_throw_staff.Finished()) {
+			// Add particle
+			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + 20, COLLIDER_PEASANT_SHOT, NULL, { 80.0f,80.0f });
+
+			// Reset variables
+			left_hit = false;
+			catPeasant.l_throw_staff.Reset();
+			do_hit = true;
+			wait = false;
+		}
+	}
+}
+
+void CatPeasant::CoolDown()
+{
+	if (cool) {
+		cooldown -= deltaTime;
+
+		if (cooldown <= 0)
+			cool = false;
+	}
+}
+
+bool CatPeasant::ResetNormalPathVariables()
+{
+	bool ret = true;
+
+	do_normal_path = false;
+	normal_path_finished = false;
+	pathfinding_size = 0;
+
+	return ret;
+}
+
+bool CatPeasant::CreatePathfinding(iPoint destination)
+{
+	bool ret = false;
+
+	if (App->pathfinding->CreatePath(App->map->WorldToMap(i_pos.x, i_pos.y), App->map->WorldToMap(destination.x, destination.y), Distance::MANHATTAN) > -1) {
+		last_pathfinding = App->pathfinding->GetLastPath();
+
+		pathfinding_size = last_pathfinding->Count();
+
+		if (pathfinding_size > 1)
+			pathfinding_index = 1;
+		else
+			pathfinding_index = 0;
+
+		mlast_pathfinding.Clear();
+
+		for (int i = 0; i < pathfinding_size; ++i) {
+			mlast_pathfinding.PushBack(*last_pathfinding->At(i));
+			ret = true;
+		}
+	}
+
+	return ret;
+}
+
+void CatPeasant::UpdateMovement(iPoint to_go)
+{
+	if (i_pos.x < to_go.x)
+		position.x += speed.x * deltaTime;
+	else if (i_pos.x > to_go.x)
+		position.x -= speed.x * deltaTime;
+	if (i_pos.y < to_go.y)
+		position.y += speed.x * deltaTime;
+	else if (i_pos.y > to_go.y)
+		position.y -= speed.x * deltaTime;
+}
+
+bool CatPeasant::Pathfind()
+{
+	bool ret = true;
+
+	iPoint to_go = App->map->MapToWorld(mlast_pathfinding[pathfinding_index].x, mlast_pathfinding[pathfinding_index].y);
+
+	UpdateMovement(to_go);
+
+	if (i_pos == to_go) {
+		if (pathfinding_index < pathfinding_size - 1)
+			pathfinding_index++;
+	}
+
+	if (i_pos == App->map->MapToWorld(mlast_pathfinding[pathfinding_size - 1].x, mlast_pathfinding[pathfinding_size - 1].y))
+		ret = false;
+
+	return ret;
+}
+
+void CatPeasant::RecalculatePath()
+{
+	switch (normal_path_index) {
+	case StartEndPath::start:
+		normal_path_index = StartEndPath::end;
+		break;
+	case StartEndPath::end:
+		normal_path_index = StartEndPath::start;
+		break;
+	default:
+		break;
+	}
+}
+

@@ -5,6 +5,7 @@
 #include "Animation.h"
 
 #include "p2Point.h"
+#include "CatPeasant.h"
 #include "Imp.h"
 #include "Monkey.h"
 #include "Player.h"
@@ -13,6 +14,7 @@
 
 struct SDL_Texture;
 
+// Utility: use ENTITY_TYPES values to assign a type to enemies in Tiled 
 enum ENTITY_TYPES
 {
 	NO_TYPE,
@@ -21,7 +23,6 @@ enum ENTITY_TYPES
 	MONKEY_,
 	PLANT_,
 	PLAYER_,
-	
 };
 
 class Entity;
@@ -75,6 +76,7 @@ public:
 	bool AddEntity(ENTITY_TYPES type, uint path);
 
 	// Get entities info
+	CatPeasantInfo& GetCatPeasantInfo() { return catPeasant; }
 	ImpInfo& GetImpInfo() { return imp; }
 	MonkeyInfo& GetMonkeyInfo() { return monkey; }
 	PlayerInfo& GetPlayerInfo() { return player; }
@@ -104,6 +106,7 @@ private:
 	ImpInfo imp;
 	MonkeyInfo monkey;
 	PlayerInfo player;
+	CatPeasantInfo catPeasant;
 
 	// Paths info list
 	p2List<PathInfo*> paths;

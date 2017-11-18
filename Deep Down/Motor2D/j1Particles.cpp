@@ -160,7 +160,12 @@ void j1Particles::AddParticle(const Particle& particle, int x, int y, COLLIDER_T
 			p->speed.y = speed.y;
 			if (collider_type != COLLIDER_NONE)
 				p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), collider_type, this);
-			active[i] = p;
+			if (collider_type == COLLIDER_PEASANT_SHOT) {
+				float m = sqrtf(pow(App->entities->playerData->position.x - p->position.x, 2.0f) + pow(App->entities->playerData->position.y - p->position.y, 2.0f));
+				p->destination.x = (App->entities->playerData->position.x - p->position.x) / m;
+				p->destination.y = (App->entities->playerData->position.y - p->position.y) / m;
+			}
+				active[i] = p;
 			break;
 		}
 	}
@@ -220,18 +225,8 @@ bool Particle::Update(float dt)
 			position.x = position.x;
 	}
 	else if (collider->type == COLLIDER_PEASANT_SHOT) {
-
-		if (App->entities->playerData->position.y < position.y)
-			position.y--;
-		else if (App->entities->playerData->position.y > position.y)
-			position.y++;
-		if (App->entities->playerData->position.x < position.x)
-			position.x--;
-		else if (App->entities->playerData->position.x > position.x)
-			position.x++;
-
-		if (App->entities->playerData->position.x == position.x && App->entities->playerData->position.y == position.y)
-			Particle::~Particle();
+		position.y += destination.y * dt * speed.x;
+		position.x += destination.x * dt * speed.y;
 	}
 
 	//position.y += speed.y;

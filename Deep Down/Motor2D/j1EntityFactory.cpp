@@ -202,6 +202,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	player.gravity = collider_node.child("gravity").attribute("value").as_float();
 	player.speed = { collider_node.child("speed").attribute("x").as_float(), collider_node.child("speed").attribute("y").as_float() };
 	player.check_collision_offset = collider_node.child("check_collision").attribute("offset").as_uint();
+	
 	// Load animations
 	animations_node = config.child("types").child("player").child("animations");
 
@@ -382,7 +383,131 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.thirdAttack2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
+	//_load_animations
 	//_PLAYER
+
+	// CAT PEASANT
+	collider_node = config.child("types").child("cat_peasant").child("general").child("coll_offset");
+	catPeasant.coll_offset = { collider_node.attribute("x").as_int(), collider_node.attribute("y").as_int(), collider_node.attribute("w").as_int(), collider_node.attribute("h").as_int() };
+
+	// Load animations
+	animations_node = config.child("types").child("cat_peasant").child("animations");
+
+	//r_idle
+	node = animations_node.child("r_idle");
+	catPeasant.r_idle.speed = node.attribute("speed").as_float();
+	catPeasant.r_idle.loops = node.attribute("loops").as_bool();
+	catPeasant.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.r_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_idle
+	node = animations_node.child("l_idle");
+	catPeasant.l_idle.speed = node.attribute("speed").as_float();
+	catPeasant.l_idle.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.l_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_idle_no_staff
+	node = animations_node.child("r_idle_no_staff");
+	catPeasant.r_idle_no_staff.speed = node.attribute("speed").as_float();
+	catPeasant.r_idle_no_staff.loops = node.attribute("loops").as_bool();
+	catPeasant.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.r_idle_no_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_idle_no_staff
+	node = animations_node.child("l_idle_no_staff");
+	catPeasant.l_idle_no_staff.speed = node.attribute("speed").as_float();
+	catPeasant.l_idle_no_staff.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.l_idle_no_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_hurt
+	node = animations_node.child("r_hurt");
+	catPeasant.r_hurt.speed = node.attribute("speed").as_float();
+	catPeasant.r_hurt.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.r_hurt.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_hurt
+	node = animations_node.child("l_hurt");
+	catPeasant.l_hurt.speed = node.attribute("speed").as_float();
+	catPeasant.l_hurt.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.l_hurt.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_hurt_no_staff
+	node = animations_node.child("r_hurt_no_staff");
+	catPeasant.r_hurt_no_staff.speed = node.attribute("speed").as_float();
+	catPeasant.r_hurt_no_staff.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.r_hurt_no_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_hurt_no_staff
+	node = animations_node.child("l_hurt_no_staff");
+	catPeasant.l_hurt_no_staff.speed = node.attribute("speed").as_float();
+	catPeasant.l_hurt_no_staff.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.l_hurt_no_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_dead
+	node = animations_node.child("r_dead");
+	catPeasant.r_dead.speed = node.attribute("speed").as_float();
+	catPeasant.r_dead.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.r_dead.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_dead
+	node = animations_node.child("l_dead");
+	catPeasant.l_dead.speed = node.attribute("speed").as_float();
+	catPeasant.l_dead.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.l_dead.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_dead_no_staff
+	node = animations_node.child("r_dead_no_staff");
+	catPeasant.r_dead_no_staff.speed = node.attribute("speed").as_float();
+	catPeasant.r_dead_no_staff.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.r_dead_no_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_dead_no_staff
+	node = animations_node.child("l_dead_no_staff");
+	catPeasant.l_dead_no_staff.speed = node.attribute("speed").as_float();
+	catPeasant.l_dead_no_staff.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.l_dead_no_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_throw_staff
+	node = animations_node.child("r_throw_staff");
+	catPeasant.r_throw_staff.speed = node.attribute("speed").as_float();
+	catPeasant.r_throw_staff.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.r_throw_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_throw_staff
+	node = animations_node.child("l_throw_staff");
+	catPeasant.l_throw_staff.speed = node.attribute("speed").as_float();
+	catPeasant.l_throw_staff.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		catPeasant.l_throw_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+	//_load_animations
+	//_CAT_PEASANT
 
 	return ret;
 }

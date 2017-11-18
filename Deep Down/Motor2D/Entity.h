@@ -8,6 +8,11 @@ struct SDL_Texture;
 struct Collider;
 struct PathInfo;
 
+enum StartEndPath {
+	start,
+	end
+};
+
 class Entity
 {
 protected:

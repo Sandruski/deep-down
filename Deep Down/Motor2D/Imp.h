@@ -16,11 +16,6 @@ enum ImpState {
 	l_shield_walk
 };
 
-enum StartEndPath {
-	start,
-	end
-};
-
 struct ImpInfo
 {
 	Animation r_shield_idle, l_shield_idle;

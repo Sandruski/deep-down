@@ -24,6 +24,7 @@ struct Particle
 	Uint32 life = 0;
 
 	iPoint coll_size = { 0,0 };
+	fPoint destination = { 0,0 };
 
 	bool left = true, right = true, up = true, down = true;
 
@@ -51,6 +52,8 @@ public:
 private:
 	Particle* active[MAX_ACTIVE_PARTICLES];
 	uint last_particle = 0;
+
+	iPoint hit_pos;
 
 public:
 	Particle arrowRight;

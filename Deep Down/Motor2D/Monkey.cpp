@@ -31,7 +31,7 @@ Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y, path)
 
 	///
 	animation = &monkey.r_idle;
-	monkeyState = MonkeyState::r_idle;
+	monkeyState = MonkeyState::mr_idle;
 
 	lives = 1;
 
@@ -46,6 +46,8 @@ Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y, path)
 
 void Monkey::Move(float dt)
 {
+	deltaTime = dt;
+
 	i_pos.x = (int)position.x;
 	i_pos.y = (int)position.y;
 
@@ -80,68 +82,68 @@ void Monkey::GeneralStatesMachine()
 {
 	switch (monkeyState) {
 
-	case r_idle:
+	case MonkeyState::mr_idle:
 		if (right_hit) {
-			monkeyState = MonkeyState::r_hit;
+			monkeyState = MonkeyState::mr_hit;
 			break;
 		}
 		if (left) {
-			monkeyState = MonkeyState::l_idle;
+			monkeyState = MonkeyState::ml_idle;
 			break;
 		}
 		animation = &monkey.r_idle;
 		break;
 
-	case l_idle:
+	case MonkeyState::ml_idle:
 		if (left_hit) {
-			monkeyState = MonkeyState::l_hit;
+			monkeyState = MonkeyState::ml_hit;
 			break;
 		}
 		if (right) {
-			monkeyState = MonkeyState::r_idle;
+			monkeyState = MonkeyState::mr_idle;
 			break;
 		}
 		animation = &monkey.l_idle;
 		break;
 
-	case r_hit:
+	case MonkeyState::mr_hit:
 		if (left) {
-			monkeyState = MonkeyState::l_hit;
+			monkeyState = MonkeyState::ml_hit;
 			break;
 		}
 		animation = &monkey.r_hit;
 
-			monkeyState = MonkeyState::r_idle;
+			monkeyState = MonkeyState::mr_idle;
 		break;
 
-	case l_hit:
+	case MonkeyState::ml_hit:
 		if (right) {
-			monkeyState = MonkeyState::r_hit;
+			monkeyState = MonkeyState::mr_hit;
 			break;
 		}
 		animation = &monkey.l_hit;
 
-			monkeyState = MonkeyState::l_idle;
+			monkeyState = MonkeyState::ml_idle;
 		break;
 
-	case r_hurt:
+	case MonkeyState::mr_hurt:
 		if (left) {
-			monkeyState = MonkeyState::l_hurt;
+			monkeyState = MonkeyState::ml_hurt;
 			break;
 		}
 		animation = &monkey.r_hurt;
 
-			monkeyState = MonkeyState::r_idle;
+			monkeyState = MonkeyState::mr_idle;
 		break;
 
-	case l_hurt:
+	case MonkeyState::ml_hurt:
 		if (right) {
-			monkeyState = MonkeyState::r_hurt;
+			monkeyState = MonkeyState::mr_hurt;
 			break;
 		}
 		animation = &monkey.l_hurt;
 
-			monkeyState = MonkeyState::l_idle;
+			monkeyState = MonkeyState::ml_idle;
 		break;
 	}
 }
@@ -162,8 +164,7 @@ void Monkey::UpdateDirection()
 		down = true;
 	}
 
-	last_pos.x = position.x;
-	last_pos.y = position.y;
+	last_pos = position;
 }
 
 void Monkey::UpdateAnimations(float dt) 
@@ -354,13 +355,13 @@ bool Monkey::CreatePathfinding(iPoint destination)
 void Monkey::UpdateMovement(iPoint to_go)
 {
 	if (i_pos.x < to_go.x)
-		position.x += speed.x;
+		position.x += speed.x * deltaTime;
 	else if (i_pos.x > to_go.x)
-		position.x -= speed.x;
+		position.x -= speed.x * deltaTime;
 	if (i_pos.y < to_go.y)
-		position.y += speed.x;
+		position.y += speed.x * deltaTime;
 	else if (i_pos.y > to_go.y)
-		position.y -= speed.x;
+		position.y -= speed.x * deltaTime;
 }
 
 bool Monkey::Pathfind()

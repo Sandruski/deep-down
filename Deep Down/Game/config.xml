@@ -62,7 +62,6 @@
       <spritesheet name="Assets/Sprites/Textures/Kaho.png"/>
     </spritesheets>
     <types>
-      
       <player>
         <general>
           <state value="2"/>
@@ -238,7 +237,6 @@
           </thirdAttack2>
         </animations>
       </player>
-      
       <imp>
         <general>
           <coll_offset x="6" y="10" w="-8" h="-10"/>
@@ -300,7 +298,6 @@
           </l_shield_walk>
         </animations>
       </imp>
-
       <monkey>
         <general>
           <coll_offset x="5" y="9" w="-9" h="-9"/>
@@ -313,7 +310,7 @@
           <l_idle speed="0.2" loops="1">
             <frame x="248" y="2" w="80" h="48"/>
             <frame x="166" y="2" w="80" h="48"/>
-          </l_idle>     
+          </l_idle>
           <r_hurt speed="0.2" loops="0">
             <frame x="494" y="2" w="80" h="48"/>
             <frame x="576" y="2" w="80" h="48"/>
@@ -343,57 +340,119 @@
             <frame x="166" y="55" w="80" h="48"/>
             <frame x="84" y="55" w="80" h="48"/>
             <frame x="2" y="55" w="80" h="48"/>
-          </l_hit> 
+          </l_hit>
         </animations>
       </monkey>
-    </types>
-
-    <catPeasant>
-      <general>
-        <coll_offset x="5" y="9" w="-9" h="-9"/>
-      </general>
-      <animations>
-        <r_idle speed="0.2" loops="1">
-          <frame x="186" y="17" w="44" h="32"/>
-          <frame x="232" y="17" w="44" h="32"/>
-        </r_idle>
-        <l_idle speed="0.2" loops="1">
-          <frame x="340" y="17" w="44" h="32"/>
-          <frame x="294" y="17" w="44" h="32"/>
-        </l_idle>
-        <r_hurt speed="0.2" loops="0">
-          <frame x="548" y="56" w="32" h="32"/>
-          <frame x="594" y="56" w="32" h="32"/>
-        </r_hurt>
-        <l_hurt speed="0.2" loops="0">
-          <frame x="688" y="56" w="32" h="32"/>
-          <frame x="642" y="56" w="32" h="32"/>
-        </l_hurt>
-        <r_hit speed="0.2" loops="0">
-          <frame x="2" y="163" w="80" h="48"/>
-          <frame x="84" y="163" w="80" h="48"/>
-          <frame x="166" y="163" w="80" h="48"/>
-          <frame x="248" y="163" w="80" h="48"/>
-          <frame x="330" y="163" w="80" h="48"/>
-          <frame x="412" y="163" w="80" h="48"/>
-          <frame x="494" y="163" w="80" h="48"/>
-          <frame x="576" y="163" w="80" h="48"/>
-          <frame x="658" y="163" w="80" h="48"/>
-        </r_hit>
-        <l_hit speed="0.2" loops="0">
-          <frame x="658" y="93" w="80" h="48"/>
-          <frame x="576" y="93" w="80" h="48"/>
-          <frame x="494" y="93" w="80" h="48"/>
-          <frame x="412" y="93" w="80" h="48"/>
-          <frame x="330" y="93" w="80" h="48"/>
-          <frame x="248" y="93" w="80" h="48"/>
-          <frame x="166" y="93" w="80" h="48"/>
-          <frame x="84" y="93" w="80" h="48"/>
-          <frame x="2" y="93" w="80" h="48"/>
-        </l_hit>
-      </animations>
-    </catPeasant>
-    
+      <cat_peasant>
+        <general>
+          <coll_offset x="5" y="9" w="-9" h="-9"/>
+        </general>
+        <animations>
+          <r_idle speed="0.2" loops="1">
+            <frame x="2" y="21" w="64" h="64"/>
+            <frame x="68" y="21" w="64" h="64"/>
+            <frame x="134" y="21" w="64" h="64"/>
+            <frame x="200" y="21" w="64" h="64"/>
+            <frame x="266" y="21" w="64" h="64"/>
+          </r_idle>
+          <l_idle speed="0.2" loops="1">
+            <frame x="774" y="922" w="64" h="64"/>
+            <frame x="708" y="922" w="64" h="64"/>
+            <frame x="642" y="922" w="64" h="64"/>
+            <frame x="576" y="922" w="64" h="64"/>
+            <frame x="510" y="922" w="64" h="64"/>
+          </l_idle>
+          <r_idle_no_staff speed="0.2" loops="1">
+            <frame x="2" y="563" w="64" h="64"/>
+            <frame x="68" y="563" w="64" h="64"/>
+            <frame x="134" y="563" w="64" h="64"/>
+            <frame x="200" y="563" w="64" h="64"/>
+            <frame x="266" y="563" w="64" h="64"/>
+          </r_idle_no_staff>
+          <l_idle_no_staff speed="0.2" loops="1">
+            <frame x="774" y="1464" w="64" h="64"/>
+            <frame x="708" y="1464" w="64" h="64"/>
+            <frame x="642" y="1464" w="64" h="64"/>
+            <frame x="576" y="1464" w="64" h="64"/>
+            <frame x="510" y="1464" w="64" h="64"/>
+          </l_idle_no_staff>
+          <r_throw_staff speed="0.2" loops="0">
+            <frame x="2" y="361" w="64" h="64"/>
+            <frame x="68" y="361" w="64" h="64"/>
+            <frame x="134" y="361" w="64" h="64"/>
+            <frame x="200" y="361" w="64" h="64"/>
+            <frame x="266" y="361" w="64" h="64"/>
+            <frame x="332" y="361" w="64" h="64"/>
+            <frame x="398" y="361" w="64" h="64"/>
+            <frame x="464" y="361" w="64" h="64"/>
+            <frame x="530" y="361" w="64" h="64"/>
+          </r_throw_staff>
+          <l_throw_staff speed="0.2" loops="0">
+            <frame x="774" y="1262" w="64" h="64"/>
+            <frame x="708" y="1262" w="64" h="64"/>
+            <frame x="642" y="1262" w="64" h="64"/>
+            <frame x="576" y="1262" w="64" h="64"/>
+            <frame x="510" y="1262" w="64" h="64"/>
+            <frame x="444" y="1262" w="64" h="64"/>
+            <frame x="378" y="1262" w="64" h="64"/>
+            <frame x="312" y="1262" w="64" h="64"/>
+            <frame x="246" y="1262" w="64" h="64"/>
+          </l_throw_staff>
+          <r_hurt speed="0.2" loops="0">
+            <frame x="2" y="106" w="64" h="64"/>
+          </r_hurt>
+          <l_hurt speed="0.2" loops="0">
+            <frame x="774" y="106" w="64" h="64"/>
+          </l_hurt>
+          <r_hurt_no_staff speed="0.2" loops="0">
+            <frame x="2" y="648" w="64" h="64"/>
+          </r_hurt_no_staff>
+          <l_hurt_no_staff speed="0.2" loops="0">
+            <frame x="774" y="1549" w="64" h="64"/>
+          </l_hurt_no_staff>
+          <r_dead speed="0.2" loops="0">
+            <frame x="2" y="276" w="64" h="64"/>
+            <frame x="68" y="276" w="64" h="64"/>
+            <frame x="134" y="276" w="64" h="64"/>
+            <frame x="200" y="276" w="64" h="64"/>
+            <frame x="266" y="276" w="64" h="64"/>
+            <frame x="332" y="276" w="64" h="64"/>
+            <frame x="398" y="276" w="64" h="64"/>
+            <frame x="464" y="276" w="64" h="64"/>
+          </r_dead>
+          <l_dead speed="0.2" loops="0">
+            <frame x="774" y="1177" w="64" h="64"/>
+            <frame x="708" y="1177" w="64" h="64"/>
+            <frame x="642" y="1177" w="64" h="64"/>
+            <frame x="576" y="1177" w="64" h="64"/>
+            <frame x="510" y="1177" w="64" h="64"/>
+            <frame x="444" y="1177" w="64" h="64"/>
+            <frame x="378" y="1177" w="64" h="64"/>
+            <frame x="312" y="1177" w="64" h="64"/>
+          </l_dead>
+          <r_dead_no_staff speed="0.2" loops="0">
+            <frame x="2" y="733" w="64" h="64"/>
+            <frame x="68" y="733" w="64" h="64"/>
+            <frame x="134" y="733" w="64" h="64"/>
+            <frame x="200" y="733" w="64" h="64"/>
+            <frame x="266" y="733" w="64" h="64"/>
+            <frame x="332" y="733" w="64" h="64"/>
+            <frame x="398" y="733" w="64" h="64"/>
+            <frame x="464" y="733" w="64" h="64"/>
+          </r_dead_no_staff>
+          <l_dead_no_staff speed="0.2" loops="0">
+            <frame x="774" y="1634" w="64" h="64"/>
+            <frame x="708" y="1634" w="64" h="64"/>
+            <frame x="642" y="1634" w="64" h="64"/>
+            <frame x="576" y="1634" w="64" h="64"/>
+            <frame x="510" y="1634" w="64" h="64"/>
+            <frame x="444" y="1634" w="64" h="64"/>
+            <frame x="378" y="1634" w="64" h="64"/>
+            <frame x="312" y="1634" w="64" h="64"/>
+          </l_dead_no_staff>
+        </animations>
+      </cat_peasant>
+    </types>    
   </entities>
   
   <player>
@@ -592,7 +651,7 @@
       <thirdAttack life="100">
         <frame x="1000" y="1000" w="10" h="10"/>
       </thirdAttack>
-      <CatPeasantSinus life="10000">
+      <CatPeasantSinus life="5000">
         <frame x="2" y="818" w="64" h="64"/>
         <frame x="774" y="1719" w="64" h="64"/>
       </CatPeasantSinus>

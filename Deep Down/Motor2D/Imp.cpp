@@ -82,7 +82,7 @@ void Imp::GeneralStatesMachine()
 {
 	switch (impState) {
 
-	case r_shield_idle:
+	case ImpState::r_shield_idle:
 		if (throw_bomb) {
 			impState = ImpState::r_throw_bomb;
 			break;
@@ -98,7 +98,7 @@ void Imp::GeneralStatesMachine()
 		animation = &imp.r_shield_idle;
 		break;
 
-	case l_shield_idle:
+	case ImpState::l_shield_idle:
 		if (throw_bomb) {
 			impState = ImpState::l_throw_bomb;
 			break;
@@ -114,7 +114,7 @@ void Imp::GeneralStatesMachine()
 		animation = &imp.l_shield_idle;
 		break;
 
-	case r_shield_walk:
+	case ImpState::r_shield_walk:
 		if (down) {
 			impState = ImpState::r_jump;
 			break;
@@ -128,7 +128,7 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::r_shield_idle;
 		break;
 
-	case l_shield_walk:
+	case ImpState::l_shield_walk:
 		if (down) {
 			impState = ImpState::l_jump;
 			break;
@@ -142,7 +142,7 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::l_shield_idle;
 		break;
 
-	case r_jump:
+	case ImpState::r_jump:
 		if (left) {
 			impState = ImpState::l_jump;
 			break;
@@ -152,7 +152,7 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::r_shield_idle;
 		break;
 
-	case l_jump:
+	case ImpState::l_jump:
 		if (right) {
 			impState = ImpState::r_jump;
 			break;
@@ -162,7 +162,7 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::l_shield_idle;
 		break;
 
-	case r_throw_bomb:
+	case ImpState::r_throw_bomb:
 		if (left) {
 			impState = ImpState::l_throw_bomb;
 			break;
@@ -172,7 +172,7 @@ void Imp::GeneralStatesMachine()
 		impState = ImpState::r_shield_idle;
 		break;
 
-	case l_throw_bomb:
+	case ImpState::l_throw_bomb:
 		if (right) {
 			impState = ImpState::r_throw_bomb;
 			break;
@@ -182,7 +182,7 @@ void Imp::GeneralStatesMachine()
 		impState = ImpState::l_shield_idle;
 		break;
 
-	case r_shield_hurt:
+	case ImpState::r_shield_hurt:
 		if (left) {
 			impState = ImpState::l_shield_hurt;
 			break;
@@ -191,7 +191,7 @@ void Imp::GeneralStatesMachine()
 		impState = ImpState::r_shield_idle;
 		break;
 
-	case l_shield_hurt:
+	case ImpState::l_shield_hurt:
 		if (right) {
 			impState = ImpState::r_shield_hurt;
 			break;
@@ -218,8 +218,7 @@ void Imp::UpdateDirection() {
 		down = true;
 	}
 
-	last_pos.x = position.x;
-	last_pos.y = position.y;
+	last_pos = position;
 }
 
 void Imp::UpdateAnimations(float dt)
