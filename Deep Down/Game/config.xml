@@ -54,7 +54,7 @@
     </audio>
   </scene>
 
-  <enemies>
+  <entities>
     <spritesheets>
       <spritesheet name="Assets/Sprites/Textures/CatPeasant.png"/>
       <spritesheet name="Assets/Sprites/Textures/Monkey_Plant.png"/>
@@ -394,7 +394,7 @@
       </animations>
     </catPeasant>
     
-  </enemies>
+  </entities>
   
   <player>
     <general>
