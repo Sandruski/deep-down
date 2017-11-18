@@ -14,6 +14,17 @@
 
 #include "SDL/include/SDL_timer.h"
 
+/*
+MONKEY (enemy):
+· Type: air.
+· Lives: 1.
+
+- He follows a continuous path drawn in Tiled.
+- He skips his path when he sees the player, and pathfinds him.
+- When he reaches the player, he attacks him.
+- If he stops seeing the player, he goes back to his initial path.
+*/
+
 Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y, path)
 {
 	monkey = App->entities->GetMonkeyInfo();
@@ -21,6 +32,8 @@ Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y, path)
 	///
 	animation = &monkey.r_idle;
 	monkeyState = MonkeyState::r_idle;
+
+	lives = 1;
 
 	collider = App->collision->AddCollider({ 0, 0, monkey.coll_size.x + monkey.coll_offset.w, monkey.coll_size.y + monkey.coll_offset.h }, COLLIDER_TYPE::COLLIDER_MONKEY, App->entities);
 	collider_size = monkey.coll_size;
@@ -36,20 +49,27 @@ void Monkey::Move(float dt)
 	i_pos.x = (int)position.x;
 	i_pos.y = (int)position.y;
 
+	// Update animations speed
+	UpdateAnimations(dt);
+
+	// Update movement
+	up = false;
+	down = false;
+	left = false;
+	right = false;
+	UpdateDirection();
+
 	// Update path/pathfinding
+	DoHit();
+
 	if (!pathfinding)
 		UpdatePath();
 
 	UpdatePathfinding();
+	//_update_path/pathfinding
 
 	// Update state
 	GeneralStatesMachine();
-
-	// Update movement
-	UpdateDirection();
-
-	// Update animations speed
-	UpdateAnimations();
 
 	// Update collider
 	collider_pos = { i_pos.x + monkey.coll_offset.x, i_pos.y + monkey.coll_offset.y };
@@ -61,6 +81,10 @@ void Monkey::GeneralStatesMachine()
 	switch (monkeyState) {
 
 	case r_idle:
+		if (right_hit) {
+			monkeyState = MonkeyState::r_hit;
+			break;
+		}
 		if (left) {
 			monkeyState = MonkeyState::l_idle;
 			break;
@@ -69,6 +93,10 @@ void Monkey::GeneralStatesMachine()
 		break;
 
 	case l_idle:
+		if (left_hit) {
+			monkeyState = MonkeyState::l_hit;
+			break;
+		}
 		if (right) {
 			monkeyState = MonkeyState::r_idle;
 			break;
@@ -82,7 +110,8 @@ void Monkey::GeneralStatesMachine()
 			break;
 		}
 		animation = &monkey.r_hit;
-		monkeyState = MonkeyState::r_idle;
+
+			monkeyState = MonkeyState::r_idle;
 		break;
 
 	case l_hit:
@@ -91,7 +120,8 @@ void Monkey::GeneralStatesMachine()
 			break;
 		}
 		animation = &monkey.l_hit;
-		monkeyState = MonkeyState::l_idle;
+
+			monkeyState = MonkeyState::l_idle;
 		break;
 
 	case r_hurt:
@@ -100,7 +130,8 @@ void Monkey::GeneralStatesMachine()
 			break;
 		}
 		animation = &monkey.r_hurt;
-		monkeyState = MonkeyState::r_idle;
+
+			monkeyState = MonkeyState::r_idle;
 		break;
 
 	case l_hurt:
@@ -109,47 +140,42 @@ void Monkey::GeneralStatesMachine()
 			break;
 		}
 		animation = &monkey.l_hurt;
-		monkeyState = MonkeyState::l_idle;
+
+			monkeyState = MonkeyState::l_idle;
 		break;
 	}
 }
 
-void Monkey::UpdateDirection() 
+void Monkey::UpdateDirection()
 {
-	if (i_pos.x == last_pos.x) {
-		if (i_pos.x < last_pos.x) {
-			left = true;
-			right = false;
-		}
-		else if (i_pos.x > last_pos.x) {
-			right = true;
-			left = false;
-		}
+	if (position.x < last_pos.x) {
+		left = true;
+	}
+	else if (position.x > last_pos.x) {
+		right = true;
 	}
 
-	if (i_pos.y == last_pos.y) {
-		if (i_pos.y < last_pos.y) {
-			up = true;
-			down = false;
-		}
-		else if (i_pos.y > last_pos.y) {
-			down = true;
-			up = false;
-		}
+	if (position.y < last_pos.y) {
+		up = true;
+	}
+	else if (position.y > last_pos.y) {
+		down = true;
 	}
 
-	last_pos.x = (int)position.x;
-	last_pos.y = (int)position.y;
+	last_pos.x = position.x;
+	last_pos.y = position.y;
 }
 
-void Monkey::UpdateAnimations() 
+void Monkey::UpdateAnimations(float dt) 
 {
-	monkey.r_idle.speed = 100.0f * dt;
-	monkey.l_idle.speed = 100.0f * dt;
-	monkey.r_hurt.speed = 100.0f * dt;
-	monkey.l_hurt.speed = 100.0f * dt;
-	monkey.r_hit.speed = 100.0f * dt;
-	monkey.l_hit.speed = 100.0f * dt;
+	float speed = 10.0f;
+
+	monkey.r_idle.speed = speed * dt;
+	monkey.l_idle.speed = speed * dt;
+	monkey.r_hurt.speed = speed * dt;
+	monkey.l_hurt.speed = speed * dt;
+	monkey.r_hit.speed = speed * dt;
+	monkey.l_hit.speed = speed * dt;
 }
 
 void Monkey::OnCollision(Collider* c1, Collider* c2) 
@@ -221,8 +247,14 @@ void Monkey::UpdatePathfinding()
 	if (pathfinding) {
 		// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
 		if (SDL_HasIntersection(&enemy_pos, &player_pos) && pathfind) {
-			if (!Pathfind())
-				pathfind = false;
+			if (!Pathfind()) {
+				if (position.DistanceTo(App->entities->playerData->position) < 50.0f) {
+					Hit();
+					wait = true;
+				}
+				else if (!wait)
+					pathfind = false;
+			}
 		}
 		else {
 			// If the enemy reaches the end of the path and doesn't see the player anymore, stop pathfinding and go back home
@@ -235,6 +267,42 @@ void Monkey::UpdatePathfinding()
 				pathfinding = false;
 				pathfinding_finished = true;
 			}
+		}
+	}
+}
+
+void Monkey::Hit()
+{
+	if (do_hit) {
+		if (right)
+			right_hit = true;
+		else if (left)
+			left_hit = true;
+		else
+			right_hit = true;
+
+		do_hit = false;
+	}
+}
+
+void Monkey::DoHit() 
+{
+	if (right_hit) {
+		if (monkey.r_hit.Finished()) {
+			pathfind = false;
+			right_hit = false;
+			monkey.r_hit.Reset();
+			do_hit = true;
+			wait = false;
+		}
+	}
+	else if (left_hit) {
+		if (monkey.l_hit.Finished()) {
+			pathfind = false;
+			left_hit = false;
+			monkey.l_hit.Reset();
+			do_hit = true;
+			wait = false;
 		}
 	}
 }
