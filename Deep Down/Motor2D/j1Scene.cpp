@@ -255,14 +255,13 @@ void j1Scene::DebugKeys() {
 			|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
 			App->entities->playerData->player.SetState(stop_);
 			App->entities->playerData->position = App->entities->playerData->start_pos;
-			App->scene->bossPosition = { App->entities->playerData->position.x, 1200 };
 			gate = false;
 			fx = false;
 		}
 	}
 
 	// F3: show colliders
-
+/*
 	// F4: change between maps
 	if ((App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || App->map->data.CheckIfEnter("Player", "EndPos", App->entities->playerData->position)) && App->fade->GetStep() == 0) {
 		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
@@ -276,6 +275,7 @@ void j1Scene::DebugKeys() {
 			App->fade->FadeToBlack(this, this, 1);
 		}
 	}
+	*/
 
 	// F5: save the current state
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
@@ -283,7 +283,6 @@ void j1Scene::DebugKeys() {
 
 	// F6: load the previous state
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		App->scene->bossPosition = { App->entities->playerData->position.x, 1200 };
 		App->LoadGame();
 	}
 

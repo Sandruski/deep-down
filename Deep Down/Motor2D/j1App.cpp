@@ -191,10 +191,11 @@ void j1App::FinishUpdate()
 	if (want_to_load == true)
 		LoadGameNow();
 
-	float seconds_since_startup = clock.Read() / 1000;
+	float mseconds_since_startup = clock.Read();
 	
 	uint32 actual_frame_ms = perfClock.ReadMs();
 
+	
 	
 	last_frame_ms = actual_frame_ms;
 
@@ -217,11 +218,27 @@ void j1App::FinishUpdate()
 
 	double fps = 1000.0f / perfClock.ReadMs();
 
+	float avgFPS = (float)frame_count / clock.ReadSec();
+
 	dt = 1.0f / fps;
 
+	p2SString capOnOff;
+	if (toCap)
+		capOnOff = "on";
+	else
+		capOnOff = "off";
+	
+
+	p2SString vsyncOnOff;
+	if (App->render->vsync)
+		vsyncOnOff = "on";
+	else
+		vsyncOnOff = "off";
+
 	static char title[256];
-	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu ",
-		fps, actual_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
+	
+	sprintf_s(title, 256, "FPS: %.2f AvgFPS: %.2f Last Frame Ms: %02u capFrames: %s Vsyn: %s ",
+		fps, avgFPS, actual_frame_ms, capOnOff.GetString(), vsyncOnOff.GetString());
 
 	App->win->SetTitle(title);
 
