@@ -91,6 +91,13 @@ bool j1Particles::Awake(pugi::xml_node& config) {
 	Imp_l_bomb.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	Imp_l_bomb.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
 
+	//Imp_bomb_explosion
+	node = animations_node.child("Imp_bomb_explosion");
+	Imp_bomb_explosion.life = node.attribute("life").as_uint();
+	node = node.child("frame");
+	Imp_bomb_explosion.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	Imp_bomb_explosion.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
+
 	return ret;
 }
 
@@ -138,7 +145,7 @@ bool j1Particles::Update(float dt)
 		{
 			if (p->collider->type == COLLIDER_PEASANT_SHOT)
 				App->render->Blit(App->entities->CatPeasantTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
-			else if (p->collider->type == COLLIDER_IMP_BOMB) {
+			else if (p->collider->type == COLLIDER_IMP_BOMB || p->collider->type == COLLIDER_IMP_BOMB_EXPLOSION) {
 				App->render->Blit(App->entities->ImpTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
 			}
 			else
@@ -161,6 +168,7 @@ void j1Particles::AddParticle(const Particle& particle, int x, int y, COLLIDER_T
 			p->position.y = y;
 			p->speed.x = speed.x;
 			p->speed.y = speed.y;
+
 			if (collider_type != COLLIDER_NONE)
 				p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), collider_type, this);
 			if (collider_type == COLLIDER_PEASANT_SHOT) {
@@ -168,7 +176,8 @@ void j1Particles::AddParticle(const Particle& particle, int x, int y, COLLIDER_T
 				p->destination.x = (App->entities->playerData->position.x - p->position.x) / m;
 				p->destination.y = (App->entities->playerData->position.y - p->position.y) / m;
 			}
-				active[i] = p;
+
+			active[i] = p;
 			break;
 		}
 	}
@@ -222,7 +231,7 @@ bool Particle::Update(float dt)
 			ret = false;
 	}
 	else
-		if (anim.Finished())
+		if (anim.Finished() || life == 0)
 			ret = false;
 
 	App->entities->playerData->CheckCollision({ (int)position.x, (int)position.y }, coll_size, App->entities->playerData->player.check_collision_offset, up, down, left, right);
@@ -252,6 +261,11 @@ bool Particle::Update(float dt)
 	else if (collider->type == COLLIDER_IMP_BOMB) {
 		if (down)
 			position.y += dt * speed.y;
+
+		if (!down) {
+			App->particles->AddParticle(App->particles->Imp_bomb_explosion, position.x, position.y, COLLIDER_IMP_BOMB_EXPLOSION, NULL, { 0,0 });
+			life = 0;
+		}
 	}
 
 	if (collider != nullptr)

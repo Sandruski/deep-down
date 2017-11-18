@@ -85,12 +85,6 @@ void Player::Move(float dt)
 
 void Player::OnCollision(Collider* c1, Collider* c2) {
 
-	if ((c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_BOSS) || (c1->type == COLLIDER_BOSS && c2->type == COLLIDER_PLAYER)) {
-		player.SetState(punished_);
-		App->audio->PlayFx(5);
-		App->scene->bossPosition = { position.x, 1200 };
-	}
-
 	if ((c1->type == COLLIDER_PEASANT_SHOT && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_PEASANT_SHOT)) {
 		player.SetState(punished_);
 	}
@@ -103,7 +97,7 @@ void Player::OnCollision(Collider* c1, Collider* c2) {
 		//App->player->SetState(punished_);
 	}
 
-	if ((c1->type == COLLIDER_IMP_BOMB && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP_BOMB)) {
+	if ((c1->type == COLLIDER_IMP_BOMB_EXPLOSION && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP_BOMB_EXPLOSION)) {
 		player.SetState(punished_);
 	}
 

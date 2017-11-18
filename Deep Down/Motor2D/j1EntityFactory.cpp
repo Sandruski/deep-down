@@ -41,7 +41,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	// Load texture paths
 	CatPeasant_spritesheet = node.attribute("name").as_string();
 	node = node.next_sibling("spritesheet");
-	MonkeyPlant_spritesheet = node.attribute("name").as_string();
+	Monkey_spritesheet = node.attribute("name").as_string();
 	node = node.next_sibling("spritesheet");
 	Imp_spritesheet = node.attribute("name").as_string();
 	node = node.next_sibling("spritesheet");
@@ -525,7 +525,7 @@ bool j1EntityFactory::Start()
 	// Load player textures
 	LOG("Loading entities textures");
 	CatPeasantTex = App->tex->Load(CatPeasant_spritesheet.GetString());
-	MonkeyPlantTex = App->tex->Load(MonkeyPlant_spritesheet.GetString());
+	MonkeyTex = App->tex->Load(Monkey_spritesheet.GetString());
 	ImpTex = App->tex->Load(Imp_spritesheet.GetString());
 	PlayerTex = App->tex->Load(Player_spritesheet.GetString());
 
@@ -568,7 +568,7 @@ bool j1EntityFactory::Update(float dt)
 			else if (entities[i]->type == ENTITY_TYPES::IMP_)
 				entities[i]->Draw(ImpTex);
 			else if (entities[i]->type == ENTITY_TYPES::MONKEY_)
-				entities[i]->Draw(MonkeyPlantTex);
+				entities[i]->Draw(MonkeyTex);
 			else if (entities[i]->type == ENTITY_TYPES::PLAYER_)
 				entities[i]->Draw(PlayerTex);
 		}
@@ -613,7 +613,7 @@ bool j1EntityFactory::CleanUp()
 	paths.clear();
 
 	App->tex->UnLoad(CatPeasantTex);
-	App->tex->UnLoad(MonkeyPlantTex);
+	App->tex->UnLoad(MonkeyTex);
 	App->tex->UnLoad(ImpTex);
 	App->tex->UnLoad(PlayerTex);
 

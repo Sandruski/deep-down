@@ -98,7 +98,7 @@ private:
 	Entity* entities[MAX_ENTITIES];
 
 	p2SString CatPeasant_spritesheet;
-	p2SString MonkeyPlant_spritesheet;
+	p2SString Monkey_spritesheet;
 	p2SString Imp_spritesheet;
 	p2SString Player_spritesheet;
 
@@ -113,7 +113,7 @@ private:
 
 public:
 	SDL_Texture* CatPeasantTex = nullptr;
-	SDL_Texture* MonkeyPlantTex = nullptr;
+	SDL_Texture* MonkeyTex = nullptr;
 	SDL_Texture* ImpTex = nullptr;
 	SDL_Texture* PlayerTex = nullptr;
 

@@ -57,7 +57,7 @@
   <entities>
     <spritesheets>
       <spritesheet name="Assets/Sprites/Textures/CatPeasant.png"/>
-      <spritesheet name="Assets/Sprites/Textures/Monkey_Plant.png"/>
+      <spritesheet name="Assets/Sprites/Textures/Monkey.png"/>
       <spritesheet name="Assets/Sprites/Textures/Imp.png"/>
       <spritesheet name="Assets/Sprites/Textures/Kaho.png"/>
     </spritesheets>
@@ -658,12 +658,15 @@
         <frame x="2" y="818" w="64" h="64"/>
         <frame x="774" y="1719" w="64" h="64"/>
       </CatPeasantSinus>
-      <Imp_r_bomb speed="0.2" loops="0">
+      <Imp_r_bomb life="10000">
         <frame x="134" y="18" w="16" h="16"/>
       </Imp_r_bomb>
-      <Imp_l_bomb speed="0.2" loops="0">
+      <Imp_l_bomb life="1000">
         <frame x="202" y="18" w="16" h="16"/>
       </Imp_l_bomb>
+      <Imp_bomb_explosion life="1000">
+        <frame x="134" y="38" w="16" h="16"/>
+      </Imp_bomb_explosion>
     </animations>
   </particles>
 

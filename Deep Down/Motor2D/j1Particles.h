@@ -65,6 +65,7 @@ public:
 	Particle CatPeasantSinus;
 
 	Particle Imp_r_bomb, Imp_l_bomb;
+	Particle Imp_bomb_explosion;
 };
 
 #endif // __j1PARTICLES_H__
