@@ -48,6 +48,7 @@ public:
 	bool CleanUp();
 
 	void AddParticle(const Particle& particle, int x, int y, COLLIDER_TYPE collider_type, Uint32 delay, fPoint speed);
+	void OnCollision(Collider* c1, Collider* c2);
 
 private:
 	Particle* active[MAX_ACTIVE_PARTICLES];

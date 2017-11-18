@@ -174,6 +174,22 @@ void j1Particles::AddParticle(const Particle& particle, int x, int y, COLLIDER_T
 	}
 }
 
+void j1Particles::OnCollision(Collider* c1, Collider* c2)
+{
+	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
+	{
+		// Always destroy particles that collide
+		if (active[i] != nullptr && active[i]->collider == c1)
+		{
+			if ((c1->type == COLLIDER_ARROW && c2->type == COLLIDER_IMP) || (c1->type == COLLIDER_ARROW && c2->type == COLLIDER_IMP)) {
+				delete active[i];
+				active[i] = nullptr;
+				break;
+			}
+		}
+	}
+}
+
 // -------------------------------------------------------------
 // -------------------------------------------------------------
 

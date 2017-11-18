@@ -34,14 +34,6 @@ void Entity::Draw(SDL_Texture* sprites)
 
 void Entity::OnCollision(Collider* c1, Collider* c2)
 {
-	if ((c1->type == COLLIDER_PEASANT_SHOT && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_PEASANT_SHOT)) {
 
-
-
-	}
-
-	if ((c1->type == COLLIDER_IMP && c2->type == COLLIDER_ARROW) || (c1->type == COLLIDER_ARROW && c2->type == COLLIDER_IMP)) {
-		collider->to_delete = true;
-	}
 
 }

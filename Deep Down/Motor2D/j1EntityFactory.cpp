@@ -586,13 +586,12 @@ bool j1EntityFactory::PostUpdate()
 	{
 		if (entities[i] != nullptr)
 		{
-		//	if ((enemies[i]->position.y >((App->scene_1->current_start_pos + 114) - App->scene_1->cont + 88) + SPAWN_MARGIN) || enemies[i]->Esperanza == false)
-		//	{
-		//		LOG("DeSpawning enemy at %d", enemies[i]->position.y * SCREEN_SIZE);
-				//delete enemies[i];
-				//enemies[i] = nullptr;
+			if (entities[i]->dead) {
+				delete entities[i];
+				entities[i] = nullptr;
 			}
 		}
+	}
 	
 	return true;
 }
@@ -704,15 +703,12 @@ void j1EntityFactory::OnCollision(Collider* c1, Collider* c2)
 {
 	for (uint i = 0; i < MAX_ENTITIES; ++i)
 	{
-		if (c1->type == COLLIDER_ARROW || c2->type == COLLIDER_ARROW) {
-			if (entities[i] != nullptr && (entities[i]->GetCollider() == c1 || entities[i]->GetCollider() == c2)) {
+		if (entities[i] != nullptr && (entities[i]->GetCollider() == c1)) {
 
-				entities[i]->OnCollision(c1, c2);
-				delete entities[i];
-				entities[i] = nullptr;
-				break;
-			}
-		}	
+			entities[i]->OnCollision(c1, c2);
+
+			break;
+		}
 	}
 }
 

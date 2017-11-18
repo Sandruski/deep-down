@@ -67,6 +67,7 @@ private:
 	void DoHit();
 	void CoolDown();
 	void IsGround(iPoint& pos);
+	void Wounded();
 
 private:
 
@@ -81,6 +82,8 @@ private:
 	int seconds_to_wait;
 
 	bool back;
+	bool left_hurt, right_hurt;
+	bool stop;
 
 	// Pathfinding
 	uint pathfinding_index = 0;

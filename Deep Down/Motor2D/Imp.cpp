@@ -65,15 +65,19 @@ void Imp::Move(float dt)
 	right = false;
 	UpdateDirection();
 
-	// Update path/pathfinding
-	DoHit();
-	CoolDown();
+	// Update hurt and death
+	Wounded();
 
-	if (!pathfinding)
-		UpdatePath();
+	// Update path/pathfinding	
+	if (!stop) {
+		DoHit();
+		CoolDown();
 
-	UpdatePathfinding();
+		if (!pathfinding)
+			UpdatePath();
 
+		UpdatePathfinding();
+	}
 	// Update state
 	GeneralStatesMachine();
 
@@ -83,6 +87,30 @@ void Imp::Move(float dt)
 	collider->SetPos(i_pos.x, i_pos.y);
 }
 
+void Imp::Wounded() 
+{
+	if (right_hurt) {
+		if (imp.r_shield_hurt.Finished()) {
+			if (lives == 0)
+				dead = true;
+
+			imp.r_shield_hurt.Reset();
+			stop = false;
+			right_hurt = false;
+		}
+	}
+	else if (left_hurt) {
+		if (imp.l_shield_hurt.Finished()) {
+			if (lives == 0)
+				dead = true;
+
+			imp.l_shield_hurt.Reset();
+			stop = false;
+			left_hurt = false;
+		}
+	}
+}
+
 void Imp::GeneralStatesMachine() 
 {
 	switch (impState) {
@@ -90,6 +118,10 @@ void Imp::GeneralStatesMachine()
 	case ImpState::r_shield_idle:
 		if (back) {
 			impState = ImpState::back_to_start;
+			break;
+		}
+		if (right_hurt) {
+			impState = ImpState::r_shield_hurt;
 			break;
 		}
 		if (right_hit) {
@@ -110,6 +142,10 @@ void Imp::GeneralStatesMachine()
 	case ImpState::l_shield_idle:
 		if (back) {
 			impState = ImpState::back_to_start;
+			break;
+		}
+		if (left_hurt) {
+			impState = ImpState::l_shield_hurt;
 			break;
 		}
 		if (left_hit) {
@@ -217,7 +253,6 @@ void Imp::GeneralStatesMachine()
 		animation = &imp.invisible;
 		impState = ImpState::l_shield_idle;
 		break;
-
 	}
 }
 
@@ -246,7 +281,9 @@ void Imp::UpdateAnimations(float dt)
 
 	imp.r_shield_idle.speed = speed * dt;
 	imp.l_shield_idle.speed = speed * dt;
-	imp.r_shield_hurt.speed = speed * dt;
+	imp.r_shield_hurt.speed = 5.0f * dt;
+	imp.l_shield_hurt.speed = 5.0f * dt;
+	imp.r_jump.speed = speed * dt;
 	imp.l_jump.speed = speed * dt;
 	imp.r_throw_bomb.speed = speed * dt;
 	imp.l_throw_bomb.speed = speed * dt;
@@ -256,6 +293,15 @@ void Imp::UpdateAnimations(float dt)
 
 void Imp::OnCollision(Collider* c1, Collider* c2) 
 {
+	if (c2->type == COLLIDER_ARROW && !back) {
+		lives--;
+		stop = true;
+
+		if (App->entities->playerData->position.x < position.x)
+			left_hurt = true;
+		else
+			right_hurt = true;
+	}
 }
 
 void Imp::UpdatePath()
