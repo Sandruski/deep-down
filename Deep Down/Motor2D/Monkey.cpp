@@ -41,7 +41,7 @@ Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y, path)
 	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
 	follow_pathfinding2 = App->collision->AddCollider({ (int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
 
-	speed = { 0.8f,0 };
+	speed = { 60.0f,0 };
 	distance_to = 50.0f;
 }
 
@@ -62,13 +62,18 @@ void Monkey::Move(float dt)
 	right = false;
 	UpdateDirection();
 
+	// Update hurt and death
+	Wounded();
+
 	// Update path/pathfinding
-	DoHit();
+	if (!stop) {
+		DoHit();
 
-	if (!pathfinding)
-		UpdatePath();
+		if (!pathfinding)
+			UpdatePath();
 
-	UpdatePathfinding();
+		UpdatePathfinding();
+	}
 	//_update_path/pathfinding
 
 	// Update state
@@ -79,11 +84,35 @@ void Monkey::Move(float dt)
 	collider->SetPos(collider_pos.x, collider_pos.y);
 }
 
+void Monkey::Wounded()
+{
+	if (right_hurt) {
+		if (monkey.r_hurt.GetCurrentFrame().x == 576) {
+			dead = true;
+			monkey.r_hurt.Stop();
+		}
+	}
+	else if (left_hurt) {
+		if (monkey.l_hurt.GetCurrentFrame().x == 330) {
+			dead = true;
+			monkey.l_hurt.Stop();
+		}
+	}
+}
+
 void Monkey::GeneralStatesMachine() 
 {
 	switch (monkeyState) {
 
 	case MonkeyState::mr_idle:
+		if (right_hurt) {
+			monkeyState = MonkeyState::mr_hurt;
+			break;
+		}
+		if (left_hurt) {
+			monkeyState = MonkeyState::ml_hurt;
+			break;
+		}
 		if (right_hit) {
 			monkeyState = MonkeyState::mr_hit;
 			break;
@@ -96,6 +125,14 @@ void Monkey::GeneralStatesMachine()
 		break;
 
 	case MonkeyState::ml_idle:
+		if (right_hurt) {
+			monkeyState = MonkeyState::mr_hurt;
+			break;
+		}
+		if (left_hurt) {
+			monkeyState = MonkeyState::ml_hurt;
+			break;
+		}
 		if (left_hit) {
 			monkeyState = MonkeyState::ml_hit;
 			break;
@@ -174,14 +211,23 @@ void Monkey::UpdateAnimations(float dt)
 
 	monkey.r_idle.speed = speed * dt;
 	monkey.l_idle.speed = speed * dt;
-	monkey.r_hurt.speed = speed * dt;
-	monkey.l_hurt.speed = speed * dt;
+	monkey.r_hurt.speed = 2.0f * dt;
+	monkey.l_hurt.speed = 2.0f * dt;
 	monkey.r_hit.speed = speed * dt;
 	monkey.l_hit.speed = speed * dt;
 }
 
 void Monkey::OnCollision(Collider* c1, Collider* c2) 
 {
+	if (c2->type == COLLIDER_ARROW) {
+		lives--;
+		stop = true;
+
+		if (App->entities->playerData->position.x < position.x)
+			left_hurt = true;
+		else
+			right_hurt = true;
+	}
 }
 
 void Monkey::UpdatePath()

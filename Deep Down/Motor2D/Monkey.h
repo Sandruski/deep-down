@@ -54,6 +54,7 @@ private:
 
 	void Hit();
 	void DoHit();
+	void Wounded();
 
 private:
 
@@ -63,6 +64,9 @@ private:
 	bool right_hit, left_hit;
 	bool do_hit = true;
 	bool wait;
+
+	bool left_hurt, right_hurt;
+	bool stop;
 
 	// Pathfinding
 	uint pathfinding_index = 0;

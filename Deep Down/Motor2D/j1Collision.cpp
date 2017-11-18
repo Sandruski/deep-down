@@ -30,7 +30,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_ARROW][COLLIDER_PEASANT_SHOT] = false;
 	matrix[COLLIDER_ARROW][COLLIDER_IMP_BOMB] = false;
 	matrix[COLLIDER_ARROW][COLLIDER_IMP] = true;
-	matrix[COLLIDER_ARROW][COLLIDER_MONKEY] = false;
+	matrix[COLLIDER_ARROW][COLLIDER_MONKEY] = true;
 	matrix[COLLIDER_ARROW][COLLIDER_ARROW] = false;
 
 	matrix[COLLIDER_BOSS][COLLIDER_PLAYER] = true;
@@ -78,7 +78,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_IMP][COLLIDER_IMP] = true;
 
 	matrix[COLLIDER_MONKEY][COLLIDER_PLAYER] = true;
-	matrix[COLLIDER_MONKEY][COLLIDER_ARROW] = false;
+	matrix[COLLIDER_MONKEY][COLLIDER_ARROW] = true;
 	matrix[COLLIDER_MONKEY][COLLIDER_BOSS] = false;
 	matrix[COLLIDER_MONKEY][COLLIDER_CATPEASANT] = false;
 	matrix[COLLIDER_MONKEY][COLLIDER_PEASANT_SHOT] = false;

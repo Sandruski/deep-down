@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="60" tilewidth="16" tileheight="16" nextobjectid="39">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="60" tilewidth="16" tileheight="16" nextobjectid="41">
  <tileset firstgid="1" name="Background" tilewidth="16" tileheight="16" tilecount="187" columns="17">
   <image source="Background.png" width="272" height="190"/>
  </tileset>
@@ -30041,15 +30041,15 @@
   <object id="5" name="Gate" x="752" y="768" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="Enemies">
-  <object id="23" name="Enemy1a" type="3" x="586.667" y="68.6667">
-   <polyline points="0,0 59,47 -11,48 -72,83 -71,117 5,133 60,109 106,47 106,2 69,-14"/>
-  </object>
   <object id="31" name="Enemy2a" type="3" x="912" y="58.5">
    <polyline points="0,0 54,3 43,79 -9,93 -59,45 -10,22 -40,113"/>
   </object>
-  <object id="33" name="Enemy1Sa" type="1" x="528" y="240" width="16" height="16"/>
-  <object id="34" name="Enemy1Ea" type="1" x="1008" y="416" width="16" height="16"/>
-  <object id="35" name="Enemy1S" type="2" x="528" y="192" width="16" height="16"/>
-  <object id="36" name="Enemy1E" type="2" x="608" y="192" width="16" height="16"/>
+  <object id="33" name="Enemy1S" type="1" x="528" y="240" width="16" height="16"/>
+  <object id="34" name="Enemy1E" type="1" x="1008" y="416" width="16" height="16"/>
+  <object id="35" name="Enemy1Sa" type="2" x="528" y="192" width="16" height="16"/>
+  <object id="36" name="Enemy1Ea" type="2" x="608" y="192" width="16" height="16"/>
+  <object id="39" name="Enemy1a" type="3" x="453.333" y="193.333">
+   <polyline points="0,0 7.33333,48 37.3333,52 62.6667,16.6667 38.6667,-15.3333"/>
+  </object>
  </objectgroup>
 </map>

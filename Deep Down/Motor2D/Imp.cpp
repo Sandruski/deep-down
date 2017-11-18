@@ -124,6 +124,10 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::r_shield_hurt;
 			break;
 		}
+		if (left_hurt) {
+			impState = ImpState::l_shield_hurt;
+			break;
+		}
 		if (right_hit) {
 			impState = ImpState::r_throw_bomb;
 			break;
@@ -146,6 +150,10 @@ void Imp::GeneralStatesMachine()
 		}
 		if (left_hurt) {
 			impState = ImpState::l_shield_hurt;
+			break;
+		}
+		if (right_hurt) {
+			impState = ImpState::r_shield_hurt;
 			break;
 		}
 		if (left_hit) {
