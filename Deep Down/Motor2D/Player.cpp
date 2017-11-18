@@ -35,10 +35,13 @@ Player::Player(float x, float y, PathInfo* path) : Entity(x, y, path)
 
 void Player::Move(float dt)
 {
-	
 	this->dt = dt;
 
 	player.gravity = 125.0f * dt;
+
+	if (App->fade->GetStep() == App->fade->fade_to_black || App->fade->GetStep() == App->fade->fade_from_black)
+		player.gravity = 0;
+
 	// Check for collisions
 	up = true;
 	down = true;

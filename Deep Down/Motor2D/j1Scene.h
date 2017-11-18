@@ -51,6 +51,7 @@ public:
 	uint scale;
 
 	bool gate, fx, loading = true;
+	bool loading_state;
 
 private:
 
@@ -65,16 +66,6 @@ private:
 	uint volume_adjustment;
 
 	iPoint mouse;
-
-	//Boss
-	SDL_Texture* boss;
-	Collider* bossColl;
-	iPoint bossColliderPos = { 0,0 };
-	Animation* current_animation;
-	Animation bossAnimation;
-
-public:
-	fPoint bossPosition = { 0,0 };
 };
 
 #endif // __j1SCENE1_H__

@@ -21,13 +21,6 @@
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
-
-	/*
-	bossAnimation.PushBack({ 0, 0, 203, 298 });
-	bossAnimation.PushBack({ 309, 0, 203, 298 });
-	bossAnimation.PushBack({ 0, 298, 203, 298 });
-	bossAnimation.speed = 0.1f;
-	*/
 }
 
 // Destructor
@@ -70,6 +63,8 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
+	if (!loading)
+		App->entities->Start();
 
 	// Change between maps
 	if (index == 0) {
@@ -90,11 +85,14 @@ bool j1Scene::Start()
 	//App->player->SetState(stop_);
 
 	// Load entities
-	if (App->entities->LoadPathsInfo())
-		App->entities->AddEntities();
+	//if (App->entities->LoadPathsInfo())
+	App->entities->LoadPathsInfo();
+	App->entities->AddEntities();
 
 	// Pathfinding collision data
 	App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (uchar*)App->map->collisionLayer->data);
+
+	loading = true;
 
 	return true;
 }
@@ -102,7 +100,7 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
-	if (loading) {
+	if (loading && !loading_state) {
 		//App->entities->playerData->player.SetState(App->entities->playerData->default_state);
 
 		// Player start position
@@ -114,6 +112,8 @@ bool j1Scene::PreUpdate()
 
 		loading = false;
 	}
+
+	loading_state = false;
 
 	return true;
 }
@@ -131,12 +131,6 @@ bool j1Scene::Update(float dt)
 					App->map->data.tile_width, App->map->data.tile_height,
 					App->map->data.tilesets.count(), App->map->MouseTile(mouse.x, mouse.y));
 	//App->win->SetTitle(title.GetString());
-
-	// Scene2 boss
-	/*
-	if (index == 1 && App->player->position.y <= 1050)
-		Boss();
-	*/
 
 	return true;
 }
@@ -158,9 +152,7 @@ bool j1Scene::CleanUp()
 	LOG("Freeing Scene %d", index);
 	App->audio->PauseMusic();
 	App->map->UnLoad();
-
-	if (bossColl != nullptr)
-		App->collision->EraseCollider(bossColl);
+	App->entities->CleanUp();
 
 	return true;
 }
@@ -261,7 +253,7 @@ void j1Scene::DebugKeys() {
 	}
 
 	// F3: show colliders
-/*
+
 	// F4: change between maps
 	if ((App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || App->map->data.CheckIfEnter("Player", "EndPos", App->entities->playerData->position)) && App->fade->GetStep() == 0) {
 		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
@@ -274,17 +266,15 @@ void j1Scene::DebugKeys() {
 			App->entities->playerData->player.SetState(stop_);
 			App->fade->FadeToBlack(this, this, 1);
 		}
-	}
-	*/
+	}	
 
 	// F5: save the current state
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		App->SaveGame();
 
 	// F6: load the previous state
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		App->LoadGame();
-	}
 
 	// F7: fullscreen
 	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN) {
