@@ -122,6 +122,9 @@ private:
 	uint64 frame_count;
 	j1Timer clock;
 	j1PerfTimer perfClock;
+
+public:
+
 	uint capFrames;
 	bool toCap = true;
 
