@@ -42,6 +42,7 @@ Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y, path)
 	follow_pathfinding2 = App->collision->AddCollider({ (int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
 
 	speed = { 0.8f,0 };
+	distance_to = 50.0f;
 }
 
 void Monkey::Move(float dt)
@@ -249,7 +250,7 @@ void Monkey::UpdatePathfinding()
 		// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
 		if (SDL_HasIntersection(&enemy_pos, &player_pos) && pathfind) {
 			if (!Pathfind()) {
-				if (position.DistanceTo(App->entities->playerData->position) < 50.0f) {
+				if (position.DistanceTo(App->entities->playerData->position) < distance_to) {
 					Hit();
 					wait = true;
 				}

@@ -135,6 +135,14 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.l_shield_walk.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
+
+	//invisible
+	node = animations_node.child("invisible");
+	imp.invisible.speed = node.attribute("speed").as_float();
+	imp.invisible.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		imp.invisible.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
 	//_load_animations
 	//_IMP
 

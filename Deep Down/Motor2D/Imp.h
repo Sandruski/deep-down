@@ -13,7 +13,8 @@ enum ImpState {
 	r_throw_bomb,
 	l_throw_bomb,
 	r_shield_walk,
-	l_shield_walk
+	l_shield_walk,
+	back_to_start
 };
 
 struct ImpInfo
@@ -23,6 +24,7 @@ struct ImpInfo
 	Animation r_jump, l_jump;
 	Animation r_throw_bomb, l_throw_bomb;
 	Animation r_shield_walk, l_shield_walk;
+	Animation invisible;
 
 	iPoint coll_size;
 	SDL_Rect coll_offset;
@@ -61,12 +63,24 @@ private:
 	void FindDestination(iPoint& to_go);
 	//_normal_path
 
+	void Hit();
+	void DoHit();
+	void CoolDown();
+	void IsGround(iPoint& pos);
+
 private:
 
 	ImpInfo imp;
 	ImpState impState;
 
-	bool throw_bomb;
+	bool right_hit, left_hit;
+	bool do_hit = true;
+	bool wait;
+	bool cool;
+	float cooldown;
+	int seconds_to_wait;
+
+	bool back;
 
 	// Pathfinding
 	uint pathfinding_index = 0;
@@ -78,6 +92,8 @@ private:
 	bool pathfinding;
 	bool pathfind;
 	bool go;
+
+	iPoint dest;
 
 	Collider* follow_pathfinding1;
 	Collider* follow_pathfinding2;

@@ -85,8 +85,6 @@ public:
 	Animation* animationPlayer;
 
 private:
-	// Textures
-	p2SString spritesheet;
 
 	// Movement
 	float time = 0, time2 = 0;

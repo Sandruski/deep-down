@@ -296,6 +296,9 @@
             <frame x="250" y="798" w="32" h="32"/>
             <frame x="216" y="798" w="32" h="32"/>
           </l_shield_walk>
+          <invisible speed="0.2" loops="0">
+            <frame x="179" y="64" w="32" h="32"/>
+          </invisible>
         </animations>
       </imp>
       <monkey>

@@ -36,13 +36,16 @@ public:
 	iPoint i_pos;
 	fPoint start_pos;
 
-	fPoint speed = { 1,1 };
+	fPoint speed;
 
 	// Keep track of enemy movement
 	fPoint last_pos;
 	bool up, down, left, right;
-
 	//_enemy_movement
+
+	// Particles
+	fPoint particle_speed;
+	float distance_to;
 
 	iPoint collider_pos;
 	iPoint collider_size;

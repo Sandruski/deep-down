@@ -7,7 +7,7 @@
 
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 1181
-#define INVALID_WALK_CODES t != 1181 && t != 1182 && t != 1183 && t != 1180
+#define INVALID_WALK_CODES t != 1180 && t != 1181 && t != 1182 && t != 1183
 
 enum Distance {
 	DISTANCE_TO,

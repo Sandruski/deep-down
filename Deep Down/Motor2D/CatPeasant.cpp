@@ -33,6 +33,7 @@ CatPeasant::CatPeasant(float x, float y, PathInfo* path) : Entity(x, y, path)
 	collider_size = catPeasant.coll_size;
 
 	speed = { 60.0f, 0 };
+	particle_speed = { 80.0f, 80.0f };
 	seconds_to_wait = 6.0f;
 }
 
@@ -259,7 +260,7 @@ void CatPeasant::DoHit()
 	if (right_hit) {
 		if (catPeasant.r_throw_staff.Finished()) {
 			// Add particle
-			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + 20, COLLIDER_PEASANT_SHOT, NULL, { 80.0f,80.0f });
+			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + 20, COLLIDER_PEASANT_SHOT, NULL, particle_speed);
 
 			// Reset variables
 			right_hit = false;
@@ -271,7 +272,7 @@ void CatPeasant::DoHit()
 	else if (left_hit) {
 		if (catPeasant.l_throw_staff.Finished()) {
 			// Add particle
-			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + 20, COLLIDER_PEASANT_SHOT, NULL, { 80.0f,80.0f });
+			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + 20, COLLIDER_PEASANT_SHOT, NULL, particle_speed);
 
 			// Reset variables
 			left_hit = false;

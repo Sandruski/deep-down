@@ -40,9 +40,12 @@ Imp::Imp(float x, float y, PathInfo* path) : Entity(x, y, path)
 	collider_size = imp.coll_size;
 
 	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
-	follow_pathfinding2 = App->collision->AddCollider({ (int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 10, 100, 200 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
+	follow_pathfinding2 = App->collision->AddCollider({ (int)App->entities->playerData->position.x - 100, (int)App->entities->playerData->position.y - 10, 200, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
 
 	speed = { 60.0f, 2 };
+	particle_speed = { 50.0f, 50.0f };
+	seconds_to_wait = 10.0f;
+	distance_to = 200.0f;
 }
 
 void Imp::Move(float dt)
@@ -56,7 +59,6 @@ void Imp::Move(float dt)
 	UpdateAnimations(dt);
 
 	// Update movement
-	throw_bomb = false;
 	up = false;
 	down = false;
 	left = false;
@@ -64,10 +66,13 @@ void Imp::Move(float dt)
 	UpdateDirection();
 
 	// Update path/pathfinding
+	DoHit();
+	CoolDown();
+
 	if (!pathfinding)
 		UpdatePath();
 
-	//UpdatePathfinding();
+	UpdatePathfinding();
 
 	// Update state
 	GeneralStatesMachine();
@@ -83,7 +88,11 @@ void Imp::GeneralStatesMachine()
 	switch (impState) {
 
 	case ImpState::r_shield_idle:
-		if (throw_bomb) {
+		if (back) {
+			impState = ImpState::back_to_start;
+			break;
+		}
+		if (right_hit) {
 			impState = ImpState::r_throw_bomb;
 			break;
 		}
@@ -99,7 +108,11 @@ void Imp::GeneralStatesMachine()
 		break;
 
 	case ImpState::l_shield_idle:
-		if (throw_bomb) {
+		if (back) {
+			impState = ImpState::back_to_start;
+			break;
+		}
+		if (left_hit) {
 			impState = ImpState::l_throw_bomb;
 			break;
 		}
@@ -122,7 +135,7 @@ void Imp::GeneralStatesMachine()
 		if (left) {
 			impState = ImpState::l_shield_walk;
 			break;
-		}	
+		}
 		animation = &imp.r_shield_walk;
 		if (!right && !left)
 			impState = ImpState::r_shield_idle;
@@ -167,8 +180,8 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::l_throw_bomb;
 			break;
 		}
-		App->particles->AddParticle(App->particles->Imp_r_bomb, position.x, position.y, COLLIDER_IMP_BOMB, NULL, { 0,0 });
 		animation = &imp.r_throw_bomb;
+
 		impState = ImpState::r_shield_idle;
 		break;
 
@@ -177,8 +190,8 @@ void Imp::GeneralStatesMachine()
 			impState = ImpState::r_throw_bomb;
 			break;
 		}
-		App->particles->AddParticle(App->particles->Imp_l_bomb, position.x, position.y, COLLIDER_IMP_BOMB, NULL, { 0,0 });
 		animation = &imp.l_throw_bomb;
+
 		impState = ImpState::l_shield_idle;
 		break;
 
@@ -199,6 +212,12 @@ void Imp::GeneralStatesMachine()
 		animation = &imp.l_shield_hurt;
 		impState = ImpState::l_shield_idle;
 		break;
+
+	case ImpState::back_to_start:
+		animation = &imp.invisible;
+		impState = ImpState::l_shield_idle;
+		break;
+
 	}
 }
 
@@ -322,7 +341,7 @@ void Imp::UpdatePathfinding()
 	UpdatePathfindingAffectArea(enemy_pos, player_pos);
 
 	// If player is near the enemy... Create a pathfinding towards it
-	if (pathfinding_finished && SDL_HasIntersection(&enemy_pos, &player_pos)) {
+	if (pathfinding_finished && SDL_HasIntersection(&enemy_pos, &player_pos) && cooldown <= 0 && !back) {
 		if (ResetPathfindingVariables()) {
 			create_pathfinding = true;
 		}
@@ -330,8 +349,12 @@ void Imp::UpdatePathfinding()
 
 	// Create pathfinding
 	if (create_pathfinding) {
-		iPoint dest;
-		dest.x = (int)App->entities->playerData->position.x;
+
+		if (App->entities->playerData->position.x < position.x)
+			dest.x = (int)App->entities->playerData->position.x + 50;
+		else
+			dest.x = (int)App->entities->playerData->position.x - 50;
+
 		dest.y = (int)App->entities->playerData->position.y;
 
 		if (CreatePathfinding(dest)) {
@@ -353,8 +376,20 @@ void Imp::UpdatePathfinding()
 	if (pathfinding) {
 		// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
 		if (pathfind) {
-			if (!Pathfind())
-				pathfind = false;
+			if (!Pathfind()) {
+				fPoint i_dest;
+				i_dest.x = dest.x;
+				i_dest.y = dest.y;
+
+				if (position.DistanceTo(i_dest) < distance_to && cooldown <= 0 && !back) {
+					Hit();
+					wait = true;
+					cool = true;
+					cooldown = seconds_to_wait;
+				}
+				else if (!wait)
+					pathfind = false;
+			}
 		}
 		else if (!pathfind) {
 			// If the enemy reaches the end of the path and doesn't see the player anymore, stop pathfinding and go back home
@@ -371,13 +406,74 @@ void Imp::UpdatePathfinding()
 	}
 }
 
+
+void Imp::Hit()
+{
+	if (do_hit) {
+		if (right)
+			right_hit = true;
+		else if (left)
+			left_hit = true;
+		else
+			right_hit = true;
+
+		do_hit = false;
+	}
+}
+
+void Imp::DoHit()
+{
+	if (right_hit) {
+		if (imp.r_throw_bomb.Finished()) {
+			// Add particle
+			App->particles->AddParticle(App->particles->Imp_r_bomb, i_pos.x + 80, i_pos.y, COLLIDER_IMP_BOMB, NULL, particle_speed);
+
+			// Reset variables
+			right_hit = false;
+			imp.r_throw_bomb.Reset();
+			do_hit = true;
+			wait = false;
+
+			pathfind = false;
+			pathfinding = false;
+			pathfinding_stop = true;
+		}
+	}
+	else if (left_hit) {
+		if (imp.l_throw_bomb.Finished()) {
+			// Add particle
+			App->particles->AddParticle(App->particles->Imp_l_bomb, i_pos.x - 80, i_pos.y, COLLIDER_IMP_BOMB, NULL, particle_speed);
+
+			// Reset variables
+			left_hit = false;
+			imp.l_throw_bomb.Reset();
+			do_hit = true;
+			wait = false;
+
+			pathfind = false;
+			pathfinding = false;
+			pathfinding_stop = true;
+		}
+	}
+}
+
+void Imp::CoolDown()
+{
+	if (cool) {
+		cooldown -= deltaTime;
+
+		if (cooldown <= 0)
+			cool = false;
+	}
+}
+
 void Imp::UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player)
 {
 	follow_pathfinding1->SetPos(i_pos.x - 30, i_pos.y - 30);
-	follow_pathfinding2->SetPos((int)App->entities->playerData->position.x - 25, (int)App->entities->playerData->position.y - 50);
+	follow_pathfinding2->SetPos((int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 50);
 
 	enemy = { i_pos.x - 30, i_pos.y - 30, 100, 100 };
-	player = { (int)App->entities->playerData->position.x - 25, (int)App->entities->playerData->position.y - 50, 100, 200 };
+	player = { (int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 50, 200, 100 };
 }
 
 bool Imp::ResetPathfindingVariables()
@@ -408,6 +504,8 @@ bool Imp::CreatePathfinding(iPoint destination)
 {
 	bool ret = false;
 
+	IsGround(destination);
+
 	if (App->pathfinding->CreatePath(App->map->WorldToMap(i_pos.x, i_pos.y), App->map->WorldToMap(destination.x, destination.y), Distance::MANHATTAN) > -1) {
 		last_pathfinding = App->pathfinding->GetLastPath();
 
@@ -427,6 +525,20 @@ bool Imp::CreatePathfinding(iPoint destination)
 	}
 
 	return ret;
+}
+
+void Imp::IsGround(iPoint& pos) 
+{
+	iPoint check = App->map->WorldToMap(pos.x, pos.y);
+
+	while (App->map->collisionLayer->Get(check.x, check.y) != 1180 && App->map->collisionLayer->Get(check.x, check.y) != 1181
+		&& App->map->collisionLayer->Get(check.x, check.y) != 1183) {
+
+		pos.y += App->map->data.tile_height;
+		check = App->map->WorldToMap(pos.x, pos.y);
+	}
+
+	pos.y -= App->map->data.tile_height;
 }
 
 void Imp::UpdateMovement(iPoint to_go)
@@ -464,9 +576,11 @@ void Imp::RecalculatePath()
 {
 	switch (normal_path_index) {
 	case StartEndPath::start:
+		back = false;
 		normal_path_index = StartEndPath::end;
 		break;
 	case StartEndPath::end:
+		back = true;
 		normal_path_index = StartEndPath::start;
 		break;
 	default:

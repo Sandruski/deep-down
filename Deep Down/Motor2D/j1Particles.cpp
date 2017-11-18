@@ -138,8 +138,11 @@ bool j1Particles::Update(float dt)
 		{
 			if (p->collider->type == COLLIDER_PEASANT_SHOT)
 				App->render->Blit(App->entities->CatPeasantTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
+			else if (p->collider->type == COLLIDER_IMP_BOMB) {
+				App->render->Blit(App->entities->ImpTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
+			}
 			else
-			App->render->Blit(App->entities->PlayerTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
+				App->render->Blit(App->entities->PlayerTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
 		}
 	}
 
@@ -228,8 +231,10 @@ bool Particle::Update(float dt)
 		position.y += destination.y * dt * speed.x;
 		position.x += destination.x * dt * speed.y;
 	}
-
-	//position.y += speed.y;
+	else if (collider->type == COLLIDER_IMP_BOMB) {
+		if (down)
+			position.y += dt * speed.y;
+	}
 
 	if (collider != nullptr)
 		collider->SetPos(position.x, position.y);

@@ -84,9 +84,9 @@ public:
 	// Get paths info
 	PathInfo* GetPathByIndex(uint index) const;
 
-	bool j1EntityFactory::Save(pugi::xml_node& save) const;
+	bool Save(pugi::xml_node& save) const;
 
-	bool j1EntityFactory::Load(pugi::xml_node& save);
+	bool Load(pugi::xml_node& save);
 
 private:
 
