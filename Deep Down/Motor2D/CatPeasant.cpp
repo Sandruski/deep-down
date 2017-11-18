@@ -2,6 +2,9 @@
 #include "j1EntityFactory.h"
 #include "CatPeasant.h"
 
+#include "p2Defs.h"
+#include "p2Log.h"
+
 #include "j1Input.h"
 #include "j1Particles.h"
 #include "j1Collision.h"
@@ -54,15 +57,23 @@ void CatPeasant::Move(float dt)
 	right = false;
 	UpdateDirection();
 
-	// Update path (which is a pathfinding)
-	DoHit();
-	CoolDown();
+	// Update hurt and death
+	Wounded();
 
-	UpdatePath();
+	// Update path (which is a pathfinding)
+	if (!stop) {
+		DoHit();
+		CoolDown();
+
+		UpdatePath();
+	}
 	//_update_path
 
 	// Update state
 	GeneralStatesMachine();
+
+	if (dead)
+		LOG("DEAD");
 
 	// Update collider
 	//collider_pos = { i_pos.x + imp.coll_offset.x, i_pos.y + imp.coll_offset.y };
@@ -70,11 +81,57 @@ void CatPeasant::Move(float dt)
 	collider->SetPos(i_pos.x, i_pos.y);
 }
 
+void CatPeasant::Wounded()
+{
+	if (right_hurt) {
+		if (catPeasant.r_hurt.Finished()) {
+			catPeasant.r_hurt.Reset();
+			stop = false;
+			right_hurt = false;
+		}
+	}
+	else if (left_hurt) {
+		if (catPeasant.l_hurt.Finished()) {
+			catPeasant.l_hurt.Reset();
+			stop = false;
+			left_hurt = false;
+		}
+	}
+	else if (right_die) {
+		if (catPeasant.r_dead.GetCurrentFrame().x == 464) {
+			dead = true;
+			catPeasant.r_dead.Stop();
+		}
+	}
+	else if (left_die) {
+		if (catPeasant.l_dead.GetCurrentFrame().x == 312) {
+			dead = true;
+			catPeasant.l_dead.Stop();
+		}
+	}
+}
+
 void CatPeasant::GeneralStatesMachine() {
 
 	switch (catPeasantState) {
 
 	case CatPeasantState::r_idle:
+		if (right_hurt) {
+			catPeasantState = CatPeasantState::r_hurt;
+			break;
+		}
+		if (right_die) {
+			catPeasantState = CatPeasantState::r_dead;
+			break;
+		}
+		if (left_hurt) {
+			catPeasantState = CatPeasantState::l_hurt;
+			break;
+		}
+		if (left_die) {
+			catPeasantState = CatPeasantState::l_dead;
+			break;
+		}
 		if (right_hit) {
 			catPeasantState = CatPeasantState::r_attack;
 			break;
@@ -87,6 +144,22 @@ void CatPeasant::GeneralStatesMachine() {
 		break;
 
 	case CatPeasantState::l_idle:
+		if (left_hurt) {
+			catPeasantState = CatPeasantState::l_hurt;
+			break;
+		}
+		if (left_die) {
+			catPeasantState = CatPeasantState::l_dead;
+			break;
+		}
+		if (right_hurt) {
+			catPeasantState = CatPeasantState::r_hurt;
+			break;
+		}
+		if (right_die) {
+			catPeasantState = CatPeasantState::r_dead;
+			break;
+		}
 		if (left_hit) {
 			catPeasantState = CatPeasantState::l_attack;
 			break;
@@ -137,6 +210,26 @@ void CatPeasant::GeneralStatesMachine() {
 
 		catPeasantState = CatPeasantState::l_idle;
 		break;
+
+	case CatPeasantState::r_dead:
+		if (left) {
+			catPeasantState = CatPeasantState::l_dead;
+			break;
+		}
+		animation = &catPeasant.r_dead;
+
+		catPeasantState = CatPeasantState::r_idle;
+		break;
+
+	case CatPeasantState::l_dead:
+		if (right) {
+			catPeasantState = CatPeasantState::r_dead;
+			break;
+		}
+		animation = &catPeasant.l_dead;
+
+		catPeasantState = CatPeasantState::l_idle;
+		break;
 	}
 }
 
@@ -167,12 +260,12 @@ void CatPeasant::UpdateAnimations(float dt)
 	catPeasant.l_idle.speed = speed * dt;
 	catPeasant.r_idle_no_staff.speed = speed * dt;
 	catPeasant.l_idle_no_staff.speed = speed * dt;
-	catPeasant.r_hurt.speed = speed * dt;
-	catPeasant.l_hurt.speed = speed * dt;
+	catPeasant.r_hurt.speed = 5.0f * dt;
+	catPeasant.l_hurt.speed = 5.0f * dt;
 	catPeasant.r_hurt_no_staff.speed = speed * dt;
 	catPeasant.l_hurt_no_staff.speed = speed * dt;
-	catPeasant.r_dead.speed = speed * dt;
-	catPeasant.l_dead.speed = speed * dt;
+	catPeasant.r_dead.speed = 5.0f * dt;
+	catPeasant.l_dead.speed = 5.0f * dt;
 	catPeasant.r_dead_no_staff.speed = speed * dt;
 	catPeasant.l_dead_no_staff.speed = speed * dt;
 	catPeasant.r_throw_staff.speed = speed * dt;
@@ -181,6 +274,24 @@ void CatPeasant::UpdateAnimations(float dt)
 
 void CatPeasant::OnCollision(Collider* c1, Collider* c2)
 {
+	if (c2->type == COLLIDER_ARROW) {
+		lives--;
+		stop = true;
+		LOG("Lifes: %i", lives);
+
+		if (lives == 1) {
+			if (App->entities->playerData->position.x < position.x)
+				left_hurt = true;
+			else
+				right_hurt = true;
+		}
+		else if (lives == 0) {
+			if (App->entities->playerData->position.x < position.x)
+				left_die = true;
+			else
+				right_die = true;
+		}
+	}
 }
 
 void CatPeasant::UpdatePath()

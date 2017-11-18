@@ -57,6 +57,7 @@ private:
 	void Hit();
 	void DoHit();
 	void CoolDown();
+	void Wounded();
 
 private:
 
@@ -69,6 +70,10 @@ private:
 	bool cool;
 	float cooldown;
 	int seconds_to_wait;
+
+	bool left_hurt, right_hurt;
+	bool left_die, right_die;
+	bool stop;
 
 	// Pathfinding
 	uint pathfinding_index = 0;
