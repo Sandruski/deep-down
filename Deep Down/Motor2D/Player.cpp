@@ -127,17 +127,17 @@ void Player::MoveBackward() {
 
 void Player::MoveForwardJumping() {
 	if (right) {
-		position.x += 75.0f * dt;
+		position.x += 50.0f * dt;
 	}
 }
 void Player::MoveBackwardJumping() {
 	if (left) {
-		position.x -= 75.0f * dt;
+		position.x -= 50.0f * dt;
 	}
 }
 
 float Player::Jump() {
-	return -100.0f;
+	return -80.0f;
 }
 
 void PlayerInfo::SetState(playerstates state) {
@@ -784,6 +784,13 @@ void Player::CheckCollision(iPoint position, iPoint size, int offset, bool &up, 
 
 void Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, uint id, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state) {
 
+	if (App->toCap && App->capFrames <= 30) {
+		offset = 5;
+	}
+
+	if (App->toCap && App->capFrames <= 10) {
+		offset = 15;
+	}
 	SDL_Rect B = { x, y, 16, 16 }; //object rectangle
 
 	iPoint c_up = { 0, -offset };
