@@ -819,7 +819,8 @@ bool j1EntityFactory::AddEntities()
 {
 	bool ret = false;
 
-	AddEntity(PLAYER_, 0);
+	if (!App->scene->loading_state)
+		AddEntity(PLAYER_, 0);
 
 	int index = 1;
 	p2SString tmp("%s%d", "Enemy", index);
@@ -877,10 +878,16 @@ PathInfo* j1EntityFactory::GetPathByIndex(uint index) const {
 // -------------------------------------------------------------
 // -------------------------------------------------------------
 
-bool j1EntityFactory::Load(pugi::xml_node& save) {
+bool j1EntityFactory::Load(pugi::xml_node& save) 
+{
 	bool ret = false;
 
 	pugi::xml_node node;
+
+	if (App->scene->last_index != App->scene->index) {
+		LoadEntities();
+	}
+
 	for (uint i = 0; i < MAX_ENTITIES; ++i)
 	{
 		if (playerData != nullptr) {
@@ -903,15 +910,36 @@ bool j1EntityFactory::Load(pugi::xml_node& save) {
 					playerData->speed.x = node.child("speed").attribute("speed.x").as_float();
 					playerData->speed.y = node.child("speed").attribute("speed.y").as_float();
 				}
-
 			}
 		}
 	}
+
 	ret = true;
 	return ret;
 }
 
-bool j1EntityFactory::Save(pugi::xml_node& save) const {
+bool j1EntityFactory::LoadEntities() 
+{
+	bool ret = false;
+
+	for (uint i = 0; i < MAX_ENTITIES; ++i)
+	{
+		if (entities[i] != nullptr)
+		{
+			delete entities[i];
+			entities[i] = nullptr;
+		}
+	}
+
+	AddEntity(PLAYER_, 0);
+	if (PreUpdate())
+		ret = true;
+
+	return ret;
+}
+
+bool j1EntityFactory::Save(pugi::xml_node& save) const 
+{
 	bool ret = false;
 
 	pugi::xml_node node;
@@ -952,7 +980,6 @@ bool j1EntityFactory::Save(pugi::xml_node& save) const {
 			}
 		}
 	}
-
 
 	ret = true;
 	return ret;

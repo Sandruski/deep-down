@@ -26,7 +26,11 @@ bool j1Window::Awake(pugi::xml_node& config)
 	LOG("Init SDL window & surface");
 	bool ret = true;
 
-	if(SDL_Init(SDL_INIT_VIDEO) < 0)
+	icon = config.child("icon").attribute("name").as_string();
+	icon_surface = SDL_LoadBMP(icon.GetString());
+
+
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
@@ -65,6 +69,7 @@ bool j1Window::Awake(pugi::xml_node& config)
 		}
 
 		window = SDL_CreateWindow(App->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		SDL_SetWindowIcon(window, icon_surface);
 
 		if(window == NULL)
 		{

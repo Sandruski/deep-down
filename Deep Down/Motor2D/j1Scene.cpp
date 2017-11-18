@@ -100,20 +100,19 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
-	if (loading && !loading_state) {
-		//App->entities->playerData->player.SetState(App->entities->playerData->default_state);
-
-		// Player start position
-		App->entities->playerData->start_pos = App->map->data.GetObjectPosition("Player", "StartPos");
-		App->entities->playerData->position = App->entities->playerData->start_pos;
-
+	if (loading) {
 		gate = false;
 		fx = false;
 
-		loading = false;
-	}
+		if (!loading_state) {
+			//App->entities->playerData->player.SetState(App->entities->playerData->default_state);
 
-	loading_state = false;
+			// Player start position
+			App->entities->playerData->start_pos = App->map->data.GetObjectPosition("Player", "StartPos");
+			App->entities->playerData->position = App->entities->playerData->start_pos;
+		}
+		loading = false;
+	} 
 
 	return true;
 }
@@ -152,7 +151,9 @@ bool j1Scene::CleanUp()
 	LOG("Freeing Scene %d", index);
 	App->audio->PauseMusic();
 	App->map->UnLoad();
-	App->entities->CleanUp();
+
+	if (!loading_state)
+		App->entities->CleanUp();
 
 	return true;
 }
@@ -227,6 +228,8 @@ void j1Scene::DebugKeys() {
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { 
 		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
 			|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
+			loading_state = false;
+
 			App->entities->playerData->player.SetState(stop_);
 
 			if (index == 0) {
@@ -245,6 +248,8 @@ void j1Scene::DebugKeys() {
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) { 
 		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
 			|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
+			loading_state = false;
+
 			App->entities->playerData->player.SetState(stop_);
 			App->entities->playerData->position = App->entities->playerData->start_pos;
 			gate = false;
@@ -258,6 +263,8 @@ void j1Scene::DebugKeys() {
 	if ((App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || App->map->data.CheckIfEnter("Player", "EndPos", App->entities->playerData->position)) && App->fade->GetStep() == 0) {
 		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
 			|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
+			loading_state = false;
+
 			if (index == 0)
 				index = 1;
 			else
@@ -269,12 +276,16 @@ void j1Scene::DebugKeys() {
 	}	
 
 	// F5: save the current state
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
 		App->SaveGame();
+		last_index = index;
+	}
 
 	// F6: load the previous state
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
 		App->LoadGame();
+		loading_state = true;
+	}
 
 	// F7: fullscreen
 	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN) {

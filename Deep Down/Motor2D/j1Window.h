@@ -36,11 +36,13 @@ public:
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
+	SDL_Surface* icon_surface;
 
 	bool fullscreen;
 
 private:
 	p2SString	title;
+	p2SString	icon;
 
 	// Screen parameters
 	uint		width;

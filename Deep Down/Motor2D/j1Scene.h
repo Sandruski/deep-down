@@ -53,9 +53,10 @@ public:
 	bool gate, fx, loading = true;
 	bool loading_state;
 
-private:
-
 	uint index;
+	uint last_index;
+
+private:
 
 	p2SString map1;
 	p2SString map2;

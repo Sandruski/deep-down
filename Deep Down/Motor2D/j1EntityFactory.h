@@ -87,6 +87,7 @@ public:
 	bool Save(pugi::xml_node& save) const;
 
 	bool Load(pugi::xml_node& save);
+	bool LoadEntities();
 
 private:
 
