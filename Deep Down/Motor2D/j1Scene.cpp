@@ -123,9 +123,6 @@ bool j1Scene::Update(float dt)
 {
 	// F1, F2, F3, F4, F5, F6, +, -
 	DebugKeys();
-
-	// Move camera
-	MoveCamera();
 	
 	// Set window title
 	App->input->GetMousePosition(mouse.x, mouse.y);

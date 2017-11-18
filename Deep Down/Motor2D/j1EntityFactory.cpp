@@ -21,7 +21,7 @@
 
 j1EntityFactory::j1EntityFactory()
 {
-	name.create("enemies");
+	name.create("entities");
 
 	for (uint i = 0; i < MAX_ENTITIES; ++i)
 		entities[i] = nullptr;
@@ -423,6 +423,8 @@ bool j1EntityFactory::Update(float dt)
 		}
 	}
 
+	App->scene->MoveCamera();
+
 	// Draw Map
 	App->map->Draw();
 
@@ -745,6 +747,87 @@ PathInfo* j1EntityFactory::GetPathByIndex(uint index) const {
 
 // -------------------------------------------------------------
 // -------------------------------------------------------------
+
+bool j1EntityFactory::Load(pugi::xml_node& save) {
+	bool ret = false;
+
+	pugi::xml_node node;
+	for (uint i = 0; i < MAX_ENTITIES; ++i)
+	{
+		if (playerData != nullptr) {
+
+			if (entities[i] == playerData) {
+				if (save.child("player") != NULL) {
+					node = save.child("player");
+				}
+				else {
+					return true;
+				}
+				if (node.child("position") != NULL) {
+					playerData->position.x = node.child("position").attribute("position.x").as_float();
+					playerData->position.y = node.child("position").attribute("position.y").as_float();
+				}
+				if (node.child("state") != NULL) {
+					playerData->player.SetState((playerstates)(node.child("state").attribute("state").as_int()));
+				}
+				if (node.child("speed") != NULL) {
+					playerData->speed.x = node.child("speed").attribute("speed.x").as_float();
+					playerData->speed.y = node.child("speed").attribute("speed.y").as_float();
+				}
+
+			}
+		}
+	}
+	ret = true;
+	return ret;
+}
+
+bool j1EntityFactory::Save(pugi::xml_node& save) const {
+	bool ret = false;
+
+	pugi::xml_node node;
+	for (uint i = 0; i < MAX_ENTITIES; ++i)
+	{
+		if (playerData != nullptr) {
+
+			if (entities[i] == playerData) {
+
+				if (save.child("player") == NULL) {
+					node = save.append_child("player");
+				}
+				else {
+					node = save.child("player");
+				}
+				if (node.child("position") == NULL) {
+					node.append_child("position").append_attribute("position.x") = playerData->position.x;
+					node.child("position").append_attribute("position.y") = playerData->position.y;
+				}
+				else {
+					node.child("position").attribute("position.x") = playerData->position.x;
+					node.child("position").attribute("position.y") = playerData->position.y;
+				}
+				if (node.child("state") == NULL) {
+					node.append_child("state").append_attribute("state") = playerData->player.GetState();
+				}
+				else {
+					node.child("state").attribute("state") = playerData->player.GetState();
+				}
+				if (node.child("speed") == NULL) {
+					node.append_child("speed").append_attribute("speed.x") = playerData->speed.x;
+					node.child("speed").append_attribute("speed.y") = playerData->speed.y;
+				}
+				else {
+					node.child("speed").attribute("speed.x") = playerData->speed.x;
+					node.child("speed").attribute("speed.y") = playerData->speed.y;
+				}
+			}
+		}
+	}
+
+
+	ret = true;
+	return ret;
+}
 
 PathInfo::PathInfo() {}
 

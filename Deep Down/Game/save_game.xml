@@ -8,20 +8,21 @@
 	</audio>
 	<map />
 	<pathfinding />
+	<entities>
+		<player>
+			<position position.x="608.45343" position.y="223.39505" />
+			<state state="3" />
+			<speed speed.x="1" speed.y="0" />
+		</player>
+	</entities>
+	<particles />
+	<collision />
 	<scene>
 		<index index="0" />
 		<gate opened="false" fx="false" />
 	</scene>
-	<player>
-		<position position.x="562.547668" position.y="184.362656" />
-		<state state="13" />
-		<speed speed.x="0" speed.y="-0.775602221" />
-	</player>
-	<collision />
-	<particles />
 	<fade />
-	<enemies />
 	<renderer>
-		<camera x="-1386" y="-105" />
+		<camera x="-1524" y="-219" />
 	</renderer>
 </game_state>
