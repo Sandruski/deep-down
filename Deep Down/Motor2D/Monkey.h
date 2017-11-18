@@ -30,7 +30,7 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move(float dt);
-	void UpdateAnimations();
+	void UpdateAnimations(float dt);
 
 private:
 
@@ -55,12 +55,19 @@ private:
 	void FlipPath(PathInfo* path_info);
 	//_normal_path
 
+	void Hit();
+	void DoHit();
+
 private:
 
 	float dt;
 
 	MonkeyInfo monkey;
 	MonkeyState monkeyState;
+
+	bool right_hit, left_hit;
+	bool do_hit = true;
+	bool wait;
 
 	// Pathfinding
 	uint pathfinding_index = 0;

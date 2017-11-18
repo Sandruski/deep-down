@@ -14,6 +14,18 @@
 
 #include "SDL/include/SDL_timer.h"
 
+/*
+IMP (enemy):
+· Type: ground.
+· Lives: 2.
+
+- Follows a path A-B (set in Tiled) using pathfinding.
+- Skips her path when she sees the player and pathfinds him.
+- When she is near the player, she throws a bomb towards him.
+- If she stops seeing the player, she goes back to her initial path.
+- If she reaches the end B of her path, she disappears (and respawns at the start A of her path).
+*/
+
 Imp::Imp(float x, float y, PathInfo* path) : Entity(x, y, path)
 {
 	imp = App->entities->GetImpInfo();
@@ -21,6 +33,8 @@ Imp::Imp(float x, float y, PathInfo* path) : Entity(x, y, path)
 	///
 	animation = &imp.r_shield_idle;
 	impState = ImpState::r_shield_idle;
+
+	lives = 2;
 
 	collider = App->collision->AddCollider({ 0, 0, imp.coll_size.x + imp.coll_offset.w, imp.coll_size.y + imp.coll_offset.h }, COLLIDER_TYPE::COLLIDER_IMP, App->entities);
 	collider_size = imp.coll_size;
@@ -110,7 +124,7 @@ void Imp::GeneralStatesMachine()
 			break;
 		}	
 		animation = &imp.r_shield_walk;
-		if(!right && !left)
+		if (!right && !left)
 			impState = ImpState::r_shield_idle;
 		break;
 
@@ -207,41 +221,6 @@ void Imp::UpdateDirection() {
 	last_pos.x = position.x;
 	last_pos.y = position.y;
 }
-
-/*
-if (i_pos.x != last_pos.x) {
-stop_x = false;
-
-if (i_pos.x < last_pos.x) {
-left = true;
-right = false;
-}
-else if (i_pos.x > last_pos.x) {
-right = true;
-left = false;
-}
-}
-else
-stop_x = true;
-
-if (i_pos.y != last_pos.y) {
-stop_y = false;
-
-if (i_pos.y < last_pos.y) {
-up = true;
-down = false;
-}
-else if (i_pos.y > last_pos.y) {
-down = true;
-up = false;
-}
-}
-else
-stop_y = true;
-
-last_pos.x = i_pos.x;
-last_pos.y = i_pos.y;
-*/
 
 void Imp::UpdateAnimations(float dt)
 {

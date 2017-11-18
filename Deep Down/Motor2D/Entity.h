@@ -13,18 +13,18 @@ class Entity
 protected:
 	
 	Collider* collider = nullptr;
-
 	PathInfo* path_info = nullptr;
+	Animation* animation = nullptr;
+
 	const p2DynArray<iPoint>* last_pathfinding;
 	p2DynArray<iPoint> mlast_pathfinding;
-	Animation* animation = nullptr;
 
 public:
 	
-
 	float deltaTime;
 
 	int type;
+	int lives;
 
 	// Enemy movement
 	fPoint position;

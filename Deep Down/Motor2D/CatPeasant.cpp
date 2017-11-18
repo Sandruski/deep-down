@@ -8,8 +8,16 @@
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 
-
 #include "SDL/include/SDL_timer.h"
+
+/*
+CAT PEASANT (enemy):
+· Type: air.
+· Lives: 2.
+
+- Follows a continuous path A-B (set in Tiled) using pathfinding.
+- If she sees the player, she throws her magic cane towards him.
+*/
 
 CatPeasant::CatPeasant(float x, float y, PathInfo* path) : Entity(x, y, path)
 {
@@ -111,6 +119,8 @@ CatPeasant::CatPeasant(float x, float y, PathInfo* path) : Entity(x, y, path)
 	deathNoStuff2.PushBack({ 378, 1634, 64, 64 });
 	deathNoStuff2.PushBack({ 312, 1634, 64, 64 });
 	deathNoStuff2.speed = 0.15f;
+
+	lives = 2;
 
 	catPeasantState = stateEnemies::enemyIdle_;
 
