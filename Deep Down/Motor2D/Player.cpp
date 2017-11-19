@@ -36,17 +36,9 @@ Player::Player(float x, float y, PathInfo* path) : Entity(x, y, path)
 
 void Player::Move(float dt)
 {
-	if (respawnGOD == true) {
-		App->scene->god = true;
-		timeRespawn += dt;
-		if (timeRespawn >= 3.0f) {
-			respawnGOD = false;
-			App->scene->god = false;
-			timeRespawn = 0.0f;
-		}
-	}
-
 	this->dt = dt;
+
+	GodMode();
 
 	player.gravity = 125.0f * dt;
 
@@ -58,43 +50,64 @@ void Player::Move(float dt)
 	down = true;
 	left = true;
 	right = true;
-
 	CheckCollision(collider_pos, { player.coll_size.x + player.coll_offset.w, player.coll_size.y + player.coll_offset.h }, player.check_collision_offset, up, down, left, right, player.GetState());
 
 	CheckIfDead();
 
+	// Update state
 	PlayerStateMachine();
 
 	ApplySpeed();
 
-	player.idle.speed = 10.0f * dt;
-	player.idle2.speed = 10.0f * dt;
-	player.forward.speed = 10.0f * dt;;
-	player.backward.speed = 10.0f * dt;;
-	player.jump.speed = 10.0f * dt;;
-	player.jump2.speed = 10.0f * dt;;
-	player.crouch.speed = 10.0f * dt;;
-	player.crouch2.speed = 10.0f * dt;;
-	player.dash.speed = 10.0f * dt;;
-	player.dash2.speed = 10.0f * dt;;
-	player.shot.speed = 10.0f * dt;;
-	player.shot2.speed = 10.0f * dt;;
-	player.crouchShot.speed = 10.0f * dt;;
-	player.crouchShot2.speed = 10.0f * dt;;
-	player.punished.speed = 10.0f * dt;;
-	player.punished2.speed = 10.0f * dt;;
-	player.firstAttack.speed = 10.0f * dt;;
-	player.secondAttack.speed = 10.0f * dt;;
-	player.thirdAttack.speed = 10.0f * dt;;
-	player.firstAttack2.speed = 10.0f * dt;;
-	player.secondAttack2.speed = 10.0f * dt;;
-	player.thirdAttack2.speed = 10.0f * dt;;
+	// Update animations speed
+	UpdateAnimations(dt);
 
 	// Update collider
 	collider_pos = { (int)position.x + player.coll_offset.x, (int)position.y + player.coll_offset.y };
 	collider->SetPos(collider_pos.x, collider_pos.y);
 
 	animationPlayer = animation;
+}
+
+void Player::UpdateAnimations(float dt) 
+{
+	float speed = 10.0f;
+
+	player.idle.speed = speed * dt;
+	player.idle2.speed = speed * dt;
+	player.forward.speed = speed * dt;
+	player.backward.speed = speed * dt;
+	player.jump.speed = speed * dt;
+	player.jump2.speed = speed * dt;
+	player.crouch.speed = speed * dt;
+	player.crouch2.speed = speed * dt;
+	player.dash.speed = speed * dt;
+	player.dash2.speed = speed * dt;
+	player.shot.speed = speed * dt;
+	player.shot2.speed = speed * dt;
+	player.crouchShot.speed = speed * dt;
+	player.crouchShot2.speed = speed * dt;
+	player.punished.speed = 5.0f * dt;
+	player.punished2.speed = 5.0f * dt;
+	player.firstAttack.speed = speed * dt;
+	player.secondAttack.speed = speed * dt;
+	player.thirdAttack.speed = speed * dt;
+	player.firstAttack2.speed = speed * dt;
+	player.secondAttack2.speed = speed * dt;
+	player.thirdAttack2.speed = speed * dt;
+}
+
+void Player::GodMode() 
+{
+	if (respawnGOD == true) {
+		App->scene->god = true;
+		timeRespawn += dt;
+		if (timeRespawn >= 3.0f) {
+			respawnGOD = false;
+			App->scene->god = false;
+			timeRespawn = 0.0f;
+		}
+	}
 }
 
 void Player::OnCollision(Collider* c1, Collider* c2) {

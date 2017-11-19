@@ -76,9 +76,6 @@ private:
 	bool pathfinding_finished = true;
 	bool pathfinding = false;
 	bool pathfind = false;
-
-	Collider* follow_pathfinding1 = nullptr;
-	Collider* follow_pathfinding2 = nullptr;
 	//_pathfinding
 
 	// Normal path

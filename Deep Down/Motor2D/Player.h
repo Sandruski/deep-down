@@ -59,6 +59,7 @@ public:
 	Player(float x, float y, PathInfo* path);
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move(float dt);
+	void UpdateAnimations(float dt);
 
 	void PlayerStateMachine();
 
@@ -73,6 +74,7 @@ public:
 	float Jump();
 	void ApplySpeed();
 	void CheckIfDead();
+	void GodMode();
 
 	void CheckCollision(iPoint position, iPoint size, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state = null_);
 	void CalculateCollision(iPoint position, iPoint size, uint x, uint y, uint id, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state = null_);

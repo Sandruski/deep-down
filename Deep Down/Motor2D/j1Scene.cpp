@@ -82,12 +82,9 @@ bool j1Scene::Start()
 	App->win->GetWindowSize(width, height);
 	scale = App->win->GetScale();
 
-	//App->player->SetState(stop_);
-
 	// Load entities
-	//if (App->entities->LoadPathsInfo())
-	App->entities->LoadPathsInfo();
-	App->entities->AddEntities();
+	if (App->entities->LoadPathsInfo())
+		App->entities->AddEntities();
 
 	// Pathfinding collision data
 	App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (uchar*)App->map->collisionLayer->data);
@@ -101,11 +98,9 @@ bool j1Scene::Start()
 bool j1Scene::PreUpdate()
 {
 	if (loading) {
-		gate = false;
-		fx = false;
-
 		if (!loading_state) {
-			//App->entities->playerData->player.SetState(App->entities->playerData->default_state);
+			gate = false;
+			fx = false;
 
 			// Player start position
 			App->entities->playerData->start_pos = App->map->data.GetObjectPosition("Player", "StartPos");
@@ -211,11 +206,11 @@ bool j1Scene::Load(pugi::xml_node& save) {
 
 	if (save.child("index") != NULL) {
 		if (save.child("index").attribute("index").as_uint() != index && App->fade->GetStep() == 0) {
-			loading = true;
 			index = save.child("index").attribute("index").as_uint();
 			App->fade->FadeToBlack(this, this, 1);
 		}
 	}
+	loading = true;
 
 	ret = true;
 	return ret;
@@ -283,8 +278,8 @@ void j1Scene::DebugKeys() {
 
 	// F6: load the previous state
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		App->LoadGame();
 		loading_state = true;
+		App->LoadGame();
 	}
 
 	// F7: fullscreen
@@ -314,10 +309,10 @@ void j1Scene::DebugKeys() {
 
 	//camera blit
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->map->blit_offset < 15 && App->map->camera_blit)
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->map->blit_offset < 15 && App->map->camera_blit)
 		App->map->blit_offset += 7;
 
-	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->map->blit_offset > -135 && App->map->camera_blit)
+	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && App->map->blit_offset > -135 && App->map->camera_blit)
 		App->map->blit_offset -= 7;
 
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
