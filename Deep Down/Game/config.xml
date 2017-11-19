@@ -52,6 +52,9 @@
         <fx name="bow.wav"/>
         <fx name="gate.wav"/>
         <fx name="scream.wav"/>
+        <fx name="ImpScream.wav"/>
+        <fx name="MonkeyScream.wav"/>
+        <fx name="CatPeasantScream.wav"/>
       </fx>
     </audio>
   </scene>

@@ -87,8 +87,8 @@ void Player::UpdateAnimations(float dt)
 	player.shot2.speed = speed * dt;
 	player.crouchShot.speed = speed * dt;
 	player.crouchShot2.speed = speed * dt;
-	player.punished.speed = 5.0f * dt;
-	player.punished2.speed = 5.0f * dt;
+	player.punished.speed = 3.0f * dt;
+	player.punished2.speed = 3.0f * dt;
 	player.firstAttack.speed = speed * dt;
 	player.secondAttack.speed = speed * dt;
 	player.thirdAttack.speed = speed * dt;
@@ -114,10 +114,12 @@ void Player::OnCollision(Collider* c1, Collider* c2) {
 	if (!App->scene->god) {
 		if ((c1->type == COLLIDER_PEASANT_SHOT && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_PEASANT_SHOT)) {
 			player.SetState(punished_);
+			App->audio->PlayFx(5);
 		}
 
 		if ((c1->type == COLLIDER_CATPEASANT && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_CATPEASANT)) {
 			player.SetState(punished_);
+			App->audio->PlayFx(5);
 		}
 
 		if ((c1->type == COLLIDER_IMP && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP)) {
@@ -126,10 +128,12 @@ void Player::OnCollision(Collider* c1, Collider* c2) {
 
 		if ((c1->type == COLLIDER_IMP_BOMB_EXPLOSION && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP_BOMB_EXPLOSION)) {
 			player.SetState(punished_);
+			App->audio->PlayFx(5);
 		}
 
 		if ((left_hit == true || right_hit == true) && ((c1->type == COLLIDER_MONKEY && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_MONKEY))) {
 			player.SetState(punished_);
+			App->audio->PlayFx(5);
 		}
 	}
 }

@@ -9,6 +9,7 @@
 #include "j1Particles.h"
 #include "j1Pathfinding.h"
 #include "j1Map.h"
+#include "j1Audio.h"
 
 #include "j1Input.h"
 
@@ -302,6 +303,7 @@ void Imp::OnCollision(Collider* c1, Collider* c2)
 {
 	if (c2->type == COLLIDER_ARROW && !back) {
 		lives--;
+		App->audio->PlayFx(6);
 		stop = true;
 
 		if (App->entities->playerData->position.x < position.x)
