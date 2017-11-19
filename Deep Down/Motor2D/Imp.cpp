@@ -45,7 +45,7 @@ Imp::Imp(float x, float y, PathInfo* path) : Entity(x, y, path)
 
 	speed = { 60.0f, 2 };
 	particle_speed = { 50.0f, 50.0f };
-	seconds_to_wait = 7.0f;
+	seconds_to_wait = 5.0f;
 	distance_to = 200.0f;
 }
 
@@ -359,7 +359,7 @@ void Imp::UpdatePath()
 
 		// If it has to go back home and hasn't reached home yet, update the pathfinding back
 		if (going_back_home) {
-			if (!Pathfind()) {
+			if (!Pathfind(20.0f)) {
 				RecalculatePath();
 				going_back_home = false;
 				pathfinding_finished = true;
@@ -367,7 +367,7 @@ void Imp::UpdatePath()
 		}
 		// If it is home, update the normal path
 		else if (do_normal_path) {
-			if (!Pathfind()) {
+			if (!Pathfind(20.0f)) {
 				RecalculatePath();
 				normal_path_finished = true;
 			}
@@ -431,7 +431,7 @@ void Imp::UpdatePathfinding()
 	if (pathfinding) {
 		// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
 		if (pathfind) {
-			if (!Pathfind()) {
+			if (!Pathfind(60.0f)) {
 				fPoint i_dest;
 				i_dest.x = dest.x;
 				i_dest.y = dest.y;
@@ -597,25 +597,25 @@ void Imp::IsGround(iPoint& pos)
 	pos.y -= App->map->data.tile_height;
 }
 
-void Imp::UpdateMovement(iPoint to_go)
+void Imp::UpdateMovement(iPoint to_go, float velocity)
 {	
 	speed.x = mlast_pathfinding[pathfinding_index].x - App->map->WorldToMap(position.x, position.y).x;
 	speed.y = mlast_pathfinding[pathfinding_index].y - App->map->WorldToMap(position.x, position.y).y;
 
-	speed.x *= 20.0f * deltaTime;
-	speed.y *= 20.0f * deltaTime;
+	speed.x *= velocity * deltaTime;
+	speed.y *= velocity * deltaTime;
 
 	position.x += speed.x;
 	position.y += speed.y;
 }
 
-bool Imp::Pathfind()
+bool Imp::Pathfind(float velocity)
 {
 	bool ret = true;
 
 	iPoint to_go = App->map->MapToWorld(mlast_pathfinding[pathfinding_index].x, mlast_pathfinding[pathfinding_index].y);
 
-	UpdateMovement(to_go);
+	UpdateMovement(to_go, velocity);
 
 	if (App->map->WorldToMap(i_pos.x, i_pos.y) == App->map->WorldToMap(to_go.x, to_go.y)) {
 		if (pathfinding_index < pathfinding_size - 1)

@@ -50,9 +50,9 @@ private:
 
 	void UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player);
 	bool ResetPathfindingVariables();
-	void UpdateMovement(iPoint to_go);
+	void UpdateMovement(iPoint to_go, float velocity);
 	bool CreatePathfinding(iPoint destination);
-	bool Pathfind();
+	bool Pathfind(float velocity);
 	//_pathfinding
 
 	// Normal path
