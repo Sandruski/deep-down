@@ -30044,7 +30044,7 @@
   <object id="42" name="Enemy1" type="3" x="600" y="73">
    <polyline points="0,0 -13.5,84 -51,100.5 -122,91 -178.5,58.5 -131,-8.5 -81.5,44 -52,-12.5"/>
   </object>
-  <object id="44" name="Enemy2" type="3" x="907.5" y="64">
+  <object id="44" name="Enemy2a" type="3" x="907.5" y="64">
    <polyline points="0,0 -142,-13.5 -190.5,33 -159,82.5 -76.5,57"/>
   </object>
   <object id="46" name="Enemy6S" type="1" x="256" y="656" width="16" height="16"/>

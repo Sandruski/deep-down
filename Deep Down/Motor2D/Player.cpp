@@ -131,7 +131,7 @@ void Player::OnCollision(Collider* c1, Collider* c2) {
 			App->audio->PlayFx(5);
 		}
 
-		if ((left_hit == true || right_hit == true) && ((c1->type == COLLIDER_MONKEY && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_MONKEY))) {
+		if ((c1->type == COLLIDER_MONKEY_COLL && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_MONKEY_COLL)) {
 			player.SetState(punished_);
 			App->audio->PlayFx(5);
 		}

@@ -63,6 +63,7 @@ public:
 	Particle secondAttack;
 	Particle thirdAttack;
 	Particle CatPeasantSinus;
+	Particle monkeyAttack;
 
 	Particle Imp_r_bomb, Imp_l_bomb;
 	Particle Imp_bomb_explosion;

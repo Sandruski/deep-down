@@ -10,8 +10,8 @@
 	<pathfinding />
 	<entities>
 		<player>
-			<position position.x="585.554138" position.y="220.753647" />
-			<state state="3" />
+			<position position.x="459.620483" position.y="715.883728" />
+			<state state="2" />
 			<speed speed.x="0" speed.y="0" />
 		</player>
 	</entities>
@@ -23,6 +23,6 @@
 	</scene>
 	<fade />
 	<renderer>
-		<camera x="-1455" y="-210" />
+		<camera x="-1077" y="-1695" />
 	</renderer>
 </game_state>

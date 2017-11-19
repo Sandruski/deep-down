@@ -111,7 +111,7 @@ void Monkey::GeneralStatesMachine()
 			monkeyState = MonkeyState::ml_hurt;
 			break;
 		}
-		if (App->entities->playerData->right_hit) {
+		if (right_hit) {
 			monkeyState = MonkeyState::mr_hit;
 			break;
 		}
@@ -131,7 +131,7 @@ void Monkey::GeneralStatesMachine()
 			monkeyState = MonkeyState::ml_hurt;
 			break;
 		}
-		if (App->entities->playerData->left_hit) {
+		if (left_hit) {
 			monkeyState = MonkeyState::ml_hit;
 			break;
 		}
@@ -321,11 +321,11 @@ void Monkey::Hit()
 {
 	if (do_hit) {
 		if (right)
-			App->entities->playerData->right_hit = true;
+			right_hit = true;
 		else if (left)
-			App->entities->playerData->left_hit = true;
+			left_hit = true;
 		else
-			App->entities->playerData->right_hit = true;
+			right_hit = true;
 
 		do_hit = false;
 	}
@@ -333,19 +333,23 @@ void Monkey::Hit()
 
 void Monkey::DoHit() 
 {
-	if (App->entities->playerData->right_hit) {
+	if (right_hit) {
 		if (monkey.r_hit.Finished()) {
+			App->particles->AddParticle(App->particles->monkeyAttack, i_pos.x + 20, i_pos.y, COLLIDER_MONKEY_COLL, NULL, { 0,0 });
+
 			pathfind = false;
-			App->entities->playerData->right_hit = false;
+			right_hit = false;
 			monkey.r_hit.Reset();
 			do_hit = true;
 			wait = false;
 		}
 	}
-	else if (App->entities->playerData->left_hit) {
+	else if (left_hit) {
 		if (monkey.l_hit.Finished()) {
+			App->particles->AddParticle(App->particles->monkeyAttack, i_pos.x - 20, i_pos.y, COLLIDER_MONKEY_COLL, NULL, { 0,0 });
+
 			pathfind = false;
-			App->entities->playerData->left_hit = false;
+			left_hit = false;
 			monkey.l_hit.Reset();
 			do_hit = true;
 			wait = false;

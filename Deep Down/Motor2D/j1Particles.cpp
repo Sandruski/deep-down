@@ -98,6 +98,9 @@ bool j1Particles::Awake(pugi::xml_node& config) {
 	Imp_bomb_explosion.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	Imp_bomb_explosion.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
 
+	monkeyAttack.life = 100;
+	monkeyAttack.coll_size = { 20,20 };
+
 	return ret;
 }
 
@@ -169,7 +172,7 @@ void j1Particles::AddParticle(const Particle& particle, int x, int y, COLLIDER_T
 			p->speed.x = speed.x;
 			p->speed.y = speed.y;
 
-			if (collider_type != COLLIDER_NONE && collider_type != COLLIDER_PEASANT_SHOT)
+			if (collider_type != COLLIDER_NONE && collider_type != COLLIDER_PEASANT_SHOT && collider_type != COLLIDER_MONKEY_COLL)
 				p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), collider_type, this);
 			if (collider_type == COLLIDER_PEASANT_SHOT) {
 				float m = sqrtf(pow(App->entities->playerData->position.x - p->position.x, 2.0f) + pow(App->entities->playerData->position.y - p->position.y, 2.0f));
@@ -177,6 +180,9 @@ void j1Particles::AddParticle(const Particle& particle, int x, int y, COLLIDER_T
 				p->destination.y = (App->entities->playerData->position.y - p->position.y) / m;
 
 				p->collider = App->collision->AddCollider({ 0, 0, p->coll_size.x - 40, p->coll_size.y - 40}, collider_type, this);
+			}
+			if (collider_type == COLLIDER_MONKEY_COLL) {
+				p->collider = App->collision->AddCollider({ 0, 0, p->coll_size.x, p->coll_size.y }, collider_type, this);
 			}
 
 			active[i] = p;
@@ -273,6 +279,8 @@ bool Particle::Update(float dt)
 	if (collider != nullptr) {
 		if (collider->type == COLLIDER_PEASANT_SHOT)
 			collider->SetPos(position.x + 20, position.y + 20);
+		else if	(collider->type == COLLIDER_MONKEY_COLL)
+			collider->SetPos(position.x + 20, position.y + 30);
 		else
 			collider->SetPos(position.x, position.y);
 	}

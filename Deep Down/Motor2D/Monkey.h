@@ -62,6 +62,7 @@ private:
 	MonkeyInfo monkey;
 	MonkeyState monkeyState;
 
+	bool right_hit = false, left_hit = false;
 	bool wait = false;
 	bool do_hit = true;
 	bool left_hurt = false, right_hurt = false;
