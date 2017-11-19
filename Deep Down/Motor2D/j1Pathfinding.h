@@ -39,7 +39,7 @@ public:
 	void SetMap(uint width, uint height, uchar* data);
 
 	// Main function to request a path from A to B
-	int CreatePath(const iPoint& origin, const iPoint& destination, Distance distance_type, const bool flying = true);
+	int CreatePath(const iPoint& origin, const iPoint& destination, Distance distance_type);
 
 	// To request all tiles involved in the last generated path
 	const p2DynArray<iPoint>* GetLastPath() const;
@@ -78,7 +78,7 @@ struct PathNode
 	PathNode(const PathNode& node);
 
 	// Fills a list (PathList) of all valid adjacent pathnodes
-	uint FindWalkableAdjacents(PathList& list_to_fill, const bool flying) const;
+	uint FindWalkableAdjacents(PathList& list_to_fill) const;
 	// Calculates this tile score
 	float Score() const;
 	// Calculate the F for a specific destination tile
