@@ -273,6 +273,8 @@ bool Particle::Update(float dt)
 	if (collider != nullptr) {
 		if (collider->type == COLLIDER_PEASANT_SHOT)
 			collider->SetPos(position.x + 20, position.y + 20);
+		else
+			collider->SetPos(position.x, position.y);
 	}
 
 	return ret;
