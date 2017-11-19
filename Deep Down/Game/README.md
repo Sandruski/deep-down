@@ -4,7 +4,7 @@
 This is Deep Down, a side-scrolling platformer game about exploring an abandoned and mysterious cave. It has two different levels:
 while the first one follows the player entering the underground world, the second one is about an epic chase towards the exit of this dangerous place.<br>
 
-•	GitHub repository: [Deep Down](https://github.com/DatBeQuiet/Deep-Down)
+•	GitHub repository: [Deep Down](https://github.com/Sandruski/Deep-Down-Game)
 
 ## Inputs
 
