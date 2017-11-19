@@ -10,7 +10,7 @@
 #include "Monkey.h"
 #include "Player.h"
 
-#define MAX_ENTITIES 10
+#define MAX_ENTITIES 100
 
 struct SDL_Texture;
 
@@ -118,7 +118,7 @@ public:
 	SDL_Texture* ImpTex = nullptr;
 	SDL_Texture* PlayerTex = nullptr;
 
-	Player* playerData;
+	Player* playerData = nullptr;
 
 };
 

@@ -30,7 +30,7 @@ public:
 
 	int type;
 	int lives;
-	bool dead;
+	bool dead = false;
 
 	// Enemy movement
 	fPoint position;

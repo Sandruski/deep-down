@@ -25,6 +25,7 @@
     <general>
       <blit offset="15"/>
       <camera_blit value="1"/>
+      <culing value="1"/>
     </general>
   </map>
 

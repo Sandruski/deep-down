@@ -82,7 +82,7 @@ public:
 
 	// General info
 	playerstates default_state;
-	Animation* animationPlayer;
+	Animation* animationPlayer = nullptr;
 
 private:
 

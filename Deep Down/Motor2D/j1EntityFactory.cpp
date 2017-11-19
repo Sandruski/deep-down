@@ -25,6 +25,7 @@ j1EntityFactory::j1EntityFactory()
 
 	for (uint i = 0; i < MAX_ENTITIES; ++i)
 		entities[i] = nullptr;
+
 }
 
 // Destructor

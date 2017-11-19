@@ -121,15 +121,11 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	// F1, F2, F3, F4, F5, F6, +, -
+	
 	DebugKeys();
 	
 	// Set window title
 	App->input->GetMousePosition(mouse.x, mouse.y);
-	p2SString title("DEEP DOWN - Map %d:%dx%d Tiles:%dx%d Tilesets:%d Mouse (camera coords):%d,%d",					
-					index, App->map->data.width, App->map->data.height,
-					App->map->data.tile_width, App->map->data.tile_height,
-					App->map->data.tilesets.count(), App->map->MouseTile(mouse.x, mouse.y));
-	//App->win->SetTitle(title.GetString());
 
 	return true;
 }
@@ -164,15 +160,19 @@ void j1Scene::MoveCamera() {
 		App->render->camera.x += 5;
 	else if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) //move camera right (debug functionality)
 		App->render->camera.x -= 5;
-	else
-		App->render->camera.x = (int)(App->entities->playerData->position.x - 100) * (-1) * App->win->GetScale();
+	else {
+		if(App->entities->playerData != nullptr)
+			App->render->camera.x = (int)(App->entities->playerData->position.x - 100) * (-1) * App->win->GetScale();
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_REPEAT) //move camera up (debug functionality)
 		App->render->camera.y += 5;
 	else if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT) //move camera down (debug functionality)
 		App->render->camera.y -= 5;
-	else
-		App->render->camera.y = (int)(App->entities->playerData->position.y - 150) * (-1) *  App->win->GetScale();
+	else {
+		if (App->entities->playerData != nullptr)
+			App->render->camera.y = (int)(App->entities->playerData->position.y - 150) * (-1) *  App->win->GetScale();
+	}
 }
 
 // Save
@@ -260,21 +260,22 @@ void j1Scene::DebugKeys() {
 	// F3: show colliders
 
 	// F4: change between maps
-	if ((App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || App->map->data.CheckIfEnter("Player", "EndPos", App->entities->playerData->position)) && App->fade->GetStep() == 0) {
-		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
-			|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
-			loading_state = false;
+	if (App->entities->playerData != nullptr) {
+		if ((App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || App->map->data.CheckIfEnter("Player", "EndPos", App->entities->playerData->position)) && App->fade->GetStep() == 0) {
+			if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
+				|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
+				loading_state = false;
 
-			if (index == 0)
-				index = 1;
-			else
-				index = 0;
+				if (index == 0)
+					index = 1;
+				else
+					index = 0;
 
-			App->entities->playerData->player.SetState(stop_);
-			App->fade->FadeToBlack(this, this, 1);
+				App->entities->playerData->player.SetState(stop_);
+				App->fade->FadeToBlack(this, this, 1);
+			}
 		}
-	}	
-
+	}
 	// F5: save the current state
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
 		App->SaveGame();

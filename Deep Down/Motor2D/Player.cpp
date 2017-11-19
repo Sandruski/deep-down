@@ -758,23 +758,23 @@ void Player::PlayerStateMachine() {
 
 void Player::CheckCollision(iPoint position, iPoint size, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state) {
 
-	BROFILER_CATEGORY("CheckForCollision2", Profiler::Color::Azure);
+	BROFILER_CATEGORY("CheckForCollision", Profiler::Color::Azure);
 
 	App->map->culing_offset = 50;
 
-	for (int i = position.x - App->map->culing_offset; i < position.x + App->map->culing_offset; i++) {
-		for (int j = position.y - App->map->culing_offset; j < position.y + App->map->culing_offset; j++) {
+		for (int i = position.x - App->map->culing_offset; i < position.x + App->map->culing_offset; i++) {
+			for (int j = position.y - App->map->culing_offset; j < position.y + App->map->culing_offset; j++) {
 
-			iPoint ij = App->map->WorldToMap(i, j);
+				iPoint ij = App->map->WorldToMap(i, j);
 
-			uint id = App->map->collisionLayer->Get(ij.x, ij.y);
+				uint id = App->map->collisionLayer->Get(ij.x, ij.y);
 
-			if (id != 0) {
-				iPoint world = App->map->MapToWorld(ij.x, ij.y);
-				CalculateCollision(position, size, world.x, world.y, id, offset, up, down, left, right, state);
+				if (id != 0) {
+					iPoint world = App->map->MapToWorld(ij.x, ij.y);
+					CalculateCollision(position, size, world.x, world.y, id, offset, up, down, left, right, state);
+				}
 			}
 		}
-	}
 }
 
 void Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, uint id, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state) {

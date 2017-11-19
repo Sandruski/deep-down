@@ -98,8 +98,8 @@ private:
 
 	iPoint dest;
 
-	Collider* follow_pathfinding1;
-	Collider* follow_pathfinding2;
+	Collider* follow_pathfinding1 = nullptr;
+	Collider* follow_pathfinding2 = nullptr;
 	//_pathfinding
 
 	// Normal path

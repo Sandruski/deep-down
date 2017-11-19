@@ -218,7 +218,7 @@ void j1App::FinishUpdate()
 
 	double fps = 1000.0f / perfClock.ReadMs();
 
-	float avgFPS = (float)frame_count / clock.ReadSec();
+	double avgFPS = (float)frame_count / clock.ReadSec();
 
 	dt = 1.0f / fps;
 
@@ -235,10 +235,16 @@ void j1App::FinishUpdate()
 	else
 		vsyncOnOff = "off";
 
+	p2SString CB;
+	if (App->map->camera_blit)
+		CB = "enable";
+	else
+		CB = "disable";
+
 	static char title[256];
 	
-	sprintf_s(title, 256, "FPS: %.2f AvgFPS: %.2f Last Frame Ms: %02u capFrames: %s Vsyn: %s ",
-		fps, avgFPS, actual_frame_ms, capOnOff.GetString(), vsyncOnOff.GetString());
+	sprintf_s(title, 256, "FPS: %.2f AvgFPS: %.2f Last Frame Ms: %02u capFrames: %s Vsyn: %s CameraBlit: %s",
+		fps, avgFPS, actual_frame_ms, capOnOff.GetString(), vsyncOnOff.GetString(), CB.GetString());
 
 	App->win->SetTitle(title);
 

@@ -118,8 +118,8 @@ private:
 	p2SString			load_game;
 	mutable p2SString	save_game;
 
-	uint64 last_frame_ms;
-	uint64 frame_count;
+	uint64 last_frame_ms = 0;
+	uint64 frame_count = 0;
 	j1Timer clock;
 	j1PerfTimer perfClock;
 

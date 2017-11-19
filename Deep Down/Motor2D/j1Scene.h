@@ -51,10 +51,10 @@ public:
 	uint scale;
 
 	bool gate, fx, loading = true;
-	bool loading_state;
+	bool loading_state = false;
 
-	uint index;
-	uint last_index;
+	uint index = 0;
+	uint last_index = 0;
 
 	bool god;
 
