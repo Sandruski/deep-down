@@ -108,15 +108,15 @@ void Player::OnCollision(Collider* c1, Collider* c2) {
 		}
 
 		if ((c1->type == COLLIDER_IMP && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP)) {
-			//App->player->SetState(punished_);
+			//player.SetState(punished_);
 		}
 
 		if ((c1->type == COLLIDER_IMP_BOMB_EXPLOSION && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP_BOMB_EXPLOSION)) {
 			player.SetState(punished_);
 		}
 
-		if ((c1->type == COLLIDER_MONKEY && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_MONKEY)) {
-			//App->player->SetState(punished_);
+		if ((left_hit == true || right_hit == true) && ((c1->type == COLLIDER_MONKEY && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_MONKEY))) {
+			player.SetState(punished_);
 		}
 	}
 }
@@ -231,7 +231,7 @@ void Player::CheckIfDead() {
 	if (player.GetState() == punished_)
 		time += 1 * dt;
 
-	if (time >= 3.0f) {
+	if (time >= 1.0f) {
 		position = start_pos;
 		player.SetState(idle_);
 		time = 0;
@@ -746,9 +746,9 @@ void Player::PlayerStateMachine() {
 		break;
 
 	case punished_:
-		if (animation == &player.forward || animation == &player.jump || animation == &player.punished)
+		if (animation == &player.forward || animation == &player.jump || animation == &player.punished || animation == &player.idle)
 			animation = &player.punished;
-		else if (animation == &player.backward || animation == &player.jump2 || animation == &player.punished2)
+		else if (animation == &player.backward || animation == &player.jump2 || animation == &player.punished2 || animation == &player.idle2)
 			animation = &player.punished2;
 		speed.y = 0;
 		speed.x = 0;
@@ -759,7 +759,7 @@ void Player::PlayerStateMachine() {
 		}
 		else if (player.punished2.Finished() && animation == &player.punished2) {
 			player.state = idle2_;
-			player.punished.Reset();
+			player.punished2.Reset();
 			break;
 		}
 		break;

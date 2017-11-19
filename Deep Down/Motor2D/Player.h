@@ -82,6 +82,7 @@ public:
 	// General info
 	playerstates default_state = null_;
 	Animation* animationPlayer = nullptr;
+	bool right_hit = false, left_hit = false;
 
 private:
 
