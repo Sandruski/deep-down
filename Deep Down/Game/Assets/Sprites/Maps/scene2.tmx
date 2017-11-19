@@ -44863,28 +44863,28 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
    <tile gid="1180"/>
    <tile gid="1181"/>
    <tile gid="1181"/>
@@ -46846,7 +46846,7 @@
   </object>
   <object id="21" name="Enemy9S" type="2" x="1200" y="592" width="16" height="16"/>
   <object id="22" name="Enemy9E" type="2" x="1376" y="656" width="16" height="16"/>
-  <object id="23" name="Enemy11S" type="1" x="1280" y="976" width="16" height="16"/>
+  <object id="23" name="Enemy11S" type="1" x="1280" y="944" width="16" height="16"/>
   <object id="25" name="Enemy11E" type="1" x="128" y="1136" width="16" height="16"/>
   <object id="29" name="Enemy5" type="3" x="796" y="150">
    <polyline points="0,0 4,-53 41,61 91,-83 93,36"/>
@@ -46854,13 +46854,13 @@
   <object id="32" name="Enemy6" type="3" x="802" y="964">
    <polyline points="0,0 22,41 46,20 68,51 89,5 172,59"/>
   </object>
-  <object id="33" x="1311" y="908">
+  <object id="33" x="1264" y="896">
    <polyline points="0,0 25,20 -14,44 -20,12 -41,12"/>
   </object>
   <object id="34" name="Enemy7" type="3" x="772" y="247">
    <polyline points="0,0 67,0 68,33 118,2"/>
   </object>
-  <object id="35" name="Enemy10S" type="1" x="1472" y="976" width="16" height="16"/>
+  <object id="35" name="Enemy10S" type="1" x="1472" y="960" width="16" height="16"/>
   <object id="36" name="Enemy10E" type="1" x="144" y="1136" width="16" height="16"/>
   <object id="37" name="Enemy8" type="3" x="1015" y="201">
    <polyline points="0,0 -23,27 6,77 60,40 72,-38 11,-48"/>

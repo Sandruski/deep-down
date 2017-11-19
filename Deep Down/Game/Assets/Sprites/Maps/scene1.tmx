@@ -9936,12 +9936,12 @@
    <tile gid="336"/>
    <tile gid="324"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="404"/>
    <tile gid="404"/>
    <tile gid="403"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22044,12 +22044,12 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="369"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="404"/>
    <tile gid="403"/>
    <tile gid="404"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="988"/>
    <tile gid="989"/>
@@ -22144,12 +22144,12 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="369"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="403"/>
    <tile gid="404"/>
    <tile gid="403"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22244,12 +22244,12 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="351"/>
+   <tile gid="332"/>
+   <tile gid="333"/>
+   <tile gid="332"/>
    <tile gid="403"/>
    <tile gid="403"/>
    <tile gid="404"/>
-   <tile gid="333"/>
-   <tile gid="332"/>
-   <tile gid="333"/>
    <tile gid="332"/>
    <tile gid="333"/>
    <tile gid="332"/>
@@ -28147,19 +28147,19 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="1181"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -28758,8 +28758,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
    <tile gid="1180"/>
    <tile gid="1180"/>
    <tile gid="1180"/>
@@ -28854,10 +28854,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
+   <tile gid="1180"/>
    <tile gid="1180"/>
    <tile gid="1180"/>
    <tile gid="1181"/>
@@ -30047,8 +30047,8 @@
   <object id="44" name="Enemy2" type="3" x="907.5" y="64">
    <polyline points="0,0 -142,-13.5 -190.5,33 -159,82.5 -76.5,57"/>
   </object>
-  <object id="46" name="Enemy6S" type="1" x="256" y="656" width="16" height="16"/>
-  <object id="47" name="Enemy6E" type="1" x="640" y="768" width="16" height="16"/>
+  <object id="46" name="Enemy6S" type="1" x="304" y="640" width="16" height="16"/>
+  <object id="47" name="Enemy6E" type="1" x="656" y="768" width="16" height="16"/>
   <object id="49" name="Enemy3" type="3" x="156" y="756.667">
    <polyline points="0,0 18.6667,9.33333 60.6667,2 111.333,16 147.333,0 137.333,25.3333 19.3333,36 -45.3333,22.6667"/>
   </object>

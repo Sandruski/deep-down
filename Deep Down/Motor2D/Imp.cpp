@@ -10,6 +10,7 @@
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 #include "j1Audio.h"
+#include "j1Scene.h"
 
 #include "j1Input.h"
 
@@ -75,15 +76,13 @@ void Imp::Move(float dt)
 		if (!pathfinding)
 			UpdatePath();
 
-		
-			UpdatePathfinding();
+		UpdatePathfinding();
 	}
+
 	// Update state
 	GeneralStatesMachine();
 
 	// Update collider
-	//collider_pos = { i_pos.x + imp.coll_offset.x, i_pos.y + imp.coll_offset.y };
-	//collider->SetPos(collider_pos.x, collider_pos.y);
 	collider->SetPos(i_pos.x, i_pos.y);
 }
 
@@ -377,11 +376,9 @@ void Imp::UpdatePath()
 
 void Imp::FindDestination(iPoint& to_go)
 {
-
 	switch (normal_path_index) {
 	case StartEndPath::start:
 		to_go = path_info->start_pos;
-		to_go.y -= 17;
 		break;
 	case StartEndPath::end:
 		to_go = path_info->end_pos;
@@ -400,8 +397,18 @@ void Imp::UpdatePathfinding()
 	// If player is near the enemy... Create a pathfinding towards it
 	if (pathfinding_finished && SDL_HasIntersection(&enemy_pos, &player_pos) && cooldown <= 0 && !back
 		&& position.DistanceTo(App->entities->playerData->position) < 100.0f && App->entities->playerData->speed.y == 0) {
-		if (ResetPathfindingVariables()) {
-			create_pathfinding = true;
+		if (App->scene->index == 0) {
+			iPoint player_pos = App->map->WorldToMap(App->entities->playerData->i_pos.x, App->entities->playerData->i_pos.y);
+			if (player_pos.x > 33) {
+				if (ResetPathfindingVariables()) {
+					create_pathfinding = true;
+				}
+			}
+		}
+		else {
+			if (ResetPathfindingVariables()) {
+				create_pathfinding = true;
+			}
 		}
 	}
 
@@ -440,10 +447,24 @@ void Imp::UpdatePathfinding()
 				i_dest.y = dest.y;
 
 				if (position.DistanceTo(i_dest) < distance_to && cooldown <= 0 && !back && speed.y == 0) {
-					Hit();
-					wait = true;
-					cool = true;
-					cooldown = seconds_to_wait;
+					if (App->scene->index == 0) {
+						iPoint player_pos = App->map->WorldToMap(App->entities->playerData->i_pos.x, App->entities->playerData->i_pos.y);
+						if (player_pos.x > 33) {
+							Hit();
+							wait = true;
+							cool = true;
+							cooldown = seconds_to_wait;
+						}
+						else {
+							pathfind = false;
+						}
+					}
+					else {
+						Hit();
+						wait = true;
+						cool = true;
+						cooldown = seconds_to_wait;
+					}
 				}
 				else if (!wait)
 					pathfind = false;
@@ -602,6 +623,9 @@ void Imp::IsGround(iPoint& pos)
 
 void Imp::UpdateMovement(iPoint to_go, float velocity)
 {	
+	if (back)
+		velocity = 100.0f;
+
 	speed.x = mlast_pathfinding[pathfinding_index].x - App->map->WorldToMap(position.x, position.y).x;
 	speed.y = mlast_pathfinding[pathfinding_index].y - App->map->WorldToMap(position.x, position.y).y;
 
