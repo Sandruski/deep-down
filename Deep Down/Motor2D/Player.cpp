@@ -32,7 +32,6 @@ Player::Player(float x, float y, PathInfo* path) : Entity(x, y, path)
 	collider_pos = { (int)position.x + player.coll_offset.x, (int)position.y + player.coll_offset.y };
 	collider = App->collision->AddCollider({ collider_pos.x, collider_pos.y, player.coll_size.x + player.coll_offset.w, player.coll_size.y + player.coll_offset.h }, COLLIDER_PLAYER, App->entities);	
 
-	respawnGOD = true;
 }
 
 void Player::Move(float dt)
@@ -43,6 +42,7 @@ void Player::Move(float dt)
 		if (timeRespawn >= 3.0f) {
 			respawnGOD = false;
 			App->scene->god = false;
+			timeRespawn = 0.0f;
 		}
 	}
 
@@ -232,6 +232,8 @@ void Player::CheckIfDead() {
 		time += 1 * dt;
 
 	if (time >= 1.0f) {
+		respawnGOD = true;
+		App->scene->god = true;
 		position = start_pos;
 		player.SetState(idle_);
 		time = 0;
