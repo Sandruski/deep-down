@@ -10,6 +10,7 @@
 #include "j1Collision.h"
 #include "j1Pathfinding.h"
 #include "j1Map.h"
+#include "j1Audio.h"
 
 #include "SDL/include/SDL_timer.h"
 
@@ -30,7 +31,7 @@ CatPeasant::CatPeasant(float x, float y, PathInfo* path) : Entity(x, y, path)
 	animation = &catPeasant.r_idle;
 	catPeasantState = CatPeasantState::r_idle;
 
-	lives = 2;
+	lives = 1;
 	dead = false;
 
 	collider = App->collision->AddCollider({ 0, 0, catPeasant.coll_size.x + catPeasant.coll_offset.w, catPeasant.coll_size.y + catPeasant.coll_offset.h }, COLLIDER_TYPE::COLLIDER_CATPEASANT, App->entities);
@@ -279,6 +280,7 @@ void CatPeasant::OnCollision(Collider* c1, Collider* c2)
 		lives--;
 		stop = true;
 		LOG("Lifes: %i", lives);
+		App->audio->PlayFx(8);
 
 		if (lives == 1) {
 			if (App->entities->playerData->position.x < position.x)
