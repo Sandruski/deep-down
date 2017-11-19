@@ -35,17 +35,14 @@ Imp::Imp(float x, float y, PathInfo* path) : Entity(x, y, path)
 	impState = ImpState::r_shield_idle;
 
 	lives = 2;
+	dead = false;
 
 	collider = App->collision->AddCollider({ 0, 0, imp.coll_size.x + imp.coll_offset.w, imp.coll_size.y + imp.coll_offset.h }, COLLIDER_TYPE::COLLIDER_IMP, App->entities);
 	collider_size = imp.coll_size;
 
-	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
-	if (App->entities->playerData != nullptr)
-		follow_pathfinding2 = App->collision->AddCollider({ (int)App->entities->playerData->position.x - 100, (int)App->entities->playerData->position.y - 10, 200, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
-
 	speed = { 60.0f, 2 };
 	particle_speed = { 50.0f, 50.0f };
-	seconds_to_wait = 5.0f;
+	seconds_to_wait = 0.0f;
 	distance_to = 200.0f;
 }
 
@@ -77,7 +74,8 @@ void Imp::Move(float dt)
 		if (!pathfinding)
 			UpdatePath();
 
-		UpdatePathfinding();
+		
+			UpdatePathfinding();
 	}
 	// Update state
 	GeneralStatesMachine();
@@ -377,9 +375,11 @@ void Imp::UpdatePath()
 
 void Imp::FindDestination(iPoint& to_go)
 {
+
 	switch (normal_path_index) {
 	case StartEndPath::start:
 		to_go = path_info->start_pos;
+		to_go.y -= 17;
 		break;
 	case StartEndPath::end:
 		to_go = path_info->end_pos;
@@ -396,7 +396,8 @@ void Imp::UpdatePathfinding()
 	UpdatePathfindingAffectArea(enemy_pos, player_pos);
 
 	// If player is near the enemy... Create a pathfinding towards it
-	if (pathfinding_finished && SDL_HasIntersection(&enemy_pos, &player_pos) && cooldown <= 0 && !back) {
+	if (pathfinding_finished && SDL_HasIntersection(&enemy_pos, &player_pos) && cooldown <= 0 && !back
+		&& position.DistanceTo(App->entities->playerData->position) < 100.0f && App->entities->playerData->speed.y == 0) {
 		if (ResetPathfindingVariables()) {
 			create_pathfinding = true;
 		}
@@ -480,7 +481,7 @@ void Imp::DoHit()
 	if (right_hit) {
 		if (imp.r_throw_bomb.Finished()) {
 			// Add particle
-			App->particles->AddParticle(App->particles->Imp_r_bomb, i_pos.x + 80, i_pos.y, COLLIDER_IMP_BOMB, NULL, particle_speed);
+			App->particles->AddParticle(App->particles->Imp_r_bomb, i_pos.x + 50, i_pos.y, COLLIDER_IMP_BOMB, NULL, particle_speed);
 
 			// Reset variables
 			right_hit = false;
@@ -496,7 +497,7 @@ void Imp::DoHit()
 	else if (left_hit) {
 		if (imp.l_throw_bomb.Finished()) {
 			// Add particle
-			App->particles->AddParticle(App->particles->Imp_l_bomb, i_pos.x - 80, i_pos.y, COLLIDER_IMP_BOMB, NULL, particle_speed);
+			App->particles->AddParticle(App->particles->Imp_l_bomb, i_pos.x - 50, i_pos.y, COLLIDER_IMP_BOMB, NULL, particle_speed);
 
 			// Reset variables
 			left_hit = false;
@@ -523,13 +524,8 @@ void Imp::CoolDown()
 
 void Imp::UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player)
 {
-	follow_pathfinding1->SetPos(i_pos.x - 30, i_pos.y - 30);
-	if (App->entities->playerData != nullptr)
-		follow_pathfinding2->SetPos((int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 50);
-
 	enemy = { i_pos.x - 30, i_pos.y - 30, 100, 100 };
-	if (App->entities->playerData != nullptr)
-		player = { (int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 50, 200, 100 };
+	player = { (int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 50, 200, 100 };
 }
 
 bool Imp::ResetPathfindingVariables()
@@ -588,13 +584,18 @@ void Imp::IsGround(iPoint& pos)
 	iPoint check = App->map->WorldToMap(pos.x, pos.y);
 
 	while (App->map->collisionLayer->Get(check.x, check.y) != 1180 && App->map->collisionLayer->Get(check.x, check.y) != 1181
-		&& App->map->collisionLayer->Get(check.x, check.y) != 1183) {
+		&& App->map->collisionLayer->Get(check.x, check.y) != 1182 && App->map->collisionLayer->Get(check.x, check.y) != 1183) {
 
 		pos.y += App->map->data.tile_height;
 		check = App->map->WorldToMap(pos.x, pos.y);
+
+		grounded = true;
 	}
 
-	pos.y -= App->map->data.tile_height;
+	if (grounded) {
+		pos.y -= App->map->data.tile_height;
+		grounded = false;
+	}
 }
 
 void Imp::UpdateMovement(iPoint to_go, float velocity)

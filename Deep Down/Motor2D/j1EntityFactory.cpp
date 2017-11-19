@@ -715,17 +715,14 @@ void j1EntityFactory::OnCollision(Collider* c1, Collider* c2)
 
 bool j1EntityFactory::LoadPathsInfo()
 {
-	bool ret = false;
+	bool ret = true;
 
 	uint index = 1;
 
 	// Repetitive paths
-	if (SaveRepetitivePaths(index))
-		ret = true;
-
+	SaveRepetitivePaths(index);
 	// Start-end paths
-	if (SaveStartEndPaths(index))
-		ret = true;
+	SaveStartEndPaths(index);
 
 	return ret;
 }
@@ -922,6 +919,17 @@ bool j1EntityFactory::Load(pugi::xml_node& save)
 bool j1EntityFactory::LoadEntities() 
 {
 	bool ret = false;
+
+	// Remove all paths
+	p2List_item<PathInfo*>* item;
+	item = paths.start;
+
+	while (item != NULL)
+	{
+		RELEASE(item->data);
+		item = item->next;
+	}
+	paths.clear();
 
 	for (uint i = 0; i < MAX_ENTITIES; ++i)
 	{

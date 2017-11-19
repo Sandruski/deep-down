@@ -96,10 +96,9 @@ private:
 	bool pathfind = false;
 	bool go = false;
 
-	iPoint dest = { 0,0 };
+	bool grounded = false;
 
-	Collider* follow_pathfinding1 = nullptr;
-	Collider* follow_pathfinding2 = nullptr;
+	iPoint dest = { 0,0 };
 	//_pathfinding
 
 	// Normal path

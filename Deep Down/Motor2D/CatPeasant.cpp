@@ -31,13 +31,14 @@ CatPeasant::CatPeasant(float x, float y, PathInfo* path) : Entity(x, y, path)
 	catPeasantState = CatPeasantState::r_idle;
 
 	lives = 2;
+	dead = false;
 
 	collider = App->collision->AddCollider({ 0, 0, catPeasant.coll_size.x + catPeasant.coll_offset.w, catPeasant.coll_size.y + catPeasant.coll_offset.h }, COLLIDER_TYPE::COLLIDER_CATPEASANT, App->entities);
 	collider_size = catPeasant.coll_size;
 
 	speed = { 60.0f, 0 };
 	particle_speed = { 80.0f, 80.0f };
-	seconds_to_wait = 6.0f;
+	seconds_to_wait = 12.0f;
 }
 
 void CatPeasant::Move(float dt)
@@ -321,7 +322,7 @@ void CatPeasant::UpdatePath()
 		if (do_normal_path) {
 
 			// If she sees the player, she throws her staff towards him
-			if (position.DistanceTo(App->entities->playerData->position) < 100.0f && cooldown <= 0) {
+			if (position.DistanceTo(App->entities->playerData->position) < 300.0f && cooldown <= 0) {
 				Hit();
 				wait = true;
 				cool = true;
