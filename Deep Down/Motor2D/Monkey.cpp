@@ -401,14 +401,32 @@ bool Monkey::CreatePathfinding(iPoint destination)
 
 void Monkey::UpdateMovement(iPoint to_go)
 {
-	if (i_pos.x < to_go.x)
-		position.x += speed.x * deltaTime;
-	else if (i_pos.x > to_go.x)
-		position.x -= speed.x * deltaTime;
-	if (i_pos.y < to_go.y)
-		position.y += speed.x * deltaTime;
-	else if (i_pos.y > to_go.y)
-		position.y -= speed.x * deltaTime;
+	speed.x = mlast_pathfinding[pathfinding_index].x - App->map->WorldToMap(position.x, position.y).x;
+	speed.y = mlast_pathfinding[pathfinding_index].y - App->map->WorldToMap(position.x, position.y).y;
+
+	speed.x *= 20.0f * deltaTime;
+	speed.y *= 20.0f * deltaTime;
+
+	position.x += speed.x;
+	position.y += speed.y;
+}
+
+void Monkey::UpdateNormalPathMovement(iPoint to_go) 
+{
+	iPoint map = App->map->WorldToMap(to_go.x, to_go.y);
+
+	speed.x = map.x - App->map->WorldToMap(position.x, position.y).x;
+	speed.y = map.y - App->map->WorldToMap(position.x, position.y).y;
+
+	float m = sqrtf(pow(speed.x, 2.0f) + pow(speed.y, 2.0f));
+
+	if (m != 0)
+		speed.x *= 20.0f * deltaTime / m;
+	if (m != 0)
+		speed.y *= 20.0f * deltaTime / m;
+
+	position.x += speed.x;
+	position.y += speed.y;
 }
 
 bool Monkey::Pathfind()
@@ -420,12 +438,12 @@ bool Monkey::Pathfind()
 
 		UpdateMovement(to_go);
 
-		if (i_pos == to_go) {
+		if (App->map->WorldToMap(i_pos.x, i_pos.y) == App->map->WorldToMap(to_go.x, to_go.y)) {
 			if (pathfinding_index < pathfinding_size - 1)
 				pathfinding_index++;
 		}
 
-		if (i_pos == App->map->MapToWorld(mlast_pathfinding[pathfinding_size - 1].x, mlast_pathfinding[pathfinding_size - 1].y))
+		if (App->map->WorldToMap(i_pos.x, i_pos.y) == mlast_pathfinding[pathfinding_size - 1])
 			ret = false;
 	}
 	else
@@ -442,11 +460,11 @@ bool Monkey::DoNormalPath()
 
 	if (to_go.x != NULL && to_go.y != NULL) {
 
-		UpdateMovement(to_go);
+		UpdateNormalPathMovement(to_go);
 
 		ret = true;
 
-		if (i_pos == to_go) {
+		if (App->map->WorldToMap(i_pos.x, i_pos.y) == App->map->WorldToMap(to_go.x, to_go.y)) {
 			if (normal_path_index < path_info->path_size - 1)
 				normal_path_index++;
 			else
