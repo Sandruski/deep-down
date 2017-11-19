@@ -91,6 +91,8 @@ private:
 	bool checkDash = false;
 	bool stopshot = false, secondAttackToCheck = false, thirdAttackToCheck = false, secondAttackToCheck2 = false, thirdAttackToCheck2 = false;
 	float dt = 0;
+	bool respawnGOD = false;
+	float timeRespawn = NULL;
 
 public:
 	PlayerInfo player;

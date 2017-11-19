@@ -31,10 +31,21 @@ Player::Player(float x, float y, PathInfo* path) : Entity(x, y, path)
 
 	collider_pos = { (int)position.x + player.coll_offset.x, (int)position.y + player.coll_offset.y };
 	collider = App->collision->AddCollider({ collider_pos.x, collider_pos.y, player.coll_size.x + player.coll_offset.w, player.coll_size.y + player.coll_offset.h }, COLLIDER_PLAYER, App->entities);	
+
+	respawnGOD = true;
 }
 
 void Player::Move(float dt)
 {
+	if (respawnGOD == true) {
+		App->scene->god = true;
+		timeRespawn += dt;
+		if (timeRespawn >= 3.0f) {
+			respawnGOD = false;
+			App->scene->god = false;
+		}
+	}
+
 	this->dt = dt;
 
 	player.gravity = 125.0f * dt;
