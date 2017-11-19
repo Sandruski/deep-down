@@ -39,7 +39,7 @@ Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y, path)
 	collider_size = monkey.coll_size;
 
 	speed = { 60.0f,0 };
-	distance_to = 50.0f;
+	distance_to = 100.0f;
 }
 
 void Monkey::Move(float dt)
@@ -415,9 +415,9 @@ void Monkey::UpdateNormalPathMovement(iPoint to_go)
 	float m = sqrtf(pow(speed.x, 2.0f) + pow(speed.y, 2.0f));
 
 	if (m != 0)
-		speed.x *= 20.0f * deltaTime / m;
+		speed.x *= 30.0f * deltaTime / m;
 	if (m != 0)
-		speed.y *= 20.0f * deltaTime / m;
+		speed.y *= 30.0f * deltaTime / m;
 
 	position.x += speed.x;
 	position.y += speed.y;
@@ -437,7 +437,7 @@ bool Monkey::Pathfind()
 				pathfinding_index++;
 		}
 
-		if (App->map->WorldToMap(i_pos.x, i_pos.y) == mlast_pathfinding[pathfinding_size - 1])
+		if (App->map->WorldToMap(i_pos.x, i_pos.y) == mlast_pathfinding[pathfinding_size - 1] || App->entities->playerData->player.GetState() == playerstates::punished_)
 			ret = false;
 	}
 	else

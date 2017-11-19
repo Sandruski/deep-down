@@ -10,7 +10,7 @@
 	<pathfinding />
 	<entities>
 		<player>
-			<position position.x="1202.86951" position.y="733.57251" />
+			<position position.x="585.554138" position.y="220.753647" />
 			<state state="3" />
 			<speed speed.x="0" speed.y="0" />
 		</player>
@@ -19,10 +19,10 @@
 	<collision />
 	<scene>
 		<index index="0" />
-		<gate opened="true" fx="true" />
+		<gate opened="false" fx="false" />
 	</scene>
 	<fade />
 	<renderer>
-		<camera x="-3306" y="-1749" />
+		<camera x="-1455" y="-210" />
 	</renderer>
 </game_state>

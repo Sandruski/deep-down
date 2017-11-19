@@ -9936,9 +9936,9 @@
    <tile gid="336"/>
    <tile gid="324"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="404"/>
+   <tile gid="404"/>
+   <tile gid="403"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -10163,7 +10163,7 @@
    <tile gid="335"/>
    <tile gid="336"/>
    <tile gid="287"/>
-   <tile gid="0"/>
+   <tile gid="404"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -10262,7 +10262,7 @@
    <tile gid="335"/>
    <tile gid="336"/>
    <tile gid="287"/>
-   <tile gid="0"/>
+   <tile gid="404"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22044,9 +22044,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="369"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="404"/>
+   <tile gid="403"/>
+   <tile gid="404"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22144,9 +22144,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="369"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="403"/>
+   <tile gid="404"/>
+   <tile gid="403"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22244,9 +22244,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="351"/>
-   <tile gid="332"/>
-   <tile gid="333"/>
-   <tile gid="332"/>
+   <tile gid="403"/>
+   <tile gid="403"/>
+   <tile gid="404"/>
    <tile gid="333"/>
    <tile gid="332"/>
    <tile gid="333"/>
@@ -22271,7 +22271,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="303"/>
-   <tile gid="0"/>
+   <tile gid="403"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22370,8 +22370,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="303"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="404"/>
+   <tile gid="403"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22470,8 +22470,8 @@
    <tile gid="316"/>
    <tile gid="318"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="404"/>
+   <tile gid="404"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22570,8 +22570,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="403"/>
+   <tile gid="404"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22590,7 +22590,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="333"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22670,8 +22670,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="404"/>
+   <tile gid="403"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22770,8 +22770,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="403"/>
+   <tile gid="404"/>
    <tile gid="0"/>
    <tile gid="332"/>
    <tile gid="332"/>
@@ -22870,8 +22870,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="403"/>
+   <tile gid="404"/>
    <tile gid="337"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22970,8 +22970,8 @@
    <tile gid="333"/>
    <tile gid="332"/>
    <tile gid="333"/>
-   <tile gid="334"/>
-   <tile gid="445"/>
+   <tile gid="404"/>
+   <tile gid="403"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -30041,10 +30041,10 @@
   <object id="5" name="Gate" x="736" y="800" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="Enemies">
-  <object id="42" name="Enemy2" type="3" x="600" y="73">
+  <object id="42" name="Enemy1" type="3" x="600" y="73">
    <polyline points="0,0 -13.5,84 -51,100.5 -122,91 -178.5,58.5 -131,-8.5 -81.5,44 -52,-12.5"/>
   </object>
-  <object id="44" name="Enemy1" type="3" x="907.5" y="64">
+  <object id="44" name="Enemy2" type="3" x="907.5" y="64">
    <polyline points="0,0 -142,-13.5 -190.5,33 -159,82.5 -76.5,57"/>
   </object>
   <object id="46" name="Enemy6S" type="1" x="256" y="656" width="16" height="16"/>
@@ -30057,7 +30057,7 @@
   <object id="53" name="Enemy5" type="3" x="1241" y="697.417">
    <polyline points="0,0 -15.3333,17.3333 23.3333,38 58.6667,11.3333 33.3333,-8"/>
   </object>
-  <object id="56" name="Enemy4" type="3" x="1416.08" y="696">
+  <object id="56" name="Enemy4" type="3" x="1392" y="704">
    <polyline points="0,0 -0.25,8.5 -43.5,35.75 -74.75,34.75 -72.75,8.25 -38.25,-8.75"/>
   </object>
  </objectgroup>
