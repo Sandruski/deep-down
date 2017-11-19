@@ -45,7 +45,7 @@ Imp::Imp(float x, float y, PathInfo* path) : Entity(x, y, path)
 
 	speed = { 60.0f, 2 };
 	particle_speed = { 50.0f, 50.0f };
-	seconds_to_wait = 10.0f;
+	seconds_to_wait = 7.0f;
 	distance_to = 200.0f;
 }
 
@@ -436,7 +436,7 @@ void Imp::UpdatePathfinding()
 				i_dest.x = dest.x;
 				i_dest.y = dest.y;
 
-				if (position.DistanceTo(i_dest) < distance_to && cooldown <= 0 && !back) {
+				if (position.DistanceTo(i_dest) < distance_to && cooldown <= 0 && !back && speed.y == 0) {
 					Hit();
 					wait = true;
 					cool = true;
@@ -460,7 +460,6 @@ void Imp::UpdatePathfinding()
 		}
 	}
 }
-
 
 void Imp::Hit()
 {
@@ -618,12 +617,12 @@ bool Imp::Pathfind()
 
 	UpdateMovement(to_go);
 
-	if (i_pos == to_go) {
+	if (App->map->WorldToMap(i_pos.x, i_pos.y) == App->map->WorldToMap(to_go.x, to_go.y)) {
 		if (pathfinding_index < pathfinding_size - 1)
 			pathfinding_index++;
 	}
 
-	if (i_pos == App->map->MapToWorld(mlast_pathfinding[pathfinding_size - 1].x, mlast_pathfinding[pathfinding_size - 1].y))
+	if (App->map->WorldToMap(i_pos.x, i_pos.y) == mlast_pathfinding[pathfinding_size - 1])
 		ret = false;
 
 	return ret;

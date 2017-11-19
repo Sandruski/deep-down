@@ -460,12 +460,12 @@ bool CatPeasant::Pathfind()
 
 	UpdateMovement(to_go);
 
-	if (i_pos == to_go) {
+	if (App->map->WorldToMap(i_pos.x, i_pos.y) == App->map->WorldToMap(to_go.x, to_go.y)) {
 		if (pathfinding_index < pathfinding_size - 1)
 			pathfinding_index++;
 	}
 
-	if (i_pos == App->map->MapToWorld(mlast_pathfinding[pathfinding_size - 1].x, mlast_pathfinding[pathfinding_size - 1].y))
+	if (App->map->WorldToMap(i_pos.x, i_pos.y) == mlast_pathfinding[pathfinding_size - 1])
 		ret = false;
 
 	return ret;

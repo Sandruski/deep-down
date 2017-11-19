@@ -30044,11 +30044,11 @@
   <object id="31" name="Enemy2a" type="3" x="912" y="58.5">
    <polyline points="0,0 54,3 43,79 -9,93 -59,45 -10,22 -40,113"/>
   </object>
-  <object id="33" name="Enemy1Sa" type="1" x="528" y="240" width="16" height="16"/>
-  <object id="34" name="Enemy1Ea" type="1" x="1008" y="416" width="16" height="16"/>
+  <object id="33" name="Enemy1S" type="1" x="528" y="240" width="16" height="16"/>
+  <object id="34" name="Enemy1E" type="1" x="1008" y="416" width="16" height="16"/>
   <object id="35" name="Enemy1Sa" type="2" x="496" y="128" width="16" height="16"/>
-  <object id="36" name="Enemy1Ea" type="2" x="544" y="128" width="16" height="16"/>
-  <object id="39" name="Enemy1" type="3" x="599.333" y="105.334">
+  <object id="36" name="Enemy1Ea" type="2" x="656" y="128" width="16" height="16"/>
+  <object id="39" name="Enemy1a" type="3" x="782" y="92.0007">
    <polyline points="0,0 7.33333,48 37.3333,52 62.6667,16.6667 38.6667,-15.3333"/>
   </object>
  </objectgroup>
