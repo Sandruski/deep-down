@@ -9,6 +9,7 @@
 #include "j1Particles.h"
 #include "j1Pathfinding.h"
 #include "j1Map.h"
+#include "j1Audio.h"
 
 #include "j1Input.h"
 
@@ -219,7 +220,7 @@ void Monkey::OnCollision(Collider* c1, Collider* c2)
 	if (c2->type == COLLIDER_ARROW) {
 		lives--;
 		stop = true;
-
+		App->audio->PlayFx(7);
 		if (App->entities->playerData->position.x < position.x)
 			left_hurt = true;
 		else
