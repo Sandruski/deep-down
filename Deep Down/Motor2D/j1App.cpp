@@ -241,10 +241,16 @@ void j1App::FinishUpdate()
 	else
 		CB = "disable";
 
+	p2SString GM;
+	if (App->scene->god)
+		GM = "on";
+	else
+		GM = "off";
+
 	static char title[256];
 	
-	sprintf_s(title, 256, "FPS: %.2f AvgFPS: %.2f Last Frame Ms: %02u capFrames: %s Vsyn: %s CameraBlit: %s",
-		fps, avgFPS, actual_frame_ms, capOnOff.GetString(), vsyncOnOff.GetString(), CB.GetString());
+	sprintf_s(title, 256, "FPS: %.2f | AvgFPS: %.2f | Last Frame Ms: %02u | capFrames: %s | Vsyn: %s | CameraBlit: %s | GOD: %s",
+		fps, avgFPS, actual_frame_ms, capOnOff.GetString(), vsyncOnOff.GetString(), CB.GetString(), GM.GetString());
 
 	App->win->SetTitle(title);
 

@@ -305,7 +305,7 @@
       </imp>
       <monkey>
         <general>
-          <coll_offset x="5" y="9" w="-9" h="-9"/>
+          <coll_offset x="20" y="20" w="-47" h="-14"/>
         </general>
         <animations>
           <r_idle speed="0.2" loops="1">

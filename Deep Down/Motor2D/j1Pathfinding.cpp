@@ -4,6 +4,7 @@
 #include "j1PathFinding.h"
 #include "j1EntityFactory.h"
 #include "j1Map.h"
+#include "Brofiler\Brofiler.h"
 
 j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_LENGTH), width(0), height(0)
 {
@@ -192,6 +193,8 @@ float PathNode::CalculateF(const iPoint& destination, Distance distance_type)
 // ----------------------------------------------------------------------------------
 int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, Distance distance_type)
 {
+	BROFILER_CATEGORY("A*", Profiler::Color::Azure);
+
 	last_path.Clear();
 	int ret = 0;
 

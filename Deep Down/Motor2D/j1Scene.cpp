@@ -121,7 +121,6 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	// F1, F2, F3, F4, F5, F6, +, -
-	
 	DebugKeys();
 	
 	// Set window title

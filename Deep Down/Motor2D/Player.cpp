@@ -31,10 +31,21 @@ Player::Player(float x, float y, PathInfo* path) : Entity(x, y, path)
 
 	collider_pos = { (int)position.x + player.coll_offset.x, (int)position.y + player.coll_offset.y };
 	collider = App->collision->AddCollider({ collider_pos.x, collider_pos.y, player.coll_size.x + player.coll_offset.w, player.coll_size.y + player.coll_offset.h }, COLLIDER_PLAYER, App->entities);	
+
 }
 
 void Player::Move(float dt)
 {
+	if (respawnGOD == true) {
+		App->scene->god = true;
+		timeRespawn += dt;
+		if (timeRespawn >= 3.0f) {
+			respawnGOD = false;
+			App->scene->god = false;
+			timeRespawn = 0.0f;
+		}
+	}
+
 	this->dt = dt;
 
 	player.gravity = 125.0f * dt;
@@ -97,15 +108,15 @@ void Player::OnCollision(Collider* c1, Collider* c2) {
 		}
 
 		if ((c1->type == COLLIDER_IMP && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP)) {
-			//App->player->SetState(punished_);
+			//player.SetState(punished_);
 		}
 
 		if ((c1->type == COLLIDER_IMP_BOMB_EXPLOSION && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP_BOMB_EXPLOSION)) {
 			player.SetState(punished_);
 		}
 
-		if ((c1->type == COLLIDER_MONKEY && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_MONKEY)) {
-			//App->player->SetState(punished_);
+		if ((left_hit == true || right_hit == true) && ((c1->type == COLLIDER_MONKEY && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_MONKEY))) {
+			player.SetState(punished_);
 		}
 	}
 }
@@ -220,7 +231,9 @@ void Player::CheckIfDead() {
 	if (player.GetState() == punished_)
 		time += 1 * dt;
 
-	if (time >= 3.0f) {
+	if (time >= 1.0f) {
+		respawnGOD = true;
+		App->scene->god = true;
 		position = start_pos;
 		player.SetState(idle_);
 		time = 0;
@@ -735,20 +748,20 @@ void Player::PlayerStateMachine() {
 		break;
 
 	case punished_:
-		if (animation == &player.forward || animation == &player.jump || animation == &player.punished)
+		if (animation == &player.forward || animation == &player.jump || animation == &player.punished || animation == &player.idle)
 			animation = &player.punished;
-		else if (animation == &player.backward || animation == &player.jump2 || animation == &player.punished2)
+		else if (animation == &player.backward || animation == &player.jump2 || animation == &player.punished2 || animation == &player.idle2)
 			animation = &player.punished2;
 		speed.y = 0;
 		speed.x = 0;
 		if (player.punished.Finished() && animation == &player.punished) {
-			player.state = idle_;
+			//player.state = idle_;
 			player.punished.Reset();
 			break;
 		}
 		else if (player.punished2.Finished() && animation == &player.punished2) {
-			player.state = idle2_;
-			player.punished.Reset();
+			//player.state = idle2_;
+			player.punished2.Reset();
 			break;
 		}
 		break;
