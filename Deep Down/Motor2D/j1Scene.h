@@ -56,6 +56,8 @@ public:
 	uint index;
 	uint last_index;
 
+	bool god;
+
 private:
 
 	p2SString map1;

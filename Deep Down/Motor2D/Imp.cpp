@@ -40,7 +40,8 @@ Imp::Imp(float x, float y, PathInfo* path) : Entity(x, y, path)
 	collider_size = imp.coll_size;
 
 	follow_pathfinding1 = App->collision->AddCollider({ i_pos.x - 50, i_pos.y, 100, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
-	follow_pathfinding2 = App->collision->AddCollider({ (int)App->entities->playerData->position.x - 100, (int)App->entities->playerData->position.y - 10, 200, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
+	if (App->entities->playerData != nullptr)
+		follow_pathfinding2 = App->collision->AddCollider({ (int)App->entities->playerData->position.x - 100, (int)App->entities->playerData->position.y - 10, 200, 100 }, COLLIDER_TYPE::COLLIDER_NONE, App->entities);
 
 	speed = { 60.0f, 2 };
 	particle_speed = { 50.0f, 50.0f };
@@ -524,10 +525,12 @@ void Imp::CoolDown()
 void Imp::UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player)
 {
 	follow_pathfinding1->SetPos(i_pos.x - 30, i_pos.y - 30);
-	follow_pathfinding2->SetPos((int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 50);
+	if (App->entities->playerData != nullptr)
+		follow_pathfinding2->SetPos((int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 50);
 
 	enemy = { i_pos.x - 30, i_pos.y - 30, 100, 100 };
-	player = { (int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 50, 200, 100 };
+	if (App->entities->playerData != nullptr)
+		player = { (int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 50, 200, 100 };
 }
 
 bool Imp::ResetPathfindingVariables()
@@ -596,15 +599,15 @@ void Imp::IsGround(iPoint& pos)
 }
 
 void Imp::UpdateMovement(iPoint to_go)
-{
-	if (i_pos.x < to_go.x)
-		position.x += speed.x * deltaTime;
-	else if (i_pos.x > to_go.x)
-		position.x -= speed.x * deltaTime;
-	if (i_pos.y < to_go.y)
-		position.y += speed.x * deltaTime;
-	else if (i_pos.y > to_go.y)
-		position.y -= speed.x * deltaTime;
+{	
+	speed.x = mlast_pathfinding[pathfinding_index].x - App->map->WorldToMap(position.x, position.y).x;
+	speed.y = mlast_pathfinding[pathfinding_index].y - App->map->WorldToMap(position.x, position.y).y;
+
+	speed.x *= 20.0f * deltaTime;
+	speed.y *= 20.0f * deltaTime;
+
+	position.x += speed.x;
+	position.y += speed.y;
 }
 
 bool Imp::Pathfind()

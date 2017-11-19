@@ -87,27 +87,27 @@ void Player::Move(float dt)
 }
 
 void Player::OnCollision(Collider* c1, Collider* c2) {
+	if (!App->scene->god) {
+		if ((c1->type == COLLIDER_PEASANT_SHOT && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_PEASANT_SHOT)) {
+			player.SetState(punished_);
+		}
 
-	if ((c1->type == COLLIDER_PEASANT_SHOT && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_PEASANT_SHOT)) {
-		player.SetState(punished_);
+		if ((c1->type == COLLIDER_CATPEASANT && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_CATPEASANT)) {
+			player.SetState(punished_);
+		}
+
+		if ((c1->type == COLLIDER_IMP && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP)) {
+			//App->player->SetState(punished_);
+		}
+
+		if ((c1->type == COLLIDER_IMP_BOMB_EXPLOSION && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP_BOMB_EXPLOSION)) {
+			player.SetState(punished_);
+		}
+
+		if ((c1->type == COLLIDER_MONKEY && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_MONKEY)) {
+			//App->player->SetState(punished_);
+		}
 	}
-
-	if ((c1->type == COLLIDER_CATPEASANT && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_CATPEASANT)) {
-		player.SetState(punished_);
-	}
-
-	if ((c1->type == COLLIDER_IMP && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP)) {
-		//App->player->SetState(punished_);
-	}
-
-	if ((c1->type == COLLIDER_IMP_BOMB_EXPLOSION && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP_BOMB_EXPLOSION)) {
-		player.SetState(punished_);
-	}
-
-	if (( c1->type == COLLIDER_MONKEY && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_MONKEY)) {
-		//App->player->SetState(punished_);
-	}
-
 }
 
 void Player::MoveForward() {
@@ -275,7 +275,6 @@ void Player::PlayerStateMachine() {
 			}
 		}
 
-
 		if (thirdAttackToCheck) {
 			time2 += 1.0f * dt;
 			if (time2 >= 0.2f) {
@@ -371,7 +370,6 @@ void Player::PlayerStateMachine() {
 			}
 		}
 
-
 		if (thirdAttackToCheck) {
 			time2 += 1.0f * dt;
 			if (time2 >= 0.2f) {
@@ -414,7 +412,6 @@ void Player::PlayerStateMachine() {
 			}
 		}
 
-
 		if (thirdAttackToCheck2) {
 			time2 += 1.0f * dt;
 			if (time2 >= 0.2f) {
@@ -444,6 +441,7 @@ void Player::PlayerStateMachine() {
 		thirdAttackToCheck = false;
 		secondAttackToCheck2 = false;
 		thirdAttackToCheck2 = false;
+
 		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && right) {
 			MoveForwardJumping();
 			animation = &player.jump;

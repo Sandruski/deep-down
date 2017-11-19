@@ -442,14 +442,14 @@ bool CatPeasant::CreatePathfinding(iPoint destination)
 
 void CatPeasant::UpdateMovement(iPoint to_go)
 {
-	if (i_pos.x < to_go.x)
-		position.x += speed.x * deltaTime;
-	else if (i_pos.x > to_go.x)
-		position.x -= speed.x * deltaTime;
-	if (i_pos.y < to_go.y)
-		position.y += speed.x * deltaTime;
-	else if (i_pos.y > to_go.y)
-		position.y -= speed.x * deltaTime;
+	speed.x = mlast_pathfinding[pathfinding_index].x - App->map->WorldToMap(position.x, position.y).x;
+	speed.y = mlast_pathfinding[pathfinding_index].y - App->map->WorldToMap(position.x, position.y).y;
+
+	speed.x *= 20.0f * deltaTime;
+	speed.y *= 20.0f * deltaTime;
+
+	position.x += speed.x;
+	position.y += speed.y;
 }
 
 bool CatPeasant::Pathfind()

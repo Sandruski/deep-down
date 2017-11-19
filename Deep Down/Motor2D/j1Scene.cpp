@@ -299,6 +299,10 @@ void j1Scene::DebugKeys() {
 		}
 	}
 
+	// F10: God mode
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+		god = !god;
+
 	// ---------------------------------------
 
 	// +, -: adjust music volume

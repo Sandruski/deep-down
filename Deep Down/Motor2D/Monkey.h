@@ -49,6 +49,7 @@ private:
 
 	bool DoNormalPath();
 	void RecalculatePath();
+	void UpdateNormalPathMovement(iPoint to_go);
 	void FlipPath(PathInfo* path_info);
 	//_normal_path
 
