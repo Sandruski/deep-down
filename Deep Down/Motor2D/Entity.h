@@ -21,35 +21,35 @@ protected:
 	PathInfo* path_info = nullptr;
 	Animation* animation = nullptr;
 
-	const p2DynArray<iPoint>* last_pathfinding;
+	const p2DynArray<iPoint>* last_pathfinding = nullptr;
 	p2DynArray<iPoint> mlast_pathfinding;
 
 public:
 	
-	float deltaTime;
+	float deltaTime = 0;
 
-	int type;
-	int lives;
+	int type = 0;
+	int lives = 0;
 	bool dead = false;
 
 	// Enemy movement
-	fPoint position;
-	iPoint i_pos;
-	fPoint start_pos;
+	fPoint position = { 0,0 };
+	iPoint i_pos = { 0,0 };
+	fPoint start_pos = { 0,0 };
 
-	fPoint speed;
+	fPoint speed = { 0,0 };
 
 	// Keep track of enemy movement
-	fPoint last_pos;
-	bool up, down, left, right;
+	fPoint last_pos = { 0,0 };
+	bool up = false, down = false, left = false, right = false;
 	//_enemy_movement
 
 	// Particles
-	fPoint particle_speed;
-	float distance_to;
+	fPoint particle_speed = { 0,0 };
+	float distance_to = 0;
 
-	iPoint collider_pos;
-	iPoint collider_size;
+	iPoint collider_pos = { 0,0 };
+	iPoint collider_size = { 0,0 };
 
 public:
 	Entity(float x, float y, PathInfo* path);

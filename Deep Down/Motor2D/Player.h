@@ -36,13 +36,13 @@ struct PlayerInfo
 {
 	Animation idle, idle2, forward, backward, jump, jump2, crouch, crouch2, dash, dash2, shot, shot2, crouchShot, crouchShot2, punished, punished2, firstAttack, secondAttack, thirdAttack, firstAttack2, secondAttack2, thirdAttack2;
 
-	iPoint coll_size;
-	SDL_Rect coll_offset;
-	uint check_collision_offset;
+	iPoint coll_size = { 0,0 };
+	SDL_Rect coll_offset = { 0,0,0,0 };
+	uint check_collision_offset = 0;
 
-	playerstates state;
-	float gravity;
-	fPoint speed;
+	playerstates state = null_;
+	float gravity = 0;
+	fPoint speed = { 0,0 };
 
 	PlayerInfo();
 	PlayerInfo(const PlayerInfo& i);
@@ -50,7 +50,6 @@ struct PlayerInfo
 
 	void SetState(playerstates);
 	playerstates GetState() { return state; }
-
 };
 
 class Player : public Entity
@@ -81,17 +80,17 @@ public:
 public:
 
 	// General info
-	playerstates default_state;
+	playerstates default_state = null_;
 	Animation* animationPlayer = nullptr;
 
 private:
 
 	// Movement
 	float time = 0, time2 = 0;
-	bool up = true, down = true, left = true, right = true, gravitySpeed;
-	bool checkDash;
-	bool stopshot, secondAttackToCheck, thirdAttackToCheck, secondAttackToCheck2, thirdAttackToCheck2;
-	float dt;
+	bool up = true, down = true, left = true, right = true, gravitySpeed = false;
+	bool checkDash = false;
+	bool stopshot = false, secondAttackToCheck = false, thirdAttackToCheck = false, secondAttackToCheck2 = false, thirdAttackToCheck2 = false;
+	float dt = 0;
 
 public:
 	PlayerInfo player;

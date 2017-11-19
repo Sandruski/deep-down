@@ -15,8 +15,8 @@ struct MonkeyInfo
 	Animation r_hurt, l_hurt;
 	Animation r_hit, l_hit;
 
-	iPoint coll_size;
-	SDL_Rect coll_offset;
+	iPoint coll_size = { 0,0 };
+	SDL_Rect coll_offset = { 0,0 };
 };
 
 class Monkey : public Entity
@@ -62,22 +62,22 @@ private:
 	MonkeyInfo monkey;
 	MonkeyState monkeyState;
 
-	bool right_hit, left_hit;
+	bool right_hit = false, left_hit = false;
 	bool do_hit = true;
-	bool wait;
+	bool wait = false;
 
-	bool left_hurt, right_hurt;
-	bool stop;
+	bool left_hurt = false, right_hurt = false;
+	bool stop = false;
 
 	// Pathfinding
 	uint pathfinding_index = 0;
 	uint pathfinding_size = 0;
 
-	bool create_pathfinding;
-	bool pathfinding_stop;
+	bool create_pathfinding = false;
+	bool pathfinding_stop = false;
 	bool pathfinding_finished = true;
-	bool pathfinding;
-	bool pathfind;
+	bool pathfinding = false;
+	bool pathfind = false;
 
 	Collider* follow_pathfinding1 = nullptr;
 	Collider* follow_pathfinding2 = nullptr;
@@ -87,9 +87,9 @@ private:
 	uint normal_path_index = 0;
 	uint last_normal_path_index = 0;
 
-	bool create_pathfinding_back;
-	bool going_back_home;
-	iPoint home;
+	bool create_pathfinding_back = false;
+	bool going_back_home = false;
+	iPoint home = { 0,0 };
 	//_normal_path
 };
 

@@ -10,6 +10,7 @@
 Entity::Entity(float x, float y, PathInfo* path) : position(x, y), start_pos(x, y), path_info(path), mlast_pathfinding(DEFAULT_PATH_LENGTH)
 {
 	last_pathfinding = nullptr;
+	mlast_pathfinding.Clear();
 }
 
 Entity::~Entity()
@@ -34,6 +35,4 @@ void Entity::Draw(SDL_Texture* sprites)
 
 void Entity::OnCollision(Collider* c1, Collider* c2)
 {
-
-
 }

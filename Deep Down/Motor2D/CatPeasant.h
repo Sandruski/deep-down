@@ -21,8 +21,8 @@ struct CatPeasantInfo
 	Animation r_dead_no_staff, l_dead_no_staff;
 	Animation r_throw_staff, l_throw_staff;
 
-	iPoint coll_size;
-	SDL_Rect coll_offset;
+	iPoint coll_size = { 0,0 };
+	SDL_Rect coll_offset = { 0,0,0,0 };
 };
 
 class CatPeasant : public Entity
@@ -64,16 +64,16 @@ private:
 	CatPeasantInfo catPeasant;
 	CatPeasantState catPeasantState;
 
-	bool right_hit, left_hit;
+	bool right_hit = false, left_hit = false;
 	bool do_hit = true;
-	bool wait;
-	bool cool;
-	float cooldown;
-	int seconds_to_wait;
+	bool wait = false;
+	bool cool = false;
+	float cooldown = 0;
+	int seconds_to_wait = 0;
 
-	bool left_hurt, right_hurt;
-	bool left_die, right_die;
-	bool stop;
+	bool left_hurt = false, right_hurt = false;
+	bool left_die = false, right_die = false;
+	bool stop = false;
 
 	// Pathfinding
 	uint pathfinding_index = 0;
@@ -84,11 +84,11 @@ private:
 	StartEndPath normal_path_index = StartEndPath::end;
 
 	bool normal_path_finished = true;
-	bool create_normal_path;
-	bool do_normal_path;
+	bool create_normal_path = false;
+	bool do_normal_path = false;
 
-	bool create_pathfinding_back;
-	bool going_back_home;
+	bool create_pathfinding_back = false;
+	bool going_back_home = false;
 	//_normal_path
 };
 

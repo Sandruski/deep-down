@@ -46,7 +46,7 @@ struct PathInfo
 struct EntityInfo
 {
 	ENTITY_TYPES type = ENTITY_TYPES::NO_TYPE;
-	int x, y;
+	int x = 0, y = 0;
 	PathInfo* path = nullptr;
 
 	~EntityInfo() {
@@ -98,10 +98,10 @@ private:
 	EntityInfo queue[MAX_ENTITIES];
 	Entity* entities[MAX_ENTITIES];
 
-	p2SString CatPeasant_spritesheet;
-	p2SString Monkey_spritesheet;
-	p2SString Imp_spritesheet;
-	p2SString Player_spritesheet;
+	p2SString CatPeasant_spritesheet = nullptr;
+	p2SString Monkey_spritesheet = nullptr;
+	p2SString Imp_spritesheet = nullptr;
+	p2SString Player_spritesheet = nullptr;
 
 	// Enemies info
 	ImpInfo imp;

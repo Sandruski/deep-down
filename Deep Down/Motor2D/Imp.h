@@ -26,8 +26,8 @@ struct ImpInfo
 	Animation r_shield_walk, l_shield_walk;
 	Animation invisible;
 
-	iPoint coll_size;
-	SDL_Rect coll_offset;
+	iPoint coll_size = { 0,0 };
+	SDL_Rect coll_offset = { 0,0 };
 };
 
 class Imp : public Entity
@@ -74,29 +74,29 @@ private:
 	ImpInfo imp;
 	ImpState impState;
 
-	bool right_hit, left_hit;
+	bool right_hit = false, left_hit = false;
 	bool do_hit = true;
-	bool wait;
-	bool cool;
-	float cooldown;
-	int seconds_to_wait;
+	bool wait = false;
+	bool cool = false;
+	float cooldown = 0;
+	int seconds_to_wait = 0;
 
-	bool back;
-	bool left_hurt, right_hurt;
-	bool stop;
+	bool back = false;
+	bool left_hurt = false, right_hurt = false;
+	bool stop = false;
 
 	// Pathfinding
 	uint pathfinding_index = 0;
 	uint pathfinding_size = 0;
 
-	bool create_pathfinding;
-	bool pathfinding_stop;
+	bool create_pathfinding = false;
+	bool pathfinding_stop = false;
 	bool pathfinding_finished = true;
-	bool pathfinding;
-	bool pathfind;
-	bool go;
+	bool pathfinding = false;
+	bool pathfind = false;
+	bool go = false;
 
-	iPoint dest;
+	iPoint dest = { 0,0 };
 
 	Collider* follow_pathfinding1 = nullptr;
 	Collider* follow_pathfinding2 = nullptr;
@@ -106,11 +106,11 @@ private:
 	StartEndPath normal_path_index = StartEndPath::end;
 
 	bool normal_path_finished = true;
-	bool create_normal_path;
-	bool do_normal_path;
+	bool create_normal_path = false;
+	bool do_normal_path = false;
 
-	bool create_pathfinding_back;
-	bool going_back_home;
+	bool create_pathfinding_back = false;
+	bool going_back_home = false;
 	//_normal_path
 };
 
