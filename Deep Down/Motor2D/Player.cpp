@@ -753,12 +753,12 @@ void Player::PlayerStateMachine() {
 		speed.y = 0;
 		speed.x = 0;
 		if (player.punished.Finished() && animation == &player.punished) {
-			player.state = idle_;
+			//player.state = idle_;
 			player.punished.Reset();
 			break;
 		}
 		else if (player.punished2.Finished() && animation == &player.punished2) {
-			player.state = idle2_;
+			//player.state = idle2_;
 			player.punished2.Reset();
 			break;
 		}
