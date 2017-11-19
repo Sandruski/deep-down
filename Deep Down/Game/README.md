@@ -1,4 +1,4 @@
-# Deep Down
+﻿# Deep Down
 
 ## About the game
 This is Deep Down, a side-scrolling platformer game about exploring an abandoned and mysterious cave. It has two different levels:
@@ -22,6 +22,8 @@ Left Shift: dash
 
 A: shoot
 
+X: attack (you can make a kind of combo if x is pressed in a short period of time)
+
 KP(+, -): increase, decrease music volume
 
 ### Debug
@@ -29,8 +31,6 @@ KP(+, -): increase, decrease music volume
 F1: start from the beggining of the first level
 
 F2: start from the beggining of the current level
-
-F3: show colliders
 
 F4: switch between levels
 
@@ -40,7 +40,19 @@ F6: load game state
 
 F7: fullscreen (or return to default screen size)
 
-Y, G, H, J: move camera
+F9: show colliders
+
+F10: God Mode
+
+F11: enable/disable cap frames
+
+Number 1: increase offset of "onlyBlittingCamera"
+
+Number 2: decrease offset of "onlyBlittingCamera"
+
+Number 3: enable/disable onlyBlittingCamera
+
+Number 4: enable/disable collider culing
 
 ## Tools used:
 
