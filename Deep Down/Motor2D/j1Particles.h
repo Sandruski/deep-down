@@ -18,8 +18,8 @@ struct Particle
 	Collider* collider = nullptr;
 	Animation anim;
 	uint fx = 0;
-	fPoint position;
-	fPoint speed;
+	fPoint position = { 0,0 };
+	fPoint speed = { 0, 0 };
 	Uint32 born = 0;
 	Uint32 life = 0;
 
@@ -54,7 +54,7 @@ private:
 	Particle* active[MAX_ACTIVE_PARTICLES];
 	uint last_particle = 0;
 
-	iPoint hit_pos;
+	iPoint hit_pos = { 0,0 };
 
 public:
 	Particle arrowRight;

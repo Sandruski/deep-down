@@ -49,9 +49,9 @@ public:
 
 private:
 
-	p2SString			music_folder;
-	p2SString			fx_folder;
-	_Mix_Music*			music;
+	p2SString			music_folder = nullptr;
+	p2SString			fx_folder = nullptr;
+	_Mix_Music*			music = nullptr;
 	p2List<Mix_Chunk*>	fx;
 
 public:

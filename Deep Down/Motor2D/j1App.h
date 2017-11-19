@@ -105,8 +105,8 @@ public:
 private:
 
 	p2List<j1Module*>	modules;
-	uint				frames;
-	double				dt;
+	uint				frames = 0;
+	double				dt = 0;
 	int					argc;
 	char**				args;
 
@@ -125,7 +125,7 @@ private:
 
 public:
 
-	uint capFrames;
+	uint capFrames = 0;
 	bool toCap = true;
 
 };
