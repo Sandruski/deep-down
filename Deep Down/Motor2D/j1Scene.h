@@ -45,30 +45,30 @@ public:
 	void MoveCamera();
 
 	// Camera
-	float up, down, left, right;
-	uint width;
-	uint height;
-	uint scale;
+	float up = false, down = false, left = false, right = false;
+	uint width = 0;
+	uint height = 0;
+	uint scale = 0;
 
-	bool gate, fx, loading = true;
+	bool gate = false, fx = false, loading = true;
 	bool loading_state = false;
 
 	uint index = 0;
 	uint last_index = 0;
 
-	bool god;
+	bool god = false;
 
 private:
 
-	p2SString map1;
-	p2SString map2;
-	p2SString song1;
-	p2SString song2;
-	p2SString fx_names[5];
+	p2SString map1 = nullptr;
+	p2SString map2 = nullptr;
+	p2SString song1 = nullptr;
+	p2SString song2 = nullptr;
+	p2SString fx_names[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
 
-	uint volume_adjustment;
+	uint volume_adjustment = 0;
 
-	iPoint mouse;
+	iPoint mouse = { 0,0 };
 };
 
 #endif // __j1SCENE1_H__

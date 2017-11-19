@@ -186,22 +186,22 @@ private:
 
 public:
 
-	MapData data;
+	MapData				data;
 	MapLayer*			collisionLayer = nullptr;
 
 private:
 
 	pugi::xml_document	map_file;
-	p2SString			folder;
-	bool				map_loaded;
+	p2SString			folder = nullptr;
+	bool				map_loaded = false;
 
 	MapLayer*			aboveLayer = nullptr;
 
 public:
 
-	int					culing_offset;
-	int					blit_offset;
-	bool				camera_blit;
+	int					culing_offset = false;
+	int					blit_offset = false;
+	bool				camera_blit = false;
 
 };
 

@@ -41,13 +41,13 @@ public:
 	bool fullscreen;
 
 private:
-	p2SString	title;
-	p2SString	icon;
+	p2SString	title = nullptr;
+	p2SString	icon = nullptr;
 
 	// Screen parameters
-	uint		width;
-	uint		height;
-	uint		scale;
+	uint		width = 0;
+	uint		height = 0;
+	uint		scale = 0;
 };
 
 #endif // __j1WINDOW_H__

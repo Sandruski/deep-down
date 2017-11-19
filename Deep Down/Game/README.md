@@ -50,9 +50,15 @@ Number 1: increase offset of "onlyBlittingCamera"
 
 Number 2: decrease offset of "onlyBlittingCamera"
 
-Number 3: enable/disable onlyBlittingCamera
+Number 3: enable/disable "onlyBlittingCamera"
 
-Number 4: enable/disable collider culing
+## Innovation:
+
+Blitting only camera
+
+Collider Culing
+
+Enemy paths and behaviour from Tiled
 
 ## Tools used:
 
