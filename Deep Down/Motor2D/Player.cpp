@@ -38,6 +38,9 @@ void Player::Move(float dt)
 {
 	this->dt = dt;
 
+	i_pos.x = (int)position.x;
+	i_pos.y = (int)position.y;
+
 	GodMode();
 
 	player.gravity = 125.0f * dt;
@@ -842,8 +845,10 @@ void Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, ui
 	if (SDL_HasIntersection(&A_down, &B))
 		if (id == 1181 || (id == 1182 && App->scene->gate == false))
 			down = false;
-		else if (id == 1183 && state != null_)
+		else if (id == 1183 && state != null_) {
 			player.SetState(punished_);
+			App->audio->PlayFx(5);
+		}
 
 	//LEFT
 	SDL_Rect A_left = { position.x + c_left.x, position.y + c_left.y, size.x, size.y }; //player rectangle

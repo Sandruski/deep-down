@@ -78,8 +78,6 @@ void CatPeasant::Move(const float dt)
 		LOG("DEAD");
 
 	// Update collider
-	//collider_pos = { i_pos.x + imp.coll_offset.x, i_pos.y + imp.coll_offset.y };
-	//collider->SetPos(collider_pos.x, collider_pos.y);
 	collider->SetPos(i_pos.x, i_pos.y);
 }
 

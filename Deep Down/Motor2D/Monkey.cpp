@@ -420,9 +420,9 @@ void Monkey::UpdateNormalPathMovement(const iPoint to_go)
 	float m = sqrtf(pow(speed.x, 2.0f) + pow(speed.y, 2.0f));
 
 	if (m != 0)
-		speed.x *= 30.0f * deltaTime / m;
+		speed.x *= 20.0f * deltaTime / m;
 	if (m != 0)
-		speed.y *= 30.0f * deltaTime / m;
+		speed.y *= 20.0f * deltaTime / m;
 
 	position.x += speed.x;
 	position.y += speed.y;
