@@ -71,7 +71,7 @@ public:
 	void MoveBackward();
 	void MoveForwardJumping();
 	void MoveBackwardJumping();
-	float Jump();
+	float Jump() const;
 	void ApplySpeed();
 	void CheckIfDead();
 	void GodMode();

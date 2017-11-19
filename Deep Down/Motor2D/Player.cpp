@@ -161,7 +161,7 @@ void Player::MoveBackwardJumping() {
 	}
 }
 
-float Player::Jump() {
+float Player::Jump() const{
 	return -100.0f;
 }
 

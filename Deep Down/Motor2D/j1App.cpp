@@ -249,7 +249,7 @@ void j1App::FinishUpdate()
 
 	static char title[256];
 	
-	sprintf_s(title, 256, "FPS: %.2f | AvgFPS: %.2f | Last Frame Ms: %02u | capFrames: %s | Vsyn: %s | CameraBlit: %s | GOD: %s",
+	sprintf_s(title, 256, "FPS: %.2f | AvgFPS: %.2f | Last Frame Ms: %02u | capFrames: %s | Vsync: %s | CameraBlit: %s | GOD: %s",
 		fps, avgFPS, actual_frame_ms, capOnOff.GetString(), vsyncOnOff.GetString(), CB.GetString(), GM.GetString());
 
 	App->win->SetTitle(title);

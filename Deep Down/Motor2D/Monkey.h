@@ -26,8 +26,8 @@ public:
 	Monkey(float x, float y, PathInfo* path);
 
 	void OnCollision(Collider* c1, Collider* c2);
-	void Move(float dt);
-	void UpdateAnimations(float dt);
+	void Move(const float dt);
+	void UpdateAnimations(const float dt);
 
 private:
 
@@ -39,8 +39,8 @@ private:
 
 	void UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player);
 	bool ResetPathfindingVariables();
-	void UpdateMovement(iPoint to_go);
-	bool CreatePathfinding(iPoint destination);
+	void UpdateMovement(const iPoint to_go);
+	bool CreatePathfinding(const iPoint destination);
 	bool Pathfind();
 	//_pathfinding
 
@@ -49,8 +49,8 @@ private:
 
 	bool DoNormalPath();
 	void RecalculatePath();
-	void UpdateNormalPathMovement(iPoint to_go);
-	void FlipPath(PathInfo* path_info);
+	void UpdateNormalPathMovement(const iPoint to_go);
+	void FlipPath(const PathInfo* path_info);
 	//_normal_path
 
 	void Hit();

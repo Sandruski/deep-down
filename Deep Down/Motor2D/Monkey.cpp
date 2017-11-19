@@ -43,7 +43,7 @@ Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y, path)
 	distance_to = 100.0f;
 }
 
-void Monkey::Move(float dt)
+void Monkey::Move(const float dt)
 {
 	deltaTime = dt;
 
@@ -203,7 +203,7 @@ void Monkey::UpdateDirection()
 	last_pos = position;
 }
 
-void Monkey::UpdateAnimations(float dt) 
+void Monkey::UpdateAnimations(const float dt) 
 {
 	float speed = 10.0f;
 
@@ -376,7 +376,7 @@ bool Monkey::ResetPathfindingVariables()
 	return ret;
 }
 
-bool Monkey::CreatePathfinding(iPoint destination)
+bool Monkey::CreatePathfinding(const iPoint destination)
 {
 	bool ret = false;
 
@@ -398,7 +398,7 @@ bool Monkey::CreatePathfinding(iPoint destination)
 	return ret;
 }
 
-void Monkey::UpdateMovement(iPoint to_go)
+void Monkey::UpdateMovement(const iPoint to_go)
 {
 	speed.x = mlast_pathfinding[pathfinding_index].x - App->map->WorldToMap(position.x, position.y).x;
 	speed.y = mlast_pathfinding[pathfinding_index].y - App->map->WorldToMap(position.x, position.y).y;
@@ -410,7 +410,7 @@ void Monkey::UpdateMovement(iPoint to_go)
 	position.y += speed.y;
 }
 
-void Monkey::UpdateNormalPathMovement(iPoint to_go) 
+void Monkey::UpdateNormalPathMovement(const iPoint to_go) 
 {
 	iPoint map = App->map->WorldToMap(to_go.x, to_go.y);
 
@@ -482,7 +482,7 @@ void Monkey::RecalculatePath()
 	FlipPath(path_info);
 }
 
-void Monkey::FlipPath(PathInfo* path_info) 
+void Monkey::FlipPath(const PathInfo* path_info) 
 {
 	iPoint* start = &path_info->path[0];
 	iPoint* end = &path_info->path[path_info->path_size - 1];

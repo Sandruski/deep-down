@@ -42,7 +42,7 @@ CatPeasant::CatPeasant(float x, float y, PathInfo* path) : Entity(x, y, path)
 	seconds_to_wait = 12.0f;
 }
 
-void CatPeasant::Move(float dt)
+void CatPeasant::Move(const float dt)
 {
 	deltaTime = dt;
 
@@ -254,7 +254,7 @@ void CatPeasant::UpdateDirection() {
 	last_pos = position;
 }
 
-void CatPeasant::UpdateAnimations(float dt)
+void CatPeasant::UpdateAnimations(const float dt)
 {
 	float speed = 10.0f;
 
@@ -341,7 +341,7 @@ void CatPeasant::UpdatePath()
 	}
 }
 
-void CatPeasant::FindDestination(iPoint& to_go)
+void CatPeasant::FindDestination(iPoint& to_go) const
 {
 	switch (normal_path_index) {
 	case StartEndPath::start:
@@ -418,7 +418,7 @@ bool CatPeasant::ResetNormalPathVariables()
 	return ret;
 }
 
-bool CatPeasant::CreatePathfinding(iPoint destination)
+bool CatPeasant::CreatePathfinding(const iPoint destination)
 {
 	bool ret = false;
 
@@ -443,7 +443,7 @@ bool CatPeasant::CreatePathfinding(iPoint destination)
 	return ret;
 }
 
-void CatPeasant::UpdateMovement(iPoint to_go)
+void CatPeasant::UpdateMovement(const iPoint to_go)
 {
 	speed.x = mlast_pathfinding[pathfinding_index].x - App->map->WorldToMap(position.x, position.y).x;
 	speed.y = mlast_pathfinding[pathfinding_index].y - App->map->WorldToMap(position.x, position.y).y;

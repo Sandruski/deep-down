@@ -32,8 +32,8 @@ public:
 	CatPeasant(float x, float y, PathInfo* path);
 
 	void OnCollision(Collider* c1, Collider* c2);
-	void Move(float dt);
-	void UpdateAnimations(float dt);
+	void Move(const float dt);
+	void UpdateAnimations(const float dt);
 
 private:
 
@@ -41,9 +41,9 @@ private:
 	void UpdateDirection();
 
 	// Pathfinding
-	bool CreatePathfinding(iPoint destination);
+	bool CreatePathfinding(const iPoint destination);
 	bool Pathfind();
-	void UpdateMovement(iPoint to_go);
+	void UpdateMovement(const iPoint to_go);
 	//_pathfinding
 
 	// Normal path
@@ -51,7 +51,7 @@ private:
 
 	bool ResetNormalPathVariables();
 	void RecalculatePath();
-	void FindDestination(iPoint& to_go);
+	void FindDestination(iPoint& to_go) const;
 	//_normal_path
 
 	void Hit();
