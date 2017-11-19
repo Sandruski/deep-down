@@ -43,7 +43,7 @@ Imp::Imp(float x, float y, PathInfo* path) : Entity(x, y, path)
 
 	speed = { 60.0f, 2 };
 	particle_speed = { 50.0f, 50.0f };
-	seconds_to_wait = 0.0f;
+	seconds_to_wait = 1.0f;
 	distance_to = 200.0f;
 }
 

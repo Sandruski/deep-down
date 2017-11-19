@@ -765,9 +765,9 @@ void Player::PlayerStateMachine() {
 		break;
 
 	case punished_:
-		if (animation == &player.forward || animation == &player.jump || animation == &player.punished || animation == &player.idle)
+		if (animation == &player.forward || animation == &player.jump || animation == &player.punished || animation == &player.idle || animation == &player.crouch || animation == &player.shot || animation == &player.crouchShot)
 			animation = &player.punished;
-		else if (animation == &player.backward || animation == &player.jump2 || animation == &player.punished2 || animation == &player.idle2)
+		else if (animation == &player.backward || animation == &player.jump2 || animation == &player.punished2 || animation == &player.idle2 || animation == &player.crouch2 || animation == &player.shot2 || animation == &player.crouchShot2)
 			animation = &player.punished2;
 		speed.y = 0;
 		speed.x = 0;
