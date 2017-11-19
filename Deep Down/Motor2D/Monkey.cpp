@@ -404,8 +404,8 @@ void Monkey::UpdateMovement(iPoint to_go)
 	speed.x = mlast_pathfinding[pathfinding_index].x - App->map->WorldToMap(position.x, position.y).x;
 	speed.y = mlast_pathfinding[pathfinding_index].y - App->map->WorldToMap(position.x, position.y).y;
 
-	speed.x *= 20.0f * deltaTime;
-	speed.y *= 20.0f * deltaTime;
+	speed.x *= 30.0f * deltaTime;
+	speed.y *= 30.0f * deltaTime;
 
 	position.x += speed.x;
 	position.y += speed.y;

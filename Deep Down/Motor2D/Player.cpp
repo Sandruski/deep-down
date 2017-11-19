@@ -124,17 +124,17 @@ void Player::MoveBackward() {
 
 void Player::MoveForwardJumping() {
 	if (right) {
-		position.x += 50.0f * dt;
+		position.x += 60.0f * dt;
 	}
 }
 void Player::MoveBackwardJumping() {
 	if (left) {
-		position.x -= 50.0f * dt;
+		position.x -= 60.0f * dt;
 	}
 }
 
 float Player::Jump() {
-	return -80.0f;
+	return -100.0f;
 }
 
 void PlayerInfo::SetState(playerstates state) {
@@ -161,8 +161,8 @@ void Player::ApplySpeed() {
 		if (!up)
 			speed.y = 0;
 		speed.y += player.gravity;
-		if (speed.y >= 100.0f && !gravitySpeed) {
-			speed.y = 100.0f * dt;
+		if (speed.y >= 90.0f && !gravitySpeed) {
+			speed.y = 90.0f * dt;
 			gravitySpeed = true;
 		}
 		position.y += speed.y * dt;
@@ -792,6 +792,11 @@ void Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, ui
 	iPoint c_down = { 0, offset };
 	iPoint c_left = { -offset, 0 };
 	iPoint c_right = { offset, 0 };
+
+	if (position.x == (int)this->position.x && position.y == (int)this->position.y) {
+		if (state == jumping_ || state == jumping2_)
+			c_down = { 0, offset + 3 };
+	}
 
 	//UP
 	SDL_Rect A_up = { position.x + c_up.x, position.y + c_up.y, size.x, size.y }; //player rectangle
