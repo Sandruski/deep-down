@@ -806,7 +806,7 @@ void Player::CheckCollision(iPoint position, iPoint size, int offset, bool &up, 
 void Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, uint id, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state) {
 
 	if (App->toCap && App->capFrames <= 30) {
-		offset = 5;
+		offset = 6;
 	}
 
 	if (App->toCap && App->capFrames <= 10) {

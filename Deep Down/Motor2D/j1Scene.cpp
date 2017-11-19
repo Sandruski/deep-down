@@ -271,7 +271,8 @@ void j1Scene::DebugKeys() {
 		}
 	}
 	// F5: save the current state
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN && App->entities->playerData->player.GetState() != playerstates::punished_)
+	{
 		App->SaveGame();
 		last_index = index;
 	}
