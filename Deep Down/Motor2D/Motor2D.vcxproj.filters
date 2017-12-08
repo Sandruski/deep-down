@@ -2,258 +2,248 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="p2Log.cpp">
-      <Filter>p2</Filter>
-    </ClCompile>
-    <ClCompile Include="j1App.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Main.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="j1PerfTimer.cpp">
-      <Filter>Game\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Timer.cpp">
-      <Filter>Game\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Scene.cpp">
-      <Filter>Game\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Audio.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Collision.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1FadeToBlack.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Input.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Map.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Particles.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Pathfinding.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Render.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Textures.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Window.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="CatPeasant.cpp">
-      <Filter>Game\Modules\Entities</Filter>
+      <Filter>p2containers</Filter>
     </ClCompile>
     <ClCompile Include="Imp.cpp">
-      <Filter>Game\Modules\Entities</Filter>
+      <Filter>Modules\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Cat.cpp">
+      <Filter>Modules\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="CatPeasant.cpp">
+      <Filter>Modules\Entities</Filter>
     </ClCompile>
     <ClCompile Include="Monkey.cpp">
-      <Filter>Game\Modules\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="PugiXml\src\pugixml.cpp">
-      <Filter>Game\Tools\PugiXML</Filter>
-    </ClCompile>
-    <ClCompile Include="j1EntityFactory.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Game\Modules\Entities</Filter>
+      <Filter>Modules\Entities</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Game\Modules\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="UIButton.cpp">
-      <Filter>Game\Modules\UIElements</Filter>
-    </ClCompile>
-    <ClCompile Include="UICursor.cpp">
-      <Filter>Game\Modules\UIElements</Filter>
-    </ClCompile>
-    <ClCompile Include="UIElement.cpp">
-      <Filter>Game\Modules\UIElements</Filter>
-    </ClCompile>
-    <ClCompile Include="UIImage.cpp">
-      <Filter>Game\Modules\UIElements</Filter>
-    </ClCompile>
-    <ClCompile Include="UILabel.cpp">
-      <Filter>Game\Modules\UIElements</Filter>
+      <Filter>Modules\UIElements</Filter>
     </ClCompile>
     <ClCompile Include="UIWindow.cpp">
-      <Filter>Game\Modules\UIElements</Filter>
+      <Filter>Modules\UIElements</Filter>
     </ClCompile>
-    <ClCompile Include="j1Gui.cpp">
-      <Filter>Game\Modules</Filter>
+    <ClCompile Include="UILifeBar.cpp">
+      <Filter>Modules\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="UILabel.cpp">
+      <Filter>Modules\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="UIImage.cpp">
+      <Filter>Modules\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="UIElement.cpp">
+      <Filter>Modules\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="UICursor.cpp">
+      <Filter>Modules\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="UIButton.cpp">
+      <Filter>Modules\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Modules\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Audio.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Collision.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityFactory.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1FadeToBlack.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="j1Fonts.cpp">
-      <Filter>Game\Modules</Filter>
+      <Filter>Modules</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="UILifeBar.cpp">
-      <Filter>Game\Modules\UIElements</Filter>
-=======
-    <ClCompile Include="Cat.cpp">
-      <Filter>Game\Modules\Entities</Filter>
->>>>>>> origin/master
+    <ClCompile Include="j1Gui.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Input.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Map.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Particles.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Pathfinding.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Render.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Window.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Textures.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PugiXml\src\pugixml.cpp">
+      <Filter>PugiXML</Filter>
+    </ClCompile>
+    <ClCompile Include="j1PerfTimer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Timer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="j1App.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Main.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Scene.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h">
-      <Filter>p2</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Defs.h">
-      <Filter>p2</Filter>
-    </ClInclude>
-    <ClInclude Include="p2DynArray.h">
-      <Filter>p2</Filter>
-    </ClInclude>
-    <ClInclude Include="p2List.h">
-      <Filter>p2</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Log.h">
-      <Filter>p2</Filter>
+    <ClInclude Include="p2SString.h">
+      <Filter>p2containers</Filter>
     </ClInclude>
     <ClInclude Include="p2Point.h">
-      <Filter>p2</Filter>
-    </ClInclude>
-    <ClInclude Include="p2SString.h">
-      <Filter>p2</Filter>
-    </ClInclude>
-    <ClInclude Include="j1App.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Module.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="j1PerfTimer.h">
-      <Filter>Game\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Timer.h">
-      <Filter>Game\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Scene.h">
-      <Filter>Game\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Audio.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Collision.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1FadeToBlack.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Input.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Map.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Particles.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Pathfinding.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Render.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Textures.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Window.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="CatPeasant.h">
-      <Filter>Game\Modules\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Imp.h">
-      <Filter>Game\Modules\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Monkey.h">
-      <Filter>Game\Modules\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
-      <Filter>Game\Tools\PugiXML</Filter>
-    </ClInclude>
-    <ClInclude Include="PugiXml\src\pugixml.hpp">
-      <Filter>Game\Tools\PugiXML</Filter>
-    </ClInclude>
-    <ClInclude Include="j1EntityFactory.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Game\Modules\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Game\Modules\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="UIButton.h">
-      <Filter>Game\Modules\UIElements</Filter>
-    </ClInclude>
-    <ClInclude Include="UICursor.h">
-      <Filter>Game\Modules\UIElements</Filter>
-    </ClInclude>
-    <ClInclude Include="UIElement.h">
-      <Filter>Game\Modules\UIElements</Filter>
-    </ClInclude>
-    <ClInclude Include="UIImage.h">
-      <Filter>Game\Modules\UIElements</Filter>
-    </ClInclude>
-    <ClInclude Include="UILabel.h">
-      <Filter>Game\Modules\UIElements</Filter>
-    </ClInclude>
-    <ClInclude Include="UIWindow.h">
-      <Filter>Game\Modules\UIElements</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Gui.h">
-      <Filter>Game\Modules</Filter>
+      <Filter>p2containers</Filter>
     </ClInclude>
     <ClInclude Include="p2nTree.h">
-      <Filter>p2</Filter>
+      <Filter>p2containers</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Log.h">
+      <Filter>p2containers</Filter>
+    </ClInclude>
+    <ClInclude Include="p2List.h">
+      <Filter>p2containers</Filter>
+    </ClInclude>
+    <ClInclude Include="p2DynArray.h">
+      <Filter>p2containers</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Defs.h">
+      <Filter>p2containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Imp.h">
+      <Filter>Modules\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Cat.h">
+      <Filter>Modules\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="CatPeasant.h">
+      <Filter>Modules\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Monkey.h">
+      <Filter>Modules\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Modules\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="UIWindow.h">
+      <Filter>Modules\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="UILifeBar.h">
+      <Filter>Modules\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="UIImage.h">
+      <Filter>Modules\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="UILabel.h">
+      <Filter>Modules\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="UIElement.h">
+      <Filter>Modules\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="UICursor.h">
+      <Filter>Modules\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="UIButton.h">
+      <Filter>Modules\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Modules\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Audio.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Collision.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityFactory.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1FadeToBlack.h">
+      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="j1Fonts.h">
-      <Filter>Game\Modules</Filter>
+      <Filter>Modules</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="UILifeBar.h">
-      <Filter>Game\Modules\UIElements</Filter>
-=======
-    <ClInclude Include="Cat.h">
-      <Filter>Game\Modules\Entities</Filter>
->>>>>>> origin/master
+    <ClInclude Include="j1Gui.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Input.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Map.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Particles.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Pathfinding.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Render.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Window.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Textures.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugixml.hpp">
+      <Filter>PugiXML</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
+      <Filter>PugiXML</Filter>
+    </ClInclude>
+    <ClInclude Include="j1PerfTimer.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Timer.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Scene.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1App.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Module.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Game">
-      <UniqueIdentifier>{a20e62d4-7235-4bf2-9b0c-afc3cd56020d}</UniqueIdentifier>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{37bd04bd-e403-427c-8c19-d401c50da11b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="p2">
-      <UniqueIdentifier>{ac559920-c2e4-4f67-afa2-2613b2b1231d}</UniqueIdentifier>
+    <Filter Include="Modules\Entities">
+      <UniqueIdentifier>{a4df4455-fe8e-4669-a538-b8d4cfcef6c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Modules">
-      <UniqueIdentifier>{050952ea-33eb-4534-ae2f-4cf9466865b1}</UniqueIdentifier>
+    <Filter Include="Modules\UIElements">
+      <UniqueIdentifier>{12305042-5678-4a37-99b7-bf095b7ade8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Scenes">
-      <UniqueIdentifier>{4c0bac79-9e74-468c-9629-3f55686be912}</UniqueIdentifier>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{6e611132-c788-45a6-b8a4-bb89c137afd6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Tools">
-      <UniqueIdentifier>{7a1de275-2740-456e-93a3-d48992566a87}</UniqueIdentifier>
+    <Filter Include="p2containers">
+      <UniqueIdentifier>{f96d9930-939c-4fe4-a7b5-3401bf718a1d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Tools\PugiXML">
-      <UniqueIdentifier>{d4be428c-f990-42eb-a048-aa10f9825fae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Modules\Entities">
-      <UniqueIdentifier>{3d9caea6-5dbe-4bd6-a9a5-eb7ae2657fc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Modules\UIElements">
-      <UniqueIdentifier>{0da31b65-ac5b-4b07-85c6-6783c4aca77b}</UniqueIdentifier>
+    <Filter Include="PugiXML">
+      <UniqueIdentifier>{554199a4-5aa0-4d6c-ab2d-fbf71e27c4c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

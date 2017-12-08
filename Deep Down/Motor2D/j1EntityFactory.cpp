@@ -17,6 +17,7 @@
 #include "j1Map.h"
 #include "j1Pathfinding.h"
 #include "j1Collision.h"
+#include "j1Gui.h"
 
 #define SPAWN_MARGIN 50
 
@@ -821,6 +822,8 @@ bool j1EntityFactory::Update(float dt)
 
 	// Draw Above layer
 	App->map->DrawAboveLayer();
+
+	App->gui->Blit(dt);
 
 	return true;
 }
