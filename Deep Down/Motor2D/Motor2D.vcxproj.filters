@@ -88,6 +88,12 @@
     <ClCompile Include="UIWindow.cpp">
       <Filter>Game\Modules\UIElements</Filter>
     </ClCompile>
+    <ClCompile Include="j1Gui.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Fonts.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -197,6 +203,15 @@
     </ClInclude>
     <ClInclude Include="UIWindow.h">
       <Filter>Game\Modules\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Gui.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="p2nTree.h">
+      <Filter>p2</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Fonts.h">
+      <Filter>Game\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

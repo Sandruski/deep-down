@@ -12,6 +12,9 @@
 class j1App;
 struct Collider;
 
+class UIElement;
+enum UIEvents;
+
 class j1Module
 {
 public:
@@ -72,6 +75,8 @@ public:
 
 	// Collision
 	virtual void OnCollision(Collider*, Collider*) {}
+
+	virtual void OnUIEvent(UIElement* UIelem, UIEvents UIevent) {}
 
 public:
 
