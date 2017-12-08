@@ -28,6 +28,23 @@ struct ImpInfo
 
 	iPoint coll_size = { 0,0 };
 	SDL_Rect coll_offset = { 0,0 };
+
+	int lives = 0;
+
+	SDL_Rect enemy_pathfinding_affect_area = { 0,0,0,0 };
+	SDL_Rect player_pathfinding_affect_area = { 0,0,0,0 };
+	float pathfinding_slow_speed = 0;
+	float pathfinding_normal_speed = 0;
+	float pathfinding_fast_speed = 0;
+	int min_distance_to_pathfind = 0;
+	int min_distance_to_shoot = 0;
+	int seconds_to_wait = 0;
+	int scene1_pathfinding_start = 0;
+	int distance_to_player = 0;
+
+	fPoint particle_speed = { 0,0 };
+
+	uint hurt_fx = 0;
 };
 
 class Imp : public Entity
@@ -39,6 +56,7 @@ public:
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move(float dt);
 	void UpdateAnimations(float dt);
+	void LoadAnimationsSpeed();
 
 private:
 
@@ -79,11 +97,18 @@ private:
 	bool wait = false;
 	bool cool = false;
 	float cooldown = 0;
-	int seconds_to_wait = 0;
 
 	bool back = false;
 	bool left_hurt = false, right_hurt = false;
 	bool stop = false;
+
+	// Animations speed
+	float r_shield_idle_speed = 0.0f, l_shield_idle_speed = 0.0f;
+	float r_shield_hurt_speed = 0.0f, l_shield_hurt_speed = 0.0f;
+	float r_jump_speed = 0.0f, l_jump_speed = 0.0f;
+	float r_throw_bomb_speed = 0.0f, l_throw_bomb_speed = 0.0f;
+	float r_shield_walk_speed = 0.0f, l_shield_walk_speed = 0.0f;
+	float invisible_speed = 0.0f;
 
 	// Pathfinding
 	uint pathfinding_index = 0;

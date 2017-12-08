@@ -17,6 +17,19 @@ struct MonkeyInfo
 
 	iPoint coll_size = { 0,0 };
 	SDL_Rect coll_offset = { 0,0 };
+
+	int lives = 0;
+
+	SDL_Rect enemy_pathfinding_affect_area = { 0,0,0,0 };
+	SDL_Rect player_pathfinding_affect_area = { 0,0,0,0 };
+	float pathfinding_slow_speed = 0;
+	float pathfinding_normal_speed = 0;
+	int min_distance_to_hit = 0;
+	int distance_to_player = 0;
+
+	fPoint particle_speed = { 0,0 };
+
+	uint hurt_fx = 0;
 };
 
 class Monkey : public Entity
@@ -28,6 +41,7 @@ public:
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move(const float dt);
 	void UpdateAnimations(const float dt);
+	void LoadAnimationsSpeed();
 
 private:
 
@@ -39,17 +53,17 @@ private:
 
 	void UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player);
 	bool ResetPathfindingVariables();
-	void UpdateMovement(const iPoint to_go);
+	void UpdateMovement(iPoint to_go, float velocity);
 	bool CreatePathfinding(const iPoint destination);
-	bool Pathfind();
+	bool Pathfind(float velocity);
 	//_pathfinding
 
 	// Normal path
 	void UpdatePath();
 
-	bool DoNormalPath();
+	bool DoNormalPath(float velocity);
 	void RecalculatePath();
-	void UpdateNormalPathMovement(const iPoint to_go);
+	void UpdateNormalPathMovement(const iPoint to_go, float velocity);
 	void FlipPath(const PathInfo* path_info);
 	//_normal_path
 
@@ -67,6 +81,11 @@ private:
 	bool do_hit = true;
 	bool left_hurt = false, right_hurt = false;
 	bool stop = false;
+
+	// Animations speed
+	float r_idle_speed = 0.0f, l_idle_speed = 0.0f;
+	float r_hurt_speed = 0.0f, l_hurt_speed = 0.0f;
+	float r_hit_speed = 0.0f, l_hit_speed = 0.0f;
 
 	// Pathfinding
 	uint pathfinding_index = 0;

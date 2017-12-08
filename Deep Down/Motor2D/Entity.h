@@ -15,8 +15,7 @@ enum StartEndPath {
 
 class Entity
 {
-protected:
-	
+protected:	
 	Collider* collider = nullptr;
 	PathInfo* path_info = nullptr;
 	Animation* animation = nullptr;
@@ -25,7 +24,6 @@ protected:
 	p2DynArray<iPoint> mlast_pathfinding;
 
 public:
-	
 	float deltaTime = 0;
 
 	int type = 0;
@@ -45,9 +43,6 @@ public:
 	//_enemy_movement
 
 	// Particles
-	fPoint particle_speed = { 0,0 };
-	float distance_to = 0;
-
 	iPoint collider_pos = { 0,0 };
 	iPoint collider_size = { 0,0 };
 
@@ -60,6 +55,7 @@ public:
 	virtual void Move(float dt) {};
 	virtual void UpdatePath() {};
 	virtual void UpdatePathfinding() {};
+	virtual void LoadAnimationsSpeed() {};
 	virtual void UpdateAnimations(float dt) {};
 	virtual void Draw(SDL_Texture* sprites);
 	virtual void OnCollision(Collider* collider, Collider* c2);

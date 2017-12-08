@@ -23,6 +23,17 @@ struct CatPeasantInfo
 
 	iPoint coll_size = { 0,0 };
 	SDL_Rect coll_offset = { 0,0,0,0 };
+
+	int lives = 0;
+
+	float pathfinding_normal_speed = 0;
+	int min_distance_to_shoot = 0;
+	int seconds_to_wait = 0;
+	int distance_to_player = 0;
+
+	fPoint particle_speed = { 0,0 };
+
+	uint hurt_fx = 0;
 };
 
 class CatPeasant : public Entity
@@ -34,6 +45,7 @@ public:
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move(const float dt);
 	void UpdateAnimations(const float dt);
+	void LoadAnimationsSpeed();
 
 private:
 
@@ -42,8 +54,8 @@ private:
 
 	// Pathfinding
 	bool CreatePathfinding(const iPoint destination);
-	bool Pathfind();
-	void UpdateMovement(const iPoint to_go);
+	bool Pathfind(float speed);
+	void UpdateMovement(const iPoint to_go, float speed);
 	//_pathfinding
 
 	// Normal path
@@ -69,11 +81,19 @@ private:
 	bool wait = false;
 	bool cool = false;
 	float cooldown = 0;
-	int seconds_to_wait = 0;
 
 	bool left_hurt = false, right_hurt = false;
 	bool left_die = false, right_die = false;
 	bool stop = false;
+
+	// Animations speed
+	float r_idle_speed = 0.0f, l_idle_speed = 0.0f;
+	float r_idle_no_staff_speed = 0.0f, l_idle_no_staff_speed = 0.0f;
+	float r_hurt_speed = 0.0f, l_hurt_speed = 0.0f;
+	float r_hurt_no_staff_speed = 0.0f, l_hurt_no_staff_speed = 0.0f;
+	float r_dead_speed = 0.0f, l_dead_speed = 0.0f;
+	float r_dead_no_staff_speed = 0.0f, l_dead_no_staff_speed = 0.0f;
+	float r_throw_staff_speed = 0.0f, l_throw_staff_speed = 0.0f;
 
 	// Pathfinding
 	uint pathfinding_index = 0;

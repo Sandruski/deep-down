@@ -34,10 +34,28 @@ public:
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move(const float dt);
 	void UpdateAnimations(const float dt);
+	void LoadAnimationsSpeed();
 	
 private:
 
 	CatInfo cat;
+
+	// Animations speed
+	float r_idle_speed = 0.0f, l_idle_speed = 0.0f;
+	float r_going_ZZZ_speed = 0.0f, l_going_ZZZ_speed = 0.0f;
+	float r_waking_up_speed = 0.0f, l_waking_up_speed = 0.0f;
+	float r_to_crouch_speed = 0.0f, l_to_crouch_speed = 0.0f;
+	float r_crouch_speed = 0.0f, l_crouch_speed = 0.0f;
+	float r_rise_speed = 0.0f, l_rise_speed = 0.0f;
+	float r_jump_speed = 0.0f, l_jump_speed = 0.0f;
+	float r_fall_speed = 0.0f, l_fall_speed = 0.0f;
+	float r_land_soft_speed = 0.0f, l_land_soft_speed = 0.0f;
+	float r_roll_speed = 0.0f, l_roll_speed = 0.0f;
+	float r_to_run_speed = 0.0f, l_to_run_speed = 0.0f;
+	float r_run_speed = 0.0f, l_run_speed = 0.0f;
+	float r_turn_speed = 0.0f, l_turn_speed = 0.0f;
+	float r_brake_speed = 0.0f, l_brake_speed = 0.0f;
+	float attack_speed = 0.0f;
 };
 
 #endif

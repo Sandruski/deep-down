@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="p2Log.cpp">
-      <Filter>p2containers</Filter>
+      <Filter>p2Containers</Filter>
     </ClCompile>
     <ClCompile Include="Imp.cpp">
       <Filter>Modules\Entities</Filter>
@@ -103,25 +103,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2SString.h">
-      <Filter>p2containers</Filter>
+      <Filter>p2Containers</Filter>
     </ClInclude>
     <ClInclude Include="p2Point.h">
-      <Filter>p2containers</Filter>
+      <Filter>p2Containers</Filter>
     </ClInclude>
     <ClInclude Include="p2nTree.h">
-      <Filter>p2containers</Filter>
+      <Filter>p2Containers</Filter>
     </ClInclude>
     <ClInclude Include="p2Log.h">
-      <Filter>p2containers</Filter>
+      <Filter>p2Containers</Filter>
     </ClInclude>
     <ClInclude Include="p2List.h">
-      <Filter>p2containers</Filter>
+      <Filter>p2Containers</Filter>
     </ClInclude>
     <ClInclude Include="p2DynArray.h">
-      <Filter>p2containers</Filter>
+      <Filter>p2Containers</Filter>
     </ClInclude>
     <ClInclude Include="p2Defs.h">
-      <Filter>p2containers</Filter>
+      <Filter>p2Containers</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Tools</Filter>
@@ -239,11 +239,11 @@
     <Filter Include="Tools">
       <UniqueIdentifier>{6e611132-c788-45a6-b8a4-bb89c137afd6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="p2containers">
-      <UniqueIdentifier>{f96d9930-939c-4fe4-a7b5-3401bf718a1d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PugiXML">
       <UniqueIdentifier>{554199a4-5aa0-4d6c-ab2d-fbf71e27c4c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="p2Containers">
+      <UniqueIdentifier>{f96d9930-939c-4fe4-a7b5-3401bf718a1d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

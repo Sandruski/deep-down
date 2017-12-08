@@ -33,19 +33,30 @@ Imp::Imp(float x, float y, PathInfo* path) : Entity(x, y, path)
 	imp = App->entities->GetImpInfo();
 
 	///
+	LoadAnimationsSpeed();
 	animation = &imp.r_shield_idle;
 	impState = ImpState::r_shield_idle;
 
-	lives = 2;
+	lives = imp.lives;
 	dead = false;
 
 	collider = App->collision->AddCollider({ 0, 0, imp.coll_size.x + imp.coll_offset.w, imp.coll_size.y + imp.coll_offset.h }, COLLIDER_TYPE::COLLIDER_IMP, App->entities);
 	collider_size = imp.coll_size;
+}
 
-	speed = { 60.0f, 2 };
-	particle_speed = { 50.0f, 50.0f };
-	seconds_to_wait = 1.0f;
-	distance_to = 200.0f;
+void Imp::LoadAnimationsSpeed()
+{
+	r_shield_idle_speed = imp.r_shield_idle.speed;
+	l_shield_idle_speed = imp.l_shield_idle.speed;
+	r_shield_hurt_speed = imp.r_shield_hurt.speed;
+	l_shield_hurt_speed = imp.l_shield_hurt.speed;
+	r_jump_speed = imp.r_jump.speed;
+	l_jump_speed = imp.l_jump.speed;
+	r_throw_bomb_speed = imp.r_throw_bomb.speed;
+	l_throw_bomb_speed = imp.l_throw_bomb.speed;
+	r_shield_walk_speed = imp.r_shield_walk.speed;
+	l_shield_walk_speed = imp.l_shield_walk.speed;
+	invisible_speed = imp.invisible.speed;
 }
 
 void Imp::Move(float dt)
@@ -284,25 +295,23 @@ void Imp::UpdateDirection() {
 
 void Imp::UpdateAnimations(float dt)
 {
-	float speed = 10.0f;
-
-	imp.r_shield_idle.speed = speed * dt;
-	imp.l_shield_idle.speed = speed * dt;
-	imp.r_shield_hurt.speed = 5.0f * dt;
-	imp.l_shield_hurt.speed = 5.0f * dt;
-	imp.r_jump.speed = speed * dt;
-	imp.l_jump.speed = speed * dt;
-	imp.r_throw_bomb.speed = speed * dt;
-	imp.l_throw_bomb.speed = speed * dt;
-	imp.r_shield_walk.speed = speed * dt;
-	imp.l_shield_walk.speed = speed * dt;
+	imp.r_shield_idle.speed = r_shield_idle_speed * dt;
+	imp.l_shield_idle.speed = l_shield_idle_speed * dt;
+	imp.r_shield_hurt.speed = r_shield_hurt_speed * dt;
+	imp.l_shield_hurt.speed = l_shield_hurt_speed * dt;
+	imp.r_jump.speed = r_jump_speed * dt;
+	imp.l_jump.speed = l_jump_speed * dt;
+	imp.r_throw_bomb.speed = r_throw_bomb_speed * dt;
+	imp.l_throw_bomb.speed = l_throw_bomb_speed * dt;
+	imp.r_shield_walk.speed = r_shield_walk_speed * dt;
+	imp.l_shield_walk.speed = l_shield_walk_speed * dt;
 }
 
 void Imp::OnCollision(Collider* c1, Collider* c2) 
 {
 	if (c2->type == COLLIDER_ARROW && !back) {
 		lives--;
-		App->audio->PlayFx(6);
+		App->audio->PlayFx(imp.hurt_fx);
 		stop = true;
 
 		if (App->entities->playerData->position.x < position.x)
@@ -358,7 +367,7 @@ void Imp::UpdatePath()
 
 		// If it has to go back home and hasn't reached home yet, update the pathfinding back
 		if (going_back_home) {
-			if (!Pathfind(20.0f)) {
+			if (!Pathfind(imp.pathfinding_slow_speed)) {
 				RecalculatePath();
 				going_back_home = false;
 				pathfinding_finished = true;
@@ -366,7 +375,7 @@ void Imp::UpdatePath()
 		}
 		// If it is home, update the normal path
 		else if (do_normal_path) {
-			if (!Pathfind(20.0f)) {
+			if (!Pathfind(imp.pathfinding_slow_speed)) {
 				RecalculatePath();
 				normal_path_finished = true;
 			}
@@ -396,10 +405,10 @@ void Imp::UpdatePathfinding()
 
 	// If player is near the enemy... Create a pathfinding towards it
 	if (pathfinding_finished && SDL_HasIntersection(&enemy_pos, &player_pos) && cooldown <= 0 && !back
-		&& position.DistanceTo(App->entities->playerData->position) < 100.0f && App->entities->playerData->speed.y == 0) {
+		&& position.DistanceTo(App->entities->playerData->position) < imp.min_distance_to_pathfind && App->entities->playerData->speed.y == 0) {
 		if (App->scene->index == 0) {
 			iPoint player_pos = App->map->WorldToMap(App->entities->playerData->i_pos.x, App->entities->playerData->i_pos.y);
-			if (player_pos.x > 33) {
+			if (player_pos.x > imp.scene1_pathfinding_start) {
 				if (ResetPathfindingVariables()) {
 					create_pathfinding = true;
 				}
@@ -416,9 +425,9 @@ void Imp::UpdatePathfinding()
 	if (create_pathfinding) {
 
 		if (App->entities->playerData->position.x < position.x)
-			dest.x = (int)App->entities->playerData->position.x + 50;
+			dest.x = (int)App->entities->playerData->position.x + imp.distance_to_player;
 		else
-			dest.x = (int)App->entities->playerData->position.x - 50;
+			dest.x = (int)App->entities->playerData->position.x - imp.distance_to_player;
 
 		dest.y = (int)App->entities->playerData->position.y;
 
@@ -441,19 +450,19 @@ void Imp::UpdatePathfinding()
 	if (pathfinding) {
 		// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
 		if (pathfind) {
-			if (!Pathfind(60.0f)) {
+			if (!Pathfind(imp.pathfinding_normal_speed)) {
 				fPoint i_dest;
 				i_dest.x = dest.x;
 				i_dest.y = dest.y;
 
-				if (position.DistanceTo(i_dest) < distance_to && cooldown <= 0 && !back && speed.y == 0) {
+				if (position.DistanceTo(i_dest) < imp.min_distance_to_shoot && cooldown <= 0 && !back && speed.y == 0) {
 					if (App->scene->index == 0) {
 						iPoint player_pos = App->map->WorldToMap(App->entities->playerData->i_pos.x, App->entities->playerData->i_pos.y);
-						if (player_pos.x > 33) {
+						if (player_pos.x > imp.scene1_pathfinding_start) {
 							Hit();
 							wait = true;
 							cool = true;
-							cooldown = seconds_to_wait;
+							cooldown = imp.seconds_to_wait;
 						}
 						else {
 							pathfind = false;
@@ -463,7 +472,7 @@ void Imp::UpdatePathfinding()
 						Hit();
 						wait = true;
 						cool = true;
-						cooldown = seconds_to_wait;
+						cooldown = imp.seconds_to_wait;
 					}
 				}
 				else if (!wait)
@@ -504,7 +513,7 @@ void Imp::DoHit()
 	if (right_hit) {
 		if (imp.r_throw_bomb.Finished()) {
 			// Add particle
-			App->particles->AddParticle(App->particles->Imp_r_bomb, i_pos.x + 50, i_pos.y, COLLIDER_IMP_BOMB, NULL, particle_speed);
+			App->particles->AddParticle(App->particles->Imp_r_bomb, i_pos.x + imp.distance_to_player, i_pos.y, COLLIDER_IMP_BOMB, NULL, imp.particle_speed);
 
 			// Reset variables
 			right_hit = false;
@@ -520,7 +529,7 @@ void Imp::DoHit()
 	else if (left_hit) {
 		if (imp.l_throw_bomb.Finished()) {
 			// Add particle
-			App->particles->AddParticle(App->particles->Imp_l_bomb, i_pos.x - 50, i_pos.y, COLLIDER_IMP_BOMB, NULL, particle_speed);
+			App->particles->AddParticle(App->particles->Imp_l_bomb, i_pos.x - imp.distance_to_player, i_pos.y, COLLIDER_IMP_BOMB, NULL, imp.particle_speed);
 
 			// Reset variables
 			left_hit = false;
@@ -547,8 +556,8 @@ void Imp::CoolDown()
 
 void Imp::UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player)
 {
-	enemy = { i_pos.x - 30, i_pos.y - 30, 100, 100 };
-	player = { (int)App->entities->playerData->position.x - 50, (int)App->entities->playerData->position.y - 50, 200, 100 };
+	enemy = { i_pos.x - imp.enemy_pathfinding_affect_area.x, i_pos.y - imp.enemy_pathfinding_affect_area.y, imp.enemy_pathfinding_affect_area.w, imp.enemy_pathfinding_affect_area.h };
+	player = { (int)App->entities->playerData->position.x - imp.player_pathfinding_affect_area.x, (int)App->entities->playerData->position.y - imp.player_pathfinding_affect_area.y, imp.player_pathfinding_affect_area.w, imp.player_pathfinding_affect_area.h };
 }
 
 bool Imp::ResetPathfindingVariables()
@@ -624,7 +633,7 @@ void Imp::IsGround(iPoint& pos)
 void Imp::UpdateMovement(iPoint to_go, float velocity)
 {	
 	if (back)
-		velocity = 100.0f;
+		velocity = imp.pathfinding_fast_speed;
 
 	speed.x = mlast_pathfinding[pathfinding_index].x - App->map->WorldToMap(position.x, position.y).x;
 	speed.y = mlast_pathfinding[pathfinding_index].y - App->map->WorldToMap(position.x, position.y).y;

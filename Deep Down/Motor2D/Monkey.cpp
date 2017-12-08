@@ -31,16 +31,24 @@ Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y, path)
 	monkey = App->entities->GetMonkeyInfo();
 
 	///
+	LoadAnimationsSpeed();
 	animation = &monkey.r_idle;
 	monkeyState = MonkeyState::mr_idle;
 
-	lives = 1;
+	lives = monkey.lives;
 
 	collider = App->collision->AddCollider({ 0, 0, monkey.coll_size.x + monkey.coll_offset.w, monkey.coll_size.y + monkey.coll_offset.h }, COLLIDER_TYPE::COLLIDER_MONKEY, App->entities);
 	collider_size = monkey.coll_size;
+}
 
-	speed = { 60.0f,0 };
-	distance_to = 100.0f;
+void Monkey::LoadAnimationsSpeed()
+{
+	r_idle_speed = monkey.r_idle.speed;
+	l_idle_speed = monkey.l_idle.speed;
+	r_hurt_speed = monkey.r_hurt.speed;
+	l_hurt_speed = monkey.l_hurt.speed;
+	r_hit_speed = monkey.r_hit.speed;
+	l_hit_speed = monkey.l_hit.speed;
 }
 
 void Monkey::Move(const float dt)
@@ -85,13 +93,13 @@ void Monkey::Move(const float dt)
 void Monkey::Wounded()
 {
 	if (right_hurt) {
-		if (monkey.r_hurt.GetCurrentFrame().x == 576) {
+		if (monkey.r_hurt.GetCurrentFrame().x == monkey.r_hurt.frames[monkey.r_hurt.last_frame].x) {
 			dead = true;
 			monkey.r_hurt.Stop();
 		}
 	}
 	else if (left_hurt) {
-		if (monkey.l_hurt.GetCurrentFrame().x == 330) {
+		if (monkey.l_hurt.GetCurrentFrame().x == monkey.l_hurt.frames[monkey.l_hurt.last_frame].x) {
 			dead = true;
 			monkey.l_hurt.Stop();
 		}
@@ -205,14 +213,12 @@ void Monkey::UpdateDirection()
 
 void Monkey::UpdateAnimations(const float dt) 
 {
-	float speed = 10.0f;
-
-	monkey.r_idle.speed = speed * dt;
-	monkey.l_idle.speed = speed * dt;
-	monkey.r_hurt.speed = 2.0f * dt;
-	monkey.l_hurt.speed = 2.0f * dt;
-	monkey.r_hit.speed = speed * dt;
-	monkey.l_hit.speed = speed * dt;
+	monkey.r_idle.speed = r_idle_speed * dt;
+	monkey.l_idle.speed = l_idle_speed * dt;
+	monkey.r_hurt.speed = r_hurt_speed * dt;
+	monkey.l_hurt.speed = l_hurt_speed * dt;
+	monkey.r_hit.speed = r_hit_speed * dt;
+	monkey.l_hit.speed = l_hit_speed * dt;
 }
 
 void Monkey::OnCollision(Collider* c1, Collider* c2) 
@@ -253,12 +259,12 @@ void Monkey::UpdatePath()
 
 		// If it has to go back home and hasn't reached home yet, update the pathfinding back
 		if (going_back_home) {
-			if (!Pathfind())
+			if (!Pathfind(monkey.pathfinding_normal_speed))
 				going_back_home = false;
 		}
 		// If it is home, update the normal path
 		else {
-			if (!DoNormalPath())
+			if (!DoNormalPath(monkey.pathfinding_slow_speed))
 				RecalculatePath();
 		}
 	}
@@ -293,8 +299,8 @@ void Monkey::UpdatePathfinding()
 	if (pathfinding) {
 		// If player is near the enemy and the enemy hasn't reached the end of the path yet, update the path
 		if (SDL_HasIntersection(&enemy_pos, &player_pos) && pathfind) {
-			if (!Pathfind()) {
-				if (position.DistanceTo(App->entities->playerData->position) < distance_to) {
+			if (!Pathfind(monkey.pathfinding_normal_speed)) {
+				if (position.DistanceTo(App->entities->playerData->position) < monkey.min_distance_to_hit) {
 					Hit();
 					wait = true;
 				}
@@ -335,7 +341,7 @@ void Monkey::DoHit()
 {
 	if (right_hit) {
 		if (monkey.r_hit.Finished()) {
-			App->particles->AddParticle(App->particles->monkeyAttack, i_pos.x + 20, i_pos.y, COLLIDER_MONKEY_COLL, NULL, { 0,0 });
+			App->particles->AddParticle(App->particles->monkeyAttack, i_pos.x + monkey.distance_to_player, i_pos.y, COLLIDER_MONKEY_COLL, NULL, monkey.particle_speed);
 
 			pathfind = false;
 			right_hit = false;
@@ -346,7 +352,7 @@ void Monkey::DoHit()
 	}
 	else if (left_hit) {
 		if (monkey.l_hit.Finished()) {
-			App->particles->AddParticle(App->particles->monkeyAttack, i_pos.x - 20, i_pos.y, COLLIDER_MONKEY_COLL, NULL, { 0,0 });
+			App->particles->AddParticle(App->particles->monkeyAttack, i_pos.x - monkey.distance_to_player, i_pos.y, COLLIDER_MONKEY_COLL, NULL, monkey.particle_speed);
 
 			pathfind = false;
 			left_hit = false;
@@ -359,8 +365,8 @@ void Monkey::DoHit()
 
 void Monkey::UpdatePathfindingAffectArea(SDL_Rect& enemy, SDL_Rect& player)
 {
-	enemy = { i_pos.x - 30, i_pos.y - 30, 100, 100 };
-	player = { (int)App->entities->playerData->position.x - 25, (int)App->entities->playerData->position.y - 50, 100, 200 };
+	enemy = { i_pos.x - monkey.enemy_pathfinding_affect_area.x, i_pos.y - monkey.enemy_pathfinding_affect_area.y, monkey.enemy_pathfinding_affect_area.w, monkey.enemy_pathfinding_affect_area.h };
+	player = { (int)App->entities->playerData->position.x - monkey.enemy_pathfinding_affect_area.x, (int)App->entities->playerData->position.y - monkey.enemy_pathfinding_affect_area.y, monkey.enemy_pathfinding_affect_area.w, monkey.enemy_pathfinding_affect_area.h };
 }
 
 bool Monkey::ResetPathfindingVariables()
@@ -398,19 +404,19 @@ bool Monkey::CreatePathfinding(const iPoint destination)
 	return ret;
 }
 
-void Monkey::UpdateMovement(const iPoint to_go)
+void Monkey::UpdateMovement(const iPoint to_go, float velocity)
 {
 	speed.x = mlast_pathfinding[pathfinding_index].x - App->map->WorldToMap(position.x, position.y).x;
 	speed.y = mlast_pathfinding[pathfinding_index].y - App->map->WorldToMap(position.x, position.y).y;
 
-	speed.x *= 30.0f * deltaTime;
-	speed.y *= 30.0f * deltaTime;
+	speed.x *= velocity * deltaTime;
+	speed.y *= velocity * deltaTime;
 
 	position.x += speed.x;
 	position.y += speed.y;
 }
 
-void Monkey::UpdateNormalPathMovement(const iPoint to_go) 
+void Monkey::UpdateNormalPathMovement(const iPoint to_go, float velocity)
 {
 	iPoint map = App->map->WorldToMap(to_go.x, to_go.y);
 
@@ -420,22 +426,22 @@ void Monkey::UpdateNormalPathMovement(const iPoint to_go)
 	float m = sqrtf(pow(speed.x, 2.0f) + pow(speed.y, 2.0f));
 
 	if (m != 0)
-		speed.x *= 20.0f * deltaTime / m;
+		speed.x *= velocity * deltaTime / m;
 	if (m != 0)
-		speed.y *= 20.0f * deltaTime / m;
+		speed.y *= velocity * deltaTime / m;
 
 	position.x += speed.x;
 	position.y += speed.y;
 }
 
-bool Monkey::Pathfind()
+bool Monkey::Pathfind(float velocity)
 {
 	bool ret = true;
 
 	if (pathfinding_size > 1) {
 		iPoint to_go = App->map->MapToWorld(mlast_pathfinding[pathfinding_index].x, mlast_pathfinding[pathfinding_index].y);
 
-		UpdateMovement(to_go);
+		UpdateMovement(to_go, velocity);
 
 		if (App->map->WorldToMap(i_pos.x, i_pos.y) == App->map->WorldToMap(to_go.x, to_go.y)) {
 			if (pathfinding_index < pathfinding_size - 1)
@@ -451,7 +457,7 @@ bool Monkey::Pathfind()
 	return ret;
 }
 
-bool Monkey::DoNormalPath()
+bool Monkey::DoNormalPath(float velocity)
 {
 	bool ret = true;
 
@@ -459,7 +465,7 @@ bool Monkey::DoNormalPath()
 
 	if (to_go.x != 0 && to_go.y != 0) {
 
-		UpdateNormalPathMovement(to_go);
+		UpdateNormalPathMovement(to_go, velocity);
 
 		ret = true;
 

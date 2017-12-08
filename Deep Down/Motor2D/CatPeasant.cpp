@@ -28,18 +28,33 @@ CatPeasant::CatPeasant(float x, float y, PathInfo* path) : Entity(x, y, path)
 	catPeasant = App->entities->GetCatPeasantInfo();
 
 	///
+	LoadAnimationsSpeed();
 	animation = &catPeasant.r_idle;
 	catPeasantState = CatPeasantState::r_idle;
 
-	lives = 1;
+	lives = catPeasant.lives;
 	dead = false;
 
 	collider = App->collision->AddCollider({ 0, 0, catPeasant.coll_size.x + catPeasant.coll_offset.w, catPeasant.coll_size.y + catPeasant.coll_offset.h }, COLLIDER_TYPE::COLLIDER_CATPEASANT, App->entities);
 	collider_size = catPeasant.coll_size;
+}
 
-	speed = { 60.0f, 0 };
-	particle_speed = { 80.0f, 80.0f };
-	seconds_to_wait = 12.0f;
+void CatPeasant::LoadAnimationsSpeed() 
+{
+	r_idle_speed = catPeasant.r_idle.speed;
+	l_idle_speed = catPeasant.l_idle.speed;
+	r_idle_no_staff_speed = catPeasant.r_idle_no_staff.speed;
+	l_idle_no_staff_speed = catPeasant.r_idle_no_staff.speed;
+	r_hurt_speed = catPeasant.r_hurt.speed;
+	l_hurt_speed = catPeasant.l_hurt.speed;
+	r_hurt_no_staff_speed = catPeasant.r_hurt_no_staff.speed;
+	l_hurt_no_staff_speed = catPeasant.l_hurt_no_staff.speed;
+	r_dead_speed = catPeasant.r_dead.speed;
+	l_dead_speed = catPeasant.l_dead.speed;
+	r_dead_no_staff_speed = catPeasant.r_dead_no_staff.speed;
+	l_dead_no_staff_speed = catPeasant.l_dead_no_staff.speed;
+	r_throw_staff_speed = catPeasant.r_throw_staff.speed;
+	l_throw_staff_speed = catPeasant.l_throw_staff.speed;
 }
 
 void CatPeasant::Move(const float dt)
@@ -74,9 +89,6 @@ void CatPeasant::Move(const float dt)
 	// Update state
 	GeneralStatesMachine();
 
-	if (dead)
-		LOG("DEAD");
-
 	// Update collider
 	collider->SetPos(i_pos.x, i_pos.y);
 }
@@ -98,13 +110,13 @@ void CatPeasant::Wounded()
 		}
 	}
 	else if (right_die) {
-		if (catPeasant.r_dead.GetCurrentFrame().x == 464) {
+		if (catPeasant.r_dead.GetCurrentFrame().x == catPeasant.r_dead.frames[catPeasant.r_dead.last_frame].x) {
 			dead = true;
 			catPeasant.r_dead.Stop();
 		}
 	}
 	else if (left_die) {
-		if (catPeasant.l_dead.GetCurrentFrame().x == 312) {
+		if (catPeasant.l_dead.GetCurrentFrame().x == catPeasant.l_dead.frames[catPeasant.l_dead.last_frame].x) {
 			dead = true;
 			catPeasant.l_dead.Stop();
 		}
@@ -254,22 +266,20 @@ void CatPeasant::UpdateDirection() {
 
 void CatPeasant::UpdateAnimations(const float dt)
 {
-	float speed = 10.0f;
-
-	catPeasant.r_idle.speed = speed * dt;
-	catPeasant.l_idle.speed = speed * dt;
-	catPeasant.r_idle_no_staff.speed = speed * dt;
-	catPeasant.l_idle_no_staff.speed = speed * dt;
-	catPeasant.r_hurt.speed = 5.0f * dt;
-	catPeasant.l_hurt.speed = 5.0f * dt;
-	catPeasant.r_hurt_no_staff.speed = speed * dt;
-	catPeasant.l_hurt_no_staff.speed = speed * dt;
-	catPeasant.r_dead.speed = 5.0f * dt;
-	catPeasant.l_dead.speed = 5.0f * dt;
-	catPeasant.r_dead_no_staff.speed = speed * dt;
-	catPeasant.l_dead_no_staff.speed = speed * dt;
-	catPeasant.r_throw_staff.speed = speed * dt;
-	catPeasant.l_throw_staff.speed = speed * dt;
+	catPeasant.r_idle.speed = r_idle_speed * dt;
+	catPeasant.l_idle.speed = l_idle_speed * dt;
+	catPeasant.r_idle_no_staff.speed = r_idle_no_staff_speed * dt;
+	catPeasant.l_idle_no_staff.speed = l_idle_no_staff_speed * dt;
+	catPeasant.r_hurt.speed = r_hurt_speed * dt;
+	catPeasant.l_hurt.speed = l_hurt_speed * dt;
+	catPeasant.r_hurt_no_staff.speed = r_hurt_no_staff_speed * dt;
+	catPeasant.l_hurt_no_staff.speed = l_hurt_no_staff_speed * dt;
+	catPeasant.r_dead.speed = r_dead_speed * dt;
+	catPeasant.l_dead.speed = l_dead_speed * dt;
+	catPeasant.r_dead_no_staff.speed = r_dead_no_staff_speed * dt;
+	catPeasant.l_dead_no_staff.speed = l_dead_no_staff_speed * dt;
+	catPeasant.r_throw_staff.speed = r_throw_staff_speed * dt;
+	catPeasant.l_throw_staff.speed = l_throw_staff_speed * dt;
 }
 
 void CatPeasant::OnCollision(Collider* c1, Collider* c2)
@@ -278,7 +288,7 @@ void CatPeasant::OnCollision(Collider* c1, Collider* c2)
 		lives--;
 		stop = true;
 		LOG("Lifes: %i", lives);
-		App->audio->PlayFx(8);
+		App->audio->PlayFx(catPeasant.hurt_fx);
 
 		if (lives == 1) {
 			if (App->entities->playerData->position.x < position.x)
@@ -322,15 +332,15 @@ void CatPeasant::UpdatePath()
 		if (do_normal_path) {
 
 			// If she sees the player, she throws her staff towards him
-			if (position.DistanceTo(App->entities->playerData->position) < 300.0f && cooldown <= 0) {
+			if (position.DistanceTo(App->entities->playerData->position) < catPeasant.min_distance_to_shoot && cooldown <= 0) {
 				Hit();
 				wait = true;
 				cool = true;
-				cooldown = seconds_to_wait;
+				cooldown = catPeasant.seconds_to_wait;
 			}
 
 			if (!wait) {
-				if (!Pathfind()) {
+				if (!Pathfind(catPeasant.pathfinding_normal_speed)) {
 					RecalculatePath();
 					normal_path_finished = true;
 				}
@@ -372,7 +382,7 @@ void CatPeasant::DoHit()
 	if (right_hit) {
 		if (catPeasant.r_throw_staff.Finished()) {
 			// Add particle
-			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + 20, COLLIDER_PEASANT_SHOT, NULL, particle_speed);
+			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + catPeasant.distance_to_player, COLLIDER_PEASANT_SHOT, NULL, catPeasant.particle_speed);
 
 			// Reset variables
 			right_hit = false;
@@ -384,7 +394,7 @@ void CatPeasant::DoHit()
 	else if (left_hit) {
 		if (catPeasant.l_throw_staff.Finished()) {
 			// Add particle
-			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + 20, COLLIDER_PEASANT_SHOT, NULL, particle_speed);
+			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + catPeasant.distance_to_player, COLLIDER_PEASANT_SHOT, NULL, catPeasant.particle_speed);
 
 			// Reset variables
 			left_hit = false;
@@ -441,25 +451,25 @@ bool CatPeasant::CreatePathfinding(const iPoint destination)
 	return ret;
 }
 
-void CatPeasant::UpdateMovement(const iPoint to_go)
+void CatPeasant::UpdateMovement(const iPoint to_go, float velocity)
 {
 	speed.x = mlast_pathfinding[pathfinding_index].x - App->map->WorldToMap(position.x, position.y).x;
 	speed.y = mlast_pathfinding[pathfinding_index].y - App->map->WorldToMap(position.x, position.y).y;
 
-	speed.x *= 20.0f * deltaTime;
-	speed.y *= 20.0f * deltaTime;
+	speed.x *= velocity * deltaTime;
+	speed.y *= velocity * deltaTime;
 
 	position.x += speed.x;
 	position.y += speed.y;
 }
 
-bool CatPeasant::Pathfind()
+bool CatPeasant::Pathfind(float velocity)
 {
 	bool ret = true;
 
 	iPoint to_go = App->map->MapToWorld(mlast_pathfinding[pathfinding_index].x, mlast_pathfinding[pathfinding_index].y);
 
-	UpdateMovement(to_go);
+	UpdateMovement(to_go, velocity);
 
 	if (App->map->WorldToMap(i_pos.x, i_pos.y) == App->map->WorldToMap(to_go.x, to_go.y)) {
 		if (pathfinding_index < pathfinding_size - 1)
