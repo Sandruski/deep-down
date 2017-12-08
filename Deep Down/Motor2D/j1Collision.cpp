@@ -24,6 +24,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_IMP_BOMB_EXPLOSION] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_MONKEY_COLL] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_CAT] = true;
 
 	matrix[COLLIDER_ARROW][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_ARROW][COLLIDER_CATPEASANT] = true;
@@ -34,6 +35,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_ARROW][COLLIDER_ARROW] = false;
 	matrix[COLLIDER_ARROW][COLLIDER_IMP_BOMB_EXPLOSION] = false;
 	matrix[COLLIDER_ARROW][COLLIDER_MONKEY_COLL] = false;
+	matrix[COLLIDER_ARROW][COLLIDER_CAT] = false;
 
 	matrix[COLLIDER_CATPEASANT][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_CATPEASANT][COLLIDER_ARROW] = true;
@@ -44,6 +46,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_CATPEASANT][COLLIDER_CATPEASANT] = true;
 	matrix[COLLIDER_CATPEASANT][COLLIDER_IMP_BOMB_EXPLOSION] = false;
 	matrix[COLLIDER_CATPEASANT][COLLIDER_MONKEY_COLL] = false;
+	matrix[COLLIDER_CATPEASANT][COLLIDER_CAT] = false;
 
 	matrix[COLLIDER_PEASANT_SHOT][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_PEASANT_SHOT][COLLIDER_ARROW] = false;
@@ -54,6 +57,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PEASANT_SHOT][COLLIDER_PEASANT_SHOT] = false;
 	matrix[COLLIDER_PEASANT_SHOT][COLLIDER_IMP_BOMB_EXPLOSION] = false;
 	matrix[COLLIDER_PEASANT_SHOT][COLLIDER_MONKEY_COLL] = false;
+	matrix[COLLIDER_PEASANT_SHOT][COLLIDER_CAT] = false;
 
 	matrix[COLLIDER_IMP_BOMB][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_IMP_BOMB][COLLIDER_ARROW] = false;
@@ -64,6 +68,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_IMP_BOMB][COLLIDER_IMP_BOMB] = false;
 	matrix[COLLIDER_IMP_BOMB][COLLIDER_IMP_BOMB_EXPLOSION] = false;
 	matrix[COLLIDER_IMP_BOMB][COLLIDER_MONKEY_COLL] = false;
+	matrix[COLLIDER_IMP_BOMB][COLLIDER_CAT] = false;
 
 	matrix[COLLIDER_IMP][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_IMP][COLLIDER_ARROW] = true;
@@ -74,6 +79,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_IMP][COLLIDER_IMP] = true;
 	matrix[COLLIDER_IMP][COLLIDER_IMP_BOMB_EXPLOSION] = false;
 	matrix[COLLIDER_IMP][COLLIDER_MONKEY_COLL] = false;
+	matrix[COLLIDER_IMP][COLLIDER_CAT] = false;
 
 	matrix[COLLIDER_MONKEY][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_MONKEY][COLLIDER_ARROW] = true;
@@ -84,6 +90,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_MONKEY][COLLIDER_MONKEY] = false;
 	matrix[COLLIDER_MONKEY][COLLIDER_IMP_BOMB_EXPLOSION] = false;
 	matrix[COLLIDER_MONKEY][COLLIDER_MONKEY_COLL] = false;
+	matrix[COLLIDER_MONKEY][COLLIDER_CAT] = false;
 
 	matrix[COLLIDER_IMP_BOMB_EXPLOSION][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_IMP_BOMB_EXPLOSION][COLLIDER_ARROW] = false;
@@ -94,6 +101,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_IMP_BOMB_EXPLOSION][COLLIDER_MONKEY] = false;
 	matrix[COLLIDER_IMP_BOMB_EXPLOSION][COLLIDER_IMP_BOMB_EXPLOSION] = false;
 	matrix[COLLIDER_IMP_BOMB_EXPLOSION][COLLIDER_MONKEY_COLL] = false;
+	matrix[COLLIDER_IMP_BOMB_EXPLOSION][COLLIDER_CAT] = false;
 
 	matrix[COLLIDER_MONKEY_COLL][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_MONKEY_COLL][COLLIDER_ARROW] = false;
@@ -104,6 +112,18 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_MONKEY_COLL][COLLIDER_MONKEY] = false;
 	matrix[COLLIDER_MONKEY_COLL][COLLIDER_IMP_BOMB_EXPLOSION] = false;
 	matrix[COLLIDER_MONKEY_COLL][COLLIDER_MONKEY_COLL] = false;
+	matrix[COLLIDER_MONKEY_COLL][COLLIDER_CAT] = false;
+
+	matrix[COLLIDER_CAT][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_CAT][COLLIDER_ARROW] = false;
+	matrix[COLLIDER_CAT][COLLIDER_CATPEASANT] = false;
+	matrix[COLLIDER_CAT][COLLIDER_PEASANT_SHOT] = false;
+	matrix[COLLIDER_CAT][COLLIDER_IMP_BOMB] = false;
+	matrix[COLLIDER_CAT][COLLIDER_IMP] = false;
+	matrix[COLLIDER_CAT][COLLIDER_MONKEY] = false;
+	matrix[COLLIDER_CAT][COLLIDER_IMP_BOMB_EXPLOSION] = false;
+	matrix[COLLIDER_CAT][COLLIDER_MONKEY_COLL] = false;
+	matrix[COLLIDER_CAT][COLLIDER_CAT] = false;
 }
 
 // Destructor
@@ -209,6 +229,9 @@ void j1Collision::DebugDraw()
 			break;
 		case COLLIDER_MONKEY_COLL:
 			App->render->DrawQuad(colliders[i]->rect, 1, 255, 65, alpha);
+			break;
+		case COLLIDER_CAT:
+			App->render->DrawQuad(colliders[i]->rect, 40, 20, 10, alpha);
 			break;
 		}
 	}

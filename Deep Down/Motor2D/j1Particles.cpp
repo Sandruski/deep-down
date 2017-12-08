@@ -32,6 +32,9 @@ bool j1Particles::Awake(pugi::xml_node& config) {
 	
 	bool ret = true;
 
+	// Load texture paths
+	Sparkle_spritesheet = config.child("spritesheets").child("spritesheet").attribute("name").as_string();
+
 	pugi::xml_node animations_node = config.child("animations");
 	pugi::xml_node node;
 
@@ -98,6 +101,20 @@ bool j1Particles::Awake(pugi::xml_node& config) {
 	Imp_bomb_explosion.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	Imp_bomb_explosion.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
 
+	//Leaf
+	node = animations_node.child("Leaf");
+	leaf.life = node.attribute("life").as_uint();
+	node = node.child("frame");
+	leaf.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	leaf.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
+
+	//Sparkle
+	node = animations_node.child("Sparkle");
+	sparkle.life = node.attribute("life").as_uint();
+	node = node.child("frame");
+	sparkle.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	sparkle.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
+
 	monkeyAttack.life = 100;
 	monkeyAttack.coll_size = { 20,20 };
 
@@ -108,6 +125,7 @@ bool j1Particles::Awake(pugi::xml_node& config) {
 bool j1Particles::Start()
 {
 	LOG("Loading particles");
+	SparkleTex = App->tex->Load(Sparkle_spritesheet.GetString());
 
 	return true;
 }
@@ -116,6 +134,7 @@ bool j1Particles::Start()
 bool j1Particles::CleanUp()
 {
 	LOG("Unloading particles");
+	App->tex->UnLoad(SparkleTex);
 
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{

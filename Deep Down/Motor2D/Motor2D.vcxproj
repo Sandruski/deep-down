@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cat.cpp" />
     <ClCompile Include="CatPeasant.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Imp.cpp" />
@@ -114,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Cat.h" />
     <ClInclude Include="CatPeasant.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Imp.h" />

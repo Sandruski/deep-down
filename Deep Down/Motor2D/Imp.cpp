@@ -314,7 +314,7 @@ void Imp::OnCollision(Collider* c1, Collider* c2)
 
 void Imp::UpdatePath()
 {
-	if (path_info->end_pos.x != NULL && path_info->end_pos.y != NULL) {
+	if (path_info->end_pos.x != 0 && path_info->end_pos.y != 0) {
 
 		// If enemy was pathfinding towards the player and doesn't see it anymore, create a pathfinding back home
 		if (pathfinding_stop) {

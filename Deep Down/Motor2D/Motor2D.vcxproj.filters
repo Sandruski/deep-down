@@ -94,6 +94,9 @@
     <ClCompile Include="j1Fonts.cpp">
       <Filter>Game\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Cat.cpp">
+      <Filter>Game\Modules\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -212,6 +215,9 @@
     </ClInclude>
     <ClInclude Include="j1Fonts.h">
       <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Cat.h">
+      <Filter>Game\Modules\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

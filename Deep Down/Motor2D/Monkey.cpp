@@ -457,7 +457,7 @@ bool Monkey::DoNormalPath()
 
 	iPoint to_go = path_info->path[normal_path_index];
 
-	if (to_go.x != NULL && to_go.y != NULL) {
+	if (to_go.x != 0 && to_go.y != 0) {
 
 		UpdateNormalPathMovement(to_go);
 

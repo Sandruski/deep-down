@@ -65,6 +65,7 @@
       <spritesheet name="Assets/Sprites/Textures/Monkey.png"/>
       <spritesheet name="Assets/Sprites/Textures/Imp.png"/>
       <spritesheet name="Assets/Sprites/Textures/Kaho.png"/>
+      <spritesheet name="Assets/Sprites/Textures/Cat.png"/>
     </spritesheets>
     <types>
       <player>
@@ -460,189 +461,228 @@
           </l_dead_no_staff>
         </animations>
       </cat_peasant>
+      <cat>
+        <general>
+          <coll_offset x="5" y="9" w="-9" h="-9"/>
+        </general>
+        <animations>
+          <r_idle speed="0.2" loops="1">
+            <frame x="2" y="351" w="48" h="32"/>
+            <frame x="52" y="351" w="48" h="32"/>
+            <frame x="102" y="351" w="48" h="32"/>
+            <frame x="152" y="351" w="48" h="32"/>
+            <frame x="202" y="351" w="48" h="32"/>
+            <frame x="252" y="351" w="48" h="32"/>
+            <frame x="302" y="351" w="48" h="32"/>
+            <frame x="352" y="351" w="48" h="32"/>
+            <frame x="402" y="351" w="48" h="32"/>
+            <frame x="452" y="351" w="48" h="32"/>
+            <frame x="502" y="351" w="48" h="32"/>
+          </r_idle>
+          <l_idle speed="0.2" loops="1">
+            <frame x="502" y="403" w="48" h="32"/>
+            <frame x="452" y="403" w="48" h="32"/>
+            <frame x="402" y="403" w="48" h="32"/>
+            <frame x="352" y="403" w="48" h="32"/>
+            <frame x="302" y="403" w="48" h="32"/>
+            <frame x="252" y="403" w="48" h="32"/>
+            <frame x="202" y="403" w="48" h="32"/>
+            <frame x="152" y="403" w="48" h="32"/>
+            <frame x="102" y="403" w="48" h="32"/>
+            <frame x="52" y="403" w="48" h="32"/>
+            <frame x="2" y="403" w="48" h="32"/>
+          </l_idle>
+          <r_going_ZZZ speed="0.2" loops="1">
+            <frame x="2" y="455" w="48" h="32"/>
+            <frame x="52" y="455" w="48" h="32"/>
+            <frame x="102" y="455" w="48" h="32"/>
+            <frame x="152" y="455" w="48" h="32"/>
+          </r_going_ZZZ>      
+          <l_going_ZZZ speed="0.2" loops="1">
+            <frame x="502" y="455" w="48" h="32"/>
+            <frame x="452" y="455" w="48" h="32"/>
+            <frame x="402" y="455" w="48" h="32"/>
+            <frame x="352" y="455" w="48" h="32"/>
+          </l_going_ZZZ>      
+          <r_waking_up speed="0.2" loops="1">
+            <frame x="2" y="507" w="48" h="32"/>
+            <frame x="52" y="507" w="48" h="32"/>
+            <frame x="102" y="507" w="48" h="32"/>
+            <frame x="152" y="507" w="48" h="32"/>
+          </r_waking_up>
+          <l_waking_up speed="0.2" loops="1">
+            <frame x="502" y="507" w="48" h="32"/>
+            <frame x="452" y="507" w="48" h="32"/>
+            <frame x="402" y="507" w="48" h="32"/>
+            <frame x="352" y="507" w="48" h="32"/>
+          </l_waking_up>
+          <r_to_crouch speed="0.2" loops="1">
+            <frame x="2" y="559" w="48" h="32"/>
+            <frame x="52" y="559" w="48" h="32"/>
+            <frame x="102" y="559" w="48" h="32"/>
+            <frame x="152" y="559" w="48" h="32"/>
+          </r_to_crouch>
+          <l_to_crouch speed="0.2" loops="1">
+            <frame x="502" y="559" w="48" h="32"/>
+            <frame x="452" y="559" w="48" h="32"/>
+            <frame x="402" y="559" w="48" h="32"/>
+            <frame x="352" y="559" w="48" h="32"/>
+          </l_to_crouch>
+          <r_crouch speed="0.2" loops="1">
+            <frame x="2" y="611" w="48" h="32"/>
+            <frame x="52" y="611" w="48" h="32"/>
+            <frame x="102" y="611" w="48" h="32"/>
+            <frame x="152" y="611" w="48" h="32"/>
+            <frame x="202" y="611" w="48" h="32"/>
+            <frame x="252" y="611" w="48" h="32"/>
+            <frame x="302" y="611" w="48" h="32"/>
+            <frame x="352" y="611" w="48" h="32"/>
+            <frame x="402" y="611" w="48" h="32"/>
+          </r_crouch>
+          <l_crouch speed="0.2" loops="1">
+            <frame x="974" y="611" w="48" h="32"/>
+            <frame x="924" y="611" w="48" h="32"/>
+            <frame x="874" y="611" w="48" h="32"/>
+            <frame x="824" y="611" w="48" h="32"/>
+            <frame x="774" y="611" w="48" h="32"/>
+            <frame x="724" y="611" w="48" h="32"/>
+            <frame x="674" y="611" w="48" h="32"/>
+            <frame x="624" y="611" w="48" h="32"/>
+            <frame x="574" y="611" w="48" h="32"/>
+          </l_crouch>
+          <r_rise speed="0.2" loops="1">
+            <frame x="2" y="663" w="48" h="32"/>
+            <frame x="52" y="663" w="48" h="32"/>
+            <frame x="102" y="663" w="48" h="32"/>
+            <frame x="152" y="663" w="48" h="32"/>
+          </r_rise>
+          <l_rise speed="0.2" loops="1">
+            <frame x="402" y="663" w="48" h="32"/>
+            <frame x="352" y="663" w="48" h="32"/>
+            <frame x="302" y="663" w="48" h="32"/>
+            <frame x="252" y="663" w="48" h="32"/>
+          </l_rise>
+          <r_jump speed="0.2" loops="1">
+            <frame x="203" y="507" w="48" h="32"/>
+          </r_jump>
+          <l_jump speed="0.2" loops="1">
+            <frame x="300" y="507" w="48" h="32"/>
+          </l_jump>
+          <r_fall speed="0.2" loops="1">
+            <frame x="2" y="716" w="48" h="32"/>
+            <frame x="52" y="716" w="48" h="32"/>
+            <frame x="102" y="716" w="48" h="32"/>
+          </r_fall>
+          <l_fall speed="0.2" loops="1">
+            <frame x="402" y="716" w="48" h="32"/>
+            <frame x="352" y="716" w="48" h="32"/>
+            <frame x="302" y="716" w="48" h="32"/>
+          </l_fall>
+          <r_land_soft speed="0.2" loops="1">
+            <frame x="2" y="769" w="48" h="32"/>
+            <frame x="52" y="769" w="48" h="32"/>
+            <frame x="102" y="769" w="48" h="32"/>
+            <frame x="152" y="769" w="48" h="32"/>
+          </r_land_soft>
+          <l_land_soft speed="0.2" loops="1">
+            <frame x="402" y="769" w="48" h="32"/>
+            <frame x="352" y="769" w="48" h="32"/>
+            <frame x="302" y="769" w="48" h="32"/>
+            <frame x="252" y="769" w="48" h="32"/>
+          </l_land_soft>
+          <r_roll speed="0.2" loops="1">
+            <frame x="2" y="823" w="48" h="32"/>
+            <frame x="52" y="823" w="48" h="32"/>
+            <frame x="102" y="823" w="48" h="32"/>
+            <frame x="152" y="823" w="48" h="32"/>           
+            <frame x="202" y="823" w="48" h="32"/>
+            <frame x="252" y="823" w="48" h="32"/>
+            <frame x="302" y="823" w="48" h="32"/>
+            <frame x="352" y="823" w="48" h="32"/>
+          </r_roll>
+          <l_roll speed="0.2" loops="1">
+            <frame x="974" y="823" w="48" h="32"/>
+            <frame x="924" y="823" w="48" h="32"/>
+            <frame x="874" y="823" w="48" h="32"/>
+            <frame x="824" y="823" w="48" h="32"/>           
+            <frame x="774" y="823" w="48" h="32"/>
+            <frame x="724" y="823" w="48" h="32"/>
+            <frame x="674" y="823" w="48" h="32"/>
+            <frame x="624" y="823" w="48" h="32"/>
+          </l_roll>
+          <r_to_run speed="0.2" loops="1">
+            <frame x="2" y="876" w="48" h="32"/>
+            <frame x="52" y="876" w="48" h="32"/>
+          </r_to_run>
+          <l_to_run speed="0.2" loops="1">
+            <frame x="402" y="876" w="48" h="32"/>
+            <frame x="352" y="876" w="48" h="32"/>
+          </l_to_run>
+          <r_run speed="0.2" loops="1">
+            <frame x="2" y="929" w="48" h="32"/>
+            <frame x="52" y="929" w="48" h="32"/>
+            <frame x="102" y="929" w="48" h="32"/>
+            <frame x="152" y="929" w="48" h="32"/>
+            <frame x="202" y="929" w="48" h="32"/>
+            <frame x="252" y="929" w="48" h="32"/>
+          </r_run>
+          <l_run speed="0.2" loops="1">
+            <frame x="974" y="929" w="48" h="32"/>
+            <frame x="924" y="929" w="48" h="32"/>
+            <frame x="874" y="929" w="48" h="32"/>
+            <frame x="824" y="929" w="48" h="32"/>
+            <frame x="774" y="929" w="48" h="32"/>
+            <frame x="724" y="929" w="48" h="32"/>
+          </l_run>
+          <r_turn speed="0.2" loops="1">
+            <frame x="2" y="983" w="48" h="32"/>
+            <frame x="52" y="983" w="48" h="32"/>
+            <frame x="102" y="983" w="48" h="32"/>
+          </r_turn>
+          <l_turn speed="0.2" loops="1">
+            <frame x="402" y="983" w="48" h="32"/>
+            <frame x="352" y="983" w="48" h="32"/>
+            <frame x="302" y="983" w="48" h="32"/>
+          </l_turn>
+          <r_brake speed="0.2" loops="1">
+            <frame x="2" y="1035" w="48" h="32"/>
+            <frame x="52" y="1035" w="48" h="32"/>
+            <frame x="102" y="1035" w="48" h="32"/>
+            <frame x="152" y="1035" w="48" h="32"/>
+            <frame x="202" y="1035" w="48" h="32"/>
+            <frame x="252" y="1035" w="48" h="32"/>
+          </r_brake>
+          <l_brake speed="0.2" loops="1">
+            <frame x="974" y="1035" w="48" h="32"/>
+            <frame x="924" y="1035" w="48" h="32"/>
+            <frame x="874" y="1035" w="48" h="32"/>
+            <frame x="824" y="1035" w="48" h="32"/>
+            <frame x="774" y="1035" w="48" h="32"/>
+            <frame x="724" y="1035" w="48" h="32"/>
+          </l_brake>
+          <attack speed="0.2" loops="1">
+            <frame x="2" y="18" w="128" h="96"/>
+            <frame x="132" y="18" w="128" h="96"/>
+            <frame x="262" y="18" w="128" h="96"/>
+            <frame x="392" y="18" w="128" h="96"/>
+            <frame x="522" y="18" w="128" h="96"/>
+            <frame x="652" y="18" w="128" h="96"/>
+            <frame x="782" y="18" w="128" h="96"/>                     
+            <frame x="2" y="118" w="128" h="96"/>
+            <frame x="132" y="118" w="128" h="96"/>
+            <frame x="262" y="118" w="128" h="96"/>
+            <frame x="392" y="118" w="128" h="96"/>
+            <frame x="522" y="118" w="128" h="96"/>
+          </attack>
+        </animations>
+      </cat>
     </types>    
   </entities>
   
-  <player>
-    <general>
-      <state value="2"/>
-      <gravity value="0.1"/>
-      <speed x="0" y="0"/>
-      <collider x="14" y="10" w="20" h="38"/>
-      <check_collision offset="3"/>
-    </general>
-    <spritesheets>
-      <spritesheet name="Assets/Sprites/Textures/Kaho.png"/>
-    </spritesheets>
-    <animations>
-      <idle speed="100" loops="1">
-        <frame x="1" y="454" w="48" h="48"/>
-        <frame x="50" y="454" w="48" h="48"/>
-        <frame x="99" y="454" w="48" h="48"/>
-        <frame x="148" y="454" w="48" h="48"/>
-        <frame x="197" y="454" w="48" h="48"/>
-        <frame x="246" y="454" w="48" h="48"/>
-      </idle>
-      <idle2 speed="100" loops="1">
-        <frame x="686" y="454" w="48" h="48"/>
-        <frame x="735" y="454" w="48" h="48"/>
-        <frame x="784" y="454" w="48" h="48"/>
-        <frame x="833" y="454" w="48" h="48"/>
-        <frame x="882" y="454" w="48" h="48"/>
-        <frame x="931" y="454" w="48" h="48"/>
-      </idle2>
-      <forward speed="1" loops="1">
-        <frame x="99" y="206" w="48" h="48"/>
-        <frame x="148" y="206" w="48" h="48"/>
-        <frame x="197" y="206" w="48" h="48"/>
-        <frame x="246" y="206" w="48" h="48"/>
-        <frame x="295" y="206" w="48" h="48"/>
-        <frame x="344" y="206" w="48" h="48"/>
-        <frame x="393" y="206" w="48" h="48"/>
-        <frame x="442" y="206" w="48" h="48"/>
-      </forward>
-      <backward speed="1" loops="1">
-        <frame x="833" y="206" w="48" h="48"/>
-        <frame x="784" y="206" w="48" h="48"/>
-        <frame x="735" y="206" w="48" h="48"/>
-        <frame x="686" y="206" w="48" h="48"/>
-        <frame x="637" y="206" w="48" h="48"/>
-        <frame x="588" y="206" w="48" h="48"/>
-        <frame x="539" y="206" w="48" h="48"/>
-        <frame x="490" y="206" w="48" h="48"/>
-      </backward>
-      <crouch speed="1" loops="1">
-        <frame x="99" y="268" w="48" h="48"/>
-        <frame x="148" y="268" w="48" h="48"/>
-      </crouch>
-      <crouch2 speed="1" loops="1">
-        <frame x="784" y="268" w="48" h="48"/>
-        <frame x="833" y="268" w="48" h="48"/>
-      </crouch2>
-      <shot speed="1" loops="0">
-        <frame x="1" y="13" w="48" h="48"/>
-        <frame x="50" y="13" w="48" h="48"/>
-        <frame x="99" y="13" w="48" h="48"/>
-        <frame x="148" y="13" w="48" h="48"/>
-        <frame x="197" y="13" w="48" h="48"/>
-        <frame x="246" y="13" w="48" h="48"/>
-      </shot>
-      <shot2 speed="1" loops="0">
-        <frame x="931" y="13" w="48" h="48"/>
-        <frame x="882" y="13" w="48" h="48"/>
-        <frame x="833" y="13" w="48" h="48"/>
-        <frame x="784" y="13" w="48" h="48"/>
-        <frame x="735" y="13" w="48" h="48"/>
-        <frame x="686" y="13" w="48" h="48"/>
-      </shot2>
-      <crouchShot speed="1" loops="0">
-        <frame x="1" y="140" w="48" h="48"/>
-        <frame x="50" y="140" w="48" h="48"/>
-        <frame x="99" y="140" w="48" h="48"/>
-        <frame x="148" y="140" w="48" h="48"/>
-        <frame x="197" y="140" w="48" h="48"/>
-        <frame x="246" y="140" w="48" h="48"/>
-      </crouchShot>
-      <crouchShot2 speed="1" loops="0">
-        <frame x="931" y="140" w="48" h="48"/>
-        <frame x="882" y="140" w="48" h="48"/>
-        <frame x="833" y="140" w="48" h="48"/>
-        <frame x="784" y="140" w="48" h="48"/>
-        <frame x="735" y="140" w="48" h="48"/>
-        <frame x="686" y="140" w="48" h="48"/>
-      </crouchShot2>
-      <jump speed="1" loops="1">
-        <frame x="1" y="390" w="48" h="48"/>
-        <frame x="50" y="390" w="48" h="48"/>
-        <frame x="99" y="390" w="48" h="48"/>
-      </jump>
-      <jump2 speed="1" loops="1">
-        <frame x="833" y="390" w="48" h="48"/>
-        <frame x="882" y="390" w="48" h="48"/>
-        <frame x="931" y="390" w="48" h="48"/>
-      </jump2>
-      <punished speed="1" loops="0">
-        <frame x="51" y="332" w="48" h="44"/>
-        <frame x="101" y="332" w="48" h="44"/>
-        <frame x="151" y="332" w="48" h="44"/>
-      </punished>
-      <punished2 speed="1" loops="0">
-        <frame x="780" y="332" w="48" h="44"/>
-        <frame x="830" y="332" w="48" h="44"/>
-        <frame x="880" y="332" w="48" h="44"/>
-      </punished2>
-      <dash speed="1" loops="1">
-        <frame x="1" y="518" w="48" h="48"/>
-      </dash>
-      <dash2 speed="1" loops="1">
-        <frame x="931" y="518" w="48" h="48"/>
-      </dash2>
-      <firstAttack speed="1" loops="0">
-        <frame x="1" y="580" w="48" h="48"/>
-        <frame x="50" y="580" w="48" h="48"/>
-        <frame x="99" y="580" w="48" h="48"/>
-        <frame x="148" y="580" w="48" h="48"/>
-        <frame x="197" y="580" w="48" h="48"/>
-        <frame x="246" y="580" w="48" h="48"/>
-        <frame x="295" y="580" w="48" h="48"/>
-      </firstAttack>
-      <secondAttack speed="1" loops="0">
-        <frame x="1" y="643" w="48" h="48"/>
-        <frame x="50" y="643" w="48" h="48"/>
-        <frame x="99" y="643" w="48" h="48"/>
-        <frame x="148" y="643" w="48" h="48"/>
-        <frame x="197" y="643" w="48" h="48"/>
-        <frame x="246" y="643" w="48" h="48"/>
-        <frame x="295" y="643" w="48" h="48"/>
-      </secondAttack>
-      <thirdAttack speed="1" loops="0">
-        <frame x="1" y="706" w="48" h="48"/>
-        <frame x="50" y="706" w="48" h="48"/>
-        <frame x="99" y="706" w="48" h="48"/>
-        <frame x="148" y="706" w="48" h="48"/>
-        <frame x="197" y="706" w="48" h="48"/>
-        <frame x="246" y="706" w="48" h="48"/>
-        <frame x="295" y="706" w="48" h="48"/>
-        <frame x="344" y="706" w="48" h="48"/>
-        <frame x="393" y="706" w="48" h="48"/>
-        <frame x="442" y="706" w="48" h="48"/>
-        <frame x="491" y="706" w="48" h="48"/>
-      </thirdAttack>
-      <firstAttack2 speed="1" loops="0">
-        <frame x="931" y="643" w="48" h="48"/>
-        <frame x="882" y="643" w="48" h="48"/>
-        <frame x="833" y="643" w="48" h="48"/>
-        <frame x="784" y="643" w="48" h="48"/>
-        <frame x="735" y="643" w="48" h="48"/>
-        <frame x="686" y="643" w="48" h="48"/>
-        <frame x="637" y="643" w="48" h="48"/>
-      </firstAttack2>
-      <secondAttack2 speed="1" loops="0">
-        <frame x="931" y="706" w="48" h="48"/>
-        <frame x="882" y="706" w="48" h="48"/>
-        <frame x="833" y="706" w="48" h="48"/>
-        <frame x="784" y="706" w="48" h="48"/>
-        <frame x="735" y="706" w="48" h="48"/>
-        <frame x="686" y="706" w="48" h="48"/>
-        <frame x="637" y="706" w="48" h="48"/>
-      </secondAttack2>
-      <thirdAttack2 speed="1" loops="0">
-        <frame x="931" y="582" w="48" h="48"/>
-        <frame x="882" y="582" w="48" h="48"/>
-        <frame x="833" y="582" w="48" h="48"/>
-        <frame x="784" y="582" w="48" h="48"/>
-        <frame x="735" y="582" w="48" h="48"/>
-        <frame x="686" y="582" w="48" h="48"/>
-        <frame x="637" y="582" w="48" h="48"/>
-        <frame x="588" y="582" w="48" h="48"/>
-        <frame x="539" y="582" w="48" h="48"/>
-        <frame x="490" y="582" w="48" h="48"/>
-        <frame x="441" y="582" w="48" h="48"/>
-      </thirdAttack2>
-    </animations>
-  </player>
-
   <particles>
+     <spritesheets>
+      <spritesheet name="Assets/Sprites/Textures/Sparkle.png"/>
+    </spritesheets>
     <animations>
       <arrowRight life="10000">
         <frame x="58" y="520" w="22" h="3"/>
@@ -671,7 +711,63 @@
       </Imp_l_bomb>
       <Imp_bomb_explosion life="1000">
         <frame x="134" y="38" w="16" h="16"/>
-      </Imp_bomb_explosion>
+      </Imp_bomb_explosion>        
+      <leaf life="1000">
+        <frame x="2" y="236" w="128" h="96"/>
+        <frame x="132" y="236" w="128" h="96"/>
+        <frame x="262" y="236" w="128" h="96"/>
+        <frame x="392" y="236" w="128" h="96"/>
+        <frame x="522" y="236" w="128" h="96"/>
+      </leaf>
+      <sparkle life="10000">
+        <frame x="1" y="1" w="48" h="48"/>
+        <frame x="50" y="1" w="48" h="48"/>
+        <frame x="99" y="1" w="48" h="48"/>
+        <frame x="148" y="1" w="48" h="48"/>
+        <frame x="197" y="1" w="48" h="48"/>
+        <frame x="246" y="1" w="48" h="48"/>
+        <frame x="295" y="1" w="48" h="48"/>
+        <frame x="344" y="1" w="48" h="48"/>
+        <frame x="442" y="1" w="48" h="48"/>
+      
+        <frame x="1" y="50" w="48" h="48"/>
+        <frame x="50" y="50" w="48" h="48"/>
+        <frame x="99" y="50" w="48" h="48"/>
+        <frame x="148" y="50" w="48" h="48"/>
+        <frame x="197" y="50" w="48" h="48"/>
+        <frame x="246" y="50" w="48" h="48"/>
+        <frame x="295" y="50" w="48" h="48"/>
+        <frame x="344" y="50" w="48" h="48"/>
+        <frame x="442" y="50" w="48" h="48"/>
+      
+        <frame x="1" y="99" w="48" h="48"/>
+        <frame x="50" y="99" w="48" h="48"/>
+        <frame x="99" y="99" w="48" h="48"/>
+        <frame x="148" y="99" w="48" h="48"/>
+        <frame x="197" y="99" w="48" h="48"/>
+        <frame x="246" y="99" w="48" h="48"/>
+        <frame x="295" y="99" w="48" h="48"/>
+        <frame x="344" y="99" w="48" h="48"/>
+        <frame x="442" y="99" w="48" h="48"/>
+      
+        <frame x="1" y="148" w="48" h="48"/>
+        <frame x="50" y="148" w="48" h="48"/>
+        <frame x="99" y="148" w="48" h="48"/>
+        <frame x="148" y="148" w="48" h="48"/>
+        <frame x="197" y="148" w="48" h="48"/>
+        <frame x="246" y="148" w="48" h="48"/>
+        <frame x="295" y="148" w="48" h="48"/>
+        <frame x="344" y="148" w="48" h="48"/>
+        <frame x="442" y="148" w="48" h="48"/>
+      
+        <frame x="1" y="197" w="48" h="48"/>
+        <frame x="50" y="197" w="48" h="48"/>
+        <frame x="99" y="197" w="48" h="48"/>
+        <frame x="148" y="197" w="48" h="48"/>
+        <frame x="197" y="197" w="48" h="48"/>
+        <frame x="246" y="197" w="48" h="48"/>
+        <frame x="295" y="197" w="48" h="48"/>
+      </sparkle>
     </animations>
   </particles>
 

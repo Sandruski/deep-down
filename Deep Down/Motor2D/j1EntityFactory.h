@@ -8,13 +8,14 @@
 #include "CatPeasant.h"
 #include "Imp.h"
 #include "Monkey.h"
+#include "Cat.h"
 #include "Player.h"
 
 #define MAX_ENTITIES 100
 
 struct SDL_Texture;
 
-// Utility: use ENTITY_TYPES values to assign a type to enemies in Tiled 
+// Utility: use ENTITY_TYPES values to assign a type to entities in Tiled 
 enum ENTITY_TYPES
 {
 	NO_TYPE,
@@ -80,6 +81,7 @@ public:
 	ImpInfo& GetImpInfo() { return imp; }
 	MonkeyInfo& GetMonkeyInfo() { return monkey; }
 	PlayerInfo& GetPlayerInfo() { return player; }
+	CatInfo& GetCatInfo() { return cat; }
 
 	// Get paths info
 	PathInfo* GetPathByIndex(uint index) const;
@@ -102,12 +104,14 @@ private:
 	p2SString Monkey_spritesheet = nullptr;
 	p2SString Imp_spritesheet = nullptr;
 	p2SString Player_spritesheet = nullptr;
+	p2SString Cat_spritesheet = nullptr;
 
-	// Enemies info
+	// Entities info
 	ImpInfo imp;
 	MonkeyInfo monkey;
 	PlayerInfo player;
 	CatPeasantInfo catPeasant;
+	CatInfo cat;
 
 	// Paths info list
 	p2List<PathInfo*> paths;
@@ -117,9 +121,9 @@ public:
 	SDL_Texture* MonkeyTex = nullptr;
 	SDL_Texture* ImpTex = nullptr;
 	SDL_Texture* PlayerTex = nullptr;
+	SDL_Texture* CatTex = nullptr;
 
 	Player* playerData = nullptr;
-
 };
 
 #endif // __j1EntityFactory_H__
