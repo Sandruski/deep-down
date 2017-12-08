@@ -29,11 +29,15 @@ public:
 
 	void Draw() const;
 	void Update(float dt);
+	void HandleInput();
 
 	void SetLifeProgress(const int life);
+	void IncreaseLifeProgress(const int life);
 	void DecreaseLifeProgress(const int life);
 
 private:
+	UIEvents UIevent = NO_EVENT_;
+	bool next_event = false;
 	UILifeBar_Info life_bar;
 };
 

@@ -131,6 +131,7 @@ public:
 
 	uint capFrames = 0;
 	bool toCap = true;
+	bool pause = false;
 
 };
 

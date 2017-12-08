@@ -58,7 +58,8 @@ void Player::Move(float dt)
 	CheckIfDead();
 
 	// Update state
-	PlayerStateMachine();
+	if (!App->pause)
+		PlayerStateMachine();
 
 	ApplySpeed();
 

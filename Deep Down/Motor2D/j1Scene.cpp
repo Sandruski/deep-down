@@ -131,11 +131,12 @@ bool j1Scene::Update(float dt)
 	// Set window title
 	App->input->GetMousePosition(mouse.x, mouse.y);
 
-	if (countdown_to_die.ReadSec() >= 2.0f)
+	if (countdown_to_die >= 2.0f)
 	{
 		progress_bar->DecreaseLifeProgress(1);
-		countdown_to_die.Start();
+		countdown_to_die = 0.0f;
 	}
+	countdown_to_die += dt;
 
 	return true;
 }
