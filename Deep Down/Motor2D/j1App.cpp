@@ -201,14 +201,16 @@ void j1App::FinishUpdate()
 	if (want_to_load == true)
 		LoadGameNow();
 
+	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN)
+	{
+		pause = !pause;
+	}
+
 	float mseconds_since_startup = clock.Read();
 	
 	uint32 actual_frame_ms = perfClock.ReadMs();
-
-	
 	
 	last_frame_ms = actual_frame_ms;
-
 
 	uint32 frames_on_last_update = 0;
 	frame_count++;
@@ -261,6 +263,9 @@ void j1App::FinishUpdate()
 	
 	sprintf_s(title, 256, "FPS: %.2f | AvgFPS: %.2f | Last Frame Ms: %02u | capFrames: %s | Vsync: %s | CameraBlit: %s | GOD: %s",
 		fps, avgFPS, actual_frame_ms, capOnOff.GetString(), vsyncOnOff.GetString(), CB.GetString(), GM.GetString());
+
+	if (pause)
+		dt = 0.0f;
 
 	App->win->SetTitle(title);
 

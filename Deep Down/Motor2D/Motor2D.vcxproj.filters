@@ -16,9 +16,6 @@
     <ClCompile Include="Monkey.cpp">
       <Filter>Modules\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Modules\UIElements</Filter>
-    </ClCompile>
     <ClCompile Include="UIWindow.cpp">
       <Filter>Modules\UIElements</Filter>
     </ClCompile>
@@ -99,6 +96,9 @@
     </ClCompile>
     <ClCompile Include="j1Scene.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Modules\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
