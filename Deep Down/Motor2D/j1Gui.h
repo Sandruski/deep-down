@@ -23,6 +23,7 @@ enum Tex_Names {
 	CHECKBOX_,
 	DIALOGBOX_,
 	CURSOR_,
+	DSUI_,
 	MAX_TEXS_
 };
 
@@ -40,11 +41,13 @@ struct UILabel_Info;
 struct UIButton_Info;
 struct UICursor_Info;
 struct UIWindow_Info;
+struct UILifeBar_Info;
 struct UIImage;
 struct UILabel;
 struct UIButton;
 struct UICursor;
 struct UIWindow;
+struct UILifeBar;
 
 // ---------------------------------------------------
 
@@ -84,6 +87,7 @@ public:
 	UIButton* CreateUIButton(iPoint pos, UIButton_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
 	UICursor* CreateUICursor(UICursor_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
 	UIWindow* CreateUIWindow(iPoint pos, UIWindow_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
+	UILifeBar* CreateUILifeBar(iPoint pos, UILifeBar_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
 
 	const SDL_Texture* GetTexture(Tex_Names name);
 	_TTF_Font* GetFont(Font_Names name);

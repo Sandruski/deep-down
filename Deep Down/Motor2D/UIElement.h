@@ -15,6 +15,7 @@ enum UIElement_TYPE
 	LABEL_,
 	BUTTON_,
 	WINDOW_,
+	LIFEBAR_,
 	MAX_TYPES_
 };
 

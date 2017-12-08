@@ -12,6 +12,7 @@
 #include "UIButton.h"
 #include "UICursor.h"
 #include "UIWindow.h"
+#include "UILifeBar.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -47,6 +48,7 @@ bool j1Gui::Start()
 	map_textures[Tex_Names::CHECKBOX_] = App->tex->Load("textures/wow/UI-CheckBox-Up.png");
 	map_textures[Tex_Names::DIALOGBOX_] = App->tex->Load("textures/wow/UI-DialogBox-Button-Disabled.png");
 	map_textures[Tex_Names::CURSOR_] = App->tex->Load("textures/wow/Point.png");
+	map_textures[Tex_Names::DSUI_] = App->tex->Load("Assets/Sprites/UI/DSUI.png");
 
 	// Load fonts
 	map_fonts[Font_Names::DEFAULT_] = App->font->Load("fonts/open_sans/OpenSans-Regular.ttf");
@@ -232,6 +234,19 @@ UIWindow* j1Gui::CreateUIWindow(iPoint pos, UIWindow_Info& info, j1Module* liste
 	to_spawn_UI_parents.add(parent);
 
 	return window;
+}
+
+UILifeBar* j1Gui::CreateUILifeBar(iPoint pos, UILifeBar_Info& info, j1Module* listener, UIElement* parent)
+{
+	UILifeBar* life_bar = new UILifeBar(pos.x, pos.y, info, listener);
+
+	to_spawn_UI_elements.add(life_bar);
+
+	if (parent == nullptr)
+		parent = (UIElement*)App->win->window;
+	to_spawn_UI_parents.add(parent);
+
+	return life_bar;
 }
 
 bool j1Gui::DestroyElement(UIElement* elem)

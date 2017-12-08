@@ -15,6 +15,8 @@
 #include "j1Scene.h"
 #include "j1EntityFactory.h"
 #include "j1Pathfinding.h"
+#include "j1Gui.h"
+#include "UILifeBar.h"
 
 #include"Brofiler\Brofiler.h"
 
@@ -63,6 +65,14 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
+	UILifeBar_Info girl_life_bar;
+	girl_life_bar.bar = { 86,532,222,4 };
+	girl_life_bar.life = 222;
+	girl_life_bar.life_bar_position = { 678,209 };
+	girl_life_bar.tex_name = DSUI_;
+	girl_life_bar.tex_area = { 80,524,230,8 };
+	progress_bar = App->gui->CreateUILifeBar({672,208}, girl_life_bar, this);
+
 	if (!loading)
 		App->entities->Start();
 
@@ -120,6 +130,12 @@ bool j1Scene::Update(float dt)
 	
 	// Set window title
 	App->input->GetMousePosition(mouse.x, mouse.y);
+
+	if (countdown_to_die.ReadSec() >= 2.0f)
+	{
+		progress_bar->DecreaseLifeProgress(1);
+		countdown_to_die.Start();
+	}
 
 	return true;
 }

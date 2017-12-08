@@ -4,8 +4,10 @@
 #include "j1Module.h"
 
 #include "Animation.h"
+#include "j1Timer.h"
 
 struct SDL_Texture;
+struct UILifeBar;
 
 class j1Scene : public j1Module
 {
@@ -66,9 +68,11 @@ private:
 	p2SString song2 = nullptr;
 	p2SString fx_names[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
 
+	j1Timer countdown_to_die;
 	uint volume_adjustment = 0;
 
 	iPoint mouse = { 0,0 };
+	UILifeBar* progress_bar;
 };
 
 #endif // __j1SCENE1_H__
