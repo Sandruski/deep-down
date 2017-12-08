@@ -11,6 +11,7 @@
 #include "Imp.h"
 #include "CatPeasant.h"
 #include "Monkey.h"
+#include "Cat.h"
 #include "j1Textures.h"
 #include "j1Scene.h"
 #include "j1Map.h"
@@ -47,6 +48,8 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	Imp_spritesheet = node.attribute("name").as_string();
 	node = node.next_sibling("spritesheet");
 	Player_spritesheet = node.attribute("name").as_string();
+	node = node.next_sibling("spritesheet");
+	Cat_spritesheet = node.attribute("name").as_string();
 	//_load_texture_paths
 
 	// IMP
@@ -423,7 +426,6 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	node = animations_node.child("r_idle_no_staff");
 	catPeasant.r_idle_no_staff.speed = node.attribute("speed").as_float();
 	catPeasant.r_idle_no_staff.loops = node.attribute("loops").as_bool();
-	catPeasant.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.r_idle_no_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -518,6 +520,248 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//_load_animations
 	//_CAT_PEASANT
 
+	// CAT
+	collider_node = config.child("types").child("cat").child("general").child("coll_offset");
+	cat.coll_offset = { collider_node.attribute("x").as_int(), collider_node.attribute("y").as_int(), collider_node.attribute("w").as_int(), collider_node.attribute("h").as_int() };
+
+	// Load animations
+	animations_node = config.child("types").child("cat").child("animations");
+
+	//r_idle
+	node = animations_node.child("r_idle");
+	cat.r_idle.speed = node.attribute("speed").as_float();
+	cat.r_idle.loops = node.attribute("loops").as_bool();
+	cat.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_idle
+	node = animations_node.child("l_idle");
+	cat.l_idle.speed = node.attribute("speed").as_float();
+	cat.l_idle.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_going_ZZZ
+	node = animations_node.child("r_going_ZZZ");
+	cat.r_going_ZZZ.speed = node.attribute("speed").as_float();
+	cat.r_going_ZZZ.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_going_ZZZ.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_going_ZZZ
+	node = animations_node.child("l_going_ZZZ");
+	cat.l_going_ZZZ.speed = node.attribute("speed").as_float();
+	cat.l_going_ZZZ.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_going_ZZZ.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_waking_up
+	node = animations_node.child("r_waking_up");
+	cat.r_waking_up.speed = node.attribute("speed").as_float();
+	cat.r_waking_up.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_waking_up.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_waking_up
+	node = animations_node.child("l_waking_up");
+	cat.l_waking_up.speed = node.attribute("speed").as_float();
+	cat.l_waking_up.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_waking_up.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_to_crouch
+	node = animations_node.child("r_to_crouch");
+	cat.r_to_crouch.speed = node.attribute("speed").as_float();
+	cat.r_to_crouch.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_to_crouch.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_to_crouch
+	node = animations_node.child("l_to_crouch");
+	cat.l_to_crouch.speed = node.attribute("speed").as_float();
+	cat.l_to_crouch.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_to_crouch.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_crouch
+	node = animations_node.child("r_crouch");
+	cat.r_crouch.speed = node.attribute("speed").as_float();
+	cat.r_crouch.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_crouch.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_crouch
+	node = animations_node.child("l_crouch");
+	cat.l_crouch.speed = node.attribute("speed").as_float();
+	cat.l_crouch.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_crouch.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_rise
+	node = animations_node.child("r_rise");
+	cat.r_rise.speed = node.attribute("speed").as_float();
+	cat.r_rise.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_rise.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_rise
+	node = animations_node.child("l_rise");
+	cat.l_rise.speed = node.attribute("speed").as_float();
+	cat.l_rise.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_rise.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_jump
+	node = animations_node.child("r_jump");
+	cat.r_jump.speed = node.attribute("speed").as_float();
+	cat.r_jump.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_jump.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_jump
+	node = animations_node.child("l_jump");
+	cat.l_jump.speed = node.attribute("speed").as_float();
+	cat.l_jump.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_jump.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_fall
+	node = animations_node.child("r_fall");
+	cat.r_fall.speed = node.attribute("speed").as_float();
+	cat.r_fall.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_fall.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_fall
+	node = animations_node.child("l_fall");
+	cat.l_fall.speed = node.attribute("speed").as_float();
+	cat.l_fall.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_fall.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_land_soft
+	node = animations_node.child("r_land_soft");
+	cat.r_land_soft.speed = node.attribute("speed").as_float();
+	cat.r_land_soft.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_land_soft.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_land_soft
+	node = animations_node.child("l_land_soft");
+	cat.l_land_soft.speed = node.attribute("speed").as_float();
+	cat.l_land_soft.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_land_soft.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_roll
+	node = animations_node.child("r_roll");
+	cat.r_roll.speed = node.attribute("speed").as_float();
+	cat.r_roll.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_roll.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_roll
+	node = animations_node.child("l_roll");
+	cat.l_roll.speed = node.attribute("speed").as_float();
+	cat.l_roll.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_roll.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_to_run
+	node = animations_node.child("r_to_run");
+	cat.r_to_run.speed = node.attribute("speed").as_float();
+	cat.r_to_run.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_to_run.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_to_run
+	node = animations_node.child("l_to_run");
+	cat.l_to_run.speed = node.attribute("speed").as_float();
+	cat.l_to_run.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_to_run.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_run
+	node = animations_node.child("r_run");
+	cat.r_run.speed = node.attribute("speed").as_float();
+	cat.r_run.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_run.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_run
+	node = animations_node.child("l_run");
+	cat.l_run.speed = node.attribute("speed").as_float();
+	cat.l_run.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_run.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_turn
+	node = animations_node.child("r_turn");
+	cat.r_turn.speed = node.attribute("speed").as_float();
+	cat.r_turn.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_turn.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_turn
+	node = animations_node.child("l_turn");
+	cat.l_turn.speed = node.attribute("speed").as_float();
+	cat.l_turn.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_turn.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_brake
+	node = animations_node.child("r_brake");
+	cat.r_brake.speed = node.attribute("speed").as_float();
+	cat.r_brake.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_brake.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_brake
+	node = animations_node.child("l_brake");
+	cat.l_brake.speed = node.attribute("speed").as_float();
+	cat.l_brake.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_brake.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//attack
+	node = animations_node.child("attack");
+	cat.attack.speed = node.attribute("speed").as_float();
+	cat.attack.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.attack.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+	//_load_animations
+	//_CAT
+
 	return ret;
 }
 
@@ -529,6 +773,7 @@ bool j1EntityFactory::Start()
 	MonkeyTex = App->tex->Load(Monkey_spritesheet.GetString());
 	ImpTex = App->tex->Load(Imp_spritesheet.GetString());
 	PlayerTex = App->tex->Load(Player_spritesheet.GetString());
+	CatTex = App->tex->Load(Cat_spritesheet.GetString());
 
 	return true;
 }
@@ -617,6 +862,7 @@ bool j1EntityFactory::CleanUp()
 	App->tex->UnLoad(MonkeyTex);
 	App->tex->UnLoad(ImpTex);
 	App->tex->UnLoad(PlayerTex);
+	App->tex->UnLoad(CatTex);
 
 	for (uint i = 0; i < MAX_ENTITIES; ++i)
 	{

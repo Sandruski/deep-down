@@ -297,7 +297,7 @@ void CatPeasant::OnCollision(Collider* c1, Collider* c2)
 
 void CatPeasant::UpdatePath()
 {
-	if (path_info->end_pos.x != NULL && path_info->end_pos.y != NULL) {
+	if (path_info->end_pos.x != 0 && path_info->end_pos.y != 0) {
 
 		// If the enemy doesn't see the player, create its normal path
 		if (normal_path_finished) {

@@ -54,7 +54,7 @@ private:
 	Particle* active[MAX_ACTIVE_PARTICLES];
 	uint last_particle = 0;
 
-	iPoint hit_pos = { 0,0 };
+	p2SString Sparkle_spritesheet = nullptr;
 
 public:
 	Particle arrowRight;
@@ -64,9 +64,13 @@ public:
 	Particle thirdAttack;
 	Particle CatPeasantSinus;
 	Particle monkeyAttack;
+	Particle leaf;
+	Particle sparkle;
 
 	Particle Imp_r_bomb, Imp_l_bomb;
 	Particle Imp_bomb_explosion;
+
+	SDL_Texture* SparkleTex = nullptr;
 };
 
 #endif // __j1PARTICLES_H__
