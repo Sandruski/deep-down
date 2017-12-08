@@ -70,6 +70,24 @@
     <ClCompile Include="Player.cpp">
       <Filter>Game\Modules\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="UIButton.cpp">
+      <Filter>Game\Modules\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="UICursor.cpp">
+      <Filter>Game\Modules\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="UIElement.cpp">
+      <Filter>Game\Modules\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="UIImage.cpp">
+      <Filter>Game\Modules\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="UILabel.cpp">
+      <Filter>Game\Modules\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="UIWindow.cpp">
+      <Filter>Game\Modules\UIElements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -162,6 +180,24 @@
     <ClInclude Include="Player.h">
       <Filter>Game\Modules\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="UIButton.h">
+      <Filter>Game\Modules\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="UICursor.h">
+      <Filter>Game\Modules\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="UIElement.h">
+      <Filter>Game\Modules\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="UIImage.h">
+      <Filter>Game\Modules\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="UILabel.h">
+      <Filter>Game\Modules\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="UIWindow.h">
+      <Filter>Game\Modules\UIElements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -184,6 +220,9 @@
     </Filter>
     <Filter Include="Game\Modules\Entities">
       <UniqueIdentifier>{3d9caea6-5dbe-4bd6-a9a5-eb7ae2657fc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Modules\UIElements">
+      <UniqueIdentifier>{0da31b65-ac5b-4b07-85c6-6783c4aca77b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
