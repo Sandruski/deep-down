@@ -5,6 +5,14 @@
 
 #include "SDL\include\SDL_rect.h"
 
+enum fades
+{
+	no_fade,
+	normal_fade,
+	right_slider_fade,
+	left_slider_fade
+};
+
 class j1FadeToBlack : public j1Module
 {
 public:
@@ -13,8 +21,11 @@ public:
 
 	bool Start();
 	bool Update(float dt);
-	bool FadeToBlack(j1Module* module_off, j1Module* module_on, float time = 2.0f);
+	bool FadeToBlack(j1Module* module_off, j1Module* module_on, float time = 2.0f, fades kind_of_fade = normal_fade);
 
+	void NormalFade();
+	void LeftSliderFade();
+	void RightSliderFade();
 	bool IsFading() const;
 
 	j1Module* off;
@@ -25,6 +36,9 @@ private:
 	Uint32 start_time = 0;
 	Uint32 total_time = 0;
 	SDL_Rect screen;
+	SDL_Rect Slider_rect;
+	float dt = 0.0f;
+	fades thisFade;
 
 public:
 
