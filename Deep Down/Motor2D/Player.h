@@ -55,7 +55,7 @@ class Player : public Entity
 {
 
 public:
-	Player(float x, float y, PathInfo* path);
+	Player(float x, float y);
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move(float dt);
 	void UpdateAnimations(float dt);

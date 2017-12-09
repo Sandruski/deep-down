@@ -39,7 +39,6 @@ struct CatPeasantInfo
 class CatPeasant : public Entity
 {
 public:
-
 	CatPeasant(float x, float y, PathInfo* path);
 
 	void OnCollision(Collider* c1, Collider* c2);
@@ -96,11 +95,15 @@ private:
 	float r_throw_staff_speed = 0.0f, l_throw_staff_speed = 0.0f;
 
 	// Pathfinding
+	const p2DynArray<iPoint>* last_pathfinding = nullptr;
+	p2DynArray<iPoint> mlast_pathfinding;
+
 	uint pathfinding_index = 0;
 	uint pathfinding_size = 0;
 	//_pathfinding
 
 	// Normal path
+	PathInfo* path_info = nullptr;
 	StartEndPath normal_path_index = StartEndPath::end;
 
 	bool normal_path_finished = true;

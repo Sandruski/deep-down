@@ -23,8 +23,11 @@ CAT PEASANT (enemy):
 - If she sees the player, she throws her magic cane towards him.
 */
 
-CatPeasant::CatPeasant(float x, float y, PathInfo* path) : Entity(x, y, path)
+CatPeasant::CatPeasant(float x, float y, PathInfo* path) : Entity(x, y), path_info(path), mlast_pathfinding(DEFAULT_PATH_LENGTH)
 {
+	last_pathfinding = nullptr;
+	mlast_pathfinding.Clear();
+
 	catPeasant = App->entities->GetCatPeasantInfo();
 
 	///

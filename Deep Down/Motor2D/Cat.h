@@ -3,6 +3,16 @@
 
 #include "Entity.h"
 
+enum CatState {
+	rc_idle, lc_idle,
+	rc_ZZZ, lc_ZZZ,
+	rc_crouch, lc_crouch,
+	rc_jump, lc_jump,
+	rc_roll, lc_roll,
+	rc_run, lc_run,
+	rc_dead, lc_dead
+};
+
 struct CatInfo
 {
 	Animation r_idle, l_idle;
@@ -19,6 +29,7 @@ struct CatInfo
 	Animation r_run, l_run;
 	Animation r_turn, l_turn;
 	Animation r_brake, l_brake;
+	Animation r_dead, l_dead;
 	Animation attack;
 
 	iPoint coll_size = { 0,0 };
@@ -29,16 +40,19 @@ class Cat : public Entity
 {
 public:
 
-	Cat(float x, float y, PathInfo* path);
+	Cat(float x, float y);
 
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move(const float dt);
 	void UpdateAnimations(const float dt);
 	void LoadAnimationsSpeed();
+
+	void GeneralStatesMachine();
 	
 private:
 
 	CatInfo cat;
+	CatState catState;
 
 	// Animations speed
 	float r_idle_speed = 0.0f, l_idle_speed = 0.0f;
@@ -55,6 +69,7 @@ private:
 	float r_run_speed = 0.0f, l_run_speed = 0.0f;
 	float r_turn_speed = 0.0f, l_turn_speed = 0.0f;
 	float r_brake_speed = 0.0f, l_brake_speed = 0.0f;
+	float r_dead_speed = 0.0f, l_dead_speed = 0.0f;
 	float attack_speed = 0.0f;
 };
 

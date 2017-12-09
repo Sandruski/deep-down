@@ -88,6 +88,9 @@ private:
 	float r_hit_speed = 0.0f, l_hit_speed = 0.0f;
 
 	// Pathfinding
+	const p2DynArray<iPoint>* last_pathfinding = nullptr;
+	p2DynArray<iPoint> mlast_pathfinding;
+
 	uint pathfinding_index = 0;
 	uint pathfinding_size = 0;
 
@@ -99,6 +102,7 @@ private:
 	//_pathfinding
 
 	// Normal path
+	PathInfo* path_info = nullptr;
 	uint normal_path_index = 0;
 	uint last_normal_path_index = 0;
 

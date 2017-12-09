@@ -26,6 +26,7 @@ enum ENTITY_TYPES
 	MONKEY_,
 	PLANT_,
 	PLAYER_,
+	CAT_,
 };
 
 class Entity;

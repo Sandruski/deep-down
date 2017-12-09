@@ -111,6 +111,9 @@ private:
 	float invisible_speed = 0.0f;
 
 	// Pathfinding
+	const p2DynArray<iPoint>* last_pathfinding = nullptr;
+	p2DynArray<iPoint> mlast_pathfinding;
+
 	uint pathfinding_index = 0;
 	uint pathfinding_size = 0;
 
@@ -127,6 +130,7 @@ private:
 	//_pathfinding
 
 	// Normal path
+	PathInfo* path_info = nullptr;
 	StartEndPath normal_path_index = StartEndPath::end;
 
 	bool normal_path_finished = true;

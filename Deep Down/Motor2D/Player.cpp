@@ -19,7 +19,7 @@
 
 #include "SDL/include/SDL_timer.h"
 
-Player::Player(float x, float y, PathInfo* path) : Entity(x, y, path)
+Player::Player(float x, float y) : Entity(x, y)
 {
 	player = App->entities->GetPlayerInfo();
 

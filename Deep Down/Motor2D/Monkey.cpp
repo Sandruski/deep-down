@@ -26,8 +26,11 @@ MONKEY (enemy):
 - If he stops seeing the player, he goes back to his initial path.
 */
 
-Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y, path)
+Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y), path_info(path), mlast_pathfinding(DEFAULT_PATH_LENGTH)
 {
+	last_pathfinding = nullptr;
+	mlast_pathfinding.Clear();
+
 	monkey = App->entities->GetMonkeyInfo();
 
 	///

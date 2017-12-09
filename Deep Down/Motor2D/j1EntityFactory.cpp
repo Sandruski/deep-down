@@ -985,10 +985,14 @@ void j1EntityFactory::SpawnEntity(const EntityInfo& info)
 			break;
 
 		case ENTITY_TYPES::PLAYER_:
-			playerData = new Player(info.x, info.y, info.path);
+			playerData = new Player(info.x, info.y);
 			entities[i] = playerData;
 			entities[i]->type = ENTITY_TYPES::PLAYER_;
+			break;
 
+		case ENTITY_TYPES::CAT_:
+			entities[i] = new Cat(info.x, info.y);
+			entities[i]->type = ENTITY_TYPES::CAT_;
 			break;
 		}
 	}
