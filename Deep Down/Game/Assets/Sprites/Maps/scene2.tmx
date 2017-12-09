@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="120" height="78" tilewidth="16" tileheight="16" nextobjectid="40">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="120" height="78" tilewidth="16" tileheight="16" nextobjectid="45">
  <tileset firstgid="1" name="Background" tilewidth="16" tileheight="16" tilecount="187" columns="17">
   <image source="Background.png" width="272" height="190"/>
  </tileset>
@@ -17132,21 +17132,21 @@
    <tile gid="0"/>
    <tile gid="780"/>
    <tile gid="0"/>
-   <tile gid="787"/>
-   <tile gid="733"/>
-   <tile gid="734"/>
-   <tile gid="750"/>
-   <tile gid="801"/>
-   <tile gid="802"/>
-   <tile gid="749"/>
-   <tile gid="733"/>
-   <tile gid="734"/>
-   <tile gid="750"/>
-   <tile gid="801"/>
-   <tile gid="802"/>
-   <tile gid="749"/>
-   <tile gid="733"/>
-   <tile gid="734"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="735"/>
    <tile gid="750"/>
    <tile gid="576"/>
    <tile gid="575"/>
@@ -17252,20 +17252,20 @@
    <tile gid="814"/>
    <tile gid="815"/>
    <tile gid="768"/>
-   <tile gid="749"/>
-   <tile gid="749"/>
-   <tile gid="750"/>
-   <tile gid="734"/>
-   <tile gid="817"/>
-   <tile gid="818"/>
-   <tile gid="733"/>
-   <tile gid="749"/>
-   <tile gid="750"/>
-   <tile gid="734"/>
-   <tile gid="817"/>
-   <tile gid="818"/>
-   <tile gid="733"/>
-   <tile gid="749"/>
+   <tile gid="771"/>
+   <tile gid="814"/>
+   <tile gid="814"/>
+   <tile gid="814"/>
+   <tile gid="814"/>
+   <tile gid="816"/>
+   <tile gid="812"/>
+   <tile gid="813"/>
+   <tile gid="814"/>
+   <tile gid="814"/>
+   <tile gid="813"/>
+   <tile gid="814"/>
+   <tile gid="812"/>
+   <tile gid="816"/>
    <tile gid="750"/>
    <tile gid="734"/>
    <tile gid="559"/>
@@ -35865,15 +35865,15 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="796"/>
+   <tile gid="797"/>
+   <tile gid="798"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="740"/>
+   <tile gid="741"/>
+   <tile gid="796"/>
+   <tile gid="797"/>
+   <tile gid="798"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -37468,7 +37468,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="Collision" width="120" height="78">
+ <layer name="Collision" width="120" height="78" visible="0">
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -46871,5 +46871,12 @@
   <object id="39" name="Enemy4" type="3" x="1226.33" y="709.333">
    <polyline points="0,0 57,-15 121.333,-3.66667 151.667,36 138.333,62.3333 72.6667,38.6667"/>
   </object>
+ </objectgroup>
+ <objectgroup name="Cats">
+  <object id="40" name="Cat1" type="6" x="448" y="1152" width="16" height="16"/>
+  <object id="41" name="Cat2" type="6" x="1344" y="1024" width="16" height="16"/>
+  <object id="42" name="Cat3" type="6" x="960" y="608" width="16" height="16"/>
+  <object id="43" name="Cat4" type="6" x="960" y="352" width="16" height="16"/>
+  <object id="44" name="Cat5" type="6" x="672" y="320" width="16" height="16"/>
  </objectgroup>
 </map>

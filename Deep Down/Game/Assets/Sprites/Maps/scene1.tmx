@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="60" tilewidth="16" tileheight="16" nextobjectid="57">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="60" tilewidth="16" tileheight="16" nextobjectid="71">
  <tileset firstgid="1" name="Background" tilewidth="16" tileheight="16" tilecount="187" columns="17">
   <image source="Background.png" width="272" height="190"/>
  </tileset>
@@ -7475,9 +7475,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="368"/>
-   <tile gid="336"/>
-   <tile gid="335"/>
+   <tile gid="304"/>
+   <tile gid="305"/>
+   <tile gid="300"/>
    <tile gid="336"/>
    <tile gid="335"/>
    <tile gid="336"/>
@@ -7575,10 +7575,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="339"/>
-   <tile gid="336"/>
-   <tile gid="335"/>
-   <tile gid="336"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="323"/>
    <tile gid="335"/>
    <tile gid="336"/>
    <tile gid="335"/>
@@ -7675,10 +7675,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="339"/>
-   <tile gid="336"/>
-   <tile gid="335"/>
-   <tile gid="336"/>
    <tile gid="335"/>
    <tile gid="336"/>
    <tile gid="335"/>
@@ -7775,9 +7775,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="339"/>
-   <tile gid="336"/>
-   <tile gid="335"/>
+   <tile gid="353"/>
+   <tile gid="349"/>
+   <tile gid="349"/>
    <tile gid="336"/>
    <tile gid="335"/>
    <tile gid="336"/>
@@ -10936,8 +10936,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="413"/>
+   <tile gid="413"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -19482,7 +19482,64 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="370"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="369"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -19527,65 +19584,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="369"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="338"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="321"/>
+   <tile gid="316"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -19682,10 +19682,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="338"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="337"/>
+   <tile gid="334"/>
+   <tile gid="333"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -19782,7 +19782,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="338"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -24031,7 +24031,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="Collision" width="100" height="60">
+ <layer name="Collision" width="100" height="60" visible="0">
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -30049,9 +30049,6 @@
   </object>
   <object id="46" name="Enemy6S" type="1" x="304" y="640" width="16" height="16"/>
   <object id="47" name="Enemy6E" type="1" x="656" y="768" width="16" height="16"/>
-  <object id="49" name="Enemy3" type="3" x="156" y="756.667">
-   <polyline points="0,0 18.6667,9.33333 60.6667,2 111.333,16 147.333,0 137.333,25.3333 19.3333,36 -45.3333,22.6667"/>
-  </object>
   <object id="50" name="Enemy7S" type="2" x="864" y="592" width="16" height="16"/>
   <object id="51" name="Enemy7E" type="2" x="976" y="592" width="16" height="16"/>
   <object id="53" name="Enemy5" type="3" x="1241" y="697.417">
@@ -30060,5 +30057,20 @@
   <object id="56" name="Enemy4" type="3" x="1376" y="736">
    <polyline points="0,0 -0.25,8.5 -43.5,35.75 -74.75,34.75 -72.75,8.25 -38.25,-8.75"/>
   </object>
+  <object id="64" name="Enemy3" type="3" x="120" y="705">
+   <polyline points="0,0 48,-16.5 102,4 167.5,-6.5 165,25 151.5,64 140,80.5 48,82 14,48.5"/>
+  </object>
+ </objectgroup>
+ <objectgroup name="Cats">
+  <object id="57" name="Cat1" type="6" x="880" y="240" width="16" height="16">
+   <properties>
+    <property name="state1" type="int" value="6"/>
+    <property name="state2" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="60" name="Cat2" type="6" x="368" y="768" width="16" height="16"/>
+  <object id="68" name="Cat3" type="6" x="240" y="752" width="16" height="16"/>
+  <object id="69" name="Cat4" type="6" x="992" y="784" width="16" height="16"/>
+  <object id="70" name="Cat5" type="6" x="1296" y="784" width="16" height="16"/>
  </objectgroup>
 </map>

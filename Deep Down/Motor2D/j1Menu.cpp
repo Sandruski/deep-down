@@ -36,13 +36,6 @@ bool j1Menu::Awake(pugi::xml_node& config)
 bool j1Menu::Start()
 {
 	bool ret = true;
-	UILifeBar_Info girl_life_bar;
-	girl_life_bar.bar = { 86,400,100,4 };
-	girl_life_bar.life = 222;
-	girl_life_bar.life_bar_position = { 678,209 };
-	girl_life_bar.tex_name = DSUI_;
-	girl_life_bar.tex_area = { 80,524,230,8 };
-	App->gui->CreateUILifeBar({ 672,208 }, girl_life_bar, this);
 	return ret;
 }
 
@@ -51,8 +44,8 @@ bool j1Menu::Update(float dt)
 {
 	bool ret = true;
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		App->fade->FadeToBlack(this, App->scene, 1);
+	//if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		//App->fade->FadeToBlack(this, App->scene, 1);
 
 	return ret;
 }

@@ -12,15 +12,24 @@
 
 #include "SDL/include/SDL_timer.h"
 
-Cat::Cat(float x, float y) : Entity(x, y)
+Cat::Cat(SDL_Rect coords, p2DynArray<uint>* cat_states) : Entity(coords.x, coords.y)
 {
 	cat = App->entities->GetCatInfo();
+
+	if (cat_states != nullptr) {
+		this->cat_states = *cat_states;
+		catState = (CatState)this->cat_states[cat_states_index];
+	}
+	else
+		catState = CatState::rc_idle;
 
 	///
 	LoadAnimationsSpeed();
 	animation = &cat.r_idle;
 
-	collider = App->collision->AddCollider({ 0, 0, cat.coll_size.x + cat.coll_offset.w, cat.coll_size.y + cat.coll_offset.h }, COLLIDER_TYPE::COLLIDER_MONKEY, App->entities);
+	dead = false;
+
+	collider = App->collision->AddCollider({ 0, 0, cat.coll_size.x + cat.coll_offset.w, cat.coll_size.y + cat.coll_offset.h }, COLLIDER_TYPE::COLLIDER_CAT, App->entities);
 	collider_size = cat.coll_size;
 }
 
@@ -30,6 +39,8 @@ void Cat::LoadAnimationsSpeed()
 	l_idle_speed = cat.l_idle.speed;
 	r_going_ZZZ_speed = cat.r_going_ZZZ.speed;
 	l_going_ZZZ_speed = cat.l_going_ZZZ.speed;
+	r_ZZZ_speed = cat.r_ZZZ.speed;
+	l_ZZZ_speed = cat.l_ZZZ.speed;
 	r_waking_up_speed = cat.r_waking_up.speed;
 	l_waking_up_speed = cat.l_waking_up.speed;
 	r_to_crouch_speed = cat.r_to_crouch.speed;
@@ -69,6 +80,9 @@ void Cat::Move(const float dt)
 	// Update animations speed
 	UpdateAnimations(dt);
 
+	// Update state
+	GeneralStatesMachine();
+
 	// Update collider
 	collider_pos = { i_pos.x + cat.coll_offset.x, i_pos.y + cat.coll_offset.y };
 	collider->SetPos(collider_pos.x, collider_pos.y);
@@ -80,6 +94,8 @@ void Cat::UpdateAnimations(const float dt)
 	cat.l_idle.speed = l_idle_speed * dt;
 	cat.r_going_ZZZ.speed = r_going_ZZZ_speed * dt;
 	cat.l_going_ZZZ.speed = l_going_ZZZ_speed * dt;
+	cat.r_ZZZ.speed = r_ZZZ_speed * dt;
+	cat.l_ZZZ.speed = l_ZZZ_speed * dt;
 	cat.r_waking_up.speed = r_waking_up_speed * dt;
 	cat.l_waking_up.speed = l_waking_up_speed * dt;
 	cat.r_to_crouch.speed = r_to_crouch_speed * dt;
@@ -109,64 +125,236 @@ void Cat::UpdateAnimations(const float dt)
 	cat.attack.speed = attack_speed * dt;
 }
 
+void Cat::UpdateCatState()
+{
+	if (cat_states_index == cat_states.Count() - 1)
+		cat_states_index = 0;
+	else
+		cat_states_index++;
+
+	catState = (CatState)cat_states[cat_states_index];
+}
+
 void Cat::GeneralStatesMachine() {
 
 	switch (catState) {
 
 	case CatState::rc_idle:
 
+		if (cat.r_idle.Finished()) {
+			cat.r_idle.Reset();
+			if (cat_states.Count() > 1)
+				UpdateCatState();
+			break;
+		}
+
+		animation = &cat.r_idle;
 		break;
 
 	case CatState::lc_idle:
 
+		if (cat.l_idle.Finished()) {
+			cat.l_idle.Reset();
+			if (cat_states.Count() > 1)
+				UpdateCatState();
+			break;
+		}
+
+		animation = &cat.l_idle;
 		break;
 
 	case CatState::rc_ZZZ:
 
+		if (cat.r_going_ZZZ.Finished()) {
+
+			if (cat.r_ZZZ.Finished()) {
+
+				if (cat.r_waking_up.Finished()) {
+					cat.r_going_ZZZ.Reset();
+					cat.r_ZZZ.Reset();
+					cat.r_waking_up.Reset();
+					UpdateCatState();
+					break;
+				}
+				animation = &cat.r_waking_up;
+				break;
+			}
+			animation = &cat.r_ZZZ;
+			break;
+		}
+		animation = &cat.r_going_ZZZ;
 		break;
 
 	case CatState::lc_ZZZ:
 
+		if (cat.l_going_ZZZ.Finished()) {
+
+			if (cat.l_ZZZ.Finished()) {
+
+				if (cat.l_waking_up.Finished()) {
+					cat.l_going_ZZZ.Reset();
+					cat.l_ZZZ.Reset();
+					cat.l_waking_up.Reset();
+					UpdateCatState();
+					break;
+				}
+				animation = &cat.l_waking_up;
+				break;
+			}
+			animation = &cat.l_ZZZ;
+			break;
+		}
+		animation = &cat.l_going_ZZZ;
 		break;
 
 	case CatState::rc_crouch:
 
+		if (cat.r_to_crouch.Finished()) {
+
+			if (cat.r_crouch.Finished()) {
+
+				if (cat.r_rise.Finished()) {
+					cat.r_to_crouch.Reset();
+					cat.r_crouch.Reset();
+					cat.r_rise.Reset();
+					UpdateCatState();
+					break;
+				}
+				animation = &cat.r_rise;
+				break;
+			}
+			animation = &cat.r_crouch;
+			break;
+		}
+		animation = &cat.r_to_crouch;
 		break;
 
 	case CatState::lc_crouch:
 		
+		if (cat.l_to_crouch.Finished()) {
+
+			if (cat.l_crouch.Finished()) {
+
+				if (cat.l_rise.Finished()) {
+					cat.l_to_crouch.Reset();
+					cat.l_crouch.Reset();
+					cat.l_rise.Reset();
+					UpdateCatState();
+					break;
+				}
+				animation = &cat.l_rise;
+				break;
+			}
+			animation = &cat.l_crouch;
+			break;
+		}
+		animation = &cat.l_to_crouch;
 		break;
 
 	case CatState::rc_jump:
 		
+		if (cat.r_jump.Finished()) {
+
+			if (cat.r_land_soft.Finished()) {
+				cat.r_jump.Reset();
+				cat.r_land_soft.Reset();
+				UpdateCatState();
+				break;
+			}
+			animation = &cat.r_land_soft;
+			break;
+		}
+		animation = &cat.r_jump;
 		break;
 
 	case CatState::lc_jump:
 		
+		if (cat.l_jump.Finished()) {
+
+			if (cat.l_land_soft.Finished()) {
+				cat.l_jump.Reset();
+				cat.l_land_soft.Reset();
+				UpdateCatState();
+				break;
+			}
+			animation = &cat.l_land_soft;
+			break;
+		}
+		animation = &cat.l_jump;
 		break;
 
 	case CatState::rc_roll:
 
+		if (cat.r_roll.Finished()) {
+			cat.r_roll.Reset();
+			UpdateCatState();
+			break;
+		}
+
+		animation = &cat.r_roll;
 		break;
 
 	case CatState::lc_roll:
 
+		if (cat.l_roll.Finished()) {
+			cat.l_roll.Reset();
+			UpdateCatState();
+			break;
+		}
+
+		animation = &cat.l_roll;
 		break;
 
 	case CatState::rc_run:
 
+		if (cat.r_to_run.Finished()) {
+
+			if (cat.r_run.Finished()) {
+				App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_IMP, NULL, { 0.0f,0.0f });
+				dead = true;
+				break;
+			}
+			animation = &cat.r_run;
+			break;
+		}
+		animation = &cat.r_to_run;
 		break;
 
 	case CatState::lc_run:
 
+		if (cat.l_to_run.Finished()) {
+
+			if (cat.l_run.Finished()) {
+				App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_IMP, NULL, { 0.0f,0.0f });
+				dead = true;
+				break;
+			}
+			animation = &cat.l_run;
+			break;
+		}
+		animation = &cat.l_to_run;
 		break;
 
 	case CatState::rc_dead:
 
+		if (cat.r_dead.Finished()) {
+			App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_IMP, NULL, { 0.0f,0.0f });
+			dead = true;
+			break;
+		}
+
+		animation = &cat.r_dead;
 		break;
 
 	case CatState::lc_dead:
 
+		if (cat.l_dead.Finished()) {
+			App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_IMP, NULL, { 0.0f,0.0f });
+			dead = true;
+			break;
+		}
+
+		animation = &cat.l_dead;
 		break;
 	}
 }

@@ -2,6 +2,7 @@
 #define __Cat_H__
 
 #include "Entity.h"
+#include "p2DynArray.h"
 
 enum CatState {
 	rc_idle, lc_idle,
@@ -17,6 +18,7 @@ struct CatInfo
 {
 	Animation r_idle, l_idle;
 	Animation r_going_ZZZ, l_going_ZZZ;
+	Animation r_ZZZ, l_ZZZ;
 	Animation r_waking_up, l_waking_up;
 	Animation r_to_crouch, l_to_crouch;
 	Animation r_crouch, l_crouch;
@@ -40,7 +42,7 @@ class Cat : public Entity
 {
 public:
 
-	Cat(float x, float y);
+	Cat(SDL_Rect coords, p2DynArray<uint>* cat_states);
 
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move(const float dt);
@@ -51,12 +53,19 @@ public:
 	
 private:
 
+	void UpdateCatState();
+
+private:
+
 	CatInfo cat;
 	CatState catState;
+	p2DynArray<uint> cat_states;
+	uint cat_states_index = 0;
 
 	// Animations speed
 	float r_idle_speed = 0.0f, l_idle_speed = 0.0f;
 	float r_going_ZZZ_speed = 0.0f, l_going_ZZZ_speed = 0.0f;
+	float r_ZZZ_speed = 0.0f, l_ZZZ_speed = 0.0f;
 	float r_waking_up_speed = 0.0f, l_waking_up_speed = 0.0f;
 	float r_to_crouch_speed = 0.0f, l_to_crouch_speed = 0.0f;
 	float r_crouch_speed = 0.0f, l_crouch_speed = 0.0f;

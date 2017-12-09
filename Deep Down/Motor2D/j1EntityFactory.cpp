@@ -248,7 +248,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//_PLAYER
 
 	// IMP
-	general_node = config.child("types").child("player").child("general");
+	general_node = config.child("types").child("imp").child("general");
 
 	actual_node = general_node.child("coll_offset");
 	imp.coll_offset = { actual_node.attribute("x").as_int(), actual_node.attribute("y").as_int(), actual_node.attribute("w").as_int(), actual_node.attribute("h").as_int() };
@@ -439,7 +439,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	actual_node = general_node.child("coll_offset");
 	catPeasant.coll_offset = { actual_node.attribute("x").as_int(), actual_node.attribute("y").as_int(), actual_node.attribute("w").as_int(), actual_node.attribute("h").as_int() };
 	catPeasant.lives = general_node.child("lives").attribute("value").as_int();
-	catPeasant.pathfinding_normal_speed = actual_node.child("pathfinding_speed").attribute("normal").as_float();
+	catPeasant.pathfinding_normal_speed = general_node.child("pathfinding_speed").attribute("normal").as_float();
 	catPeasant.min_distance_to_shoot = general_node.child("min_distance_to_shoot").attribute("value").as_int();
 	catPeasant.distance_to_player = general_node.child("distance_to_player").attribute("value").as_int();
 	catPeasant.seconds_to_wait = general_node.child("seconds_to_wait").attribute("value").as_int();
@@ -604,6 +604,22 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	cat.l_going_ZZZ.loops = node.attribute("loops").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_going_ZZZ.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//r_ZZZ
+	node = animations_node.child("r_ZZZ");
+	cat.r_ZZZ.speed = node.attribute("speed").as_float();
+	cat.r_ZZZ.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_ZZZ.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_ZZZ
+	node = animations_node.child("l_ZZZ");
+	cat.l_ZZZ.speed = node.attribute("speed").as_float();
+	cat.l_ZZZ.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_ZZZ.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
 	//r_waking_up
@@ -798,6 +814,22 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 		cat.l_brake.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
 
+	//r_dead
+	node = animations_node.child("r_dead");
+	cat.r_dead.speed = node.attribute("speed").as_float();
+	cat.r_dead.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.r_dead.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
+	//l_dead
+	node = animations_node.child("l_dead");
+	cat.l_dead.speed = node.attribute("speed").as_float();
+	cat.l_dead.loops = node.attribute("loops").as_bool();
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		cat.l_dead.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+
 	//attack
 	node = animations_node.child("attack");
 	cat.attack.speed = node.attribute("speed").as_float();
@@ -832,7 +864,7 @@ bool j1EntityFactory::PreUpdate()
 		{
 			SpawnEntity(queue[i]);
 			queue[i].type = ENTITY_TYPES::NO_TYPE;
-			LOG("Spawning entity at %d", queue[i].y * App->scene->scale);
+			LOG("Spawning entity at %d", queue[i].coords.y * App->scene->scale);
 		}
 	}
 	
@@ -863,6 +895,8 @@ bool j1EntityFactory::Update(float dt)
 				entities[i]->Draw(MonkeyTex);
 			else if (entities[i]->type == ENTITY_TYPES::PLAYER_)
 				entities[i]->Draw(PlayerTex);
+			else if (entities[i]->type == ENTITY_TYPES::CAT_)
+				entities[i]->Draw(CatTex);
 		}
 
 	// Draw Above layer
@@ -917,8 +951,7 @@ bool j1EntityFactory::CleanUp()
 		if (queue[i].type != ENTITY_TYPES::NO_TYPE)
 		{
 			queue[i].type = ENTITY_TYPES::NO_TYPE;
-			queue[i].x = NULL;
-			queue[i].y = NULL;
+			queue[i].coords = { 0,0,0,0 };
 		}
 
 		if (entities[i] != nullptr)
@@ -931,7 +964,7 @@ bool j1EntityFactory::CleanUp()
 	return true;
 }
 
-bool j1EntityFactory::AddEntity(ENTITY_TYPES type, uint path)
+bool j1EntityFactory::AddEntity(ENTITY_TYPES type, uint path, SDL_Rect coords, p2DynArray<uint>* states)
 {
 	bool ret = false;
 
@@ -939,16 +972,19 @@ bool j1EntityFactory::AddEntity(ENTITY_TYPES type, uint path)
 	{
 		if (queue[i].type == ENTITY_TYPES::NO_TYPE)
 		{
-			queue[i].path = GetPathByIndex(path);
 			queue[i].type = type;
+			queue[i].path = GetPathByIndex(path);
+			queue[i].states = states;
 
 			if (queue[i].path != nullptr) {
-				queue[i].x = queue[i].path->start_pos.x;
-				queue[i].y = queue[i].path->start_pos.y;
+				queue[i].coords.x = queue[i].path->start_pos.x;
+				queue[i].coords.y = queue[i].path->start_pos.y;
 			}
 			else {
-				queue[i].x = 0;
-				queue[i].y = 0;
+				queue[i].coords.x = coords.x;
+				queue[i].coords.y = coords.y;
+				queue[i].coords.w = coords.w;
+				queue[i].coords.h = coords.h;
 			}
 
 			ret = true;
@@ -970,28 +1006,28 @@ void j1EntityFactory::SpawnEntity(const EntityInfo& info)
 		switch (info.type)
 		{	
 		case ENTITY_TYPES::CAT_PEASANT_:
-			entities[i] = new CatPeasant(info.x, info.y, info.path);
+			entities[i] = new CatPeasant(info.coords.x, info.coords.y, info.path);
 			entities[i]->type = ENTITY_TYPES::CAT_PEASANT_;
 			break;
 
 		case ENTITY_TYPES::IMP_:
-			entities[i] = new Imp(info.x, info.y, info.path);
+			entities[i] = new Imp(info.coords.x, info.coords.y, info.path);
 			entities[i]->type = ENTITY_TYPES::IMP_;
 			break;
 
 		case ENTITY_TYPES::MONKEY_:
-			entities[i] = new Monkey(info.x, info.y, info.path);
+			entities[i] = new Monkey(info.coords.x, info.coords.y, info.path);
 			entities[i]->type = ENTITY_TYPES::MONKEY_;
 			break;
 
 		case ENTITY_TYPES::PLAYER_:
-			playerData = new Player(info.x, info.y);
+			playerData = new Player(info.coords.x, info.coords.y);
 			entities[i] = playerData;
 			entities[i]->type = ENTITY_TYPES::PLAYER_;
 			break;
 
 		case ENTITY_TYPES::CAT_:
-			entities[i] = new Cat(info.x, info.y);
+			entities[i] = new Cat(info.coords, info.states);
 			entities[i]->type = ENTITY_TYPES::CAT_;
 			break;
 		}
@@ -1115,9 +1151,11 @@ bool j1EntityFactory::AddEntities()
 {
 	bool ret = false;
 
+	// Player
 	if (!App->scene->loading_state)
-		AddEntity(PLAYER_, 0);
+		AddEntity(PLAYER_);
 
+	// Enemies
 	int index = 1;
 	p2SString tmp("%s%d", "Enemy", index);
 	Object* obj = App->map->data.GetObjectByName("Enemies", tmp);
@@ -1145,6 +1183,22 @@ bool j1EntityFactory::AddEntities()
 		index++;
 		p2SString tmp1("%s%d%s", "Enemy", index, "S");
 		obj = App->map->data.GetObjectByName("Enemies", tmp1);
+	}
+
+	// Cats
+	index = 1;
+	p2SString tmp2("%s%d", "Cat", index);
+	obj = App->map->data.GetObjectByName("Cats", tmp2);
+
+	while (obj != nullptr) {
+		// Add entity
+		AddEntity((ENTITY_TYPES)obj->type, 0U, { (int)obj->x, (int)obj->y, (int)obj->width, (int)obj->height }, obj->states);
+		ret = true;
+
+		// Search next entity
+		index++;
+		p2SString tmp2("%s%d", "Cat", index);
+		obj = App->map->data.GetObjectByName("Cats", tmp2);
 	}
 
 	if (obj != nullptr)
@@ -1291,6 +1345,9 @@ bool j1EntityFactory::Save(pugi::xml_node& save) const
 	ret = true;
 	return ret;
 }
+
+// -------------------------------------------------------------
+// -------------------------------------------------------------
 
 PathInfo::PathInfo() {}
 

@@ -533,7 +533,13 @@
             <frame x="452" y="455" w="48" h="32"/>
             <frame x="402" y="455" w="48" h="32"/>
             <frame x="352" y="455" w="48" h="32"/>
-          </l_going_ZZZ>      
+          </l_going_ZZZ>
+          <r_ZZZ speed="10" loops="0">
+            <frame x="152" y="455" w="48" h="32"/>
+          </r_ZZZ>
+          <l_ZZZ speed="10" loops="0">
+            <frame x="352" y="455" w="48" h="32"/>
+          </l_ZZZ>
           <r_waking_up speed="10" loops="0">
             <frame x="2" y="507" w="48" h="32"/>
             <frame x="52" y="507" w="48" h="32"/>

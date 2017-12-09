@@ -281,16 +281,6 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	return ret;
 }
 
-iPoint j1Map::MouseTile(int x, int y) const
-{
-	iPoint ret;
-
-	ret.x = x / data.tile_width;
-	ret.y = y / data.tile_height;
-
-	return ret;
-}
-
 SDL_Rect TileSet::GetTileRect(int id) const
 {
 	int relative_id = id - firstgid;
@@ -417,8 +407,7 @@ bool j1Map::Load(const char* file_name)
 		data.layers.add(set);
 	}
 
-	// Load ObjectGroups and GameObjects!!!!!
-	
+	// Load ObjectGroups and GameObjects
 	pugi::xml_node objectGroup;
 	pugi::xml_node object;
 
@@ -803,6 +792,21 @@ bool j1Map::LoadObject(pugi::xml_node& object_node, Object* object)
 		if (context != nullptr)
 			context = nullptr;
 		context = nullptr;
+	}
+
+	pugi::xml_node state = object_node.child("properties").child("property");
+
+	if (state != nullptr) {
+		uint index = 1;
+		p2SString tmp("%s%d", "state", index);
+
+		object->states = new p2DynArray<uint>();
+
+		for (pugi::xml_node s = state; s; s = state.next_sibling(tmp.GetString())) {
+			object->states->PushBack(s.attribute("value").as_uint());
+
+			p2SString tmp("%s%d", "state", ++index);
+		}
 	}
 
 	return ret;
