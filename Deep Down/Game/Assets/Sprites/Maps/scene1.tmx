@@ -7578,7 +7578,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="323"/>
+   <tile gid="404"/>
    <tile gid="335"/>
    <tile gid="336"/>
    <tile gid="335"/>
@@ -7678,7 +7678,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="339"/>
+   <tile gid="403"/>
    <tile gid="335"/>
    <tile gid="336"/>
    <tile gid="335"/>
@@ -11141,7 +11141,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="531"/>
    <tile gid="431"/>
    <tile gid="432"/>
    <tile gid="431"/>
@@ -19486,7 +19486,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="334"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -19587,7 +19587,7 @@
    <tile gid="321"/>
    <tile gid="316"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="369"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -19687,7 +19687,7 @@
    <tile gid="334"/>
    <tile gid="333"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="325"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -19786,7 +19786,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="318"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22845,7 +22845,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="337"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22952,7 +22952,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="445"/>
+   <tile gid="0"/>
    <tile gid="446"/>
    <tile gid="334"/>
    <tile gid="0"/>
@@ -23149,7 +23149,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="467"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -24031,7 +24031,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="Collision" width="100" height="60" visible="0">
+ <layer name="Collision" width="100" height="60">
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -25488,9 +25488,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="1181"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="1181"/>
+   <tile gid="1181"/>
+   <tile gid="1181"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -25587,10 +25587,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1181"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -25687,10 +25687,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1181"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -25788,9 +25788,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="1181"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="1181"/>
+   <tile gid="1181"/>
+   <tile gid="1181"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -30062,15 +30062,17 @@
   </object>
  </objectgroup>
  <objectgroup name="Cats">
-  <object id="57" name="Cat1" type="6" x="880" y="240" width="16" height="16">
+  <object id="57" name="Cat1" type="6" x="864" y="240" width="16" height="16">
    <properties>
-    <property name="state1" type="int" value="6"/>
-    <property name="state2" type="int" value="2"/>
+    <property name="right_death" type="bool" value="false"/>
+    <property name="state1" type="int" value="1"/>
+    <property name="state2" type="int" value="1"/>
+    <property name="state3" type="int" value="3"/>
    </properties>
   </object>
   <object id="60" name="Cat2" type="6" x="368" y="768" width="16" height="16"/>
-  <object id="68" name="Cat3" type="6" x="240" y="752" width="16" height="16"/>
+  <object id="68" name="Cat3" type="6" x="224" y="752" width="16" height="16"/>
   <object id="69" name="Cat4" type="6" x="992" y="784" width="16" height="16"/>
-  <object id="70" name="Cat5" type="6" x="1296" y="784" width="16" height="16"/>
+  <object id="70" name="Cat5" type="6" x="1280" y="784" width="16" height="16"/>
  </objectgroup>
 </map>

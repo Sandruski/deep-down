@@ -34,6 +34,7 @@ bool j1FadeToBlack::Awake()
 	BonFireAnim.PushBack({ 344, 472, 172, 236 });
 	BonFireAnim.speed = 2.0f;
 
+	return true;
 }
 // Load assets
 bool j1FadeToBlack::Start()

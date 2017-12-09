@@ -70,7 +70,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//idle
 	node = animations_node.child("idle");
 	player.idle.speed = node.attribute("speed").as_float();
-	player.idle.loops = node.attribute("loops").as_bool();
+	player.idle.loop = node.attribute("loop").as_bool();
 	player.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
@@ -79,7 +79,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//idle2
 	node = animations_node.child("idle2");
 	player.idle2.speed = node.attribute("speed").as_float();
-	player.idle2.loops = node.attribute("loops").as_bool();
+	player.idle2.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.idle2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -87,7 +87,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//forward
 	node = animations_node.child("forward");
 	player.forward.speed = node.attribute("speed").as_float();
-	player.forward.loops = node.attribute("loops").as_bool();
+	player.forward.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.forward.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -95,7 +95,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//backward
 	node = animations_node.child("backward");
 	player.backward.speed = node.attribute("speed").as_float();
-	player.backward.loops = node.attribute("loops").as_bool();
+	player.backward.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.backward.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -103,7 +103,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//crouch
 	node = animations_node.child("crouch");
 	player.crouch.speed = node.attribute("speed").as_float();
-	player.crouch.loops = node.attribute("loops").as_bool();
+	player.crouch.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.crouch.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -111,7 +111,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//crouch2
 	node = animations_node.child("crouch2");
 	player.crouch2.speed = node.attribute("speed").as_float();
-	player.crouch2.loops = node.attribute("loops").as_bool();
+	player.crouch2.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.crouch2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -119,7 +119,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//shot
 	node = animations_node.child("shot");
 	player.shot.speed = node.attribute("speed").as_float();
-	player.shot.loops = node.attribute("loops").as_bool();
+	player.shot.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.shot.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -127,7 +127,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//shot2
 	node = animations_node.child("shot2");
 	player.shot2.speed = node.attribute("speed").as_float();
-	player.shot2.loops = node.attribute("loops").as_bool();
+	player.shot2.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.shot2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -135,7 +135,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//crouchShot
 	node = animations_node.child("crouchShot");
 	player.crouchShot.speed = node.attribute("speed").as_float();
-	player.crouchShot.loops = node.attribute("loops").as_bool();
+	player.crouchShot.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.crouchShot.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -143,7 +143,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//crouchShot2
 	node = animations_node.child("crouchShot2");
 	player.crouchShot2.speed = node.attribute("speed").as_float();
-	player.crouchShot2.loops = node.attribute("loops").as_bool();
+	player.crouchShot2.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.crouchShot2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -151,7 +151,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//jump
 	node = animations_node.child("jump");
 	player.jump.speed = node.attribute("speed").as_float();
-	player.jump.loops = node.attribute("loops").as_bool();
+	player.jump.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.jump.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -159,7 +159,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//jump2
 	node = animations_node.child("jump2");
 	player.jump2.speed = node.attribute("speed").as_float();
-	player.jump2.loops = node.attribute("loops").as_bool();
+	player.jump2.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.jump2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -167,7 +167,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//punished
 	node = animations_node.child("punished");
 	player.punished.speed = node.attribute("speed").as_float();
-	player.punished.loops = node.attribute("loops").as_bool();
+	player.punished.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.punished.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -175,7 +175,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//punished2
 	node = animations_node.child("punished2");
 	player.punished2.speed = node.attribute("speed").as_float();
-	player.punished2.loops = node.attribute("loops").as_bool();
+	player.punished2.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.punished2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -184,7 +184,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//dash
 	node = animations_node.child("dash");
 	player.dash.speed = node.attribute("speed").as_float();
-	player.dash.loops = node.attribute("loops").as_bool();
+	player.dash.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.dash.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -192,7 +192,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//dash2
 	node = animations_node.child("dash2");
 	player.dash2.speed = node.attribute("speed").as_float();
-	player.dash2.loops = node.attribute("loops").as_bool();
+	player.dash2.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.dash2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -200,7 +200,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//firstAttack
 	node = animations_node.child("firstAttack");
 	player.firstAttack.speed = node.attribute("speed").as_float();
-	player.firstAttack.loops = node.attribute("loops").as_bool();
+	player.firstAttack.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.firstAttack.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -208,7 +208,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//firstAttack2
 	node = animations_node.child("firstAttack2");
 	player.firstAttack2.speed = node.attribute("speed").as_float();
-	player.firstAttack2.loops = node.attribute("loops").as_bool();
+	player.firstAttack2.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.firstAttack2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -216,7 +216,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//secondAttack
 	node = animations_node.child("secondAttack");
 	player.secondAttack.speed = node.attribute("speed").as_float();
-	player.secondAttack.loops = node.attribute("loops").as_bool();
+	player.secondAttack.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.secondAttack.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -224,7 +224,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//secondAttack2
 	node = animations_node.child("secondAttack2");
 	player.secondAttack2.speed = node.attribute("speed").as_float();
-	player.secondAttack2.loops = node.attribute("loops").as_bool();
+	player.secondAttack2.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.secondAttack2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -232,7 +232,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//thirdAttack
 	node = animations_node.child("thirdAttack");
 	player.thirdAttack.speed = node.attribute("speed").as_float();
-	player.thirdAttack.loops = node.attribute("loops").as_bool();
+	player.thirdAttack.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.thirdAttack.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -240,7 +240,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//thirdAttack2
 	node = animations_node.child("thirdAttack2");
 	player.thirdAttack2.speed = node.attribute("speed").as_float();
-	player.thirdAttack2.loops = node.attribute("loops").as_bool();
+	player.thirdAttack2.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		player.thirdAttack2.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -274,7 +274,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_shield_idle
 	node = animations_node.child("r_shield_idle");
 	imp.r_shield_idle.speed = node.attribute("speed").as_float();
-	imp.r_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.r_shield_idle.loop = node.attribute("loop").as_bool();
 	imp.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.r_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
@@ -283,7 +283,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_shield_idle
 	node = animations_node.child("l_shield_idle");
 	imp.l_shield_idle.speed = node.attribute("speed").as_float();
-	imp.l_shield_idle.loops = node.attribute("loops").as_bool();
+	imp.l_shield_idle.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.l_shield_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -291,7 +291,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_shield_hurt
 	node = animations_node.child("r_shield_hurt");
 	imp.r_shield_hurt.speed = node.attribute("speed").as_float();
-	imp.r_shield_hurt.loops = node.attribute("loops").as_bool();
+	imp.r_shield_hurt.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.r_shield_hurt.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -299,7 +299,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_shield_hurt
 	node = animations_node.child("l_shield_hurt");
 	imp.l_shield_hurt.speed = node.attribute("speed").as_float();
-	imp.l_shield_hurt.loops = node.attribute("loops").as_bool();
+	imp.l_shield_hurt.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.l_shield_hurt.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -307,7 +307,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_jump
 	node = animations_node.child("r_jump");
 	imp.r_jump.speed = node.attribute("speed").as_float();
-	imp.r_jump.loops = node.attribute("loops").as_bool();
+	imp.r_jump.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.r_jump.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -315,7 +315,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_jump
 	node = animations_node.child("l_jump");
 	imp.l_jump.speed = node.attribute("speed").as_float();
-	imp.l_jump.loops = node.attribute("loops").as_bool();
+	imp.l_jump.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.l_jump.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -323,7 +323,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_throw_bomb
 	node = animations_node.child("r_throw_bomb");
 	imp.r_throw_bomb.speed = node.attribute("speed").as_float();
-	imp.r_throw_bomb.loops = node.attribute("loops").as_bool();
+	imp.r_throw_bomb.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.r_throw_bomb.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -331,7 +331,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_throw_bomb
 	node = animations_node.child("l_throw_bomb");
 	imp.l_throw_bomb.speed = node.attribute("speed").as_float();
-	imp.l_throw_bomb.loops = node.attribute("loops").as_bool();
+	imp.l_throw_bomb.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.l_throw_bomb.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -339,7 +339,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_shield_walk
 	node = animations_node.child("r_shield_walk");
 	imp.r_shield_walk.speed = node.attribute("speed").as_float();
-	imp.r_shield_walk.loops = node.attribute("loops").as_bool();
+	imp.r_shield_walk.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.r_shield_walk.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -347,7 +347,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_shield_walk
 	node = animations_node.child("l_shield_walk");
 	imp.l_shield_walk.speed = node.attribute("speed").as_float();
-	imp.l_shield_walk.loops = node.attribute("loops").as_bool();
+	imp.l_shield_walk.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.l_shield_walk.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -355,7 +355,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//invisible
 	node = animations_node.child("invisible");
 	imp.invisible.speed = node.attribute("speed").as_float();
-	imp.invisible.loops = node.attribute("loops").as_bool();
+	imp.invisible.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		imp.invisible.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -385,7 +385,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_idle
 	node = animations_node.child("r_idle");
 	monkey.r_idle.speed = node.attribute("speed").as_float();
-	monkey.r_idle.loops = node.attribute("loops").as_bool();
+	monkey.r_idle.loop = node.attribute("loop").as_bool();
 	monkey.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		monkey.r_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
@@ -394,7 +394,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_idle
 	node = animations_node.child("l_idle");
 	monkey.l_idle.speed = node.attribute("speed").as_float();
-	monkey.l_idle.loops = node.attribute("loops").as_bool();
+	monkey.l_idle.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		monkey.l_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -402,7 +402,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_hurt
 	node = animations_node.child("r_hurt");
 	monkey.r_hurt.speed = node.attribute("speed").as_float();
-	monkey.r_hurt.loops = node.attribute("loops").as_bool();
+	monkey.r_hurt.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		monkey.r_hurt.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -410,7 +410,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_hurt
 	node = animations_node.child("l_hurt");
 	monkey.l_hurt.speed = node.attribute("speed").as_float();
-	monkey.l_hurt.loops = node.attribute("loops").as_bool();
+	monkey.l_hurt.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		monkey.l_hurt.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -418,7 +418,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_hit
 	node = animations_node.child("r_hit");
 	monkey.r_hit.speed = node.attribute("speed").as_float();
-	monkey.r_hit.loops = node.attribute("loops").as_bool();
+	monkey.r_hit.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		monkey.r_hit.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -426,7 +426,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_hit
 	node = animations_node.child("l_hit");
 	monkey.l_hit.speed = node.attribute("speed").as_float();
-	monkey.l_hit.loops = node.attribute("loops").as_bool();
+	monkey.l_hit.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		monkey.l_hit.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -452,7 +452,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_idle
 	node = animations_node.child("r_idle");
 	catPeasant.r_idle.speed = node.attribute("speed").as_float();
-	catPeasant.r_idle.loops = node.attribute("loops").as_bool();
+	catPeasant.r_idle.loop = node.attribute("loop").as_bool();
 	catPeasant.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.r_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
@@ -461,7 +461,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_idle
 	node = animations_node.child("l_idle");
 	catPeasant.l_idle.speed = node.attribute("speed").as_float();
-	catPeasant.l_idle.loops = node.attribute("loops").as_bool();
+	catPeasant.l_idle.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.l_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -469,7 +469,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_idle_no_staff
 	node = animations_node.child("r_idle_no_staff");
 	catPeasant.r_idle_no_staff.speed = node.attribute("speed").as_float();
-	catPeasant.r_idle_no_staff.loops = node.attribute("loops").as_bool();
+	catPeasant.r_idle_no_staff.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.r_idle_no_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -477,7 +477,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_idle_no_staff
 	node = animations_node.child("l_idle_no_staff");
 	catPeasant.l_idle_no_staff.speed = node.attribute("speed").as_float();
-	catPeasant.l_idle_no_staff.loops = node.attribute("loops").as_bool();
+	catPeasant.l_idle_no_staff.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.l_idle_no_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -485,7 +485,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_hurt
 	node = animations_node.child("r_hurt");
 	catPeasant.r_hurt.speed = node.attribute("speed").as_float();
-	catPeasant.r_hurt.loops = node.attribute("loops").as_bool();
+	catPeasant.r_hurt.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.r_hurt.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -493,7 +493,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_hurt
 	node = animations_node.child("l_hurt");
 	catPeasant.l_hurt.speed = node.attribute("speed").as_float();
-	catPeasant.l_hurt.loops = node.attribute("loops").as_bool();
+	catPeasant.l_hurt.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.l_hurt.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -501,7 +501,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_hurt_no_staff
 	node = animations_node.child("r_hurt_no_staff");
 	catPeasant.r_hurt_no_staff.speed = node.attribute("speed").as_float();
-	catPeasant.r_hurt_no_staff.loops = node.attribute("loops").as_bool();
+	catPeasant.r_hurt_no_staff.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.r_hurt_no_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -509,7 +509,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_hurt_no_staff
 	node = animations_node.child("l_hurt_no_staff");
 	catPeasant.l_hurt_no_staff.speed = node.attribute("speed").as_float();
-	catPeasant.l_hurt_no_staff.loops = node.attribute("loops").as_bool();
+	catPeasant.l_hurt_no_staff.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.l_hurt_no_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -517,7 +517,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_dead
 	node = animations_node.child("r_dead");
 	catPeasant.r_dead.speed = node.attribute("speed").as_float();
-	catPeasant.r_dead.loops = node.attribute("loops").as_bool();
+	catPeasant.r_dead.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.r_dead.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -525,7 +525,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_dead
 	node = animations_node.child("l_dead");
 	catPeasant.l_dead.speed = node.attribute("speed").as_float();
-	catPeasant.l_dead.loops = node.attribute("loops").as_bool();
+	catPeasant.l_dead.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.l_dead.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -533,7 +533,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_dead_no_staff
 	node = animations_node.child("r_dead_no_staff");
 	catPeasant.r_dead_no_staff.speed = node.attribute("speed").as_float();
-	catPeasant.r_dead_no_staff.loops = node.attribute("loops").as_bool();
+	catPeasant.r_dead_no_staff.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.r_dead_no_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -541,7 +541,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_dead_no_staff
 	node = animations_node.child("l_dead_no_staff");
 	catPeasant.l_dead_no_staff.speed = node.attribute("speed").as_float();
-	catPeasant.l_dead_no_staff.loops = node.attribute("loops").as_bool();
+	catPeasant.l_dead_no_staff.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.l_dead_no_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -549,7 +549,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_throw_staff
 	node = animations_node.child("r_throw_staff");
 	catPeasant.r_throw_staff.speed = node.attribute("speed").as_float();
-	catPeasant.r_throw_staff.loops = node.attribute("loops").as_bool();
+	catPeasant.r_throw_staff.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.r_throw_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -557,7 +557,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_throw_staff
 	node = animations_node.child("l_throw_staff");
 	catPeasant.l_throw_staff.speed = node.attribute("speed").as_float();
-	catPeasant.l_throw_staff.loops = node.attribute("loops").as_bool();
+	catPeasant.l_throw_staff.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		catPeasant.l_throw_staff.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -576,7 +576,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_idle
 	node = animations_node.child("r_idle");
 	cat.r_idle.speed = node.attribute("speed").as_float();
-	cat.r_idle.loops = node.attribute("loops").as_bool();
+	cat.r_idle.loop = node.attribute("loop").as_bool();
 	cat.coll_size = { node.child("frame").attribute("w").as_int(), node.child("frame").attribute("h").as_int() };
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
@@ -585,7 +585,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_idle
 	node = animations_node.child("l_idle");
 	cat.l_idle.speed = node.attribute("speed").as_float();
-	cat.l_idle.loops = node.attribute("loops").as_bool();
+	cat.l_idle.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_idle.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -593,7 +593,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_going_ZZZ
 	node = animations_node.child("r_going_ZZZ");
 	cat.r_going_ZZZ.speed = node.attribute("speed").as_float();
-	cat.r_going_ZZZ.loops = node.attribute("loops").as_bool();
+	cat.r_going_ZZZ.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_going_ZZZ.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -601,7 +601,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_going_ZZZ
 	node = animations_node.child("l_going_ZZZ");
 	cat.l_going_ZZZ.speed = node.attribute("speed").as_float();
-	cat.l_going_ZZZ.loops = node.attribute("loops").as_bool();
+	cat.l_going_ZZZ.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_going_ZZZ.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -609,7 +609,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_ZZZ
 	node = animations_node.child("r_ZZZ");
 	cat.r_ZZZ.speed = node.attribute("speed").as_float();
-	cat.r_ZZZ.loops = node.attribute("loops").as_bool();
+	cat.r_ZZZ.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_ZZZ.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -617,7 +617,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_ZZZ
 	node = animations_node.child("l_ZZZ");
 	cat.l_ZZZ.speed = node.attribute("speed").as_float();
-	cat.l_ZZZ.loops = node.attribute("loops").as_bool();
+	cat.l_ZZZ.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_ZZZ.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -625,7 +625,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_waking_up
 	node = animations_node.child("r_waking_up");
 	cat.r_waking_up.speed = node.attribute("speed").as_float();
-	cat.r_waking_up.loops = node.attribute("loops").as_bool();
+	cat.r_waking_up.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_waking_up.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -633,7 +633,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_waking_up
 	node = animations_node.child("l_waking_up");
 	cat.l_waking_up.speed = node.attribute("speed").as_float();
-	cat.l_waking_up.loops = node.attribute("loops").as_bool();
+	cat.l_waking_up.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_waking_up.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -641,7 +641,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_to_crouch
 	node = animations_node.child("r_to_crouch");
 	cat.r_to_crouch.speed = node.attribute("speed").as_float();
-	cat.r_to_crouch.loops = node.attribute("loops").as_bool();
+	cat.r_to_crouch.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_to_crouch.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -649,7 +649,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_to_crouch
 	node = animations_node.child("l_to_crouch");
 	cat.l_to_crouch.speed = node.attribute("speed").as_float();
-	cat.l_to_crouch.loops = node.attribute("loops").as_bool();
+	cat.l_to_crouch.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_to_crouch.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -657,7 +657,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_crouch
 	node = animations_node.child("r_crouch");
 	cat.r_crouch.speed = node.attribute("speed").as_float();
-	cat.r_crouch.loops = node.attribute("loops").as_bool();
+	cat.r_crouch.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_crouch.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -665,7 +665,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_crouch
 	node = animations_node.child("l_crouch");
 	cat.l_crouch.speed = node.attribute("speed").as_float();
-	cat.l_crouch.loops = node.attribute("loops").as_bool();
+	cat.l_crouch.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_crouch.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -673,7 +673,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_rise
 	node = animations_node.child("r_rise");
 	cat.r_rise.speed = node.attribute("speed").as_float();
-	cat.r_rise.loops = node.attribute("loops").as_bool();
+	cat.r_rise.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_rise.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -681,7 +681,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_rise
 	node = animations_node.child("l_rise");
 	cat.l_rise.speed = node.attribute("speed").as_float();
-	cat.l_rise.loops = node.attribute("loops").as_bool();
+	cat.l_rise.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_rise.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -689,7 +689,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_jump
 	node = animations_node.child("r_jump");
 	cat.r_jump.speed = node.attribute("speed").as_float();
-	cat.r_jump.loops = node.attribute("loops").as_bool();
+	cat.r_jump.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_jump.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -697,7 +697,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_jump
 	node = animations_node.child("l_jump");
 	cat.l_jump.speed = node.attribute("speed").as_float();
-	cat.l_jump.loops = node.attribute("loops").as_bool();
+	cat.l_jump.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_jump.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -705,7 +705,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_fall
 	node = animations_node.child("r_fall");
 	cat.r_fall.speed = node.attribute("speed").as_float();
-	cat.r_fall.loops = node.attribute("loops").as_bool();
+	cat.r_fall.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_fall.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -713,7 +713,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_fall
 	node = animations_node.child("l_fall");
 	cat.l_fall.speed = node.attribute("speed").as_float();
-	cat.l_fall.loops = node.attribute("loops").as_bool();
+	cat.l_fall.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_fall.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -721,7 +721,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_land_soft
 	node = animations_node.child("r_land_soft");
 	cat.r_land_soft.speed = node.attribute("speed").as_float();
-	cat.r_land_soft.loops = node.attribute("loops").as_bool();
+	cat.r_land_soft.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_land_soft.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -729,7 +729,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_land_soft
 	node = animations_node.child("l_land_soft");
 	cat.l_land_soft.speed = node.attribute("speed").as_float();
-	cat.l_land_soft.loops = node.attribute("loops").as_bool();
+	cat.l_land_soft.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_land_soft.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -737,7 +737,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_roll
 	node = animations_node.child("r_roll");
 	cat.r_roll.speed = node.attribute("speed").as_float();
-	cat.r_roll.loops = node.attribute("loops").as_bool();
+	cat.r_roll.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_roll.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -745,7 +745,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_roll
 	node = animations_node.child("l_roll");
 	cat.l_roll.speed = node.attribute("speed").as_float();
-	cat.l_roll.loops = node.attribute("loops").as_bool();
+	cat.l_roll.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_roll.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -753,7 +753,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_to_run
 	node = animations_node.child("r_to_run");
 	cat.r_to_run.speed = node.attribute("speed").as_float();
-	cat.r_to_run.loops = node.attribute("loops").as_bool();
+	cat.r_to_run.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_to_run.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -761,7 +761,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_to_run
 	node = animations_node.child("l_to_run");
 	cat.l_to_run.speed = node.attribute("speed").as_float();
-	cat.l_to_run.loops = node.attribute("loops").as_bool();
+	cat.l_to_run.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_to_run.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -769,7 +769,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_run
 	node = animations_node.child("r_run");
 	cat.r_run.speed = node.attribute("speed").as_float();
-	cat.r_run.loops = node.attribute("loops").as_bool();
+	cat.r_run.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_run.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -777,7 +777,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_run
 	node = animations_node.child("l_run");
 	cat.l_run.speed = node.attribute("speed").as_float();
-	cat.l_run.loops = node.attribute("loops").as_bool();
+	cat.l_run.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_run.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -785,7 +785,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_turn
 	node = animations_node.child("r_turn");
 	cat.r_turn.speed = node.attribute("speed").as_float();
-	cat.r_turn.loops = node.attribute("loops").as_bool();
+	cat.r_turn.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_turn.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -793,7 +793,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_turn
 	node = animations_node.child("l_turn");
 	cat.l_turn.speed = node.attribute("speed").as_float();
-	cat.l_turn.loops = node.attribute("loops").as_bool();
+	cat.l_turn.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_turn.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -801,7 +801,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_brake
 	node = animations_node.child("r_brake");
 	cat.r_brake.speed = node.attribute("speed").as_float();
-	cat.r_brake.loops = node.attribute("loops").as_bool();
+	cat.r_brake.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_brake.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -809,7 +809,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_brake
 	node = animations_node.child("l_brake");
 	cat.l_brake.speed = node.attribute("speed").as_float();
-	cat.l_brake.loops = node.attribute("loops").as_bool();
+	cat.l_brake.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_brake.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -817,7 +817,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//r_dead
 	node = animations_node.child("r_dead");
 	cat.r_dead.speed = node.attribute("speed").as_float();
-	cat.r_dead.loops = node.attribute("loops").as_bool();
+	cat.r_dead.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.r_dead.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -825,7 +825,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//l_dead
 	node = animations_node.child("l_dead");
 	cat.l_dead.speed = node.attribute("speed").as_float();
-	cat.l_dead.loops = node.attribute("loops").as_bool();
+	cat.l_dead.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.l_dead.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -833,7 +833,7 @@ bool j1EntityFactory::Awake(pugi::xml_node& config) {
 	//attack
 	node = animations_node.child("attack");
 	cat.attack.speed = node.attribute("speed").as_float();
-	cat.attack.loops = node.attribute("loops").as_bool();
+	cat.attack.loop = node.attribute("loop").as_bool();
 	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
 		cat.attack.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	}
@@ -864,7 +864,7 @@ bool j1EntityFactory::PreUpdate()
 		{
 			SpawnEntity(queue[i]);
 			queue[i].type = ENTITY_TYPES::NO_TYPE;
-			LOG("Spawning entity at %d", queue[i].coords.y * App->scene->scale);
+			LOG("Spawning entity at %d", queue[i].position.y * App->scene->scale);
 		}
 	}
 	
@@ -951,7 +951,7 @@ bool j1EntityFactory::CleanUp()
 		if (queue[i].type != ENTITY_TYPES::NO_TYPE)
 		{
 			queue[i].type = ENTITY_TYPES::NO_TYPE;
-			queue[i].coords = { 0,0,0,0 };
+			queue[i].position = { 0,0 };
 		}
 
 		if (entities[i] != nullptr)
@@ -964,7 +964,7 @@ bool j1EntityFactory::CleanUp()
 	return true;
 }
 
-bool j1EntityFactory::AddEntity(ENTITY_TYPES type, uint path, SDL_Rect coords, p2DynArray<uint>* states)
+bool j1EntityFactory::AddEntity(EntityInfo& info)
 {
 	bool ret = false;
 
@@ -972,19 +972,17 @@ bool j1EntityFactory::AddEntity(ENTITY_TYPES type, uint path, SDL_Rect coords, p
 	{
 		if (queue[i].type == ENTITY_TYPES::NO_TYPE)
 		{
-			queue[i].type = type;
-			queue[i].path = GetPathByIndex(path);
-			queue[i].states = states;
+			queue[i].type = info.type;
+			queue[i].path = GetPathByIndex(info.path_num);
+			queue[i].states = info.states;
 
 			if (queue[i].path != nullptr) {
-				queue[i].coords.x = queue[i].path->start_pos.x;
-				queue[i].coords.y = queue[i].path->start_pos.y;
+				queue[i].position.x = queue[i].path->start_pos.x;
+				queue[i].position.y = queue[i].path->start_pos.y;
 			}
 			else {
-				queue[i].coords.x = coords.x;
-				queue[i].coords.y = coords.y;
-				queue[i].coords.w = coords.w;
-				queue[i].coords.h = coords.h;
+				queue[i].position.x = info.position.x;
+				queue[i].position.y = info.position.y;
 			}
 
 			ret = true;
@@ -1006,28 +1004,28 @@ void j1EntityFactory::SpawnEntity(const EntityInfo& info)
 		switch (info.type)
 		{	
 		case ENTITY_TYPES::CAT_PEASANT_:
-			entities[i] = new CatPeasant(info.coords.x, info.coords.y, info.path);
+			entities[i] = new CatPeasant(info.position.x, info.position.y, info.path);
 			entities[i]->type = ENTITY_TYPES::CAT_PEASANT_;
 			break;
 
 		case ENTITY_TYPES::IMP_:
-			entities[i] = new Imp(info.coords.x, info.coords.y, info.path);
+			entities[i] = new Imp(info.position.x, info.position.y, info.path);
 			entities[i]->type = ENTITY_TYPES::IMP_;
 			break;
 
 		case ENTITY_TYPES::MONKEY_:
-			entities[i] = new Monkey(info.coords.x, info.coords.y, info.path);
+			entities[i] = new Monkey(info.position.x, info.position.y, info.path);
 			entities[i]->type = ENTITY_TYPES::MONKEY_;
 			break;
 
 		case ENTITY_TYPES::PLAYER_:
-			playerData = new Player(info.coords.x, info.coords.y);
+			playerData = new Player(info.position.x, info.position.y);
 			entities[i] = playerData;
 			entities[i]->type = ENTITY_TYPES::PLAYER_;
 			break;
 
 		case ENTITY_TYPES::CAT_:
-			entities[i] = new Cat(info.coords, info.states);
+			entities[i] = new Cat(info.position.x, info.position.y, info.states, info.right_death);
 			entities[i]->type = ENTITY_TYPES::CAT_;
 			break;
 		}
@@ -1151,9 +1149,13 @@ bool j1EntityFactory::AddEntities()
 {
 	bool ret = false;
 
+	EntityInfo info;
+
 	// Player
-	if (!App->scene->loading_state)
-		AddEntity(PLAYER_);
+	if (!App->scene->loading_state) {
+		info.type = PLAYER_;
+		AddEntity(info);
+	}
 
 	// Enemies
 	int index = 1;
@@ -1162,7 +1164,9 @@ bool j1EntityFactory::AddEntities()
 
 	while (obj != nullptr) {
 		// Add entity
-		AddEntity((ENTITY_TYPES)obj->type, index);
+		info.type = (ENTITY_TYPES)obj->type;
+		info.path_num = index;
+		AddEntity(info);
 		ret = true;
 
 		// Search next entity
@@ -1176,7 +1180,9 @@ bool j1EntityFactory::AddEntities()
 
 	while (obj != nullptr) {
 		// Add entity
-		AddEntity((ENTITY_TYPES)obj->type, index);
+		info.type = (ENTITY_TYPES)obj->type;
+		info.path_num = index;
+		AddEntity(info);
 		ret = true;
 
 		// Search next entity
@@ -1192,7 +1198,13 @@ bool j1EntityFactory::AddEntities()
 
 	while (obj != nullptr) {
 		// Add entity
-		AddEntity((ENTITY_TYPES)obj->type, 0U, { (int)obj->x, (int)obj->y, (int)obj->width, (int)obj->height }, obj->states);
+		info.type = (ENTITY_TYPES)obj->type;
+		info.path_num = 0;
+		info.position.x = (int)obj->x;
+		info.position.y = (int)obj->y;
+		info.states = obj->states;
+		info.right_death = obj->right_death;
+		AddEntity(info);
 		ret = true;
 
 		// Search next entity
@@ -1292,7 +1304,10 @@ bool j1EntityFactory::LoadEntities()
 		}
 	}
 
-	AddEntity(PLAYER_, 0);
+	EntityInfo info;
+	info.type = PLAYER_;
+	AddEntity(info);
+
 	if (PreUpdate())
 		ret = true;
 

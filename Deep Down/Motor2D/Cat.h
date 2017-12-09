@@ -42,7 +42,7 @@ class Cat : public Entity
 {
 public:
 
-	Cat(SDL_Rect coords, p2DynArray<uint>* cat_states);
+	Cat(float x, float y, p2DynArray<uint>* cat_states, bool right_death);
 
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move(const float dt);
@@ -54,6 +54,7 @@ public:
 private:
 
 	void UpdateCatState();
+	void ResetAllAnimations();
 
 private:
 
@@ -61,6 +62,9 @@ private:
 	CatState catState;
 	p2DynArray<uint> cat_states;
 	uint cat_states_index = 0;
+	bool reset_animations = false;
+
+	bool right_death = false;
 
 	// Animations speed
 	float r_idle_speed = 0.0f, l_idle_speed = 0.0f;

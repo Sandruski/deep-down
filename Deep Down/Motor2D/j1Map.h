@@ -36,6 +36,7 @@ struct Object {
 
 	int* polyline = nullptr;
 	p2DynArray<uint>* states = nullptr;
+	bool right_death = false;
 
 	~Object() {
 		RELEASE_ARRAY(polyline);

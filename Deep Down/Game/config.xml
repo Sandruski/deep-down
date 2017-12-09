@@ -77,7 +77,7 @@
           <check_collision offset="3"/>
         </general>
         <animations>
-          <idle speed="10" loops="1">
+          <idle speed="10" loop="1">
             <frame x="1" y="454" w="48" h="48"/>
             <frame x="50" y="454" w="48" h="48"/>
             <frame x="99" y="454" w="48" h="48"/>
@@ -85,7 +85,7 @@
             <frame x="197" y="454" w="48" h="48"/>
             <frame x="246" y="454" w="48" h="48"/>
           </idle>
-          <idle2 speed="10" loops="1">
+          <idle2 speed="10" loop="1">
             <frame x="686" y="454" w="48" h="48"/>
             <frame x="735" y="454" w="48" h="48"/>
             <frame x="784" y="454" w="48" h="48"/>
@@ -93,7 +93,7 @@
             <frame x="882" y="454" w="48" h="48"/>
             <frame x="931" y="454" w="48" h="48"/>
           </idle2>
-          <forward speed="10" loops="1">
+          <forward speed="10" loop="1">
             <frame x="99" y="206" w="48" h="48"/>
             <frame x="148" y="206" w="48" h="48"/>
             <frame x="197" y="206" w="48" h="48"/>
@@ -103,7 +103,7 @@
             <frame x="393" y="206" w="48" h="48"/>
             <frame x="442" y="206" w="48" h="48"/>
           </forward>
-          <backward speed="10" loops="1">
+          <backward speed="10" loop="1">
             <frame x="833" y="206" w="48" h="48"/>
             <frame x="784" y="206" w="48" h="48"/>
             <frame x="735" y="206" w="48" h="48"/>
@@ -113,15 +113,15 @@
             <frame x="539" y="206" w="48" h="48"/>
             <frame x="490" y="206" w="48" h="48"/>
           </backward>
-          <crouch speed="10" loops="1">
+          <crouch speed="10" loop="1">
             <frame x="99" y="268" w="48" h="48"/>
             <frame x="148" y="268" w="48" h="48"/>
           </crouch>
-          <crouch2 speed="10" loops="1">
+          <crouch2 speed="10" loop="1">
             <frame x="784" y="268" w="48" h="48"/>
             <frame x="833" y="268" w="48" h="48"/>
           </crouch2>
-          <shot speed="10" loops="0">
+          <shot speed="10" loop="0">
             <frame x="1" y="13" w="48" h="48"/>
             <frame x="50" y="13" w="48" h="48"/>
             <frame x="99" y="13" w="48" h="48"/>
@@ -129,7 +129,7 @@
             <frame x="197" y="13" w="48" h="48"/>
             <frame x="246" y="13" w="48" h="48"/>
           </shot>
-          <shot2 speed="10" loops="0">
+          <shot2 speed="10" loop="0">
             <frame x="931" y="13" w="48" h="48"/>
             <frame x="882" y="13" w="48" h="48"/>
             <frame x="833" y="13" w="48" h="48"/>
@@ -137,7 +137,7 @@
             <frame x="735" y="13" w="48" h="48"/>
             <frame x="686" y="13" w="48" h="48"/>
           </shot2>
-          <crouchShot speed="10" loops="0">
+          <crouchShot speed="10" loop="0">
             <frame x="1" y="140" w="48" h="48"/>
             <frame x="50" y="140" w="48" h="48"/>
             <frame x="99" y="140" w="48" h="48"/>
@@ -145,7 +145,7 @@
             <frame x="197" y="140" w="48" h="48"/>
             <frame x="246" y="140" w="48" h="48"/>
           </crouchShot>
-          <crouchShot2 speed="10" loops="0">
+          <crouchShot2 speed="10" loop="0">
             <frame x="931" y="140" w="48" h="48"/>
             <frame x="882" y="140" w="48" h="48"/>
             <frame x="833" y="140" w="48" h="48"/>
@@ -153,33 +153,33 @@
             <frame x="735" y="140" w="48" h="48"/>
             <frame x="686" y="140" w="48" h="48"/>
           </crouchShot2>
-          <jump speed="10" loops="1">
+          <jump speed="10" loop="1">
             <frame x="1" y="390" w="48" h="48"/>
             <frame x="50" y="390" w="48" h="48"/>
             <frame x="99" y="390" w="48" h="48"/>
           </jump>
-          <jump2 speed="10" loops="1">
+          <jump2 speed="10" loop="1">
             <frame x="833" y="390" w="48" h="48"/>
             <frame x="882" y="390" w="48" h="48"/>
             <frame x="931" y="390" w="48" h="48"/>
           </jump2>
-          <punished speed="3" loops="0">
+          <punished speed="3" loop="0">
             <frame x="51" y="332" w="48" h="44"/>
             <frame x="101" y="332" w="48" h="44"/>
             <frame x="151" y="332" w="48" h="44"/>
           </punished>
-          <punished2 speed="3" loops="0">
+          <punished2 speed="3" loop="0">
             <frame x="780" y="332" w="48" h="44"/>
             <frame x="830" y="332" w="48" h="44"/>
             <frame x="880" y="332" w="48" h="44"/>
           </punished2>
-          <dash speed="10" loops="0">
+          <dash speed="10" loop="0">
             <frame x="1" y="518" w="48" h="48"/>
           </dash>
-          <dash2 speed="10" loops="0">
+          <dash2 speed="10" loop="0">
             <frame x="931" y="518" w="48" h="48"/>
           </dash2>
-          <firstAttack speed="10" loops="0">
+          <firstAttack speed="10" loop="0">
             <frame x="1" y="580" w="48" h="48"/>
             <frame x="50" y="580" w="48" h="48"/>
             <frame x="99" y="580" w="48" h="48"/>
@@ -188,7 +188,7 @@
             <frame x="246" y="580" w="48" h="48"/>
             <frame x="295" y="580" w="48" h="48"/>
           </firstAttack>
-          <secondAttack speed="10" loops="0">
+          <secondAttack speed="10" loop="0">
             <frame x="1" y="643" w="48" h="48"/>
             <frame x="50" y="643" w="48" h="48"/>
             <frame x="99" y="643" w="48" h="48"/>
@@ -197,7 +197,7 @@
             <frame x="246" y="643" w="48" h="48"/>
             <frame x="295" y="643" w="48" h="48"/>
           </secondAttack>
-          <thirdAttack speed="10" loops="0">
+          <thirdAttack speed="10" loop="0">
             <frame x="1" y="706" w="48" h="48"/>
             <frame x="50" y="706" w="48" h="48"/>
             <frame x="99" y="706" w="48" h="48"/>
@@ -210,7 +210,7 @@
             <frame x="442" y="706" w="48" h="48"/>
             <frame x="491" y="706" w="48" h="48"/>
           </thirdAttack>
-          <firstAttack2 speed="10" loops="0">
+          <firstAttack2 speed="10" loop="0">
             <frame x="931" y="643" w="48" h="48"/>
             <frame x="882" y="643" w="48" h="48"/>
             <frame x="833" y="643" w="48" h="48"/>
@@ -219,7 +219,7 @@
             <frame x="686" y="643" w="48" h="48"/>
             <frame x="637" y="643" w="48" h="48"/>
           </firstAttack2>
-          <secondAttack2 speed="10" loops="0">
+          <secondAttack2 speed="10" loop="0">
             <frame x="931" y="706" w="48" h="48"/>
             <frame x="882" y="706" w="48" h="48"/>
             <frame x="833" y="706" w="48" h="48"/>
@@ -228,7 +228,7 @@
             <frame x="686" y="706" w="48" h="48"/>
             <frame x="637" y="706" w="48" h="48"/>
           </secondAttack2>
-          <thirdAttack2 speed="10" loops="0">
+          <thirdAttack2 speed="10" loop="0">
             <frame x="931" y="582" w="48" h="48"/>
             <frame x="882" y="582" w="48" h="48"/>
             <frame x="833" y="582" w="48" h="48"/>
@@ -261,25 +261,25 @@
           <hurt_fx value="6"/>
         </general>
         <animations>
-          <r_shield_idle speed="10" loops="1">
+          <r_shield_idle speed="10" loop="1">
             <frame x="276" y="21" w="32" h="32"/>
           </r_shield_idle>
-          <l_shield_idle speed="10" loops="1">
+          <l_shield_idle speed="10" loop="1">
             <frame x="352" y="21" w="32" h="32"/>
           </l_shield_idle>
-          <r_shield_hurt speed="10" loops="0">
+          <r_shield_hurt speed="10" loop="0">
             <frame x="276" y="74" w="32" h="32"/>
           </r_shield_hurt>
-          <l_shield_hurt speed="5" loops="0">
+          <l_shield_hurt speed="5" loop="0">
             <frame x="352" y="74" w="32" h="32"/>
           </l_shield_hurt>
-          <r_jump speed="5" loops="1">
+          <r_jump speed="5" loop="1">
             <frame x="2" y="339" w="32" h="32"/>
           </r_jump>
-          <l_jump speed="10" loops="1">
+          <l_jump speed="10" loop="1">
             <frame x="208" y="389" w="32" h="32"/>
           </l_jump>
-          <r_throw_bomb speed="10" loops="0">
+          <r_throw_bomb speed="10" loop="0">
             <frame x="2" y="495" w="32" h="32"/>
             <frame x="36" y="495" w="32" h="32"/>
             <frame x="70" y="495" w="32" h="32"/>
@@ -290,7 +290,7 @@
             <frame x="240" y="495" w="32" h="32"/>
             <frame x="274" y="495" w="32" h="32"/>
           </r_throw_bomb>
-          <l_throw_bomb speed="10" loops="0">
+          <l_throw_bomb speed="10" loop="0">
             <frame x="352" y="601" w="32" h="32"/>
             <frame x="318" y="601" w="32" h="32"/>
             <frame x="284" y="601" w="32" h="32"/>
@@ -301,21 +301,21 @@
             <frame x="114" y="601" w="32" h="32"/>
             <frame x="80" y="601" w="32" h="32"/>
           </l_throw_bomb>
-          <r_shield_walk speed="10" loops="1">
+          <r_shield_walk speed="10" loop="1">
             <frame x="2" y="654" w="32" h="32"/>
             <frame x="36" y="654" w="32" h="32"/>
             <frame x="70" y="654" w="32" h="32"/>
             <frame x="104" y="654" w="32" h="32"/>
             <frame x="138" y="654" w="32" h="32"/>
           </r_shield_walk>
-          <l_shield_walk speed="10" loops="1">
+          <l_shield_walk speed="10" loop="1">
             <frame x="352" y="798" w="32" h="32"/>
             <frame x="318" y="798" w="32" h="32"/>
             <frame x="284" y="798" w="32" h="32"/>
             <frame x="250" y="798" w="32" h="32"/>
             <frame x="216" y="798" w="32" h="32"/>
           </l_shield_walk>
-          <invisible speed="5" loops="0">
+          <invisible speed="5" loop="0">
             <frame x="179" y="64" w="32" h="32"/>
           </invisible>
         </animations>
@@ -335,23 +335,23 @@
           <hurt_fx value="7"/>
         </general>
         <animations>
-          <r_idle speed="10" loops="1">
+          <r_idle speed="10" loop="1">
             <frame x="2" y="2" w="80" h="48"/>
             <frame x="84" y="2" w="80" h="48"/>
           </r_idle>
-          <l_idle speed="10" loops="1">
+          <l_idle speed="10" loop="1">
             <frame x="248" y="2" w="80" h="48"/>
             <frame x="166" y="2" w="80" h="48"/>
           </l_idle>
-          <r_hurt speed="2" loops="0">
+          <r_hurt speed="2" loop="0">
             <frame x="494" y="2" w="80" h="48"/>
             <frame x="576" y="2" w="80" h="48"/>
           </r_hurt>
-          <l_hurt speed="2" loops="0">
+          <l_hurt speed="2" loop="0">
             <frame x="412" y="2" w="80" h="48"/>
             <frame x="330" y="2" w="80" h="48"/>
           </l_hurt>
-          <r_hit speed="10" loops="0">
+          <r_hit speed="10" loop="0">
             <frame x="2" y="125" w="80" h="48"/>
             <frame x="84" y="125" w="80" h="48"/>
             <frame x="166" y="125" w="80" h="48"/>
@@ -362,7 +362,7 @@
             <frame x="576" y="125" w="80" h="48"/>
             <frame x="658" y="125" w="80" h="48"/>
           </r_hit>
-          <l_hit speed="10" loops="0">
+          <l_hit speed="10" loop="0">
             <frame x="658" y="55" w="80" h="48"/>
             <frame x="576" y="55" w="80" h="48"/>
             <frame x="494" y="55" w="80" h="48"/>
@@ -387,35 +387,35 @@
           <hurt_fx value="8"/>
         </general>
         <animations>
-          <r_idle speed="10" loops="1">
+          <r_idle speed="10" loop="1">
             <frame x="2" y="21" w="64" h="64"/>
             <frame x="68" y="21" w="64" h="64"/>
             <frame x="134" y="21" w="64" h="64"/>
             <frame x="200" y="21" w="64" h="64"/>
             <frame x="266" y="21" w="64" h="64"/>
           </r_idle>
-          <l_idle speed="10" loops="1">
+          <l_idle speed="10" loop="1">
             <frame x="774" y="922" w="64" h="64"/>
             <frame x="708" y="922" w="64" h="64"/>
             <frame x="642" y="922" w="64" h="64"/>
             <frame x="576" y="922" w="64" h="64"/>
             <frame x="510" y="922" w="64" h="64"/>
           </l_idle>
-          <r_idle_no_staff speed="10" loops="1">
+          <r_idle_no_staff speed="10" loop="1">
             <frame x="2" y="563" w="64" h="64"/>
             <frame x="68" y="563" w="64" h="64"/>
             <frame x="134" y="563" w="64" h="64"/>
             <frame x="200" y="563" w="64" h="64"/>
             <frame x="266" y="563" w="64" h="64"/>
           </r_idle_no_staff>
-          <l_idle_no_staff speed="10" loops="1">
+          <l_idle_no_staff speed="10" loop="1">
             <frame x="774" y="1464" w="64" h="64"/>
             <frame x="708" y="1464" w="64" h="64"/>
             <frame x="642" y="1464" w="64" h="64"/>
             <frame x="576" y="1464" w="64" h="64"/>
             <frame x="510" y="1464" w="64" h="64"/>
           </l_idle_no_staff>
-          <r_throw_staff speed="10" loops="0">
+          <r_throw_staff speed="10" loop="0">
             <frame x="2" y="361" w="64" h="64"/>
             <frame x="68" y="361" w="64" h="64"/>
             <frame x="134" y="361" w="64" h="64"/>
@@ -426,7 +426,7 @@
             <frame x="464" y="361" w="64" h="64"/>
             <frame x="530" y="361" w="64" h="64"/>
           </r_throw_staff>
-          <l_throw_staff speed="10" loops="0">
+          <l_throw_staff speed="10" loop="0">
             <frame x="774" y="1262" w="64" h="64"/>
             <frame x="708" y="1262" w="64" h="64"/>
             <frame x="642" y="1262" w="64" h="64"/>
@@ -437,19 +437,19 @@
             <frame x="312" y="1262" w="64" h="64"/>
             <frame x="246" y="1262" w="64" h="64"/>
           </l_throw_staff>
-          <r_hurt speed="5" loops="0">
+          <r_hurt speed="5" loop="0">
             <frame x="2" y="106" w="64" h="64"/>
           </r_hurt>
-          <l_hurt speed="5" loops="0">
+          <l_hurt speed="5" loop="0">
             <frame x="774" y="106" w="64" h="64"/>
           </l_hurt>
-          <r_hurt_no_staff speed="5" loops="0">
+          <r_hurt_no_staff speed="5" loop="0">
             <frame x="2" y="648" w="64" h="64"/>
           </r_hurt_no_staff>
-          <l_hurt_no_staff speed="5" loops="0">
+          <l_hurt_no_staff speed="5" loop="0">
             <frame x="774" y="1549" w="64" h="64"/>
           </l_hurt_no_staff>
-          <r_dead speed="5" loops="0">
+          <r_dead speed="5" loop="0">
             <frame x="2" y="276" w="64" h="64"/>
             <frame x="68" y="276" w="64" h="64"/>
             <frame x="134" y="276" w="64" h="64"/>
@@ -459,7 +459,7 @@
             <frame x="398" y="276" w="64" h="64"/>
             <frame x="464" y="276" w="64" h="64"/>
           </r_dead>
-          <l_dead speed="5" loops="0">
+          <l_dead speed="5" loop="0">
             <frame x="774" y="1177" w="64" h="64"/>
             <frame x="708" y="1177" w="64" h="64"/>
             <frame x="642" y="1177" w="64" h="64"/>
@@ -469,7 +469,7 @@
             <frame x="378" y="1177" w="64" h="64"/>
             <frame x="312" y="1177" w="64" h="64"/>
           </l_dead>
-          <r_dead_no_staff speed="5" loops="0">
+          <r_dead_no_staff speed="5" loop="0">
             <frame x="2" y="733" w="64" h="64"/>
             <frame x="68" y="733" w="64" h="64"/>
             <frame x="134" y="733" w="64" h="64"/>
@@ -479,7 +479,7 @@
             <frame x="398" y="733" w="64" h="64"/>
             <frame x="464" y="733" w="64" h="64"/>
           </r_dead_no_staff>
-          <l_dead_no_staff speed="5" loops="0">
+          <l_dead_no_staff speed="5" loop="0">
             <frame x="774" y="1634" w="64" h="64"/>
             <frame x="708" y="1634" w="64" h="64"/>
             <frame x="642" y="1634" w="64" h="64"/>
@@ -496,7 +496,7 @@
           <coll_offset x="5" y="9" w="-9" h="-9"/>
         </general>
         <animations>
-          <r_idle speed="10" loops="1">
+          <r_idle speed="5" loop="0">
             <frame x="2" y="351" w="48" h="32"/>
             <frame x="52" y="351" w="48" h="32"/>
             <frame x="102" y="351" w="48" h="32"/>
@@ -509,7 +509,7 @@
             <frame x="452" y="351" w="48" h="32"/>
             <frame x="502" y="351" w="48" h="32"/>
           </r_idle>
-          <l_idle speed="10" loops="1">
+          <l_idle speed="5" loop="0">
             <frame x="502" y="403" w="48" h="32"/>
             <frame x="452" y="403" w="48" h="32"/>
             <frame x="402" y="403" w="48" h="32"/>
@@ -522,49 +522,63 @@
             <frame x="52" y="403" w="48" h="32"/>
             <frame x="2" y="403" w="48" h="32"/>
           </l_idle>
-          <r_going_ZZZ speed="10" loops="0">
+          <r_going_ZZZ speed="4" loop="0">
             <frame x="2" y="455" w="48" h="32"/>
             <frame x="52" y="455" w="48" h="32"/>
             <frame x="102" y="455" w="48" h="32"/>
             <frame x="152" y="455" w="48" h="32"/>
           </r_going_ZZZ>      
-          <l_going_ZZZ speed="10" loops="0">
+          <l_going_ZZZ speed="4" loop="0">
             <frame x="502" y="455" w="48" h="32"/>
             <frame x="452" y="455" w="48" h="32"/>
             <frame x="402" y="455" w="48" h="32"/>
             <frame x="352" y="455" w="48" h="32"/>
           </l_going_ZZZ>
-          <r_ZZZ speed="10" loops="0">
+          <r_ZZZ speed="1" loop="0">
             <frame x="152" y="455" w="48" h="32"/>
-          </r_ZZZ>
-          <l_ZZZ speed="10" loops="0">
+            <frame x="152" y="455" w="48" h="32"/>
+            <frame x="152" y="455" w="48" h="32"/>
+            <frame x="152" y="455" w="48" h="32"/>
+            <frame x="152" y="455" w="48" h="32"/>
+            <frame x="152" y="455" w="48" h="32"/>
+            <frame x="152" y="455" w="48" h="32"/>
+            <frame x="152" y="455" w="48" h="32"/>
+          </r_ZZZ>      
+          <l_ZZZ speed="1" loop="0">
+            <frame x="352" y="455" w="48" h="32"/>
+            <frame x="352" y="455" w="48" h="32"/> 
+            <frame x="352" y="455" w="48" h="32"/>
+            <frame x="352" y="455" w="48" h="32"/>
+            <frame x="352" y="455" w="48" h="32"/>
+            <frame x="352" y="455" w="48" h="32"/> 
+            <frame x="352" y="455" w="48" h="32"/>
             <frame x="352" y="455" w="48" h="32"/>
           </l_ZZZ>
-          <r_waking_up speed="10" loops="0">
+          <r_waking_up speed="4" loop="0">
             <frame x="2" y="507" w="48" h="32"/>
             <frame x="52" y="507" w="48" h="32"/>
             <frame x="102" y="507" w="48" h="32"/>
             <frame x="152" y="507" w="48" h="32"/>
           </r_waking_up>
-          <l_waking_up speed="10" loops="0">
+          <l_waking_up speed="4" loop="0">
             <frame x="502" y="507" w="48" h="32"/>
             <frame x="452" y="507" w="48" h="32"/>
             <frame x="402" y="507" w="48" h="32"/>
             <frame x="352" y="507" w="48" h="32"/>
           </l_waking_up>
-          <r_to_crouch speed="10" loops="0">
+          <r_to_crouch speed="10" loop="0">
             <frame x="2" y="559" w="48" h="32"/>
             <frame x="52" y="559" w="48" h="32"/>
             <frame x="102" y="559" w="48" h="32"/>
             <frame x="152" y="559" w="48" h="32"/>
           </r_to_crouch>
-          <l_to_crouch speed="10" loops="0">
+          <l_to_crouch speed="10" loop="0">
             <frame x="502" y="559" w="48" h="32"/>
             <frame x="452" y="559" w="48" h="32"/>
             <frame x="402" y="559" w="48" h="32"/>
             <frame x="352" y="559" w="48" h="32"/>
           </l_to_crouch>
-          <r_crouch speed="10" loops="1">
+          <r_crouch speed="10" loop="0">
             <frame x="2" y="611" w="48" h="32"/>
             <frame x="52" y="611" w="48" h="32"/>
             <frame x="102" y="611" w="48" h="32"/>
@@ -575,7 +589,7 @@
             <frame x="352" y="611" w="48" h="32"/>
             <frame x="402" y="611" w="48" h="32"/>
           </r_crouch>
-          <l_crouch speed="10" loops="1">
+          <l_crouch speed="10" loop="0">
             <frame x="974" y="611" w="48" h="32"/>
             <frame x="924" y="611" w="48" h="32"/>
             <frame x="874" y="611" w="48" h="32"/>
@@ -586,47 +600,47 @@
             <frame x="624" y="611" w="48" h="32"/>
             <frame x="574" y="611" w="48" h="32"/>
           </l_crouch>
-          <r_rise speed="10" loops="0">
+          <r_rise speed="10" loop="0">
             <frame x="2" y="663" w="48" h="32"/>
             <frame x="52" y="663" w="48" h="32"/>
             <frame x="102" y="663" w="48" h="32"/>
             <frame x="152" y="663" w="48" h="32"/>
           </r_rise>
-          <l_rise speed="10" loops="0">
+          <l_rise speed="10" loop="0">
             <frame x="402" y="663" w="48" h="32"/>
             <frame x="352" y="663" w="48" h="32"/>
             <frame x="302" y="663" w="48" h="32"/>
             <frame x="252" y="663" w="48" h="32"/>
           </l_rise>
-          <r_jump speed="10" loops="0">
+          <r_jump speed="10" loop="0">
             <frame x="203" y="507" w="48" h="32"/>
           </r_jump>
-          <l_jump speed="10" loops="0">
+          <l_jump speed="10" loop="0">
             <frame x="300" y="507" w="48" h="32"/>
           </l_jump>
-          <r_fall speed="10" loops="0">
+          <r_fall speed="10" loop="0">
             <frame x="2" y="716" w="48" h="32"/>
             <frame x="52" y="716" w="48" h="32"/>
             <frame x="102" y="716" w="48" h="32"/>
           </r_fall>
-          <l_fall speed="10" loops="0">
+          <l_fall speed="10" loop="0">
             <frame x="402" y="716" w="48" h="32"/>
             <frame x="352" y="716" w="48" h="32"/>
             <frame x="302" y="716" w="48" h="32"/>
           </l_fall>
-          <r_land_soft speed="10" loops="0">
+          <r_land_soft speed="10" loop="0">
             <frame x="2" y="769" w="48" h="32"/>
             <frame x="52" y="769" w="48" h="32"/>
             <frame x="102" y="769" w="48" h="32"/>
             <frame x="152" y="769" w="48" h="32"/>
           </r_land_soft>
-          <l_land_soft speed="10" loops="0">
+          <l_land_soft speed="10" loop="0">
             <frame x="402" y="769" w="48" h="32"/>
             <frame x="352" y="769" w="48" h="32"/>
             <frame x="302" y="769" w="48" h="32"/>
             <frame x="252" y="769" w="48" h="32"/>
           </l_land_soft>
-          <r_roll speed="10" loops="0">
+          <r_roll speed="10" loop="0">
             <frame x="2" y="823" w="48" h="32"/>
             <frame x="52" y="823" w="48" h="32"/>
             <frame x="102" y="823" w="48" h="32"/>
@@ -636,7 +650,7 @@
             <frame x="302" y="823" w="48" h="32"/>
             <frame x="352" y="823" w="48" h="32"/>
           </r_roll>
-          <l_roll speed="10" loops="0">
+          <l_roll speed="10" loop="0">
             <frame x="974" y="823" w="48" h="32"/>
             <frame x="924" y="823" w="48" h="32"/>
             <frame x="874" y="823" w="48" h="32"/>
@@ -646,15 +660,15 @@
             <frame x="674" y="823" w="48" h="32"/>
             <frame x="624" y="823" w="48" h="32"/>
           </l_roll>
-          <r_to_run speed="10" loops="0">
+          <r_to_run speed="10" loop="0">
             <frame x="2" y="876" w="48" h="32"/>
             <frame x="52" y="876" w="48" h="32"/>
           </r_to_run>
-          <l_to_run speed="10" loops="0">
+          <l_to_run speed="10" loop="0">
             <frame x="402" y="876" w="48" h="32"/>
             <frame x="352" y="876" w="48" h="32"/>
           </l_to_run>
-          <r_run speed="10" loops="1">
+          <r_run speed="10" loop="0">
             <frame x="2" y="929" w="48" h="32"/>
             <frame x="52" y="929" w="48" h="32"/>
             <frame x="102" y="929" w="48" h="32"/>
@@ -662,7 +676,7 @@
             <frame x="202" y="929" w="48" h="32"/>
             <frame x="252" y="929" w="48" h="32"/>
           </r_run>
-          <l_run speed="10" loops="1">
+          <l_run speed="10" loop="0">
             <frame x="974" y="929" w="48" h="32"/>
             <frame x="924" y="929" w="48" h="32"/>
             <frame x="874" y="929" w="48" h="32"/>
@@ -670,17 +684,17 @@
             <frame x="774" y="929" w="48" h="32"/>
             <frame x="724" y="929" w="48" h="32"/>
           </l_run>
-          <r_turn speed="10" loops="0">
+          <r_turn speed="10" loop="0">
             <frame x="2" y="983" w="48" h="32"/>
             <frame x="52" y="983" w="48" h="32"/>
             <frame x="102" y="983" w="48" h="32"/>
           </r_turn>
-          <l_turn speed="10" loops="0">
+          <l_turn speed="10" loop="0">
             <frame x="402" y="983" w="48" h="32"/>
             <frame x="352" y="983" w="48" h="32"/>
             <frame x="302" y="983" w="48" h="32"/>
           </l_turn>
-          <r_brake speed="10" loops="0">
+          <r_brake speed="10" loop="0">
             <frame x="2" y="1035" w="48" h="32"/>
             <frame x="52" y="1035" w="48" h="32"/>
             <frame x="102" y="1035" w="48" h="32"/>
@@ -688,7 +702,7 @@
             <frame x="202" y="1035" w="48" h="32"/>
             <frame x="252" y="1035" w="48" h="32"/>
           </r_brake>
-          <l_brake speed="10" loops="0">
+          <l_brake speed="10" loop="0">
             <frame x="974" y="1035" w="48" h="32"/>
             <frame x="924" y="1035" w="48" h="32"/>
             <frame x="874" y="1035" w="48" h="32"/>
@@ -696,7 +710,7 @@
             <frame x="774" y="1035" w="48" h="32"/>
             <frame x="724" y="1035" w="48" h="32"/>
           </l_brake>
-          <r_dead speed="10" loops="0">
+          <r_dead speed="5" loop="0">
             <frame x="724" y="663" w="48" h="32"/>
             <frame x="774" y="663" w="48" h="32"/>
             <frame x="824" y="663" w="48" h="32"/>
@@ -704,7 +718,7 @@
             <frame x="924" y="663" w="48" h="32"/>
             <frame x="974" y="663" w="48" h="32"/>
           </r_dead>
-          <l_dead speed="10" loops="0">
+          <l_dead speed="5" loop="0">
             <frame x="974" y="716" w="48" h="32"/>
             <frame x="924" y="716" w="48" h="32"/>
             <frame x="874" y="716" w="48" h="32"/>
@@ -712,7 +726,7 @@
             <frame x="774" y="716" w="48" h="32"/>
             <frame x="724" y="716" w="48" h="32"/>
           </l_dead>
-          <attack speed="10" loops="0">
+          <attack speed="10" loop="0">
             <frame x="2" y="18" w="128" h="96"/>
             <frame x="132" y="18" w="128" h="96"/>
             <frame x="262" y="18" w="128" h="96"/>

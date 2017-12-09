@@ -6,15 +6,16 @@
 
 class Animation
 {
-public:
-	bool loop = true;
-	float speed;
+private:
+	int loops = 0;
+	float current_frame = 0.0f;
+	int last_frame = 0;
+
 	SDL_Rect frames[MAX_FRAMES];
 
 public:
-	float current_frame;
-	int last_frame = 0;
-	int loops = 0;
+	float speed = 0.0f;
+	bool loop = true;
 
 public:
 
@@ -28,8 +29,8 @@ public:
 		current_frame += speed;
 		if (current_frame >= last_frame)
 		{
-			current_frame = (loop) ? 0.0f : last_frame - 1;
 			loops++;
+			current_frame = (loop) ? 0.0f : last_frame - 1;
 		}
 
 		return frames[(int)current_frame];
@@ -45,10 +46,12 @@ public:
 		loops = 0;
 		current_frame = 0;
 	}
+
 	void Start()
 	{
 		speed = 0.08f;
 	}
+
 	void Stop()
 	{
 		speed = 0.0f;

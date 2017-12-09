@@ -113,15 +113,13 @@ void CatPeasant::Wounded()
 		}
 	}
 	else if (right_die) {
-		if (catPeasant.r_dead.GetCurrentFrame().x == catPeasant.r_dead.frames[catPeasant.r_dead.last_frame - 1].x) {
+		if (catPeasant.r_dead.Finished()) {
 			dead = true;
-			catPeasant.r_dead.Stop();
 		}
 	}
 	else if (left_die) {
-		if (catPeasant.l_dead.GetCurrentFrame().x == catPeasant.l_dead.frames[catPeasant.l_dead.last_frame - 1].x) {
+		if (catPeasant.l_dead.Finished()) {
 			dead = true;
-			catPeasant.l_dead.Stop();
 		}
 	}
 }
@@ -290,7 +288,6 @@ void CatPeasant::OnCollision(Collider* c1, Collider* c2)
 	if (c2->type == COLLIDER_ARROW) {
 		lives--;
 		stop = true;
-		LOG("Lifes: %i", lives);
 		App->audio->PlayFx(catPeasant.hurt_fx);
 
 		if (lives == 1) {

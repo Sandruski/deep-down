@@ -12,7 +12,7 @@
 
 #include "SDL/include/SDL_timer.h"
 
-Cat::Cat(SDL_Rect coords, p2DynArray<uint>* cat_states) : Entity(coords.x, coords.y)
+Cat::Cat(float x, float y, p2DynArray<uint>* cat_states, bool right_death) : Entity(x, y)
 {
 	cat = App->entities->GetCatInfo();
 
@@ -23,9 +23,11 @@ Cat::Cat(SDL_Rect coords, p2DynArray<uint>* cat_states) : Entity(coords.x, coord
 	else
 		catState = CatState::rc_idle;
 
+	this->right_death = right_death;
+
 	///
 	LoadAnimationsSpeed();
-	animation = &cat.r_idle;
+	animation = &cat.r_waking_up;
 
 	dead = false;
 
@@ -77,6 +79,12 @@ void Cat::Move(const float dt)
 	i_pos.x = (int)position.x;
 	i_pos.y = (int)position.y;
 
+	// Reset all animations
+	if (reset_animations) {
+		ResetAllAnimations();
+		reset_animations = false;
+	}
+
 	// Update animations speed
 	UpdateAnimations(dt);
 
@@ -121,7 +129,7 @@ void Cat::UpdateAnimations(const float dt)
 	cat.r_brake.speed = r_brake_speed * dt;
 	cat.l_brake.speed = l_brake_speed * dt;
 	cat.r_dead.speed = r_dead_speed * dt;
-	cat.r_dead.speed = r_dead_speed * dt;
+	cat.l_dead.speed = l_dead_speed * dt;
 	cat.attack.speed = attack_speed * dt;
 }
 
@@ -133,6 +141,44 @@ void Cat::UpdateCatState()
 		cat_states_index++;
 
 	catState = (CatState)cat_states[cat_states_index];
+	reset_animations = true;
+}
+
+void Cat::ResetAllAnimations()
+{
+	cat.r_idle.Reset();
+	cat.l_idle.Reset();
+	cat.r_going_ZZZ.Reset();
+	cat.l_going_ZZZ.Reset();
+	cat.r_ZZZ.Reset();
+	cat.l_ZZZ.Reset();
+	cat.r_waking_up.Reset();
+	cat.l_waking_up.Reset();
+	cat.r_to_crouch.Reset();
+	cat.l_to_crouch.Reset();
+	cat.r_crouch.Reset();
+	cat.l_crouch.Reset();
+	cat.r_rise.Reset();
+	cat.l_rise.Reset();
+	cat.r_jump.Reset();
+	cat.l_jump.Reset();
+	cat.r_fall.Reset();
+	cat.l_fall.Reset();
+	cat.r_land_soft.Reset();
+	cat.l_land_soft.Reset();
+	cat.r_roll.Reset();
+	cat.l_roll.Reset();
+	cat.r_to_run.Reset();
+	cat.l_to_run.Reset();
+	cat.r_run.Reset();
+	cat.l_run.Reset();
+	cat.r_turn.Reset();
+	cat.l_turn.Reset();
+	cat.r_brake.Reset();
+	cat.l_brake.Reset();
+	cat.r_dead.Reset();
+	cat.l_dead.Reset();
+	cat.attack.Reset();
 }
 
 void Cat::GeneralStatesMachine() {
@@ -142,24 +188,20 @@ void Cat::GeneralStatesMachine() {
 	case CatState::rc_idle:
 
 		if (cat.r_idle.Finished()) {
-			cat.r_idle.Reset();
 			if (cat_states.Count() > 1)
 				UpdateCatState();
 			break;
 		}
-
 		animation = &cat.r_idle;
 		break;
 
 	case CatState::lc_idle:
 
 		if (cat.l_idle.Finished()) {
-			cat.l_idle.Reset();
 			if (cat_states.Count() > 1)
 				UpdateCatState();
 			break;
 		}
-
 		animation = &cat.l_idle;
 		break;
 
@@ -170,12 +212,10 @@ void Cat::GeneralStatesMachine() {
 			if (cat.r_ZZZ.Finished()) {
 
 				if (cat.r_waking_up.Finished()) {
-					cat.r_going_ZZZ.Reset();
-					cat.r_ZZZ.Reset();
-					cat.r_waking_up.Reset();
 					UpdateCatState();
 					break;
 				}
+
 				animation = &cat.r_waking_up;
 				break;
 			}
@@ -189,15 +229,12 @@ void Cat::GeneralStatesMachine() {
 
 		if (cat.l_going_ZZZ.Finished()) {
 
-			if (cat.l_ZZZ.Finished()) {
+				if (cat.l_ZZZ.Finished()) {
 
-				if (cat.l_waking_up.Finished()) {
-					cat.l_going_ZZZ.Reset();
-					cat.l_ZZZ.Reset();
-					cat.l_waking_up.Reset();
-					UpdateCatState();
-					break;
-				}
+					if (cat.l_waking_up.Finished()) {
+						UpdateCatState();
+						break;
+					}
 				animation = &cat.l_waking_up;
 				break;
 			}
@@ -214,9 +251,6 @@ void Cat::GeneralStatesMachine() {
 			if (cat.r_crouch.Finished()) {
 
 				if (cat.r_rise.Finished()) {
-					cat.r_to_crouch.Reset();
-					cat.r_crouch.Reset();
-					cat.r_rise.Reset();
 					UpdateCatState();
 					break;
 				}
@@ -230,15 +264,12 @@ void Cat::GeneralStatesMachine() {
 		break;
 
 	case CatState::lc_crouch:
-		
+
 		if (cat.l_to_crouch.Finished()) {
 
 			if (cat.l_crouch.Finished()) {
 
 				if (cat.l_rise.Finished()) {
-					cat.l_to_crouch.Reset();
-					cat.l_crouch.Reset();
-					cat.l_rise.Reset();
 					UpdateCatState();
 					break;
 				}
@@ -252,12 +283,10 @@ void Cat::GeneralStatesMachine() {
 		break;
 
 	case CatState::rc_jump:
-		
+
 		if (cat.r_jump.Finished()) {
 
 			if (cat.r_land_soft.Finished()) {
-				cat.r_jump.Reset();
-				cat.r_land_soft.Reset();
 				UpdateCatState();
 				break;
 			}
@@ -268,12 +297,10 @@ void Cat::GeneralStatesMachine() {
 		break;
 
 	case CatState::lc_jump:
-		
+
 		if (cat.l_jump.Finished()) {
 
 			if (cat.l_land_soft.Finished()) {
-				cat.l_jump.Reset();
-				cat.l_land_soft.Reset();
 				UpdateCatState();
 				break;
 			}
@@ -286,22 +313,18 @@ void Cat::GeneralStatesMachine() {
 	case CatState::rc_roll:
 
 		if (cat.r_roll.Finished()) {
-			cat.r_roll.Reset();
 			UpdateCatState();
 			break;
 		}
-
 		animation = &cat.r_roll;
 		break;
 
 	case CatState::lc_roll:
 
 		if (cat.l_roll.Finished()) {
-			cat.l_roll.Reset();
 			UpdateCatState();
 			break;
 		}
-
 		animation = &cat.l_roll;
 		break;
 
@@ -342,7 +365,6 @@ void Cat::GeneralStatesMachine() {
 			dead = true;
 			break;
 		}
-
 		animation = &cat.r_dead;
 		break;
 
@@ -353,7 +375,6 @@ void Cat::GeneralStatesMachine() {
 			dead = true;
 			break;
 		}
-
 		animation = &cat.l_dead;
 		break;
 	}
@@ -361,5 +382,10 @@ void Cat::GeneralStatesMachine() {
 
 void Cat::OnCollision(Collider* c1, Collider* c2)
 {
-	
+	if (c2->type == COLLIDER_ARROW) {
+		catState = CatState::rc_dead;
+	}
+	else if (c2->type == COLLIDER_PLAYER) {
+		catState = CatState::rc_run;
+	}
 }
