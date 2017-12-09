@@ -33,9 +33,9 @@ struct ImpInfo
 
 	SDL_Rect enemy_pathfinding_affect_area = { 0,0,0,0 };
 	SDL_Rect player_pathfinding_affect_area = { 0,0,0,0 };
-	float pathfinding_slow_speed = 0;
-	float pathfinding_normal_speed = 0;
-	float pathfinding_fast_speed = 0;
+	float pathfinding_slow_speed = 0.0f;
+	float pathfinding_normal_speed = 0.0f;
+	float pathfinding_fast_speed = 0.0f;
 	int min_distance_to_pathfind = 0;
 	int min_distance_to_shoot = 0;
 	int seconds_to_wait = 0;

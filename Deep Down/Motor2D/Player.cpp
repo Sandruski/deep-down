@@ -23,6 +23,8 @@ Player::Player(float x, float y, PathInfo* path) : Entity(x, y, path)
 {
 	player = App->entities->GetPlayerInfo();
 
+	LoadAnimationsSpeed();
+
 	// Set player animation (state)
 	player.SetState(idle_);
 
@@ -31,7 +33,32 @@ Player::Player(float x, float y, PathInfo* path) : Entity(x, y, path)
 
 	collider_pos = { (int)position.x + player.coll_offset.x, (int)position.y + player.coll_offset.y };
 	collider = App->collision->AddCollider({ collider_pos.x, collider_pos.y, player.coll_size.x + player.coll_offset.w, player.coll_size.y + player.coll_offset.h }, COLLIDER_PLAYER, App->entities);	
+}
 
+void Player::LoadAnimationsSpeed()
+{
+	idle_speed = player.idle.speed;
+	idle2_speed = player.idle2.speed;
+	forward_speed = player.forward.speed;
+	backward_speed = player.backward.speed;
+	jump_speed = player.jump.speed;
+	jump2_speed = player.jump2.speed;
+	crouch_speed = player.crouch.speed;
+	crouch2_speed = player.crouch2.speed;
+	dash_speed = player.dash.speed;
+	dash2_speed = player.dash2.speed;
+	shot_speed = player.shot.speed;
+	shot2_speed = player.shot2.speed;
+	crouchShot_speed = player.crouchShot.speed;
+	crouchShot2_speed = player.crouchShot2.speed;
+	punished_speed = player.punished.speed;
+	punished2_speed = player.punished2.speed;
+	firstAttack_speed = player.firstAttack.speed;
+	firstAttack2_speed = player.firstAttack2.speed;
+	secondAttack_speed = player.secondAttack.speed;
+	secondAttack2_speed = player.secondAttack2.speed;
+	thirdAttack_speed = player.thirdAttack.speed;
+	thirdAttack2_speed = player.thirdAttack2.speed;
 }
 
 void Player::Move(float dt)
@@ -75,30 +102,28 @@ void Player::Move(float dt)
 
 void Player::UpdateAnimations(float dt) 
 {
-	float speed = 10.0f;
-
-	player.idle.speed = speed * dt;
-	player.idle2.speed = speed * dt;
-	player.forward.speed = speed * dt;
-	player.backward.speed = speed * dt;
-	player.jump.speed = speed * dt;
-	player.jump2.speed = speed * dt;
-	player.crouch.speed = speed * dt;
-	player.crouch2.speed = speed * dt;
-	player.dash.speed = speed * dt;
-	player.dash2.speed = speed * dt;
-	player.shot.speed = speed * dt;
-	player.shot2.speed = speed * dt;
-	player.crouchShot.speed = speed * dt;
-	player.crouchShot2.speed = speed * dt;
-	player.punished.speed = 3.0f * dt;
-	player.punished2.speed = 3.0f * dt;
-	player.firstAttack.speed = speed * dt;
-	player.secondAttack.speed = speed * dt;
-	player.thirdAttack.speed = speed * dt;
-	player.firstAttack2.speed = speed * dt;
-	player.secondAttack2.speed = speed * dt;
-	player.thirdAttack2.speed = speed * dt;
+	player.idle.speed = idle_speed * dt;
+	player.idle2.speed = idle2_speed * dt;
+	player.forward.speed = forward_speed * dt;
+	player.backward.speed = backward_speed * dt;
+	player.jump.speed = jump_speed * dt;
+	player.jump2.speed = jump2_speed * dt;
+	player.crouch.speed = crouch_speed * dt;
+	player.crouch2.speed = crouch2_speed * dt;
+	player.dash.speed = dash_speed * dt;
+	player.dash2.speed = dash2_speed * dt;
+	player.shot.speed = shot_speed * dt;
+	player.shot2.speed = shot2_speed * dt;
+	player.crouchShot.speed = crouchShot_speed * dt;
+	player.crouchShot2.speed = crouchShot2_speed * dt;
+	player.punished.speed = punished_speed * dt;
+	player.punished2.speed = punished2_speed * dt;
+	player.firstAttack.speed = firstAttack_speed * dt;
+	player.firstAttack2.speed = firstAttack2_speed * dt;
+	player.secondAttack.speed = secondAttack_speed * dt;
+	player.secondAttack2.speed = secondAttack2_speed * dt;
+	player.thirdAttack.speed = thirdAttack_speed * dt;
+	player.thirdAttack2.speed = thirdAttack2_speed * dt;
 }
 
 void Player::GodMode() 
@@ -116,29 +141,8 @@ void Player::GodMode()
 
 void Player::OnCollision(Collider* c1, Collider* c2) {
 	if (!App->scene->god) {
-		if ((c1->type == COLLIDER_PEASANT_SHOT && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_PEASANT_SHOT)) {
+		if (c2->type == COLLIDER_PEASANT_SHOT || c2->type == COLLIDER_CATPEASANT || c2->type == COLLIDER_IMP_BOMB_EXPLOSION || c2->type == COLLIDER_MONKEY_COLL)
 			player.SetState(punished_);
-			App->audio->PlayFx(5);
-		}
-
-		if ((c1->type == COLLIDER_CATPEASANT && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_CATPEASANT)) {
-			player.SetState(punished_);
-			App->audio->PlayFx(5);
-		}
-
-		if ((c1->type == COLLIDER_IMP && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP)) {
-			//player.SetState(punished_);
-		}
-
-		if ((c1->type == COLLIDER_IMP_BOMB_EXPLOSION && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_IMP_BOMB_EXPLOSION)) {
-			player.SetState(punished_);
-			App->audio->PlayFx(5);
-		}
-
-		if ((c1->type == COLLIDER_MONKEY_COLL && c2->type == COLLIDER_PLAYER) || (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_MONKEY_COLL)) {
-			player.SetState(punished_);
-			App->audio->PlayFx(5);
-		}
 	}
 }
 
@@ -769,24 +773,30 @@ void Player::PlayerStateMachine() {
 		break;
 
 	case punished_:
+		if (!hurt_fx) {
+			App->audio->PlayFx(5);
+			hurt_fx = true;
+		}
+
 		if (animation == &player.forward || animation == &player.jump || animation == &player.punished || animation == &player.idle || animation == &player.crouch || animation == &player.shot || animation == &player.crouchShot)
 			animation = &player.punished;
 		else if (animation == &player.backward || animation == &player.jump2 || animation == &player.punished2 || animation == &player.idle2 || animation == &player.crouch2 || animation == &player.shot2 || animation == &player.crouchShot2)
 			animation = &player.punished2;
+
 		speed.y = 0;
 		speed.x = 0;
+
 		if (player.punished.Finished() && animation == &player.punished) {
-			//player.state = idle_;
+			hurt_fx = false;
 			player.punished.Reset();
 			break;
 		}
 		else if (player.punished2.Finished() && animation == &player.punished2) {
-			//player.state = idle2_;
+			hurt_fx = false;
 			player.punished2.Reset();
 			break;
 		}
 		break;
-
 	}
 }
 
@@ -796,19 +806,19 @@ void Player::CheckCollision(iPoint position, iPoint size, int offset, bool &up, 
 
 	App->map->culing_offset = 50;
 
-		for (int i = position.x - App->map->culing_offset; i < position.x + App->map->culing_offset; i++) {
-			for (int j = position.y - App->map->culing_offset; j < position.y + App->map->culing_offset; j++) {
+	for (int i = position.x - App->map->culing_offset; i < position.x + App->map->culing_offset; i++) {
+		for (int j = position.y - App->map->culing_offset; j < position.y + App->map->culing_offset; j++) {
 
-				iPoint ij = App->map->WorldToMap(i, j);
+			iPoint ij = App->map->WorldToMap(i, j);
 
-				uint id = App->map->collisionLayer->Get(ij.x, ij.y);
+			uint id = App->map->collisionLayer->Get(ij.x, ij.y);
 
-				if (id != 0) {
-					iPoint world = App->map->MapToWorld(ij.x, ij.y);
-					CalculateCollision(position, size, world.x, world.y, id, offset, up, down, left, right, state);
-				}
+			if (id != 0) {
+				iPoint world = App->map->MapToWorld(ij.x, ij.y);
+				CalculateCollision(position, size, world.x, world.y, id, offset, up, down, left, right, state);
 			}
 		}
+	}
 }
 
 void Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, uint id, int offset, bool &up, bool &down, bool &left, bool &right, playerstates state) {
@@ -820,6 +830,7 @@ void Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, ui
 	if (App->toCap && App->capFrames <= 10) {
 		offset = 15;
 	}
+
 	SDL_Rect B = { x, y, 16, 16 }; //object rectangle
 
 	iPoint c_up = { 0, -offset };
@@ -846,10 +857,8 @@ void Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, ui
 	if (SDL_HasIntersection(&A_down, &B))
 		if (id == 1181 || (id == 1182 && App->scene->gate == false))
 			down = false;
-		else if (id == 1183 && state != null_) {
+		else if (id == 1183 && state != null_)
 			player.SetState(punished_);
-			App->audio->PlayFx(5);
-		}
 
 	//LEFT
 	SDL_Rect A_left = { position.x + c_left.x, position.y + c_left.y, size.x, size.y }; //player rectangle
@@ -867,6 +876,9 @@ void Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, ui
 		else if (id == 1183 && state != null_)
 			player.SetState(punished_);
 }
+
+// -------------------------------------------------------------
+// -------------------------------------------------------------
 
 PlayerInfo::PlayerInfo() {}
 

@@ -26,7 +26,7 @@ struct CatPeasantInfo
 
 	int lives = 0;
 
-	float pathfinding_normal_speed = 0;
+	float pathfinding_normal_speed = 0.0f;
 	int min_distance_to_shoot = 0;
 	int seconds_to_wait = 0;
 	int distance_to_player = 0;
@@ -80,7 +80,7 @@ private:
 	bool do_hit = true;
 	bool wait = false;
 	bool cool = false;
-	float cooldown = 0;
+	float cooldown = 0.0f;
 
 	bool left_hurt = false, right_hurt = false;
 	bool left_die = false, right_die = false;

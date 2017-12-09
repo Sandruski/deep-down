@@ -2,6 +2,7 @@
 #define __ENTITY_H__
 
 #include "p2Point.h"
+#include "p2DynArray.h"
 #include "Animation.h"
 
 struct SDL_Texture;
@@ -15,7 +16,7 @@ enum StartEndPath {
 
 class Entity
 {
-protected:	
+protected:
 	Collider* collider = nullptr;
 	PathInfo* path_info = nullptr;
 	Animation* animation = nullptr;
@@ -24,7 +25,7 @@ protected:
 	p2DynArray<iPoint> mlast_pathfinding;
 
 public:
-	float deltaTime = 0;
+	float deltaTime = 0.0f;
 
 	int type = 0;
 	int lives = 0;

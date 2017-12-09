@@ -33,9 +33,9 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 	folder.create(config.child("folder").child_value());
 
-	blit_offset = config.child("general").child("blit").attribute("offset").as_uint();
-
+	blit_offset = config.child("general").child("blit").attribute("offset").as_int();
 	camera_blit = config.child("general").child("camera_blit").attribute("value").as_bool();
+	culing_offset = config.child("general").child("culing").attribute("value").as_int();
 
 	return ret;
 }
@@ -197,8 +197,6 @@ void j1Map::DrawAboveLayer()
 		return;
 
 	if (aboveLayer != nullptr) {
-
-
 		// Initial xy camera && final xy camera
 		uint widht, height;
 		App->win->GetWindowSize(widht, height);

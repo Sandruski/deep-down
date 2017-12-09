@@ -5,6 +5,8 @@
 #include "Animation.h"
 
 #include "p2Point.h"
+#include "p2List.h"
+
 #include "CatPeasant.h"
 #include "Imp.h"
 #include "Monkey.h"
