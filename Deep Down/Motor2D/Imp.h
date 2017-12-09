@@ -33,9 +33,9 @@ struct ImpInfo
 
 	SDL_Rect enemy_pathfinding_affect_area = { 0,0,0,0 };
 	SDL_Rect player_pathfinding_affect_area = { 0,0,0,0 };
-	float pathfinding_slow_speed = 0;
-	float pathfinding_normal_speed = 0;
-	float pathfinding_fast_speed = 0;
+	float pathfinding_slow_speed = 0.0f;
+	float pathfinding_normal_speed = 0.0f;
+	float pathfinding_fast_speed = 0.0f;
 	int min_distance_to_pathfind = 0;
 	int min_distance_to_shoot = 0;
 	int seconds_to_wait = 0;
@@ -111,6 +111,9 @@ private:
 	float invisible_speed = 0.0f;
 
 	// Pathfinding
+	const p2DynArray<iPoint>* last_pathfinding = nullptr;
+	p2DynArray<iPoint> mlast_pathfinding;
+
 	uint pathfinding_index = 0;
 	uint pathfinding_size = 0;
 
@@ -127,6 +130,7 @@ private:
 	//_pathfinding
 
 	// Normal path
+	PathInfo* path_info = nullptr;
 	StartEndPath normal_path_index = StartEndPath::end;
 
 	bool normal_path_finished = true;

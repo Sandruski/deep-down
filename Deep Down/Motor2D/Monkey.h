@@ -22,8 +22,8 @@ struct MonkeyInfo
 
 	SDL_Rect enemy_pathfinding_affect_area = { 0,0,0,0 };
 	SDL_Rect player_pathfinding_affect_area = { 0,0,0,0 };
-	float pathfinding_slow_speed = 0;
-	float pathfinding_normal_speed = 0;
+	float pathfinding_slow_speed = 0.0f;
+	float pathfinding_normal_speed = 0.0f;
 	int min_distance_to_hit = 0;
 	int distance_to_player = 0;
 
@@ -88,6 +88,9 @@ private:
 	float r_hit_speed = 0.0f, l_hit_speed = 0.0f;
 
 	// Pathfinding
+	const p2DynArray<iPoint>* last_pathfinding = nullptr;
+	p2DynArray<iPoint> mlast_pathfinding;
+
 	uint pathfinding_index = 0;
 	uint pathfinding_size = 0;
 
@@ -99,6 +102,7 @@ private:
 	//_pathfinding
 
 	// Normal path
+	PathInfo* path_info = nullptr;
 	uint normal_path_index = 0;
 	uint last_normal_path_index = 0;
 

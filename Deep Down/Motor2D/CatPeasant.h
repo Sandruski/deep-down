@@ -26,7 +26,7 @@ struct CatPeasantInfo
 
 	int lives = 0;
 
-	float pathfinding_normal_speed = 0;
+	float pathfinding_normal_speed = 0.0f;
 	int min_distance_to_shoot = 0;
 	int seconds_to_wait = 0;
 	int distance_to_player = 0;
@@ -39,7 +39,6 @@ struct CatPeasantInfo
 class CatPeasant : public Entity
 {
 public:
-
 	CatPeasant(float x, float y, PathInfo* path);
 
 	void OnCollision(Collider* c1, Collider* c2);
@@ -80,7 +79,7 @@ private:
 	bool do_hit = true;
 	bool wait = false;
 	bool cool = false;
-	float cooldown = 0;
+	float cooldown = 0.0f;
 
 	bool left_hurt = false, right_hurt = false;
 	bool left_die = false, right_die = false;
@@ -96,11 +95,15 @@ private:
 	float r_throw_staff_speed = 0.0f, l_throw_staff_speed = 0.0f;
 
 	// Pathfinding
+	const p2DynArray<iPoint>* last_pathfinding = nullptr;
+	p2DynArray<iPoint> mlast_pathfinding;
+
 	uint pathfinding_index = 0;
 	uint pathfinding_size = 0;
 	//_pathfinding
 
 	// Normal path
+	PathInfo* path_info = nullptr;
 	StartEndPath normal_path_index = StartEndPath::end;
 
 	bool normal_path_finished = true;

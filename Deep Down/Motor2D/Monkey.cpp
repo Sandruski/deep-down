@@ -26,8 +26,11 @@ MONKEY (enemy):
 - If he stops seeing the player, he goes back to his initial path.
 */
 
-Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y, path)
+Monkey::Monkey(float x, float y, PathInfo* path) : Entity(x, y), path_info(path), mlast_pathfinding(DEFAULT_PATH_LENGTH)
 {
+	last_pathfinding = nullptr;
+	mlast_pathfinding.Clear();
+
 	monkey = App->entities->GetMonkeyInfo();
 
 	///
@@ -93,13 +96,13 @@ void Monkey::Move(const float dt)
 void Monkey::Wounded()
 {
 	if (right_hurt) {
-		if (monkey.r_hurt.GetCurrentFrame().x == monkey.r_hurt.frames[monkey.r_hurt.last_frame].x) {
+		if (monkey.r_hurt.GetCurrentFrame().x == monkey.r_hurt.frames[monkey.r_hurt.last_frame - 1].x) {
 			dead = true;
 			monkey.r_hurt.Stop();
 		}
 	}
 	else if (left_hurt) {
-		if (monkey.l_hurt.GetCurrentFrame().x == monkey.l_hurt.frames[monkey.l_hurt.last_frame].x) {
+		if (monkey.l_hurt.GetCurrentFrame().x == monkey.l_hurt.frames[monkey.l_hurt.last_frame - 1].x) {
 			dead = true;
 			monkey.l_hurt.Stop();
 		}

@@ -28,8 +28,11 @@ IMP (enemy):
 - If she reaches the end B of her path, she disappears (and respawns at the start A of her path).
 */
 
-Imp::Imp(float x, float y, PathInfo* path) : Entity(x, y, path)
+Imp::Imp(float x, float y, PathInfo* path) : Entity(x, y), path_info(path), mlast_pathfinding(DEFAULT_PATH_LENGTH)
 {
+	last_pathfinding = nullptr;
+	mlast_pathfinding.Clear();
+
 	imp = App->entities->GetImpInfo();
 
 	///

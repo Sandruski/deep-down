@@ -199,10 +199,9 @@ private:
 
 public:
 
-	int					culing_offset = false;
-	int					blit_offset = false;
+	int					culing_offset = 0;
+	int					blit_offset = 0;
 	bool				camera_blit = false;
-
 };
 
 #endif // __j1MAP_H__

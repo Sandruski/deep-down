@@ -80,7 +80,7 @@
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="PugiXml\src\pugixml.cpp">
-      <Filter>PugiXML</Filter>
+      <Filter>Tools\PugiXML</Filter>
     </ClCompile>
     <ClCompile Include="j1PerfTimer.cpp">
       <Filter>Tools</Filter>
@@ -94,11 +94,14 @@
     <ClCompile Include="j1Main.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="j1Scene.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Modules\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Scene.cpp">
+      <Filter>Modules\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Menu.cpp">
+      <Filter>Modules\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,10 +208,10 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="PugiXml\src\pugixml.hpp">
-      <Filter>PugiXML</Filter>
+      <Filter>Tools\PugiXML</Filter>
     </ClInclude>
     <ClInclude Include="PugiXml\src\pugiconfig.hpp">
-      <Filter>PugiXML</Filter>
+      <Filter>Tools\PugiXML</Filter>
     </ClInclude>
     <ClInclude Include="j1PerfTimer.h">
       <Filter>Tools</Filter>
@@ -216,14 +219,17 @@
     <ClInclude Include="j1Timer.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="j1Scene.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="j1App.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="j1Module.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Scene.h">
+      <Filter>Modules\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Menu.h">
+      <Filter>Modules\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -239,11 +245,14 @@
     <Filter Include="Tools">
       <UniqueIdentifier>{6e611132-c788-45a6-b8a4-bb89c137afd6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PugiXML">
-      <UniqueIdentifier>{554199a4-5aa0-4d6c-ab2d-fbf71e27c4c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="p2Containers">
       <UniqueIdentifier>{f96d9930-939c-4fe4-a7b5-3401bf718a1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Scenes">
+      <UniqueIdentifier>{0ca5baf8-8d7a-44fb-b8bf-e132f2f5b862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\PugiXML">
+      <UniqueIdentifier>{554199a4-5aa0-4d6c-ab2d-fbf71e27c4c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
