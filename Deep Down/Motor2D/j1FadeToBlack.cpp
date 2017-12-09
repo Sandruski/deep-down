@@ -34,16 +34,66 @@ bool j1FadeToBlack::Start()
 
 	screen = { 0, 0, static_cast<int>(width * scale), static_cast<int>(height * scale) };
 	//
-
+	Slider_rect = screen;
+	Slider_rect.w = 0;
 	return true;
 }
 
 // Update: draw background
 bool j1FadeToBlack::Update(float dt)
 {
+	this->dt = dt;
+
 	if (current_step == fade_step::none)
 		return true;
 
+	switch (thisFade)
+	{
+	case normal_fade:
+		NormalFade();
+		break;
+	case right_slider_fade:
+		RightSliderFade();
+		break;
+	case left_slider_fade:
+		LeftSliderFade();
+		break;
+	}
+	
+	
+	return true;
+}
+
+// Fade to black. At mid point deactivate one module, then activate the other
+bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float time, fades kind_of_fade)
+{
+	bool ret = false;
+
+	if (current_step == fade_step::none)
+	{
+		
+		thisFade = kind_of_fade;
+		
+		current_step = fade_step::fade_to_black;
+		start_time = SDL_GetTicks();
+		total_time = (Uint32)(time * 0.5f * 1000.0f);
+
+		off = module_off;
+		on = module_on;
+
+		ret = true;
+	}
+
+	return ret;
+}
+
+bool j1FadeToBlack::IsFading() const
+{
+	return current_step != fade_step::none;
+}
+
+void j1FadeToBlack::NormalFade()
+{
 	Uint32 now = SDL_GetTicks() - start_time;
 	float normalized = MIN(1.0f, (float)now / (float)total_time);
 
@@ -77,30 +127,55 @@ bool j1FadeToBlack::Update(float dt)
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(normalized * 255.0f));
 	SDL_RenderFillRect(App->render->renderer, &screen);
 
-	return true;
 }
-
-// Fade to black. At mid point deactivate one module, then activate the other
-bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float time)
+void j1FadeToBlack::LeftSliderFade()
 {
-	bool ret = false;
 
-	if (current_step == fade_step::none)
+	Uint32 now = SDL_GetTicks() - start_time;
+
+	switch (current_step)
 	{
-		current_step = fade_step::fade_to_black;
-		start_time = SDL_GetTicks();
-		total_time = (Uint32)(time * 0.5f * 1000.0f);
+	case fade_step::fade_to_black:
 
-		off = module_off;
-		on = module_on;
+		Slider_rect.w +=  total_time * dt * screen.w;
 
-		ret = true;
+		if (now >= total_time) {
+
+			//off->CleanUp();
+			//on->Start();
+
+			total_time += total_time;
+			start_time = SDL_GetTicks();
+
+			current_step = fade_from_black;
+
+		}
+		break;
+
+	case fade_step::fade_from_black:
+
+		//Slider_rect.w -= screen.w / total_time;
+
+		if (now >= total_time)
+			current_step = fade_step::none;
+
+		break;
+
 	}
+	if (now < total_time)
+		Slider_rect.w += 1;
 
-	return ret;
+
+
+	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
+	SDL_RenderFillRect(App->render->renderer, &Slider_rect);
+
 }
 
-bool j1FadeToBlack::IsFading() const
+void j1FadeToBlack::RightSliderFade()
 {
-	return current_step != fade_step::none;
+
+	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
+	SDL_RenderFillRect(App->render->renderer, &screen);
+
 }
