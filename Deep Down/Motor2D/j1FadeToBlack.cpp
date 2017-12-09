@@ -6,6 +6,7 @@
 #include "j1Render.h"
 #include "j1Window.h"
 #include "j1FadeToBlack.h"
+#include "j1Textures.h"
 
 #include <math.h>
 
@@ -20,12 +21,28 @@ j1FadeToBlack::j1FadeToBlack()
 j1FadeToBlack::~j1FadeToBlack()
 {}
 
+bool j1FadeToBlack::Awake()
+{
+	BonFireAnim.PushBack({ 0, 0, 172, 236});
+	BonFireAnim.PushBack({ 172, 0, 172, 236 });
+	BonFireAnim.PushBack({ 344, 0, 172, 236 });
+	BonFireAnim.PushBack({ 0, 236, 172, 236 });
+	BonFireAnim.PushBack({ 172, 236, 172, 236 });
+	BonFireAnim.PushBack({ 344, 236, 172, 236 });
+	BonFireAnim.PushBack({ 0, 472, 172, 236 });
+	BonFireAnim.PushBack({ 172, 472, 172, 236 });
+	BonFireAnim.PushBack({ 344, 472, 172, 236 });
+	BonFireAnim.speed = 2.0f;
+
+}
 // Load assets
 bool j1FadeToBlack::Start()
 {
 	LOG("Preparing Fade Screen");
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
 
+	LOG("Loading Textures");
+	bonfire = App->tex->Load("Assets/Sprites/UI/BonFire.png");
 	// Get screen size
 	uint width = 0, height = 0, scale = 0;
 
@@ -38,7 +55,13 @@ bool j1FadeToBlack::Start()
 	Slider_rect.w = 0;
 	return true;
 }
+bool j1FadeToBlack::CleanUp()
+{
+	LOG("UnLoading Textures");
+	App->tex->UnLoad(bonfire);
 
+	return true;
+}
 // Update: draw background
 bool j1FadeToBlack::Update(float dt)
 {
@@ -52,11 +75,11 @@ bool j1FadeToBlack::Update(float dt)
 	case normal_fade:
 		NormalFade();
 		break;
-	case right_slider_fade:
-		RightSliderFade();
+	case slider_fade:
+		SliderFade();
 		break;
-	case left_slider_fade:
-		LeftSliderFade();
+	case total_black_fade:
+		BlackFade();
 		break;
 	}
 	
@@ -128,21 +151,21 @@ void j1FadeToBlack::NormalFade()
 	SDL_RenderFillRect(App->render->renderer, &screen);
 
 }
-void j1FadeToBlack::LeftSliderFade()
+
+void j1FadeToBlack::SliderFade()
 {
 
 	Uint32 now = SDL_GetTicks() - start_time;
+	float normalized = MIN(1.0f, (float)now / (float)total_time);
 
 	switch (current_step)
 	{
 	case fade_step::fade_to_black:
 
-		Slider_rect.w +=  total_time * dt * screen.w;
-
 		if (now >= total_time) {
 
-			//off->CleanUp();
-			//on->Start();
+			off->CleanUp();
+			on->Start();
 
 			total_time += total_time;
 			start_time = SDL_GetTicks();
@@ -154,7 +177,43 @@ void j1FadeToBlack::LeftSliderFade()
 
 	case fade_step::fade_from_black:
 
-		//Slider_rect.w -= screen.w / total_time;
+		normalized = 1.0f - normalized;
+		if (now >= total_time)
+			current_step = fade_step::none;
+
+		break;
+
+	}
+	Slider_rect.w = normalized*screen.w;
+
+	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
+	SDL_RenderFillRect(App->render->renderer, &Slider_rect);
+
+}
+
+void j1FadeToBlack::BlackFade()
+{
+
+	Uint32 now = SDL_GetTicks() - start_time;
+
+	switch (current_step)
+	{
+	case fade_step::fade_to_black:
+
+		if (now >= total_time) {
+
+			off->CleanUp();
+			on->Start();
+
+			total_time += total_time;
+			start_time = SDL_GetTicks();
+
+			current_step = fade_from_black;
+
+		}
+		break;
+
+	case fade_step::fade_from_black:
 
 		if (now >= total_time)
 			current_step = fade_step::none;
@@ -162,20 +221,14 @@ void j1FadeToBlack::LeftSliderFade()
 		break;
 
 	}
-	if (now < total_time)
-		Slider_rect.w += 1;
-
-
-
-	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
-	SDL_RenderFillRect(App->render->renderer, &Slider_rect);
-
-}
-
-void j1FadeToBlack::RightSliderFade()
-{
 
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
 	SDL_RenderFillRect(App->render->renderer, &screen);
+
+	r = &BonFireAnim.GetCurrentFrame();
+	
+	SDL_Rect a = { 0, 0, 172, 236 };
+	App->render->Blit(bonfire, 672, 208, &a);
+
 
 }

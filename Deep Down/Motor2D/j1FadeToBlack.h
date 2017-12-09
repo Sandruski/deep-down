@@ -3,14 +3,22 @@
 
 #include "j1Module.h"
 
+#include "Animation.h"
+
 #include "SDL\include\SDL_rect.h"
 
 enum fades
 {
 	no_fade,
 	normal_fade,
-	right_slider_fade,
-	left_slider_fade
+	slider_fade,
+	total_black_fade
+};
+
+enum sprites_for_fades
+{
+	no_sprite,
+	BonFire
 };
 
 class j1FadeToBlack : public j1Module
@@ -19,13 +27,15 @@ public:
 	j1FadeToBlack();
 	~j1FadeToBlack();
 
+	bool Awake();
 	bool Start();
 	bool Update(float dt);
+	bool CleanUp();
 	bool FadeToBlack(j1Module* module_off, j1Module* module_on, float time = 2.0f, fades kind_of_fade = normal_fade);
 
 	void NormalFade();
-	void LeftSliderFade();
-	void RightSliderFade();
+	void SliderFade();
+	void BlackFade();
 	bool IsFading() const;
 
 	j1Module* off;
@@ -39,7 +49,10 @@ private:
 	SDL_Rect Slider_rect;
 	float dt = 0.0f;
 	fades thisFade;
+	SDL_Texture* bonfire;
 
+	Animation BonFireAnim;
+	SDL_Rect* r;
 public:
 
 	enum fade_step
