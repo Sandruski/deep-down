@@ -283,7 +283,7 @@ void j1Scene::DebugKeys() {
 					index = 0;
 
 				App->entities->playerData->player.SetState(stop_);
-				App->fade->FadeToBlack(this, this, 1);
+				App->fade->FadeToBlack(this, this, 1.0f, fades::total_black_fade);
 			}
 		}
 	}
