@@ -5,8 +5,18 @@
 #include "j1Textures.h"
 #include "j1Input.h"
 #include "j1Map.h"
+#include "j1Window.h"
 
-UIElement::UIElement(int x, int y, j1Module* listener) : position(x, y), listener(listener) {}
+UIElement::UIElement(int x, int y, j1Module* listener) : position(x, y), listener(listener) 
+{
+	uint width = 0, height = 0, scale = 0;
+
+	App->win->GetWindowSize(width, height);
+	scale = App->win->GetScale();
+
+	screen = { 0, 0, static_cast<int>(width * scale), static_cast<int>(height * scale) };
+
+}
 
 UIElement::~UIElement()
 {
@@ -66,9 +76,11 @@ UIElement_TYPE UIElement::GetType() const
 bool UIElement::MouseHover() const
 {
 	int x, y;
+	int scale = App->win->GetScale();
+
 	App->input->GetMousePosition(x, y);
-	x -= App->render->camera.x;
-	y -= App->render->camera.y;
+	x -= App->render->camera.x/scale;
+	y -= App->render->camera.y/scale;
 
 	return x > position.x && x < position.x + width && y > position.y && y < position.y + height;
 }

@@ -162,7 +162,6 @@ void j1FadeToBlack::SliderFade()
 
 	}
 	Slider_rect.w = normalized*screen.w;
-
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
 	SDL_RenderFillRect(App->render->renderer, &Slider_rect);
 

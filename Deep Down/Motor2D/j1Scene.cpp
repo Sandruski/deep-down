@@ -17,6 +17,8 @@
 #include "j1Pathfinding.h"
 #include "j1Gui.h"
 #include "UILifeBar.h"
+#include "UIWindow.h"
+#include "UILabel.h"
 
 #include"Brofiler\Brofiler.h"
 
@@ -71,7 +73,7 @@ bool j1Scene::Start()
 	girl_life_bar.life_bar_position = { 678,209 };
 	girl_life_bar.tex_name = DSUI_;
 	girl_life_bar.tex_area = { 80,524,230,8 };
-	progress_bar = App->gui->CreateUILifeBar({672,208}, girl_life_bar, this);
+	progress_bar = App->gui->CreateUILifeBar({10,10}, girl_life_bar, this);
 
 	if (!loading)
 		App->entities->Start();
@@ -137,6 +139,12 @@ bool j1Scene::Update(float dt)
 		countdown_to_die = 0.0f;
 	}
 	countdown_to_die += dt;
+
+	pause_menu;
+
+	resume_label;
+
+	options_label;
 
 	return true;
 }
@@ -335,5 +343,94 @@ void j1Scene::DebugKeys() {
 
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 		App->map->camera_blit = !App->map->camera_blit;
+
+	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN && pause == false)
+	{
+		pause = true;
+		OpeningPauseMenu();
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN && pause == true)
+	{
+		pause = false;
+		ClosingPauseMenu();
+	}
+}
+
+void j1Scene::OpeningPauseMenu()
+{
+	UIWindow_Info menu;
+	menu.tex_name = MENU_;
+
+	pause_menu = App->gui->CreateUIWindow({ 578,109 }, menu, this);
+
+	UILabel_Info label;
+	label.font_name = SOWIDE_;
+	label.normal_color = {0,0,0,255};
+
+	label.text = "Resume";
+	resume_label = App->gui->CreateUILabel({ 608,129}, label, this, pause_menu);
+
+	label.text = "Save";
+	save_label = App->gui->CreateUILabel({ 608,149 }, label, this, pause_menu);
+
+	label.text = "Options";
+	options_label = App->gui->CreateUILabel({ 608,169 }, label, this, pause_menu);
+
+	label.text = "Quit";
+	quit_label = App->gui->CreateUILabel({ 608,189 }, label, this, pause_menu);
+}
+
+void j1Scene::ClosingPauseMenu()
+{
+	App->gui->DestroyElement(pause_menu);	
+}
+
+
+void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
+{
+
+	if (UIelem == (UIElement*)resume_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
+	{
+		pause = false;
+		ClosingPauseMenu();
+
+	}
+
+	else if (UIelem == (UIElement*)quit_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
+	{
+		
+
+	}
+
+	else if (UIelem == (UIElement*)options_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
+	{
+		App->gui->DestroyElement(resume_label);
+		App->gui->DestroyElement(options_label);
+		App->gui->DestroyElement(save_label);
+		App->gui->DestroyElement(quit_label);
+
+		UILabel_Info label;
+		label.font_name = SOWIDE_;
+		label.normal_color = { 0,0,0,255 };
+
+		label.text = "vSync";
+		App->gui->CreateUILabel({ 608,189 }, label, this, pause_menu);
+
+		label.text = "back";
+		back_label = App->gui->CreateUILabel({ 589,209 }, label, this, pause_menu);
+
+	}
+
+	else if (UIelem == (UIElement*)back_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
+	{
+		ClosingPauseMenu();
+		OpeningPauseMenu();
+	}
+
+	else if (UIelem == (UIElement*)save_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
+	{
+		App->SaveGame();
+		last_index = index;
+	}
 
 }
