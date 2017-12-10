@@ -141,7 +141,7 @@ void Player::GodMode()
 
 void Player::OnCollision(Collider* c1, Collider* c2) {
 	if (!App->scene->god) {
-		if (c2->type == COLLIDER_PEASANT_SHOT || c2->type == COLLIDER_CATPEASANT || c2->type == COLLIDER_IMP_BOMB_EXPLOSION || c2->type == COLLIDER_MONKEY_COLL)
+		if (c2->type == COLLIDER_CATPEASANT_SHOT || c2->type == COLLIDER_CATPEASANT || c2->type == COLLIDER_IMP_BOMB_EXPLOSION || c2->type == COLLIDER_MONKEY_HIT)
 			player.SetState(punished_);
 	}
 }

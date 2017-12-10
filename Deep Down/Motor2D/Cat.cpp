@@ -332,8 +332,10 @@ void Cat::GeneralStatesMachine() {
 
 		if (cat.r_to_run.Finished()) {
 
+			position.x += 50 * deltaTime;
+
 			if (cat.r_run.Finished()) {
-				App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_IMP, NULL, { 0.0f,0.0f });
+				App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_CAT_SPARKLE, NULL, { 0.0f,0.0f });
 				dead = true;
 				break;
 			}
@@ -347,8 +349,10 @@ void Cat::GeneralStatesMachine() {
 
 		if (cat.l_to_run.Finished()) {
 
+			position.x -= 50 * deltaTime;
+
 			if (cat.l_run.Finished()) {
-				App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_IMP, NULL, { 0.0f,0.0f });
+				App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_CAT_SPARKLE, NULL, { 0.0f,0.0f });
 				dead = true;
 				break;
 			}
@@ -361,7 +365,7 @@ void Cat::GeneralStatesMachine() {
 	case CatState::rc_dead:
 
 		if (cat.r_dead.Finished()) {
-			App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_IMP, NULL, { 0.0f,0.0f });
+			App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_CAT_SPARKLE, NULL, { 0.0f,0.0f });
 			dead = true;
 			break;
 		}
@@ -371,7 +375,7 @@ void Cat::GeneralStatesMachine() {
 	case CatState::lc_dead:
 
 		if (cat.l_dead.Finished()) {
-			App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_IMP, NULL, { 0.0f,0.0f });
+			App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_CAT_SPARKLE, NULL, { 0.0f,0.0f });
 			dead = true;
 			break;
 		}
@@ -383,9 +387,15 @@ void Cat::GeneralStatesMachine() {
 void Cat::OnCollision(Collider* c1, Collider* c2)
 {
 	if (c2->type == COLLIDER_ARROW) {
-		catState = CatState::rc_dead;
+		if (right_death)
+			catState = CatState::rc_dead;
+		else
+			catState = CatState::lc_dead;
 	}
 	else if (c2->type == COLLIDER_PLAYER) {
-		catState = CatState::rc_run;
+		if (right_death)
+			catState = CatState::rc_run;
+		else
+			catState = CatState::lc_run;
 	}
 }

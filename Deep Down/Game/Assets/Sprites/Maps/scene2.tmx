@@ -46873,10 +46873,41 @@
   </object>
  </objectgroup>
  <objectgroup name="Cats">
-  <object id="40" name="Cat1" type="6" x="432" y="1136" width="16" height="16"/>
-  <object id="41" name="Cat2" type="6" x="1344" y="1008" width="16" height="16"/>
-  <object id="42" name="Cat3" type="6" x="944" y="592" width="16" height="16"/>
-  <object id="43" name="Cat4" type="6" x="960" y="336" width="16" height="16"/>
-  <object id="44" name="Cat5" type="6" x="656" y="304" width="16" height="16"/>
+  <object id="40" name="Cat1" type="6" x="432" y="1136" width="16" height="16">
+   <properties>
+    <property name="right_death" type="bool" value="true"/>
+    <property name="state1" type="int" value="0"/>
+    <property name="state2" type="int" value="4"/>
+    <property name="state3" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="41" name="Cat2" type="6" x="1344" y="1008" width="16" height="16">
+   <properties>
+    <property name="right_death" type="bool" value="false"/>
+    <property name="state1" type="int" value="3"/>
+    <property name="state2" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="42" name="Cat3" type="6" x="944" y="592" width="16" height="16">
+   <properties>
+    <property name="right_death" type="bool" value="true"/>
+    <property name="state1" type="int" value="8"/>
+    <property name="state2" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="43" name="Cat4" type="6" x="960" y="336" width="16" height="16">
+   <properties>
+    <property name="right_death" type="bool" value="true"/>
+    <property name="state1" type="int" value="0"/>
+    <property name="state2" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="44" name="Cat5" type="6" x="656" y="304" width="16" height="16">
+   <properties>
+    <property name="right_death" type="bool" value="true"/>
+    <property name="state1" type="int" value="4"/>
+    <property name="state2" type="int" value="8"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

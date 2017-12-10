@@ -382,7 +382,7 @@ void CatPeasant::DoHit()
 	if (right_hit) {
 		if (catPeasant.r_throw_staff.Finished()) {
 			// Add particle
-			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + catPeasant.distance_to_player, COLLIDER_PEASANT_SHOT, NULL, catPeasant.particle_speed);
+			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + catPeasant.distance_to_player, COLLIDER_CATPEASANT_SHOT, NULL, catPeasant.particle_speed);
 
 			// Reset variables
 			right_hit = false;
@@ -394,7 +394,7 @@ void CatPeasant::DoHit()
 	else if (left_hit) {
 		if (catPeasant.l_throw_staff.Finished()) {
 			// Add particle
-			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + catPeasant.distance_to_player, COLLIDER_PEASANT_SHOT, NULL, catPeasant.particle_speed);
+			App->particles->AddParticle(App->particles->CatPeasantSinus, i_pos.x, i_pos.y + catPeasant.distance_to_player, COLLIDER_CATPEASANT_SHOT, NULL, catPeasant.particle_speed);
 
 			// Reset variables
 			left_hit = false;

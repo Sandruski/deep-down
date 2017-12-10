@@ -975,6 +975,7 @@ bool j1EntityFactory::AddEntity(EntityInfo& info)
 			queue[i].type = info.type;
 			queue[i].path = GetPathByIndex(info.path_num);
 			queue[i].states = info.states;
+			queue[i].right_death = info.right_death;
 
 			if (queue[i].path != nullptr) {
 				queue[i].position.x = queue[i].path->start_pos.x;

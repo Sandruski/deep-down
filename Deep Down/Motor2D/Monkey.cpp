@@ -340,7 +340,7 @@ void Monkey::DoHit()
 {
 	if (right_hit) {
 		if (monkey.r_hit.Finished()) {
-			App->particles->AddParticle(App->particles->monkeyAttack, i_pos.x + monkey.distance_to_player, i_pos.y, COLLIDER_MONKEY_COLL, NULL, monkey.particle_speed);
+			App->particles->AddParticle(App->particles->monkeyAttack, i_pos.x + monkey.distance_to_player, i_pos.y, COLLIDER_MONKEY_HIT, NULL, monkey.particle_speed);
 
 			pathfind = false;
 			right_hit = false;
@@ -351,7 +351,7 @@ void Monkey::DoHit()
 	}
 	else if (left_hit) {
 		if (monkey.l_hit.Finished()) {
-			App->particles->AddParticle(App->particles->monkeyAttack, i_pos.x - monkey.distance_to_player, i_pos.y, COLLIDER_MONKEY_COLL, NULL, monkey.particle_speed);
+			App->particles->AddParticle(App->particles->monkeyAttack, i_pos.x - monkey.distance_to_player, i_pos.y, COLLIDER_MONKEY_HIT, NULL, monkey.particle_speed);
 
 			pathfind = false;
 			left_hit = false;

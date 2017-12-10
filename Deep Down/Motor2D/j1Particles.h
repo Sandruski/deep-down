@@ -50,6 +50,9 @@ public:
 	void AddParticle(const Particle& particle, int x, int y, COLLIDER_TYPE collider_type, Uint32 delay, fPoint speed);
 	void OnCollision(Collider* c1, Collider* c2);
 
+	void UpdateAnimations(const float dt);
+	void LoadAnimationsSpeed();
+
 private:
 	Particle* active[MAX_ACTIVE_PARTICLES];
 	uint last_particle = 0;
@@ -71,6 +74,8 @@ public:
 	Particle Imp_bomb_explosion;
 
 	SDL_Texture* SparkleTex = nullptr;
+
+	float sparkle_speed = 0.0f;
 };
 
 #endif // __j1PARTICLES_H__

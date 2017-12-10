@@ -102,23 +102,35 @@ bool j1Particles::Awake(pugi::xml_node& config) {
 	Imp_bomb_explosion.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
 
 	//Leaf
-	node = animations_node.child("Leaf");
+	node = animations_node.child("leaf");
 	leaf.life = node.attribute("life").as_uint();
 	node = node.child("frame");
 	leaf.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	leaf.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
 
 	//Sparkle
-	node = animations_node.child("Sparkle");
+	node = animations_node.child("sparkle");
+	for (node = node.child("frame"); node; node = node.next_sibling("frame")) {
+		sparkle.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	}
+	node = animations_node.child("sparkle");
 	sparkle.life = node.attribute("life").as_uint();
+	sparkle.anim.speed = node.attribute("speed").as_float();
+	sparkle.anim.loop = node.attribute("loop").as_bool();
 	node = node.child("frame");
-	sparkle.anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
 	sparkle.coll_size = { node.attribute("w").as_int(), node.attribute("h").as_int() };
 
 	monkeyAttack.life = 100;
 	monkeyAttack.coll_size = { 20,20 };
 
+	LoadAnimationsSpeed();
+
 	return ret;
+}
+
+void j1Particles::LoadAnimationsSpeed() 
+{
+	sparkle_speed = sparkle.anim.speed;
 }
 
 // Load assets
@@ -151,6 +163,8 @@ bool j1Particles::CleanUp()
 // Update: draw background
 bool j1Particles::Update(float dt)
 {
+	UpdateAnimations(dt);
+
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
 		Particle* p = active[i];
@@ -165,17 +179,23 @@ bool j1Particles::Update(float dt)
 		}
 		else if (SDL_GetTicks() >= p->born)
 		{
-			if (p->collider->type == COLLIDER_PEASANT_SHOT)
+			if (p->collider->type == COLLIDER_TYPE::COLLIDER_CATPEASANT_SHOT)
 				App->render->Blit(App->entities->CatPeasantTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
-			else if (p->collider->type == COLLIDER_IMP_BOMB || p->collider->type == COLLIDER_IMP_BOMB_EXPLOSION) {
+			else if (p->collider->type == COLLIDER_TYPE::COLLIDER_IMP_BOMB || p->collider->type == COLLIDER_TYPE::COLLIDER_IMP_BOMB_EXPLOSION)
 				App->render->Blit(App->entities->ImpTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
-			}
+			else if (p->collider->type == COLLIDER_TYPE::COLLIDER_CAT_SPARKLE)
+				App->render->Blit(SparkleTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
 			else
 				App->render->Blit(App->entities->PlayerTex, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
 		}
 	}
 
 	return true;
+}
+
+void j1Particles::UpdateAnimations(const float dt)
+{
+	sparkle.anim.speed = sparkle_speed * dt;
 }
 
 void j1Particles::AddParticle(const Particle& particle, int x, int y, COLLIDER_TYPE collider_type, Uint32 delay, fPoint speed)
@@ -191,18 +211,17 @@ void j1Particles::AddParticle(const Particle& particle, int x, int y, COLLIDER_T
 			p->speed.x = speed.x;
 			p->speed.y = speed.y;
 
-			if (collider_type != COLLIDER_NONE && collider_type != COLLIDER_PEASANT_SHOT && collider_type != COLLIDER_MONKEY_COLL)
+			if (collider_type != COLLIDER_NONE && collider_type != COLLIDER_CATPEASANT_SHOT && collider_type != COLLIDER_MONKEY_HIT)
 				p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), collider_type, this);
-			if (collider_type == COLLIDER_PEASANT_SHOT) {
+			else if (collider_type == COLLIDER_CATPEASANT_SHOT) {
 				float m = sqrtf(pow(App->entities->playerData->position.x - p->position.x, 2.0f) + pow(App->entities->playerData->position.y - p->position.y, 2.0f));
 				p->destination.x = (App->entities->playerData->position.x - p->position.x) / m;
 				p->destination.y = (App->entities->playerData->position.y - p->position.y) / m;
 
 				p->collider = App->collision->AddCollider({ 0, 0, p->coll_size.x - 40, p->coll_size.y - 40}, collider_type, this);
 			}
-			if (collider_type == COLLIDER_MONKEY_COLL) {
+			else if (collider_type == COLLIDER_MONKEY_HIT)
 				p->collider = App->collision->AddCollider({ 0, 0, p->coll_size.x, p->coll_size.y }, collider_type, this);
-			}
 
 			active[i] = p;
 			break;
@@ -219,7 +238,8 @@ void j1Particles::OnCollision(Collider* c1, Collider* c2)
 		{
 			if ((c1->type == COLLIDER_ARROW && c2->type == COLLIDER_IMP) || (c1->type == COLLIDER_ARROW && c2->type == COLLIDER_IMP)
 				|| (c1->type == COLLIDER_ARROW && c2->type == COLLIDER_CATPEASANT) || (c1->type == COLLIDER_ARROW && c2->type == COLLIDER_CATPEASANT)
-				|| (c1->type == COLLIDER_ARROW && c2->type == COLLIDER_MONKEY) || (c1->type == COLLIDER_ARROW && c2->type == COLLIDER_MONKEY)) {
+				|| (c1->type == COLLIDER_ARROW && c2->type == COLLIDER_MONKEY) || (c1->type == COLLIDER_ARROW && c2->type == COLLIDER_MONKEY)
+				|| (c1->type == COLLIDER_ARROW && c2->type == COLLIDER_CAT) || (c1->type == COLLIDER_ARROW && c2->type == COLLIDER_CAT)) {
 				delete active[i];
 				active[i] = nullptr;
 				break;
@@ -281,7 +301,7 @@ bool Particle::Update(float dt)
 		else
 			position.x = position.x;
 	}
-	else if (collider->type == COLLIDER_PEASANT_SHOT) {
+	else if (collider->type == COLLIDER_CATPEASANT_SHOT) {
 		position.y += destination.y * dt * speed.x;
 		position.x += destination.x * dt * speed.y;
 	}
@@ -296,9 +316,9 @@ bool Particle::Update(float dt)
 	}
 
 	if (collider != nullptr) {
-		if (collider->type == COLLIDER_PEASANT_SHOT)
+		if (collider->type == COLLIDER_CATPEASANT_SHOT)
 			collider->SetPos(position.x + 20, position.y + 20);
-		else if	(collider->type == COLLIDER_MONKEY_COLL)
+		else if	(collider->type == COLLIDER_MONKEY_HIT)
 			collider->SetPos(position.x + 20, position.y + 30);
 		else
 			collider->SetPos(position.x, position.y);

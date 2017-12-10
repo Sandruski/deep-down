@@ -785,7 +785,7 @@
         <frame x="392" y="236" w="128" h="96"/>
         <frame x="522" y="236" w="128" h="96"/>
       </leaf>
-      <sparkle life="10000">
+      <sparkle life="1000" speed="50" loop="0">
         <frame x="1" y="1" w="48" h="48"/>
         <frame x="50" y="1" w="48" h="48"/>
         <frame x="99" y="1" w="48" h="48"/>
