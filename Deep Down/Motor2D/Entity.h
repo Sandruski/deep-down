@@ -19,10 +19,9 @@ class Entity
 protected:
 	Collider* collider = nullptr;
 	Animation* animation = nullptr;
-
-public:
 	float deltaTime = 0.0f;
 
+public:
 	int type = 0;
 	int lives = 0;
 	bool dead = false;

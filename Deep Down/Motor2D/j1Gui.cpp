@@ -51,13 +51,8 @@ bool j1Gui::Start()
 	map_textures[Tex_Names::DSUI_] = App->tex->Load("Assets/Sprites/UI/DSUI.png");
 
 	// Load fonts
-	map_fonts[Font_Names::DEFAULT_] = App->font->Load("fonts/open_sans/OpenSans-Regular.ttf");
-	map_fonts[Font_Names::ARIALN_] = App->font->Load("fonts/wow/ARIALN.TTF");
-	map_fonts[Font_Names::MORPHEUS12_] = App->font->Load("fonts/wow/MORPHEUS.TTF");
-	map_fonts[Font_Names::MORPHEUS18_] = App->font->Load("fonts/wow/MORPHEUS.TTF", 18);
-	map_fonts[Font_Names::MORPHEUS100_] = App->font->Load("fonts/wow/MORPHEUS.TTF", 100);
-	map_fonts[Font_Names::SKURRI_] = App->font->Load("fonts/wow/SKURRI.ttf");
-	map_fonts[Font_Names::FRIZQT_] = App->font->Load("fonts/wow/FRIZQT__.ttf");
+	map_fonts[Font_Names::MSMINCHO_] = App->font->Load("Assets/Fonts/MSMINCHO.TTF");
+	map_fonts[Font_Names::ZELDA_] = App->font->Load("Assets/Fonts/Zelda.ttf", 60);
 
 	UI_elements_tree = new nTree<UIElement*>((UIElement*)App->win->window);
 

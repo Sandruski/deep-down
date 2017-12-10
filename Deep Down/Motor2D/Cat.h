@@ -10,8 +10,9 @@ enum CatState {
 	rc_crouch, lc_crouch,
 	rc_jump, lc_jump,
 	rc_roll, lc_roll,
-	rc_run, lc_run,
-	rc_dead, lc_dead
+	rc_dead_run, lc_dead_run,
+	rc_dead, lc_dead,
+	rc_run, lc_run
 };
 
 struct CatInfo
@@ -46,13 +47,14 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2);
 	void Move(const float dt);
-	void UpdateAnimations(const float dt);
-	void LoadAnimationsSpeed();
 
-	void GeneralStatesMachine();
+	void SetCatState(uint state);
 	
 private:
 
+	void UpdateAnimations(const float dt);
+	void LoadAnimationsSpeed();
+	void GeneralStatesMachine();
 	void UpdateCatState();
 	void ResetAllAnimations();
 
@@ -60,7 +62,7 @@ private:
 
 	CatInfo cat;
 	CatState catState;
-	p2DynArray<uint> cat_states;
+	p2DynArray<uint>* cat_states;
 	uint cat_states_index = 0;
 	bool reset_animations = false;
 

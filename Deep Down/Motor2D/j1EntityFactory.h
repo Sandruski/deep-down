@@ -81,6 +81,7 @@ public:
 
 	bool AddEntities();
 	bool AddEntity(EntityInfo& info);
+	Entity* SpawnEntity(const EntityInfo& info);
 
 	// Get entities info
 	CatPeasantInfo& GetCatPeasantInfo() { return catPeasant; }
@@ -96,10 +97,6 @@ public:
 
 	bool Load(pugi::xml_node& save);
 	bool LoadEntities();
-
-private:
-
-	void SpawnEntity(const EntityInfo& info);
 
 private:
 

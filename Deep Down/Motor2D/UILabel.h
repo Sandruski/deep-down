@@ -36,6 +36,7 @@ public:
 
 	void SetText(p2SString text);
 	void SetColor(SDL_Color color);
+	iPoint GetSize() const;
 
 private:
 	UILabel_Info label;

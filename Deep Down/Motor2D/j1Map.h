@@ -22,7 +22,8 @@ enum layerType {
 	COLLISION,
 	ABOVE,
 	PARALLAX,
-	GATE
+	GATE,
+	CLOUDS
 };
 
 struct Object {

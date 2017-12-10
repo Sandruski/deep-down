@@ -13,6 +13,8 @@ struct UIImage_Info {
 	Tex_Names tex_name = Tex_Names::NO_TEX_;
 	UIElement_HORIZONTAL_POS horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
+	bool quad = false;
+	SDL_Color color = { 0,0,0,255 };
 };
 
 // ---------------------------------------------------
@@ -21,7 +23,9 @@ class UIImage : public UIElement
 {
 public:
 	UIImage(int x, int y, UIImage_Info& info, j1Module* listener = nullptr);
+	void Draw() const;
 	void DebugDraw() const;
+	void SetColor(const SDL_Color color);
 
 private:
 	UIImage_Info image;

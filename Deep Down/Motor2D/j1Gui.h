@@ -29,10 +29,8 @@ enum Tex_Names {
 
 enum Font_Names {
 	DEFAULT_,
-	ARIALN_,
-	MORPHEUS12_, MORPHEUS18_, MORPHEUS100_,
-	SKURRI_,
-	FRIZQT_,
+	MSMINCHO_,
+	ZELDA_,
 	MAX_FONTS_
 };
 

@@ -994,7 +994,7 @@ bool j1EntityFactory::AddEntity(EntityInfo& info)
 	return ret;
 }
 
-void j1EntityFactory::SpawnEntity(const EntityInfo& info)
+Entity* j1EntityFactory::SpawnEntity(const EntityInfo& info)
 {
 	// find room for the new entity
 	uint i = 0;
@@ -1007,27 +1007,32 @@ void j1EntityFactory::SpawnEntity(const EntityInfo& info)
 		case ENTITY_TYPES::CAT_PEASANT_:
 			entities[i] = new CatPeasant(info.position.x, info.position.y, info.path);
 			entities[i]->type = ENTITY_TYPES::CAT_PEASANT_;
+			return (Entity*)entities[i];
 			break;
 
 		case ENTITY_TYPES::IMP_:
 			entities[i] = new Imp(info.position.x, info.position.y, info.path);
 			entities[i]->type = ENTITY_TYPES::IMP_;
+			return (Entity*)entities[i];
 			break;
 
 		case ENTITY_TYPES::MONKEY_:
 			entities[i] = new Monkey(info.position.x, info.position.y, info.path);
 			entities[i]->type = ENTITY_TYPES::MONKEY_;
+			return (Entity*)entities[i];
 			break;
 
 		case ENTITY_TYPES::PLAYER_:
 			playerData = new Player(info.position.x, info.position.y);
 			entities[i] = playerData;
 			entities[i]->type = ENTITY_TYPES::PLAYER_;
+			return (Entity*)entities[i];
 			break;
 
 		case ENTITY_TYPES::CAT_:
 			entities[i] = new Cat(info.position.x, info.position.y, info.states, info.right_death);
 			entities[i]->type = ENTITY_TYPES::CAT_;
+			return (Entity*)entities[i];
 			break;
 		}
 	}

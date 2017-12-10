@@ -21,24 +21,6 @@ j1FadeToBlack::j1FadeToBlack()
 j1FadeToBlack::~j1FadeToBlack()
 {}
 
-<<<<<<< HEAD
-=======
-bool j1FadeToBlack::Awake()
-{
-	BonFireAnim.PushBack({ 0, 0, 172, 236});
-	BonFireAnim.PushBack({ 172, 0, 172, 236 });
-	BonFireAnim.PushBack({ 344, 0, 172, 236 });
-	BonFireAnim.PushBack({ 0, 236, 172, 236 });
-	BonFireAnim.PushBack({ 172, 236, 172, 236 });
-	BonFireAnim.PushBack({ 344, 236, 172, 236 });
-	BonFireAnim.PushBack({ 0, 472, 172, 236 });
-	BonFireAnim.PushBack({ 172, 472, 172, 236 });
-	BonFireAnim.PushBack({ 344, 472, 172, 236 });
-	BonFireAnim.speed = 2.0f;
-
-	return true;
-}
->>>>>>> origin/master
 // Load assets
 bool j1FadeToBlack::Start()
 {

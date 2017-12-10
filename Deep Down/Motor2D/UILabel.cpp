@@ -18,6 +18,11 @@ UILabel::UILabel(int x, int y, UILabel_Info& info, j1Module* listener) : UIEleme
 	SetOrientation();
 }
 
+iPoint UILabel::GetSize() const 
+{
+	return { width,height };
+}
+
 void UILabel::Update(float dt)
 {
 	if (listener != nullptr)
@@ -130,6 +135,7 @@ void UILabel::SetText(p2SString text)
 void UILabel::SetColor(SDL_Color color)
 {
 	this->color = color;
+	tex = App->font->Print(label.text.GetString(), color, font);
 }
 
 UILabel::~UILabel()

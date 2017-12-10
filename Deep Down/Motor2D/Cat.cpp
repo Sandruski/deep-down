@@ -16,14 +16,13 @@ Cat::Cat(float x, float y, p2DynArray<uint>* cat_states, bool right_death) : Ent
 {
 	cat = App->entities->GetCatInfo();
 
-	if (cat_states != nullptr) {
-		this->cat_states = *cat_states;
-		catState = (CatState)this->cat_states[cat_states_index];
-	}
+	this->right_death = right_death;
+	this->cat_states = cat_states;
+
+	if (this->cat_states != nullptr)
+		catState = *(CatState*)this->cat_states->At(cat_states_index);
 	else
 		catState = CatState::rc_idle;
-
-	this->right_death = right_death;
 
 	///
 	LoadAnimationsSpeed();
@@ -135,12 +134,15 @@ void Cat::UpdateAnimations(const float dt)
 
 void Cat::UpdateCatState()
 {
-	if (cat_states_index == cat_states.Count() - 1)
-		cat_states_index = 0;
-	else
-		cat_states_index++;
+	if (cat_states != nullptr) {
+		if (cat_states_index == cat_states->Count() - 1)
+			cat_states_index = 0;
+		else
+			cat_states_index++;
 
-	catState = (CatState)cat_states[cat_states_index];
+		catState = *(CatState*)cat_states->At(cat_states_index);
+	}
+
 	reset_animations = true;
 }
 
@@ -188,8 +190,7 @@ void Cat::GeneralStatesMachine() {
 	case CatState::rc_idle:
 
 		if (cat.r_idle.Finished()) {
-			if (cat_states.Count() > 1)
-				UpdateCatState();
+			UpdateCatState();
 			break;
 		}
 		animation = &cat.r_idle;
@@ -198,8 +199,7 @@ void Cat::GeneralStatesMachine() {
 	case CatState::lc_idle:
 
 		if (cat.l_idle.Finished()) {
-			if (cat_states.Count() > 1)
-				UpdateCatState();
+			UpdateCatState();
 			break;
 		}
 		animation = &cat.l_idle;
@@ -328,7 +328,7 @@ void Cat::GeneralStatesMachine() {
 		animation = &cat.l_roll;
 		break;
 
-	case CatState::rc_run:
+	case CatState::rc_dead_run:
 
 		if (cat.r_to_run.Finished()) {
 
@@ -345,7 +345,7 @@ void Cat::GeneralStatesMachine() {
 		animation = &cat.r_to_run;
 		break;
 
-	case CatState::lc_run:
+	case CatState::lc_dead_run:
 
 		if (cat.l_to_run.Finished()) {
 
@@ -381,6 +381,27 @@ void Cat::GeneralStatesMachine() {
 		}
 		animation = &cat.l_dead;
 		break;
+
+	case CatState::rc_run:
+
+			if (cat.r_run.Finished()) {
+				UpdateCatState();
+				break;
+			}
+			animation = &cat.r_run;
+			break;
+
+	case CatState::lc_run:
+
+		if (cat.l_run.Finished()) {
+			UpdateCatState();
+			break;
+		}
+		animation = &cat.l_run;
+		break;
+
+	default:
+		break;
 	}
 }
 
@@ -398,4 +419,9 @@ void Cat::OnCollision(Collider* c1, Collider* c2)
 		else
 			catState = CatState::lc_run;
 	}
+}
+
+void Cat::SetCatState(uint state) 
+{
+	catState = (CatState)state;
 }
