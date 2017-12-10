@@ -21,6 +21,8 @@ j1FadeToBlack::j1FadeToBlack()
 j1FadeToBlack::~j1FadeToBlack()
 {}
 
+<<<<<<< HEAD
+=======
 bool j1FadeToBlack::Awake()
 {
 	BonFireAnim.PushBack({ 0, 0, 172, 236});
@@ -36,14 +38,13 @@ bool j1FadeToBlack::Awake()
 
 	return true;
 }
+>>>>>>> origin/master
 // Load assets
 bool j1FadeToBlack::Start()
 {
 	LOG("Preparing Fade Screen");
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
 
-	LOG("Loading Textures");
-	bonfire = App->tex->Load("Assets/Sprites/UI/BonFire.png");
 	// Get screen size
 	uint width = 0, height = 0, scale = 0;
 
@@ -56,13 +57,7 @@ bool j1FadeToBlack::Start()
 	Slider_rect.w = 0;
 	return true;
 }
-bool j1FadeToBlack::CleanUp()
-{
-	LOG("UnLoading Textures");
-	App->tex->UnLoad(bonfire);
 
-	return true;
-}
 // Update: draw background
 bool j1FadeToBlack::Update(float dt)
 {
@@ -83,8 +78,7 @@ bool j1FadeToBlack::Update(float dt)
 		BlackFade();
 		break;
 	}
-	
-	
+
 	return true;
 }
 
@@ -225,11 +219,5 @@ void j1FadeToBlack::BlackFade()
 
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
 	SDL_RenderFillRect(App->render->renderer, &screen);
-
-	r = &BonFireAnim.GetCurrentFrame();
-	
-	SDL_Rect a = { 0, 0, 172, 236 };
-	App->render->Blit(bonfire, 672, 208, &a);
-
 
 }
