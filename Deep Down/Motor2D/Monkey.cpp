@@ -96,16 +96,12 @@ void Monkey::Move(const float dt)
 void Monkey::Wounded()
 {
 	if (right_hurt) {
-		if (monkey.r_hurt.GetCurrentFrame().x == monkey.r_hurt.frames[monkey.r_hurt.last_frame - 1].x) {
+		if (monkey.r_hurt.Finished())
 			dead = true;
-			monkey.r_hurt.Stop();
-		}
 	}
 	else if (left_hurt) {
-		if (monkey.l_hurt.GetCurrentFrame().x == monkey.l_hurt.frames[monkey.l_hurt.last_frame - 1].x) {
+		if (monkey.l_hurt.Finished())
 			dead = true;
-			monkey.l_hurt.Stop();
-		}
 	}
 }
 

@@ -794,18 +794,26 @@ bool j1Map::LoadObject(pugi::xml_node& object_node, Object* object)
 		context = nullptr;
 	}
 
-	pugi::xml_node state = object_node.child("properties").child("property");
+	pugi::xml_node property = object_node.child("properties").child("property");
 
-	if (state != nullptr) {
-		uint index = 1;
-		p2SString tmp("%s%d", "state", index);
+	if (property != nullptr) {
 
-		object->states = new p2DynArray<uint>();
+		p2SString tmp = property.attribute("name").as_string();
+		p2SString tmp1 = "right_death";
 
-		for (pugi::xml_node s = state; s; s = state.next_sibling(tmp.GetString())) {
-			object->states->PushBack(s.attribute("value").as_uint());
+		if (tmp == tmp1)
+			object->right_death = property.attribute("value").as_bool();
 
-			p2SString tmp("%s%d", "state", ++index);
+		property = property.next_sibling("property");
+
+		tmp = property.attribute("name").as_string();
+		tmp1 = "state1";
+
+		if (tmp == tmp1) {
+			object->states = new p2DynArray<uint>();
+
+			for (pugi::xml_node state = property; state; state = state.next_sibling("property"))
+				object->states->PushBack(state.attribute("value").as_uint());
 		}
 	}
 

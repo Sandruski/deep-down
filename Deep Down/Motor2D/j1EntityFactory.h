@@ -50,9 +50,11 @@ struct PathInfo
 struct EntityInfo
 {
 	ENTITY_TYPES type = ENTITY_TYPES::NO_TYPE;
-	SDL_Rect coords = { 0,0,0,0 };
+	iPoint position = { 0,0 };
 	PathInfo* path = nullptr;
+	uint path_num = 0;
 	p2DynArray<uint>* states = nullptr;
+	bool right_death = false;
 
 	~EntityInfo() {
 		RELEASE_ARRAY(path);
@@ -78,7 +80,7 @@ public:
 	bool SaveStartEndPaths(uint& index);
 
 	bool AddEntities();
-	bool AddEntity(ENTITY_TYPES type, uint path = 0, SDL_Rect coords = { 0,0,0,0 }, p2DynArray<uint>* states = nullptr);
+	bool AddEntity(EntityInfo& info);
 
 	// Get entities info
 	CatPeasantInfo& GetCatPeasantInfo() { return catPeasant; }
