@@ -2,6 +2,7 @@
 #include "j1Render.h"
 #include "j1Input.h"
 #include "p2Log.h"
+#include "j1Window.h"
 
 UILifeBar::UILifeBar(int x, int y, UILifeBar_Info& info, j1Module* listener) : UIElement(x, y, listener), life_bar(info)
 {
@@ -28,6 +29,9 @@ void UILifeBar::Update(float dt)
 		HandleInput();
 
 	life_bar.bar.w = life_bar.life;
+
+	position.x = -App->render->camera.x/App->win->GetScale() + startPos.x;
+	position.y = -App->render->camera.y / App->win->GetScale() + startPos.y;
 }
 
 void UILifeBar::DebugDraw() const

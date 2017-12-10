@@ -7,6 +7,8 @@
 
 struct SDL_Texture;
 struct UILifeBar;
+struct UIWindow;
+struct UILabel;
 
 class j1Scene : public j1Module
 {
@@ -34,6 +36,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	// On triggered
+	void OnUIEvent(UIElement* UIelem, UIEvents UIevent);
+
 	// Save
 	bool Save(pugi::xml_node&) const;
 
@@ -42,6 +47,10 @@ public:
 
 	// Debug keys
 	void DebugKeys();
+
+	void OpeningPauseMenu();
+
+	void ClosingPauseMenu();
 
 	void MoveCamera();
 
@@ -58,6 +67,7 @@ public:
 	uint last_index = 0;
 
 	bool god = false;
+	bool pause = false;
 
 private:
 
@@ -72,6 +82,12 @@ private:
 
 	iPoint mouse = { 0,0 };
 	UILifeBar* progress_bar;
+	UIWindow* pause_menu;
+	UILabel* resume_label;
+	UILabel* options_label;
+	UILabel* save_label;
+	UILabel* quit_label;
+	UILabel* back_label;
 };
 
 #endif // __j1SCENE1_H__

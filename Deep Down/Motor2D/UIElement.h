@@ -47,10 +47,13 @@ class UIElement
 {
 protected:
 	iPoint position = { 0,0 };
+	iPoint startPos = { 0,0 };
 	UIElement_TYPE type = UIElement_TYPE::NO_TYPE_;
 	UIElement_HORIZONTAL_POS horizontal = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical = UIElement_VERTICAL_POS::TOP_;
 	j1Module* listener = nullptr;
+
+	SDL_Rect screen;
 
 	bool to_remove = false;
 	//bool draggable = false;
