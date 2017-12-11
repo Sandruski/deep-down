@@ -361,24 +361,26 @@ void j1Scene::OpeningPauseMenu()
 {
 	UIWindow_Info menu;
 	menu.tex_name = MENU_;
+	menu.is_draggable = true;
 
-	pause_menu = App->gui->CreateUIWindow({ 578,109 }, menu, this);
+	pause_menu = App->gui->CreateUIWindow({ 100,200 }, menu, this);
 
 	UILabel_Info label;
 	label.font_name = SOBAD_;
 	label.normal_color = {0,0,0,255};
+	label.is_draggable = false;
 
 	label.text = "Resume";
-	resume_label = App->gui->CreateUILabel({ 608,129}, label, this, pause_menu);
+	resume_label = App->gui->CreateUILabel({ 40,40}, label, this, pause_menu);
 
 	label.text = "Save";
-	save_label = App->gui->CreateUILabel({ 608,149 }, label, this, pause_menu);
+	save_label = App->gui->CreateUILabel({ 40,140 }, label, this, pause_menu);
 
 	label.text = "Options";
-	options_label = App->gui->CreateUILabel({ 608,169 }, label, this, pause_menu);
+	options_label = App->gui->CreateUILabel({ 40,240 }, label, this, pause_menu);
 
 	label.text = "Quit";
-	quit_label = App->gui->CreateUILabel({ 608,189 }, label, this, pause_menu);
+	quit_label = App->gui->CreateUILabel({ 40,340 }, label, this, pause_menu);
 }
 
 void j1Scene::ClosingPauseMenu()
@@ -398,42 +400,42 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 	}
 	else if (UIelem == (UIElement*)resume_label && UIevent == UIEvents::MOUSE_ENTER_)
 	{
-		resume_label->IncreasePosition({3,0});
+		resume_label->IncreasePos({3,0});
 	}
 
 	else if (UIelem == (UIElement*)save_label && UIevent == UIEvents::MOUSE_ENTER_)
 	{
-		save_label->IncreasePosition({ 3,0 });
+		save_label->IncreasePos({ 3,0 });
 	}
 
 	else if (UIelem == (UIElement*)options_label && UIevent == UIEvents::MOUSE_ENTER_)
 	{
-		options_label->IncreasePosition({ 3,0 });
+		options_label->IncreasePos({ 3,0 });
 	}
 
 	else if (UIelem == (UIElement*)quit_label && UIevent == UIEvents::MOUSE_ENTER_)
 	{
-		quit_label->IncreasePosition({ 3,0 });
+		quit_label->IncreasePos({ 3,0 });
 	}
 
 	else if (UIelem == (UIElement*)resume_label && UIevent == UIEvents::MOUSE_LEAVE_)
 	{
-		resume_label->DecreasePosition({3,0});
+		resume_label->DecreasePos({3,0});
 	}
 
 	else if (UIelem == (UIElement*)save_label && UIevent == UIEvents::MOUSE_LEAVE_)
 	{
-		save_label->DecreasePosition({ 3,0 });
+		save_label->DecreasePos({ 3,0 });
 	}
 
 	else if (UIelem == (UIElement*)options_label && UIevent == UIEvents::MOUSE_LEAVE_)
 	{
-		options_label->DecreasePosition({ 3,0 });
+		options_label->DecreasePos({ 3,0 });
 	}
 
 	else if (UIelem == (UIElement*)quit_label && UIevent == UIEvents::MOUSE_LEAVE_)
 	{
-		quit_label->DecreasePosition({ 3,0 });
+		quit_label->DecreasePos({ 3,0 });
 	}
 
 	else if (UIelem == (UIElement*)quit_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
@@ -452,15 +454,16 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		UILabel_Info label;
 		label.font_name = SOBAD_;
 		label.normal_color = { 0,0,0,255 };
+		label.is_draggable = false;
 
 		label.text = "cap_frames";
-		vsync_label = App->gui->CreateUILabel({ 608,189 }, label, this, pause_menu);
-
-		label.text = "back";
-		back_label = App->gui->CreateUILabel({ 589,239 }, label, this, pause_menu);
+		vsync_label = App->gui->CreateUILabel({ 80,140 }, label, this, pause_menu);
 
 		label.text = "camera blit";
-		camerablit_label = App->gui->CreateUILabel({ 608,169 }, label, this, pause_menu);
+		camerablit_label = App->gui->CreateUILabel({ 80,240 }, label, this, pause_menu);
+
+		label.text = "back";
+		back_label = App->gui->CreateUILabel({ 40,340 }, label, this, pause_menu);
 
 		UIButton_Info checkbox;
 		checkbox.checkbox = true;
@@ -468,10 +471,11 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		checkbox.normal_tex_area = { 0,0,11,7 };
 		checkbox.hover_tex_area = { 0,0,11,7 };
 		checkbox.pressed_tex_area = { 12,0,11,7 };
+		checkbox.is_draggable = true;
 
-		vsync_checkbox = App->gui->CreateUIButton({ 698,195 }, checkbox, this, vsync_label);
+		vsync_checkbox = App->gui->CreateUIButton({ 280,160 }, checkbox, this, pause_menu);
 
-		camerablit_checkbox = App->gui->CreateUIButton({ 698,175 }, checkbox, this, camerablit_label);
+		camerablit_checkbox = App->gui->CreateUIButton({ 280,260 }, checkbox, this, pause_menu);
 
 		//TODO CAP_FRAMES AND CAMERA_BLIT STARTS TRUE
 

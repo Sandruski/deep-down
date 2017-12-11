@@ -53,11 +53,13 @@ bool j1Menu::Start()
 	// Map
 	App->map->Load("menu.tmx");
 
-	// Get screen size
-	uint width = 0, height = 0, scale = 0;
+	// Get screen parameters
+	uint width = 0, height = 0;
+	int scale = 0;
 
 	App->win->GetWindowSize(width, height);
 	scale = App->win->GetScale();
+	//_get_screen_parameters
 
 	UIImage_Info black_screen;
 	black_screen.color = { 0,0,0,255 };
@@ -74,7 +76,7 @@ bool j1Menu::Start()
 	label.font_name = ZELDA_;
 	label.normal_color = { 255,255,255,0 };
 
-	iPoint title_position = { camera_start_position.x + 70,55 };
+	iPoint title_position = { 70 * scale,55 * scale };
 	iPoint tracking = { 5,12 };
 
 	label.text = "D";
@@ -82,32 +84,32 @@ bool j1Menu::Start()
 	iPoint letter_size = letters[i]->GetSize();
 	iPoint letter_position = letters[i]->GetLocalPos();
 	label.text = "e";
-	letters[++i] = App->gui->CreateUILabel({ letter_position.x + letter_size.x + tracking.x,letter_position.y + tracking.y }, label);
+	letters[++i] = App->gui->CreateUILabel({ letter_position.x + (letter_size.x + tracking.x) * scale,letter_position.y + tracking.y * scale }, label);
 	letter_size = letters[i]->GetSize();
 	letter_position = letters[i]->GetLocalPos();
 	label.text = "e";
-	letters[++i] = App->gui->CreateUILabel({ letter_position.x + letter_size.x + tracking.x, letter_position.y }, label);
+	letters[++i] = App->gui->CreateUILabel({ letter_position.x + (letter_size.x + tracking.x) * scale, letter_position.y }, label);
 	letter_size = letters[i]->GetSize();
 	letter_position = letters[i]->GetLocalPos();
 	label.text = "p";
-	letters[++i] = App->gui->CreateUILabel({ letter_position.x + letter_size.x + tracking.x, letter_position.y }, label);
+	letters[++i] = App->gui->CreateUILabel({ letter_position.x + (letter_size.x + tracking.x) * scale, letter_position.y }, label);
 
 	letter_size = letters[i]->GetSize();
 	letter_position = letters[i]->GetLocalPos();
 	label.text = "D";
-	letters[++i] = App->gui->CreateUILabel({ letter_position.x - 2 * letter_size.x, letter_position.y + letter_size.y - letter_size.y / 3 }, label);
+	letters[++i] = App->gui->CreateUILabel({ letter_position.x - 2 * letter_size.x * scale, letter_position.y + (letter_size.y - letter_size.y / scale) * scale }, label);
 	letter_size = letters[i]->GetSize();
 	letter_position = letters[i]->GetLocalPos();
 	label.text = "o";
-	letters[++i] = App->gui->CreateUILabel({ letter_position.x + letter_size.x + tracking.x, letter_position.y + tracking.y }, label);
+	letters[++i] = App->gui->CreateUILabel({ letter_position.x + (letter_size.x + tracking.x) * scale, letter_position.y + tracking.y * scale }, label);
 	letter_size = letters[i]->GetSize();
 	letter_position = letters[i]->GetLocalPos();
 	label.text = "w";
-	letters[++i] = App->gui->CreateUILabel({ letter_position.x + letter_size.x + tracking.x, letter_position.y }, label);
+	letters[++i] = App->gui->CreateUILabel({ letter_position.x + (letter_size.x + tracking.x) * scale, letter_position.y }, label);
 	letter_size = letters[i]->GetSize();
 	letter_position = letters[i]->GetLocalPos();
 	label.text = "n";
-	letters[++i] = App->gui->CreateUILabel({ letter_position.x + letter_size.x + tracking.x, letter_position.y }, label);
+	letters[++i] = App->gui->CreateUILabel({ letter_position.x + (letter_size.x + tracking.x) * scale, letter_position.y }, label);
 	i = 0;
 
 	float fade_seconds = 2.0f;
@@ -204,6 +206,7 @@ bool j1Menu::Update(float dt)
 	}
 
 	if (left_transition) {
+		// Title mustn't blit
 		if (App->render->camera.x < -10)
 			App->render->camera.x += 250 * dt;
 		else
@@ -211,10 +214,24 @@ bool j1Menu::Update(float dt)
 	}
 
 	if (right_transition) {
+		// Title mustn't blit
 		if (App->render->camera.x > -(camera_start_position.x + 10) * App->win->GetScale())
 			App->render->camera.x -= 250 * dt;
 		else
 			right_transition = false;
+	}
+
+	// Clouds transition
+	if (clouds_transition) {
+
+		UIImage_Info cloud;
+		cloud.tex_name = GENERAL_;
+		cloud.tex_area = { 0, 754, 208, 57 };
+		UIImage* big_cloud = App->gui->CreateUIImage({ 0,0 }, cloud);
+		cloud.tex_area = { 16, 832, 112, 27 };
+		UIImage* medium_cloud = App->gui->CreateUIImage({ 0,0 }, cloud);
+		cloud.tex_area = { 0, 877, 109, 23 };
+		UIImage* small_cloud = App->gui->CreateUIImage({ 0,0 }, cloud);
 	}
 
 	/*

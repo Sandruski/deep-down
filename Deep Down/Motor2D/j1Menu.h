@@ -57,6 +57,8 @@ public:
 	bool left_transition = false;
 	bool right_transition = false;
 
+	bool clouds_transition = false;
+
 };
 
 #endif // __j1MENU_H__

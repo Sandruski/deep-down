@@ -95,6 +95,8 @@ public:
 	iPoint GetScreenPos() const;
 	iPoint GetLocalPos() const;
 	void SetLocalPos(iPoint local_pos);
+	void IncreasePos(iPoint add_local_pos);
+	void DecreasePos(iPoint add_local_pos);
 
 public:
 	bool drag = false;

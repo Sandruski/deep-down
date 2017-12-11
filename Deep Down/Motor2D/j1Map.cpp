@@ -119,10 +119,6 @@ void j1Map::Draw()
 								if (App->scene->gate == false)
 									App->render->Blit(draw_tilesets->data->texture, world.x, world.y, section, draw_layers->data->speed);
 							}
-							else if (draw_layers->data->index == CLOUDS) {
-								if (App->menu->left_transition || App->menu->right_transition)
-									App->render->Blit(draw_tilesets->data->texture, world.x, world.y, section, draw_layers->data->speed);
-							}
 							else {
 								App->render->Blit(draw_tilesets->data->texture, world.x, world.y, section, draw_layers->data->speed);
 							}
@@ -706,9 +702,6 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 	else if (layer->name == "Gate") {
 		layer->index = GATE;
-	}
-	else if (layer->name == "Clouds" || layer->name == "Clouds2" || layer->name == "Clouds3" || layer->name == "Clouds4") {
-		layer->index = CLOUDS;
 	}
 
 	layer->width = node.attribute("width").as_uint();

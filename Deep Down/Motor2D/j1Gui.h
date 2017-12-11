@@ -16,15 +16,11 @@ struct _TTF_Font;
 enum Tex_Names {
 	NO_TEX_,
 	ATLAS_,
-	WOW_LOGO_,
-	ESRB_,
-	BLIZZARD_LOGO_,
-	BUT_,
-	CHECKBOX_,
-	DIALOGBOX_,
 	CURSOR_,
+	CHECKBOX_,
 	DSUI_,
 	MENU_,
+	GENERAL_,
 	MAX_TEXS_
 };
 

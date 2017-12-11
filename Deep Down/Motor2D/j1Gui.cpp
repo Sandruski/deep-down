@@ -41,15 +41,11 @@ bool j1Gui::Start()
 
 	// Load textures
 	map_textures[Tex_Names::ATLAS_] = App->tex->Load(atlas_file_name.GetString());
-	map_textures[Tex_Names::WOW_LOGO_] = App->tex->Load("textures/wow/Glues-Logo.png");
-	map_textures[Tex_Names::ESRB_] = App->tex->Load("textures/wow/Glues-ESRBRating.png");
-	map_textures[Tex_Names::BLIZZARD_LOGO_] = App->tex->Load("textures/wow/Glues-BlizzardLogo.png");
-	map_textures[Tex_Names::BUT_] = App->tex->Load("textures/wow/UI-DialogBox-Button-Up.png");
-	map_textures[Tex_Names::CHECKBOX_] = App->tex->Load("textures/wow/UI-CheckBox-Up.png");
-	map_textures[Tex_Names::DIALOGBOX_] = App->tex->Load("textures/wow/UI-DialogBox-Button-Disabled.png");
 	map_textures[Tex_Names::CURSOR_] = App->tex->Load("textures/wow/Point.png");
+	map_textures[Tex_Names::CHECKBOX_] = App->tex->Load("Assets/Sprites/UI/CheckBox.png");
 	map_textures[Tex_Names::DSUI_] = App->tex->Load("Assets/Sprites/UI/DSUI.png");
 	map_textures[Tex_Names::MENU_] = App->tex->Load("Assets/Sprites/UI/MenuPause.png");
+	map_textures[Tex_Names::GENERAL_] = App->tex->Load("Assets/Sprites/Maps/GeneralTileset.png");
 
 	// Load fonts
 	map_fonts[Font_Names::MSMINCHO_] = App->font->Load("Assets/Fonts/MSMINCHO.TTF");

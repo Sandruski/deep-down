@@ -160,3 +160,15 @@ void UIElement::SetLocalPos(iPoint local_pos)
 {
 	this->local_pos = local_pos;
 }
+
+void UIElement::IncreasePos(iPoint add_local_pos) 
+{
+	local_pos.x += add_local_pos.x;
+	local_pos.y += add_local_pos.y;
+}
+
+void UIElement::DecreasePos(iPoint add_local_pos) 
+{
+	local_pos.x -= add_local_pos.x;
+	local_pos.y -= add_local_pos.y;
+}
