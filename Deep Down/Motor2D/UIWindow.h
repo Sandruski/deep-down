@@ -13,6 +13,8 @@ struct UIWindow_Info {
 	Tex_Names tex_name = Tex_Names::NO_TEX_;
 	UIElement_HORIZONTAL_POS horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
+
+	bool is_draggable = false;
 };
 
 // ---------------------------------------------------
@@ -20,10 +22,10 @@ struct UIWindow_Info {
 class UIWindow : public UIElement
 {
 public:
-	UIWindow(int x, int y, UIWindow_Info& info, j1Module* listener = nullptr);
+	UIWindow(iPoint local_pos, UIElement* parent, UIWindow_Info& info, j1Module* listener = nullptr);
 	void Update(float dt);
 	void HandleInput();
-
+	void DebugDraw(iPoint blit_pos) const;
 
 private:
 	UIWindow_Info window;

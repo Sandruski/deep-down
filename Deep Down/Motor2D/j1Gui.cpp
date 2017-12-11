@@ -54,7 +54,7 @@ bool j1Gui::Start()
 	// Load fonts
 	map_fonts[Font_Names::MSMINCHO_] = App->font->Load("Assets/Fonts/MSMINCHO.TTF");
 	map_fonts[Font_Names::ZELDA_] = App->font->Load("Assets/Fonts/Zelda.ttf", 60);
-	map_fonts[Font_Names::SOBAD_] = App->font->Load("Assets/Fonts/So/SOBAD__.ttf");
+	map_fonts[Font_Names::SOBAD_] = App->font->Load("Assets/Fonts/So/SOBAD___.ttf");
 
 	UI_elements_tree = new nTree<UIElement*>((UIElement*)App->win->window);
 
@@ -168,9 +168,9 @@ bool j1Gui::CleanUp()
 	return ret;
 }
 
-UIImage* j1Gui::CreateUIImage(iPoint pos, UIImage_Info& info, j1Module* listener, UIElement* parent)
+UIImage* j1Gui::CreateUIImage(iPoint local_pos, UIImage_Info& info, j1Module* listener, UIElement* parent)
 {
-	UIImage* image = new UIImage(pos.x, pos.y, info, listener);
+	UIImage* image = new UIImage(local_pos, parent, info, listener);
 
 	to_spawn_UI_elements.add(image);
 	
@@ -181,9 +181,9 @@ UIImage* j1Gui::CreateUIImage(iPoint pos, UIImage_Info& info, j1Module* listener
 	return image;
 }
 
-UILabel* j1Gui::CreateUILabel(iPoint pos, UILabel_Info& info, j1Module* listener, UIElement* parent)
+UILabel* j1Gui::CreateUILabel(iPoint local_pos, UILabel_Info& info, j1Module* listener, UIElement* parent)
 {
-	UILabel* label = new UILabel(pos.x, pos.y, info, listener);
+	UILabel* label = new UILabel(local_pos, parent, info, listener);
 
 	to_spawn_UI_elements.add(label);
 
@@ -194,9 +194,9 @@ UILabel* j1Gui::CreateUILabel(iPoint pos, UILabel_Info& info, j1Module* listener
 	return label;
 }
 
-UIButton* j1Gui::CreateUIButton(iPoint pos, UIButton_Info& info, j1Module* listener, UIElement* parent)
+UIButton* j1Gui::CreateUIButton(iPoint local_pos, UIButton_Info& info, j1Module* listener, UIElement* parent)
 {
-	UIButton* button = new UIButton(pos.x, pos.y, info, listener);
+	UIButton* button = new UIButton(local_pos, parent, info, listener);
 
 	to_spawn_UI_elements.add(button);
 
@@ -209,7 +209,9 @@ UIButton* j1Gui::CreateUIButton(iPoint pos, UIButton_Info& info, j1Module* liste
 
 UICursor* j1Gui::CreateUICursor(UICursor_Info& info, j1Module* listener, UIElement* parent)
 {
-	UICursor* cursor = new UICursor(info, listener);
+	iPoint local_pos = { 0,0 };
+
+	UICursor* cursor = new UICursor(local_pos, parent, info, listener);
 
 	to_spawn_UI_elements.add(cursor);
 
@@ -220,9 +222,9 @@ UICursor* j1Gui::CreateUICursor(UICursor_Info& info, j1Module* listener, UIEleme
 	return cursor;
 }
 
-UIWindow* j1Gui::CreateUIWindow(iPoint pos, UIWindow_Info& info, j1Module* listener, UIElement* parent)
+UIWindow* j1Gui::CreateUIWindow(iPoint local_pos, UIWindow_Info& info, j1Module* listener, UIElement* parent)
 {
-	UIWindow* window = new UIWindow(pos.x, pos.y, info, listener);
+	UIWindow* window = new UIWindow(local_pos, parent, info, listener);
 
 	to_spawn_UI_elements.add(window);
 
@@ -233,9 +235,9 @@ UIWindow* j1Gui::CreateUIWindow(iPoint pos, UIWindow_Info& info, j1Module* liste
 	return window;
 }
 
-UILifeBar* j1Gui::CreateUILifeBar(iPoint pos, UILifeBar_Info& info, j1Module* listener, UIElement* parent)
+UILifeBar* j1Gui::CreateUILifeBar(iPoint local_pos, UILifeBar_Info& info, j1Module* listener, UIElement* parent)
 {
-	UILifeBar* life_bar = new UILifeBar(pos.x, pos.y, info, listener);
+	UILifeBar* life_bar = new UILifeBar(local_pos, parent, info, listener);
 
 	to_spawn_UI_elements.add(life_bar);
 
@@ -298,27 +300,12 @@ _TTF_Font* j1Gui::GetFont(Font_Names name)
 
 void j1Gui::SetUpDraggingChildren(UIElement* elem, bool drag)
 {
-	iPoint mouse_click_pos = elem->mouse_click_pos;
-
 	// List including to_drag element and all of its children
 	p2List<UIElement*> to_drag;
 	UI_elements_tree->recursivePreOrderList(UI_elements_tree->search(elem), &to_drag);
 
-	// Drag elements in the list
-	p2List_item<UIElement*>* UI_elem_it = to_drag.start;
-
-	while (UI_elem_it != nullptr) {
-
-		UI_elem_it->data->drag = drag;
-
-		iPoint pos = UI_elem_it->data->GetPosition();
-		UI_elem_it->data->mouse_click_pos.x = mouse_click_pos.x - pos.x;
-		UI_elem_it->data->mouse_click_pos.y = mouse_click_pos.y - pos.y;
-
-		UI_elem_it = UI_elem_it->next;
-	}
-
 	// Don't drag elements which are not in the previous list
+	p2List_item<UIElement*>* UI_elem_it = to_drag.start;
 	UI_elem_it = UI_elements_list.start;
 	
 	while (UI_elem_it != nullptr && UI_elem_it->data != to_drag.start->data) {

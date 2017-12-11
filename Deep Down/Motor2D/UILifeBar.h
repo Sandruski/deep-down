@@ -17,6 +17,8 @@ struct UILifeBar_Info {
 	int life = 0;
 	iPoint life_bar_position = { 0,0 };
 	SDL_Rect bar = { 0,0,0,0 };
+
+	bool is_draggable = false;
 };
 
 // ---------------------------------------------------
@@ -24,8 +26,8 @@ struct UILifeBar_Info {
 class UILifeBar : public UIElement
 {
 public:
-	UILifeBar(int x, int y, UILifeBar_Info& info, j1Module* listener = nullptr);
-	void DebugDraw() const;
+	UILifeBar(iPoint local_pos, UIElement* parent, UILifeBar_Info& info, j1Module* listener = nullptr);
+	void DebugDraw(iPoint blit_pos) const;
 
 	void Draw() const;
 	void Update(float dt);

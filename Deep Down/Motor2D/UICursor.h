@@ -12,7 +12,6 @@ struct UICursor_Info {
 	SDL_Rect default = { 0,0,0,0 };
 	SDL_Rect on_click = { 0,0,0,0 };
 	Tex_Names tex_name = Tex_Names::NO_TEX_;
-
 };
 
 // ---------------------------------------------------
@@ -20,7 +19,7 @@ struct UICursor_Info {
 class UICursor : public UIElement
 {
 public:
-	UICursor(UICursor_Info& info, j1Module* listener = nullptr);
+	UICursor(iPoint local_pos, UIElement* parent, UICursor_Info& info, j1Module* listener = nullptr);
 	void Update(float dt);
 	void SetMousePosition();
 	void HandleInput();

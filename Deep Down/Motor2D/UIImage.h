@@ -15,6 +15,8 @@ struct UIImage_Info {
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
 	bool quad = false;
 	SDL_Color color = { 0,0,0,255 };
+
+	bool is_draggable = false;
 };
 
 // ---------------------------------------------------
@@ -22,9 +24,9 @@ struct UIImage_Info {
 class UIImage : public UIElement
 {
 public:
-	UIImage(int x, int y, UIImage_Info& info, j1Module* listener = nullptr);
+	UIImage(iPoint local_pos, UIElement* parent, UIImage_Info& info, j1Module* listener = nullptr);
 	void Draw() const;
-	void DebugDraw() const;
+	void DebugDraw(iPoint blit_pos) const;
 	void SetColor(const SDL_Color color);
 
 private:

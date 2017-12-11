@@ -3,11 +3,13 @@
 #include "j1Input.h"
 #include "p2Log.h"
 #include "j1Render.h"
+#include "j1Window.h"
 
-UILabel::UILabel(int x, int y, UILabel_Info& info, j1Module* listener) : UIElement(x, y, listener), label(info)
+UILabel::UILabel(iPoint local_pos, UIElement* parent, UILabel_Info& info, j1Module* listener) : UIElement(local_pos, parent, listener), label(info)
 {
 	type = UIElement_TYPE::LABEL_;
 
+	is_draggable = info.is_draggable;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	font = App->gui->GetFont(label.font_name);
@@ -36,26 +38,26 @@ void UILabel::HandleInput()
 
 	switch (UIevent) {
 
-	case NO_EVENT_:
+	case UIEvents::NO_EVENT_:
 		if (MouseHover()) {
 			next_event = false;
-			UIevent = MOUSE_ENTER_;
+			UIevent = UIEvents::MOUSE_ENTER_;
 			break;
 		}
 		break;
-	case MOUSE_ENTER_:
+	case UIEvents::MOUSE_ENTER_:
 
 		if (!MouseHover()) {
 			LOG("MOUSE LEAVE");
 			next_event = false;
-			UIevent = MOUSE_LEAVE_;
+			UIevent = UIEvents::MOUSE_LEAVE_;
 			break;
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED) {
 			next_event = false;
 			LOG("MOUSE L CLICK START");
 			SetColor(label.pressed_color);
-			UIevent = MOUSE_LEFT_CLICK_;
+			UIevent = UIEvents::MOUSE_LEFT_CLICK_;
 			listener->OnUIEvent((UIElement*)this, UIevent);
 			break;
 		}
@@ -64,13 +66,15 @@ void UILabel::HandleInput()
 			LOG("MOUSE R CLICK START");
 			SetColor(label.pressed_color);
 
-			mouse_click_pos.x = mouse_pos.x;
-			mouse_click_pos.y = mouse_pos.y;
+			mouse_click_pos.x = mouse_pos.x * App->win->GetScale() - GetLocalPos().x;
+			mouse_click_pos.y = mouse_pos.y * App->win->GetScale() - GetLocalPos().y;
 
-			drag = true;
-			App->gui->drag_to_true = true;
+			if (is_draggable) {
+				drag = true;
+				App->gui->drag_to_true = true;
+			}
 
-			UIevent = MOUSE_RIGHT_CLICK_;
+			UIevent = UIEvents::MOUSE_RIGHT_CLICK_;
 			listener->OnUIEvent((UIElement*)this, UIevent);
 			break;
 		}
@@ -83,25 +87,27 @@ void UILabel::HandleInput()
 		}
 
 		break;
-	case MOUSE_RIGHT_CLICK_:
+	case UIEvents::MOUSE_RIGHT_CLICK_:
 
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_RELEASED) {
 			LOG("MOUSE R CLICK FINISH");
 
-			drag = false;
-			App->gui->drag_to_false = true;
+			if (is_draggable) {
+				drag = false;
+				App->gui->drag_to_false = true;
+			}
 
 			listener->OnUIEvent((UIElement*)this, UIevent);
-			UIevent = MOUSE_ENTER_;
+			UIevent = UIEvents::MOUSE_ENTER_;
 			break;
 		}
 
 		break;
-	case MOUSE_LEFT_CLICK_:
+	case UIEvents::MOUSE_LEFT_CLICK_:
 
 		if (!MouseHover()) {
 			LOG("MOUSE LEAVE");
-			UIevent = MOUSE_LEAVE_;
+			UIevent = UIEvents::MOUSE_LEAVE_;
 			break;
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED) {
@@ -113,18 +119,20 @@ void UILabel::HandleInput()
 		}
 
 		break;
-	case MOUSE_LEAVE_:
+	case UIEvents::MOUSE_LEAVE_:
 		SetColor(label.normal_color);
 		listener->OnUIEvent((UIElement*)this, UIevent);
-		UIevent = NO_EVENT_;
+		UIevent = UIEvents::NO_EVENT_;
 		break;
 	}
 }
 
-void UILabel::DebugDraw() const
+void UILabel::DebugDraw(iPoint blit_pos) const
 {
-	SDL_Rect quad = { position.x, position.y, width, height };
-	App->render->DrawQuad(quad, 0, 255, 255, 255, false);
+	Uint8 alpha = 80;
+
+	SDL_Rect quad = { blit_pos.x, blit_pos.y, width, height };
+	App->render->DrawQuad(quad, 10, 30, 5, alpha, false);
 }
 
 void UILabel::SetText(p2SString text)

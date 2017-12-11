@@ -21,6 +21,8 @@ struct UILabel_Info {
 
 	UIElement_HORIZONTAL_POS horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
+
+	bool is_draggable = false;
 };
 
 // ---------------------------------------------------
@@ -28,11 +30,11 @@ struct UILabel_Info {
 class UILabel : public UIElement
 {
 public:
-	UILabel(int x, int y, UILabel_Info& info, j1Module* listener = nullptr);
+	UILabel(iPoint local_pos, UIElement* parent, UILabel_Info& info, j1Module* listener = nullptr);
 	~UILabel();
 	void Update(float dt);
 	void HandleInput();
-	void DebugDraw() const;
+	void DebugDraw(iPoint blit_pos) const;
 
 	void SetText(p2SString text);
 	void SetColor(SDL_Color color);

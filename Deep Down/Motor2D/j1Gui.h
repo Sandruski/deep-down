@@ -82,12 +82,12 @@ public:
 
 	// TODO 2: Create the factory methods
 	// Gui creation functions
-	UIImage* CreateUIImage(iPoint pos, UIImage_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
-	UILabel* CreateUILabel(iPoint pos, UILabel_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
-	UIButton* CreateUIButton(iPoint pos, UIButton_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
+	UIImage* CreateUIImage(iPoint local_pos, UIImage_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
+	UILabel* CreateUILabel(iPoint local_pos, UILabel_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
+	UIButton* CreateUIButton(iPoint local_pos, UIButton_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
 	UICursor* CreateUICursor(UICursor_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
-	UIWindow* CreateUIWindow(iPoint pos, UIWindow_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
-	UILifeBar* CreateUILifeBar(iPoint pos, UILifeBar_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
+	UIWindow* CreateUIWindow(iPoint local_pos, UIWindow_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
+	UILifeBar* CreateUILifeBar(iPoint local_pos, UILifeBar_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
 
 	const SDL_Texture* GetTexture(Tex_Names name);
 	_TTF_Font* GetFont(Font_Names name);

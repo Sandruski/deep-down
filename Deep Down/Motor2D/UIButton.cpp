@@ -2,11 +2,13 @@
 #include "j1Input.h"
 #include "p2Log.h"
 #include "j1Render.h"
+#include "j1Window.h"
 
-UIButton::UIButton(int x, int y, UIButton_Info& info, j1Module* listener) : UIElement(x, y, listener), button(info)
+UIButton::UIButton(iPoint local_pos, UIElement* parent, UIButton_Info& info, j1Module* listener) : UIElement(local_pos, parent, listener), button(info)
 {
 	type = UIElement_TYPE::BUTTON_;
 
+	is_draggable = info.is_draggable;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	tex_area = info.normal_tex_area;
@@ -28,10 +30,12 @@ void UIButton::Update(float dt)
 		HandleInput();
 }
 
-void UIButton::DebugDraw() const
+void UIButton::DebugDraw(iPoint blit_pos) const
 {
-	SDL_Rect quad = { position.x, position.y, width, height };
-	App->render->DrawQuad(quad, 255, 255, 0, 255, false);
+	Uint8 alpha = 80;
+
+	SDL_Rect quad = { blit_pos.x, blit_pos.y, width, height };
+	App->render->DrawQuad(quad, 5, 12, 255, alpha, false);
 }
 
 void UIButton::HandleInput()
@@ -41,26 +45,26 @@ void UIButton::HandleInput()
 
 	switch (UIevent) {
 
-	case NO_EVENT_:
+	case UIEvents::NO_EVENT_:
 		if (MouseHover() || tab) {
 			next_event = false;
-			UIevent = MOUSE_ENTER_;
+			UIevent = UIEvents::MOUSE_ENTER_;
 			break;
 		}
 		break;
-	case MOUSE_ENTER_:
+	case UIEvents::MOUSE_ENTER_:
 
 		if (!MouseHover() && !tab) {
 			LOG("MOUSE LEAVE");
 			next_event = false;
-			UIevent = MOUSE_LEAVE_;
+			UIevent = UIEvents::MOUSE_LEAVE_;
 			break;
 		}
 		else if ((!tab && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED) || (tab && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)) {
 			next_event = false;
 			LOG("MOUSE L CLICK START");
 			ChangeSprite(button.pressed_tex_area);
-			UIevent = MOUSE_LEFT_CLICK_;
+			UIevent = UIEvents::MOUSE_LEFT_CLICK_;
 
 			if (button.checkbox)
 				checked = !checked;
@@ -72,13 +76,15 @@ void UIButton::HandleInput()
 			LOG("MOUSE R CLICK START");
 			ChangeSprite(button.pressed_tex_area);
 
-			mouse_click_pos.x = mouse_pos.x;
-			mouse_click_pos.y = mouse_pos.y;
+			mouse_click_pos.x = mouse_pos.x * App->win->GetScale() - GetLocalPos().x;
+			mouse_click_pos.y = mouse_pos.y * App->win->GetScale() - GetLocalPos().y;
 
-			drag = true;
-			App->gui->drag_to_true = true;
+			if (is_draggable) {
+				drag = true;
+				App->gui->drag_to_true = true;
+			}
 
-			UIevent = MOUSE_RIGHT_CLICK_;
+			UIevent = UIEvents::MOUSE_RIGHT_CLICK_;
 
 			if (button.checkbox)
 				checked = !checked;
@@ -95,36 +101,38 @@ void UIButton::HandleInput()
 		}
 
 		break;
-	case MOUSE_RIGHT_CLICK_:
+	case UIEvents::MOUSE_RIGHT_CLICK_:
 
 		if ((!tab && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_RELEASED) || (tab && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_UP)) {
 			LOG("MOUSE R CLICK FINISH");
 
-			drag = false;
-			App->gui->drag_to_false = true;
+			if (is_draggable) {
+				drag = false;
+				App->gui->drag_to_false = true;
+			}
 
 			listener->OnUIEvent((UIElement*)this, UIevent);
-			UIevent = MOUSE_ENTER_;
+			UIevent = UIEvents::MOUSE_ENTER_;
 			break;
 		}
 
 		break;
-	case MOUSE_LEFT_CLICK_:
+	case UIEvents::MOUSE_LEFT_CLICK_:
 
 		if (!MouseHover() && !tab) {
 			LOG("MOUSE LEAVE");
-			UIevent = MOUSE_LEAVE_;
+			UIevent = UIEvents::MOUSE_LEAVE_;
 			break;
 		}
 		else if ((!tab && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED) || (tab && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_UP)) {
 			LOG("MOUSE L CLICK FINISH");
 			listener->OnUIEvent((UIElement*)this, UIevent);
-			UIevent = MOUSE_ENTER_;
+			UIevent = UIEvents::MOUSE_ENTER_;
 			break;
 		}
 
 		break;
-	case MOUSE_LEAVE_:
+	case UIEvents::MOUSE_LEAVE_:
 		if (!checked)
 			ChangeSprite(button.normal_tex_area);
 		//listener->OnUIEvent((UIElement*)this, UIevent);
@@ -132,6 +140,8 @@ void UIButton::HandleInput()
 		break;
 	}
 }
+
+//---------------------------------------------------------------
 
 void UIButton::ChangeSprite(SDL_Rect tex_area)
 {

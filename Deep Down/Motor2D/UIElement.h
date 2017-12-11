@@ -46,25 +46,29 @@ enum UIEvents {
 class UIElement
 {
 protected:
-	iPoint position = { 0,0 };
-	iPoint startPos = { 0,0 };
 	UIElement_TYPE type = UIElement_TYPE::NO_TYPE_;
 	UIElement_HORIZONTAL_POS horizontal = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical = UIElement_VERTICAL_POS::TOP_;
 	j1Module* listener = nullptr;
 
-	SDL_Rect screen;
-
 	bool to_remove = false;
-	//bool draggable = false;
+
+	bool is_draggable = false;
 
 	// Texture parameters
 	const SDL_Texture* tex = nullptr;
 	SDL_Rect tex_area = { 0,0,0,0 };
 	int width = 0, height = 0;
 
+private:
+	iPoint local_pos = { 0,0 };
+	UIElement* parent = nullptr;
+
+private:
+	SDL_Rect screen = { 0,0,0,0 };
+
 public:
-	UIElement(int x, int y, j1Module* listener);
+	UIElement(iPoint local_pos, UIElement* parent, j1Module* listener);
 
 	virtual ~UIElement();
 
@@ -78,20 +82,23 @@ public:
 
 	virtual UIElement_TYPE GetType() const;
 
-	virtual void DebugDraw() const;
+	virtual void DebugDraw(iPoint blit_pos) const;
 
 	bool MouseHover() const;
 
-	void SetOrientation();
-
 	virtual void UpdateDragging(float dt);
 
-	iPoint GetPosition() const;
+	void SetOrientation();
+
+	SDL_Rect GetScreenRect() const;
+	SDL_Rect GetLocalRect() const;
+	iPoint GetScreenPos() const;
+	iPoint GetLocalPos() const;
+	void SetLocalPos(iPoint local_pos);
 
 public:
 	bool drag = false;
 	iPoint mouse_click_pos = { 0,0 };
-
 };
 
 #endif // __UIElement_H__

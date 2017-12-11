@@ -80,32 +80,32 @@ bool j1Menu::Start()
 	label.text = "D";
 	letters[i] = App->gui->CreateUILabel({ title_position.x,title_position.y }, label);
 	iPoint letter_size = letters[i]->GetSize();
-	iPoint letter_position = letters[i]->GetPosition();
+	iPoint letter_position = letters[i]->GetLocalPos();
 	label.text = "e";
 	letters[++i] = App->gui->CreateUILabel({ letter_position.x + letter_size.x + tracking.x,letter_position.y + tracking.y }, label);
 	letter_size = letters[i]->GetSize();
-	letter_position = letters[i]->GetPosition();
+	letter_position = letters[i]->GetLocalPos();
 	label.text = "e";
 	letters[++i] = App->gui->CreateUILabel({ letter_position.x + letter_size.x + tracking.x, letter_position.y }, label);
 	letter_size = letters[i]->GetSize();
-	letter_position = letters[i]->GetPosition();
+	letter_position = letters[i]->GetLocalPos();
 	label.text = "p";
 	letters[++i] = App->gui->CreateUILabel({ letter_position.x + letter_size.x + tracking.x, letter_position.y }, label);
 
 	letter_size = letters[i]->GetSize();
-	letter_position = letters[i]->GetPosition();
+	letter_position = letters[i]->GetLocalPos();
 	label.text = "D";
 	letters[++i] = App->gui->CreateUILabel({ letter_position.x - 2 * letter_size.x, letter_position.y + letter_size.y - letter_size.y / 3 }, label);
 	letter_size = letters[i]->GetSize();
-	letter_position = letters[i]->GetPosition();
+	letter_position = letters[i]->GetLocalPos();
 	label.text = "o";
 	letters[++i] = App->gui->CreateUILabel({ letter_position.x + letter_size.x + tracking.x, letter_position.y + tracking.y }, label);
 	letter_size = letters[i]->GetSize();
-	letter_position = letters[i]->GetPosition();
+	letter_position = letters[i]->GetLocalPos();
 	label.text = "w";
 	letters[++i] = App->gui->CreateUILabel({ letter_position.x + letter_size.x + tracking.x, letter_position.y }, label);
 	letter_size = letters[i]->GetSize();
-	letter_position = letters[i]->GetPosition();
+	letter_position = letters[i]->GetLocalPos();
 	label.text = "n";
 	letters[++i] = App->gui->CreateUILabel({ letter_position.x + letter_size.x + tracking.x, letter_position.y }, label);
 	i = 0;
@@ -137,6 +137,7 @@ bool j1Menu::Update(float dt)
 	bool ret = true;
 
 	// Game title
+
 	if (print_game_title) {
 		Uint32 now = (SDL_GetTicks() - start_time);
 		float normalized = MIN(1.0f, (float)now / (float)total_time);

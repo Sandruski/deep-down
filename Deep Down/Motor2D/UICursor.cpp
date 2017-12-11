@@ -2,7 +2,7 @@
 #include "j1Input.h"
 #include "j1Render.h"
 
-UICursor::UICursor(UICursor_Info& info, j1Module* listener) : UIElement(0, 0, listener), cursor(info)
+UICursor::UICursor(iPoint local_pos, UIElement* parent, UICursor_Info& info, j1Module* listener) : UIElement(local_pos, parent, listener), cursor(info)
 {
 	type = UIElement_TYPE::IMAGE_;
 	tex_area = info.default;
@@ -26,60 +26,50 @@ void UICursor::Update(float dt)
 		HandleInput();
 }
 
-void UICursor::SetMousePosition()
-{
-	App->input->GetMousePosition(position.x, position.y);
-	position.x -= App->render->camera.x;
-	position.y -= App->render->camera.y;
-
-}
-
 void UICursor::HandleInput()
 {
 	switch (UIevent)
 	{
-	case NO_EVENT_:
+	case UIEvents::NO_EVENT_:
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED) {
-			UIevent = MOUSE_LEFT_CLICK_;
+			UIevent = UIEvents::MOUSE_LEFT_CLICK_;
 			tex_area = cursor.on_click;
 			listener->OnUIEvent(this, UIevent);
 			break;
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED) {
-			UIevent = MOUSE_RIGHT_CLICK_;
+			UIevent = UIEvents::MOUSE_RIGHT_CLICK_;
 			tex_area = cursor.on_click;
 			listener->OnUIEvent(this, UIevent);
 			break;
 		}
 		break;
-	case MOUSE_LEFT_CLICK_:
+	case UIEvents::MOUSE_LEFT_CLICK_:
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED) {
-			UIevent = NO_EVENT_;
+			UIevent = UIEvents::NO_EVENT_;
 			tex_area = cursor.default;
 			listener->OnUIEvent(this, UIevent);
 			break;
 		}
 		break;
-	case MOUSE_RIGHT_CLICK_:
+	case UIEvents::MOUSE_RIGHT_CLICK_:
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_RELEASED) {
-			UIevent = NO_EVENT_;
+			UIevent = UIEvents::NO_EVENT_;
 			tex_area = cursor.default;
 			listener->OnUIEvent(this, UIevent);
 			break;
 		}
 		break;
 	}
+}
 
+//---------------------------------------------------------------
 
-
-	enum UIEvents {
-		NO_EVENT_,
-		MOUSE_ENTER_,
-		MOUSE_LEAVE_,
-		MOUSE_RIGHT_CLICK_,
-		MOUSE_LEFT_CLICK_,
-		MOUSE_UP_,
-		MAX_EVENTS_
-	};
-
+void UICursor::SetMousePosition()
+{
+	iPoint mouse_position;
+	App->input->GetMousePosition(mouse_position.x, mouse_position.y);
+	mouse_position.x -= App->render->camera.x;
+	mouse_position.y -= App->render->camera.y;
+	SetLocalPos(mouse_position);
 }

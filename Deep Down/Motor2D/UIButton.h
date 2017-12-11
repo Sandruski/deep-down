@@ -17,6 +17,8 @@ struct UIButton_Info {
 	bool checkbox = false;
 	UIElement_HORIZONTAL_POS horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
+
+	bool is_draggable = false;
 };
 
 // ---------------------------------------------------
@@ -24,10 +26,10 @@ struct UIButton_Info {
 class UIButton : public UIElement
 {
 public:
-	UIButton(int x, int y, UIButton_Info& info, j1Module* listener = nullptr);
+	UIButton(iPoint local_pos, UIElement* parent, UIButton_Info& info, j1Module* listener = nullptr);
 	void Update(float dt);
 	void HandleInput();
-	void DebugDraw() const;
+	void DebugDraw(iPoint blit_pos) const;
 
 	void ChangeSprite(SDL_Rect tex_area);
 	SDL_Rect GetHoverSprite() const;
