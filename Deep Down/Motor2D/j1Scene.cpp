@@ -395,6 +395,45 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		ClosingPauseMenu();
 
 	}
+	else if (UIelem == (UIElement*)resume_label && UIevent == UIEvents::MOUSE_ENTER_)
+	{
+		resume_label->IncreasePosition({3,0});
+	}
+
+	else if (UIelem == (UIElement*)save_label && UIevent == UIEvents::MOUSE_ENTER_)
+	{
+		save_label->IncreasePosition({ 3,0 });
+	}
+
+	else if (UIelem == (UIElement*)options_label && UIevent == UIEvents::MOUSE_ENTER_)
+	{
+		options_label->IncreasePosition({ 3,0 });
+	}
+
+	else if (UIelem == (UIElement*)quit_label && UIevent == UIEvents::MOUSE_ENTER_)
+	{
+		quit_label->IncreasePosition({ 3,0 });
+	}
+
+	else if (UIelem == (UIElement*)resume_label && UIevent == UIEvents::MOUSE_LEAVE_)
+	{
+		resume_label->DecreasePosition({3,0});
+	}
+
+	else if (UIelem == (UIElement*)save_label && UIevent == UIEvents::MOUSE_LEAVE_)
+	{
+		save_label->DecreasePosition({ 3,0 });
+	}
+
+	else if (UIelem == (UIElement*)options_label && UIevent == UIEvents::MOUSE_LEAVE_)
+	{
+		options_label->DecreasePosition({ 3,0 });
+	}
+
+	else if (UIelem == (UIElement*)quit_label && UIevent == UIEvents::MOUSE_LEAVE_)
+	{
+		quit_label->DecreasePosition({ 3,0 });
+	}
 
 	else if (UIelem == (UIElement*)quit_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
 	{
