@@ -364,7 +364,7 @@ void j1Scene::OpeningPauseMenu()
 	pause_menu = App->gui->CreateUIWindow({ 578,109 }, menu, this);
 
 	UILabel_Info label;
-	label.font_name = SOWIDE_;
+	label.font_name = SOBAD_;
 	label.normal_color = {0,0,0,255};
 
 	label.text = "Resume";
@@ -410,7 +410,7 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		App->gui->DestroyElement(quit_label);
 
 		UILabel_Info label;
-		label.font_name = SOWIDE_;
+		label.font_name = SOBAD_;
 		label.normal_color = { 0,0,0,255 };
 
 		label.text = "vSync";

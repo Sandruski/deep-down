@@ -24,6 +24,7 @@ enum Tex_Names {
 	DIALOGBOX_,
 	CURSOR_,
 	DSUI_,
+	MENU_,
 	MAX_TEXS_
 };
 
@@ -31,6 +32,7 @@ enum Font_Names {
 	DEFAULT_,
 	MSMINCHO_,
 	ZELDA_,
+	SOBAD_,
 	MAX_FONTS_
 };
 

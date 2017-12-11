@@ -85,7 +85,7 @@ void Player::Move(float dt)
 	CheckIfDead();
 
 	// Update state
-	if (!App->pause)
+	if (!App->scene->pause)
 		PlayerStateMachine();
 
 	ApplySpeed();

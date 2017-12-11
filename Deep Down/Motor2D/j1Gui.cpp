@@ -49,10 +49,12 @@ bool j1Gui::Start()
 	map_textures[Tex_Names::DIALOGBOX_] = App->tex->Load("textures/wow/UI-DialogBox-Button-Disabled.png");
 	map_textures[Tex_Names::CURSOR_] = App->tex->Load("textures/wow/Point.png");
 	map_textures[Tex_Names::DSUI_] = App->tex->Load("Assets/Sprites/UI/DSUI.png");
+	map_textures[Tex_Names::MENU_] = App->tex->Load("Assets/Sprites/UI/MenuPause.png");
 
 	// Load fonts
 	map_fonts[Font_Names::MSMINCHO_] = App->font->Load("Assets/Fonts/MSMINCHO.TTF");
 	map_fonts[Font_Names::ZELDA_] = App->font->Load("Assets/Fonts/Zelda.ttf", 60);
+	map_fonts[Font_Names::SOBAD_] = App->font->Load("Assets/Fonts/So/SOBAD__.ttf");
 
 	UI_elements_tree = new nTree<UIElement*>((UIElement*)App->win->window);
 

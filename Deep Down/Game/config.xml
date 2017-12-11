@@ -24,7 +24,7 @@
     <folder>Assets/Sprites/Maps/</folder>
     <general>
       <blit offset="15"/>
-      <camera_blit value="0"/>
+      <camera_blit value="1"/>
       <culing value="50"/>
     </general>
   </map>
