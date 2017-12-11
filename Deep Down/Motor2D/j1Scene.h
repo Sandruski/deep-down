@@ -9,6 +9,7 @@ struct SDL_Texture;
 struct UILifeBar;
 struct UIWindow;
 struct UILabel;
+struct UIButton;
 
 class j1Scene : public j1Module
 {
@@ -88,6 +89,10 @@ private:
 	UILabel* save_label;
 	UILabel* quit_label;
 	UILabel* back_label;
+	UILabel* vsync_label;
+	UILabel* camerablit_label;
+	UIButton* vsync_checkbox;
+	UIButton* camerablit_checkbox;
 };
 
 #endif // __j1SCENE1_H__

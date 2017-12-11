@@ -19,6 +19,7 @@
 #include "UILifeBar.h"
 #include "UIWindow.h"
 #include "UILabel.h"
+#include "UIButton.h"
 
 #include"Brofiler\Brofiler.h"
 
@@ -452,12 +453,41 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		label.font_name = SOBAD_;
 		label.normal_color = { 0,0,0,255 };
 
-		label.text = "vSync";
-		App->gui->CreateUILabel({ 608,189 }, label, this, pause_menu);
+		label.text = "cap_frames";
+		vsync_label = App->gui->CreateUILabel({ 608,189 }, label, this, pause_menu);
 
 		label.text = "back";
-		back_label = App->gui->CreateUILabel({ 589,209 }, label, this, pause_menu);
+		back_label = App->gui->CreateUILabel({ 589,239 }, label, this, pause_menu);
 
+		label.text = "camera blit";
+		camerablit_label = App->gui->CreateUILabel({ 608,169 }, label, this, pause_menu);
+
+		UIButton_Info checkbox;
+		checkbox.checkbox = true;
+		checkbox.tex_name = CHECKBOX_;
+		checkbox.normal_tex_area = { 0,0,11,7 };
+		checkbox.hover_tex_area = { 0,0,11,7 };
+		checkbox.pressed_tex_area = { 12,0,11,7 };
+
+		vsync_checkbox = App->gui->CreateUIButton({ 698,195 }, checkbox, this, vsync_label);
+
+		camerablit_checkbox = App->gui->CreateUIButton({ 698,175 }, checkbox, this, camerablit_label);
+
+		//TODO CAP_FRAMES AND CAMERA_BLIT STARTS TRUE
+
+		//TODO ADJUST VOLUME (SLIDER?)
+
+		//TODO CLEAN THIS CODE
+	}
+
+	else if (UIelem == (UIElement*)vsync_checkbox && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
+	{
+		App->toCap = !App->toCap;
+	}
+
+	else if (UIelem == (UIElement*)camerablit_checkbox && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
+	{
+		App->map->camera_blit = !App->map->camera_blit;
 	}
 
 	else if (UIelem == (UIElement*)back_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
