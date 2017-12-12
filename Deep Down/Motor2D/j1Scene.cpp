@@ -75,7 +75,12 @@ bool j1Scene::Start()
 	girl_life_bar.life_bar_position = { 678,209 };
 	girl_life_bar.tex_name = DSUI_;
 	girl_life_bar.tex_area = { 80,524,230,8 };
-	progress_bar = App->gui->CreateUILifeBar({10,10}, girl_life_bar, this);
+	progress_bar = App->gui->CreateUILifeBar({100,100}, girl_life_bar, this);
+
+	UIImage_Info cats_obtained;
+	cats_obtained.tex_name = CAT_SCORE_;
+	
+	App->gui->CreateUIImage({ 800,40 }, cats_obtained, this);
 
 	if (!loading)
 		App->entities->Start();

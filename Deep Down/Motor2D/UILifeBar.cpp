@@ -41,8 +41,9 @@ void UILifeBar::Update(float dt)
 void UILifeBar::Draw() const
 {
 	iPoint blit_pos = { 0,0 };
-	blit_pos.x = GetScreenPos().x - App->render->camera.x;
-	blit_pos.y = GetScreenPos().y - App->render->camera.y;
+	int scale = App->win->GetScale();
+	blit_pos.x = GetScreenPos().x - App->render->camera.x / scale;
+	blit_pos.y = GetScreenPos().y - App->render->camera.y / scale;
 
 	App->render->Blit(tex, life_bar.life_bar_position.x, life_bar.life_bar_position.y, &life_bar.bar);
 	App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);

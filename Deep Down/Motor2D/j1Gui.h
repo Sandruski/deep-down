@@ -25,6 +25,7 @@ enum Tex_Names {
 	POINTER_SLIDER_,
 	BUTTON_SLIDER_,
 	BUTTON_SLIDER2_,
+	CAT_SCORE_,
 	MAX_TEXS_
 };
 
