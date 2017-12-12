@@ -55,8 +55,6 @@ bool j1Menu::Start()
 	//TODO IS LAGGING THE GAME
 
 	// Get screen parameters
-	uint width = 0, height = 0;
-	int scale = 0;
 
 	App->win->GetWindowSize(width, height);
 	scale = App->win->GetScale();
@@ -126,11 +124,17 @@ bool j1Menu::Start()
 	cat = (Cat*)App->entities->SpawnEntity(entity);
 	//_cat
 
-	print_game_title = true;
-	// Press ANY BUTTON
 
+	// Press ANY BUTTON
+	label.font_name = SOBAD_;
+	label.text = "PRESS ANY BUTTON";
+	label.horizontal_orientation = CENTER_;
+	label.is_interactable = false;
+	press_any_button = App->gui->CreateUILabel({ (int)width / 2, (int)height - 100 }, label, this);
 
 	//_press_enter
+
+	menuState = MenuState::TITLE_TO_START_;
 	
 	return ret;
 }
@@ -140,17 +144,23 @@ bool j1Menu::Update(float dt)
 {
 	bool ret = true;
 
-	// Game title
-	/*
-	if (print_game_title) {
-		Uint32 now = (SDL_GetTicks() - start_time);
-		float normalized = MIN(1.0f, (float)now / (float)total_time);
-		float normalized2 = MIN(1.0f, (float)now / (float)total_time);
-		normalized2 = 1 - normalized2;
+	Uint32 now = (SDL_GetTicks() - start_time);
+	float normalized = MIN(1.0f, (float)now / (float)total_time);
+	float normalized2 = MIN(1.0f, (float)now / (float)total_time);
+	normalized2 = 1 - normalized2;
 
-		float alpha = 255.0f * normalized;
-		float alpha2 = 255.0f * normalized2;
+	float alpha = 255.0f * normalized;
+	float alpha2 = 255.0f * normalized2;
 
+	// Time variables
+	float press_any_button_speed = 1.5f;
+	float press_any_button_seconds = 2.0f;
+	float fade_seconds = 2.0f;
+	float scene_seconds = 5.0f;
+
+	switch (menuState) {
+
+	case MenuState::TITLE_TO_START_:
 		if (!visible_again)
 			letters[i]->SetColor({ 255,255,255,(Uint8)alpha });
 		if (i > 0)
@@ -176,36 +186,102 @@ bool j1Menu::Update(float dt)
 				for (uint j = 0; j < 8; ++j)
 					letters[j]->SetColor({ 255,255,255,255 });
 
-				print_game_title = false;
+				timer = 0.0f;
+				alpha = 0.0f;
+				total_time = (Uint32)(press_any_button_speed * 0.5f * 1000.0f);
+				start_time = SDL_GetTicks();
+				menuState = MenuState::START_;
+				break;
 			}
 		}
+		break;
+
+	case MenuState::START_:
+
+		if (timer >= press_any_button_seconds) {
+
+			static SDL_Event event;
+
+			if (SDL_PollEvent(&event) != 0) {
+				alpha2 = 255.0f;
+				total_time = (Uint32)(scene_seconds * 0.5f * 1000.0f);
+				start_time = SDL_GetTicks();
+				menuState = MenuState::TITLE_TO_MENU_;
+				break;
+			}
+
+			if (!is_invisible) {
+				press_any_button->SetColor({ 255,255,255,(Uint8)alpha });
+
+				if (alpha == 255.0f) {
+					alpha2 = 255.0f;
+					start_time = SDL_GetTicks();
+					is_invisible = true;
+				}
+			}
+			else {
+				press_any_button->SetColor({ 255,255,255,(Uint8)alpha2 });
+
+				if (alpha2 == 0.0f) {
+					alpha = 0.0f;
+					start_time = SDL_GetTicks();
+					is_invisible = false;
+				}
+			}
+		}
+		else
+			timer += 1.0f * dt;
+
+		break;
+
+	case MenuState::TITLE_TO_MENU_:
+		black_screen_image->SetColor({ 0,0,0,(Uint8)alpha2 });
+		press_any_button->SetColor({ 0,0,0,(Uint8)alpha2 });
+
+		if (alpha2 == 0.0f) {
+
+			// Appear menu options
+
+
+
+			//menuState = MenuState::MAIN_MENU_;
+			break;
+		}
+		break;
+
+	case MenuState::MAIN_MENU_:
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN) {
+			menuState = MenuState::SETTINGS_;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN) {
+			menuState = MenuState::CREDITS_;
+		}
+		break;
+
+	case MenuState::SETTINGS_:
+
+		break;
+
+	case MenuState::CREDITS_:
+
+		break;
+
+	case MenuState::NO_MENU_:
+	default:
+		break;
 	}
+
+	// Game title
+	
 	//_game_title
 
 	// Cat
-	if (!print_game_title && !all_visible) {
-		total_time = (Uint32)(5.0f * 0.5f * 1000.0f);
-		Uint32 now = (SDL_GetTicks() - start_time);
-		start_time = SDL_GetTicks();
-		float normalized = MIN(1.0f, (float)now / (float)total_time);
-		normalized = 1 - normalized;
 
-		float alpha = 255.0f * normalized;
-		black_screen_image->SetColor({ 0,0,0,(Uint8)alpha });
+	
+	
+	
 
-		if (alpha == 0.0f)
-			all_visible = true;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN) {
-		left_transition = true;
-		right_transition = false;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN) {
-		left_transition = false;
-		right_transition = true;
-	}
+	
 
 	if (left_transition) {
 		// Title mustn't blit
@@ -235,15 +311,12 @@ bool j1Menu::Update(float dt)
 		cloud.tex_area = { 0, 877, 109, 23 };
 		UIImage* small_cloud = App->gui->CreateUIImage({ 0,0 }, cloud);
 	}
-	*/
+	
 	/*
 	cat->position.x += 20 * dt;
 	cat->SetCatState(CatState::rc_run);
 	*/
 	//_cat
-
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		App->fade->FadeToBlack(this, App->scene, 1);
 
 	return ret;
 }

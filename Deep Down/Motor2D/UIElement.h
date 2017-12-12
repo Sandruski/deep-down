@@ -54,8 +54,9 @@ protected:
 	j1Module* listener = nullptr;
 
 	bool to_remove = false;
-
 	bool is_draggable = false;
+	bool is_interactable = true;
+	iPoint mouse_click_pos = { 0,0 };
 
 	// Texture parameters
 	const SDL_Texture* tex = nullptr;
@@ -102,7 +103,7 @@ public:
 
 public:
 	bool drag = false;
-	iPoint mouse_click_pos = { 0,0 };
+
 };
 
 #endif // __UIElement_H__

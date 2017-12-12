@@ -9,6 +9,7 @@ UIWindow::UIWindow(iPoint local_pos, UIElement* parent, UIWindow_Info& info, j1M
 	type = UIElement_TYPE::WINDOW_;
 
 	is_draggable = info.is_draggable;
+	is_interactable = info.is_interactable;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	tex_area = info.tex_area;
@@ -26,7 +27,7 @@ UIWindow::UIWindow(iPoint local_pos, UIElement* parent, UIWindow_Info& info, j1M
 
 void UIWindow::Update(float dt)
 {
-	if (listener != nullptr)
+	if (listener != nullptr && is_interactable)
 		HandleInput();
 }
 

@@ -9,6 +9,7 @@ UILifeBar::UILifeBar(iPoint local_pos, UIElement* parent, UILifeBar_Info& info, 
 	type = UIElement_TYPE::LIFEBAR_;
 
 	is_draggable = info.is_draggable;
+	is_interactable = info.is_interactable;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	tex_area = info.tex_area;
@@ -26,7 +27,7 @@ UILifeBar::UILifeBar(iPoint local_pos, UIElement* parent, UILifeBar_Info& info, 
 
 void UILifeBar::Update(float dt)
 {
-	if (listener != nullptr)
+	if (listener != nullptr && is_interactable)
 		HandleInput();
 
 	life_bar.bar.w = life_bar.life;

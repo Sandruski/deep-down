@@ -19,6 +19,7 @@ struct UISlider_Info {
 	uint level;
 
 	bool is_draggable = false;
+	bool is_interactable = true;
 };
 
 // ---------------------------------------------------

@@ -20,6 +20,7 @@ struct UIButton_Info {
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
 
 	bool is_draggable = false;
+	bool is_interactable = true;
 };
 
 // ---------------------------------------------------

@@ -6,6 +6,7 @@ UISlider::UISlider(iPoint local_pos, UIElement* parent, UISlider_Info& info, j1M
 	type = UIElement_TYPE::SLIDER_;
 
 	is_draggable = info.is_draggable;
+	is_interactable = info.is_interactable;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	tex = App->gui->GetTexture(slider.tex_name);

@@ -19,6 +19,7 @@ struct UILifeBar_Info {
 	SDL_Rect bar = { 0,0,0,0 };
 
 	bool is_draggable = false;
+	bool is_interactable = true;
 };
 
 // ---------------------------------------------------

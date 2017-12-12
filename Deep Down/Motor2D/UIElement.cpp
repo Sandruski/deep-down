@@ -100,14 +100,16 @@ bool UIElement::MouseHover() const
 
 void UIElement::SetOrientation()
 {
+	uint scale = App->win->GetScale();
+
 	switch (horizontal) {
 	case UIElement_HORIZONTAL_POS::LEFT_:
 		break;
 	case UIElement_HORIZONTAL_POS::RIGHT_:
-		local_pos.x -= width;
+		local_pos.x -= width * scale;
 		break;
 	case UIElement_HORIZONTAL_POS::CENTER_:
-		local_pos.x -= width / 2;
+		local_pos.x -= (width / 2) * scale;
 		break;
 	}
 
@@ -115,10 +117,10 @@ void UIElement::SetOrientation()
 	case UIElement_VERTICAL_POS::TOP_:
 		break;
 	case UIElement_VERTICAL_POS::BOTTOM_:
-		local_pos.y -= height;
+		local_pos.y -= height * scale;
 		break;
 	case UIElement_VERTICAL_POS::MIDDLE_:
-		local_pos.y -= height / 2;
+		local_pos.y -= (height / 2) * scale;
 		break;
 	}
 }
@@ -161,13 +163,13 @@ void UIElement::SetLocalPos(iPoint local_pos)
 	this->local_pos = local_pos;
 }
 
-void UIElement::IncreasePos(iPoint add_local_pos) 
+void UIElement::IncreasePos(iPoint add_local_pos)
 {
 	local_pos.x += add_local_pos.x;
 	local_pos.y += add_local_pos.y;
 }
 
-void UIElement::DecreasePos(iPoint add_local_pos) 
+void UIElement::DecreasePos(iPoint add_local_pos)
 {
 	local_pos.x -= add_local_pos.x;
 	local_pos.y -= add_local_pos.y;

@@ -9,6 +9,7 @@ UIButton::UIButton(iPoint local_pos, UIElement* parent, UIButton_Info& info, j1M
 	type = UIElement_TYPE::BUTTON_;
 
 	is_draggable = info.is_draggable;
+	is_interactable = info.is_interactable;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	tex = App->gui->GetTexture(button.tex_name);
@@ -30,7 +31,7 @@ UIButton::UIButton(iPoint local_pos, UIElement* parent, UIButton_Info& info, j1M
 
 void UIButton::Update(float dt)
 {
-	if (listener != nullptr)
+	if (listener != nullptr && is_interactable)
 		HandleInput();
 }
 

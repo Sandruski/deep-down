@@ -10,6 +10,7 @@ UILabel::UILabel(iPoint local_pos, UIElement* parent, UILabel_Info& info, j1Modu
 	type = UIElement_TYPE::LABEL_;
 
 	is_draggable = info.is_draggable;
+	is_interactable = info.is_interactable;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	font = App->gui->GetFont(label.font_name);
@@ -27,7 +28,7 @@ iPoint UILabel::GetSize() const
 
 void UILabel::Update(float dt)
 {
-	if (listener != nullptr)
+	if (listener != nullptr && is_interactable)
 		HandleInput();
 }
 
