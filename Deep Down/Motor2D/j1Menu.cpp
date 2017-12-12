@@ -52,6 +52,7 @@ bool j1Menu::Start()
 
 	// Map
 	App->map->Load("menu.tmx");
+	//TODO IS LAGGING THE GAME
 
 	// Get screen parameters
 	uint width = 0, height = 0;
@@ -66,6 +67,7 @@ bool j1Menu::Start()
 	black_screen.quad = true;
 	black_screen.tex_area = { 0, 0, static_cast<int>(width * scale), static_cast<int>(height * scale) };
 	black_screen_image = App->gui->CreateUIImage({0,0}, black_screen);
+
 	// Camera
 	camera_start_position = { 22,0 };
 	camera_start_position = App->map->MapToWorld(camera_start_position.x, camera_start_position.y);
@@ -111,7 +113,7 @@ bool j1Menu::Start()
 	label.text = "n";
 	letters[++i] = App->gui->CreateUILabel({ letter_position.x + (letter_size.x + tracking.x) * scale, letter_position.y }, label);
 	i = 0;
-
+	
 	float fade_seconds = 2.0f;
 	total_time = (Uint32)(fade_seconds * 0.5f * 1000.0f);
 	//_game_title
@@ -129,7 +131,7 @@ bool j1Menu::Start()
 
 
 	//_press_enter
-
+	
 	return ret;
 }
 
@@ -139,7 +141,7 @@ bool j1Menu::Update(float dt)
 	bool ret = true;
 
 	// Game title
-
+	/*
 	if (print_game_title) {
 		Uint32 now = (SDL_GetTicks() - start_time);
 		float normalized = MIN(1.0f, (float)now / (float)total_time);
@@ -175,7 +177,6 @@ bool j1Menu::Update(float dt)
 					letters[j]->SetColor({ 255,255,255,255 });
 
 				print_game_title = false;
-				start_time = SDL_GetTicks();
 			}
 		}
 	}
@@ -185,6 +186,7 @@ bool j1Menu::Update(float dt)
 	if (!print_game_title && !all_visible) {
 		total_time = (Uint32)(5.0f * 0.5f * 1000.0f);
 		Uint32 now = (SDL_GetTicks() - start_time);
+		start_time = SDL_GetTicks();
 		float normalized = MIN(1.0f, (float)now / (float)total_time);
 		normalized = 1 - normalized;
 
@@ -233,7 +235,7 @@ bool j1Menu::Update(float dt)
 		cloud.tex_area = { 0, 877, 109, 23 };
 		UIImage* small_cloud = App->gui->CreateUIImage({ 0,0 }, cloud);
 	}
-
+	*/
 	/*
 	cat->position.x += 20 * dt;
 	cat->SetCatState(CatState::rc_run);

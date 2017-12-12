@@ -41,7 +41,7 @@ bool j1Gui::Start()
 
 	// Load textures
 	map_textures[Tex_Names::ATLAS_] = App->tex->Load(atlas_file_name.GetString());
-	map_textures[Tex_Names::CURSOR_] = App->tex->Load("textures/wow/Point.png");
+	map_textures[Tex_Names::CURSORTEX_] = App->tex->Load("textures/wow/Point.png");
 	map_textures[Tex_Names::CHECKBOX_] = App->tex->Load("Assets/Sprites/UI/CheckBox.png");
 	map_textures[Tex_Names::DSUI_] = App->tex->Load("Assets/Sprites/UI/DSUI.png");
 	map_textures[Tex_Names::MENU_] = App->tex->Load("Assets/Sprites/UI/MenuPause.png");

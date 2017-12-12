@@ -456,14 +456,17 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		label.normal_color = { 0,0,0,255 };
 		label.is_draggable = false;
 
+		label.text = "volume";
+		volume_label = App->gui->CreateUILabel({ 80,60 }, label, this, pause_menu);
+
 		label.text = "cap_frames";
-		vsync_label = App->gui->CreateUILabel({ 80,140 }, label, this, pause_menu);
+		vsync_label = App->gui->CreateUILabel({ 80,160 }, label, this, pause_menu);
 
 		label.text = "camera blit";
-		camerablit_label = App->gui->CreateUILabel({ 80,240 }, label, this, pause_menu);
+		camerablit_label = App->gui->CreateUILabel({ 80,260 }, label, this, pause_menu);
 
 		label.text = "back";
-		back_label = App->gui->CreateUILabel({ 40,340 }, label, this, pause_menu);
+		back_label = App->gui->CreateUILabel({ 40,360 }, label, this, pause_menu);
 
 		UIButton_Info checkbox;
 		checkbox.checkbox = true;
@@ -473,9 +476,17 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		checkbox.pressed_tex_area = { 12,0,11,7 };
 		checkbox.is_draggable = true;
 
-		vsync_checkbox = App->gui->CreateUIButton({ 280,160 }, checkbox, this, pause_menu);
+		if (App->toCap)
+			checkbox.checkbox_checked = true;
 
-		camerablit_checkbox = App->gui->CreateUIButton({ 280,260 }, checkbox, this, pause_menu);
+		vsync_checkbox = App->gui->CreateUIButton({ 280,180 }, checkbox, this, pause_menu);
+
+		if (App->map->camera_blit)
+			checkbox.checkbox_checked = true;
+		else
+			checkbox.checkbox_checked = false;
+
+		camerablit_checkbox = App->gui->CreateUIButton({ 280,280 }, checkbox, this, pause_menu);
 
 		//TODO CAP_FRAMES AND CAMERA_BLIT STARTS TRUE
 

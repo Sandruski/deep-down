@@ -42,6 +42,8 @@ void UILabel::HandleInput()
 		if (MouseHover()) {
 			next_event = false;
 			UIevent = UIEvents::MOUSE_ENTER_;
+			SetColor(label.hover_color);
+			listener->OnUIEvent((UIElement*)this, UIevent);	
 			break;
 		}
 		break;
@@ -81,8 +83,6 @@ void UILabel::HandleInput()
 
 		if (!next_event) {
 			LOG("MOUSE ENTER");
-			SetColor(label.hover_color);
-			listener->OnUIEvent((UIElement*)this, UIevent);
 			next_event = true;
 		}
 

@@ -15,6 +15,7 @@ struct UIButton_Info {
 
 	Tex_Names tex_name = Tex_Names::NO_TEX_;
 	bool checkbox = false;
+	bool checkbox_checked = false;
 	UIElement_HORIZONTAL_POS horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
 
@@ -40,7 +41,6 @@ public:
 private:
 	UIButton_Info button;
 	UIEvents UIevent = NO_EVENT_;
-	bool checked = false;
 
 public:
 	bool tab = false;

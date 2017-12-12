@@ -16,7 +16,7 @@ struct _TTF_Font;
 enum Tex_Names {
 	NO_TEX_,
 	ATLAS_,
-	CURSOR_,
+	CURSORTEX_,
 	CHECKBOX_,
 	DSUI_,
 	MENU_,

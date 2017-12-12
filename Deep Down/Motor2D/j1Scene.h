@@ -90,6 +90,7 @@ private:
 	UILabel* quit_label;
 	UILabel* back_label;
 	UILabel* vsync_label;
+	UILabel* volume_label;
 	UILabel* camerablit_label;
 	UIButton* vsync_checkbox;
 	UIButton* camerablit_checkbox;

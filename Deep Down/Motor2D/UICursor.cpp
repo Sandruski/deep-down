@@ -4,7 +4,7 @@
 
 UICursor::UICursor(iPoint local_pos, UIElement* parent, UICursor_Info& info, j1Module* listener) : UIElement(local_pos, parent, listener), cursor(info)
 {
-	type = UIElement_TYPE::IMAGE_;
+	type = UIElement_TYPE::CURSOR_;
 	tex_area = info.default;
 	tex = App->gui->GetTexture(cursor.tex_name);
 

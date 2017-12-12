@@ -11,8 +11,12 @@ UIButton::UIButton(iPoint local_pos, UIElement* parent, UIButton_Info& info, j1M
 	is_draggable = info.is_draggable;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
-	tex_area = info.normal_tex_area;
 	tex = App->gui->GetTexture(button.tex_name);
+
+	if (button.checkbox_checked)
+		tex_area = info.pressed_tex_area;
+	else
+		tex_area = info.normal_tex_area;
 
 	if (tex_area.w == 0)
 		SDL_QueryTexture((SDL_Texture*)tex, NULL, NULL, &width, &height);
@@ -67,7 +71,7 @@ void UIButton::HandleInput()
 			UIevent = UIEvents::MOUSE_LEFT_CLICK_;
 
 			if (button.checkbox)
-				checked = !checked;
+				button.checkbox_checked = !button.checkbox_checked;
 			//listener->OnUIEvent((UIElement*)this, UIevent);
 			break;
 		}
@@ -87,14 +91,14 @@ void UIButton::HandleInput()
 			UIevent = UIEvents::MOUSE_RIGHT_CLICK_;
 
 			if (button.checkbox)
-				checked = !checked;
+				button.checkbox_checked = !button.checkbox_checked;
 			//listener->OnUIEvent((UIElement*)this, UIevent);
 			break;
 		}
 
 		if (!next_event) {
 			LOG("MOUSE ENTER");
-			if (!checked)
+			if (!button.checkbox_checked)
 				ChangeSprite(button.hover_tex_area);
 			listener->OnUIEvent((UIElement*)this, UIevent);
 			next_event = true;
@@ -133,7 +137,7 @@ void UIButton::HandleInput()
 
 		break;
 	case UIEvents::MOUSE_LEAVE_:
-		if (!checked)
+		if (!button.checkbox_checked)
 			ChangeSprite(button.normal_tex_area);
 		//listener->OnUIEvent((UIElement*)this, UIevent);
 		UIevent = NO_EVENT_;

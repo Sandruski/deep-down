@@ -16,6 +16,8 @@ enum UIElement_TYPE
 	BUTTON_,
 	WINDOW_,
 	LIFEBAR_,
+	CURSOR_,
+	SLIDER_,
 	MAX_TYPES_
 };
 
