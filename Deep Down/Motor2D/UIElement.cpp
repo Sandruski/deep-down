@@ -57,8 +57,9 @@ void UIElement::UpdateDragging(float dt)
 void UIElement::Draw() const
 {
 	iPoint blit_pos;
-	blit_pos.x = (GetScreenPos().x - App->render->camera.x) / App->win->GetScale();
-	blit_pos.y = (GetScreenPos().y - App->render->camera.y) / App->win->GetScale();
+	int scale = App->win->GetScale();
+	blit_pos.x = (GetScreenPos().x - App->render->camera.x) / scale;
+	blit_pos.y = (GetScreenPos().y - App->render->camera.y) / scale;
 
 	if (tex_area.w != 0)
 		App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);

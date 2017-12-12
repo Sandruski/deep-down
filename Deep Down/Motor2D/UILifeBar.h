@@ -20,6 +20,9 @@ struct UILifeBar_Info {
 
 	bool is_draggable = false;
 	bool is_interactable = true;
+	
+	void SetLifeBarPosition(iPoint pos) { life_bar_position = pos; }
+
 };
 
 // ---------------------------------------------------

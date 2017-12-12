@@ -1,5 +1,6 @@
 #include "UIImage.h"
 #include "j1Render.h"
+#include "j1Window.h"
 
 UIImage::UIImage(iPoint local_pos, UIElement* parent, UIImage_Info& info, j1Module* listener) : UIElement(local_pos, parent, listener), image(info)
 {
@@ -23,9 +24,10 @@ UIImage::UIImage(iPoint local_pos, UIElement* parent, UIImage_Info& info, j1Modu
 
 void UIImage::Draw() const
 {
-	iPoint blit_pos = { 0,0 };
-	blit_pos.x = GetScreenPos().x - App->render->camera.x;
-	blit_pos.y = GetScreenPos().y - App->render->camera.y;
+	iPoint blit_pos;
+	int scale = App->win->GetScale();
+	blit_pos.x = (GetScreenPos().x - App->render->camera.x) / scale;
+	blit_pos.y = (GetScreenPos().y - App->render->camera.y) / scale;
 
 	if (image.quad) {
 		SDL_SetRenderDrawColor(App->render->renderer, image.color.r, image.color.g, image.color.b, image.color.a);

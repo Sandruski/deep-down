@@ -103,9 +103,6 @@
     <ClCompile Include="j1Menu.cpp">
       <Filter>Modules\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="UISlider.cpp">
-      <Filter>Modules\UIElements</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2SString.h">
@@ -233,9 +230,6 @@
     </ClInclude>
     <ClInclude Include="j1Menu.h">
       <Filter>Modules\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="UISlider.h">
-      <Filter>Modules\UIElements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

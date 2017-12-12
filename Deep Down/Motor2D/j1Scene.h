@@ -10,7 +10,7 @@ struct UILifeBar;
 struct UIWindow;
 struct UILabel;
 struct UIButton;
-struct UISlider;
+struct UIImage;
 
 class j1Scene : public j1Module
 {
@@ -70,6 +70,7 @@ public:
 
 	bool god = false;
 	bool pause = false;
+	bool quit_game = false;
 
 private:
 
@@ -90,11 +91,14 @@ private:
 	UILabel* save_label;
 	UILabel* quit_label;
 	UILabel* back_label;
-	UILabel* vsync_label;
+	UILabel* to_cap_label;
 	UILabel* volume_label;
 	UILabel* camerablit_label;
-	UIButton* vsync_checkbox;
+	UIButton* to_cap_checkbox;
 	UIButton* camerablit_checkbox;
+	UIButton* slider_button_r;
+	UIButton* slider_button_l;
+	UIImage* slider_pointer_music;
 };
 
 #endif // __j1SCENE1_H__

@@ -20,7 +20,7 @@
 #include "UIWindow.h"
 #include "UILabel.h"
 #include "UIButton.h"
-#include "UISlider.h"
+#include "UIImage.h"
 
 #include"Brofiler\Brofiler.h"
 
@@ -75,7 +75,12 @@ bool j1Scene::Start()
 	girl_life_bar.life_bar_position = { 678,209 };
 	girl_life_bar.tex_name = DSUI_;
 	girl_life_bar.tex_area = { 80,524,230,8 };
-	progress_bar = App->gui->CreateUILifeBar({10,10}, girl_life_bar, this);
+	progress_bar = App->gui->CreateUILifeBar({100,100}, girl_life_bar, this);
+
+	UIImage_Info cats_obtained;
+	cats_obtained.tex_name = CAT_SCORE_;
+	
+	App->gui->CreateUIImage({ 800,40 }, cats_obtained, this);
 
 	if (!loading)
 		App->entities->Start();
@@ -147,7 +152,7 @@ bool j1Scene::Update(float dt)
 	resume_label;
 
 	options_label;
-
+			
 	return true;
 }
 
@@ -156,7 +161,7 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->scene->quit_game)
 		ret = false;
 
 	return ret;
@@ -364,7 +369,7 @@ void j1Scene::OpeningPauseMenu()
 	menu.tex_name = MENU_;
 	menu.is_draggable = true;
 
-	pause_menu = App->gui->CreateUIWindow({ 100,200 }, menu, this);
+	pause_menu = App->gui->CreateUIWindow({ 256,171 }, menu, this);
 
 	UILabel_Info label;
 	label.font_name = SOBAD_;
@@ -372,7 +377,7 @@ void j1Scene::OpeningPauseMenu()
 	label.is_draggable = false;
 
 	label.text = "Resume";
-	resume_label = App->gui->CreateUILabel({ 40,40}, label, this, pause_menu);
+	resume_label = App->gui->CreateUILabel({ 40,40 }, label, this, pause_menu);
 
 	label.text = "Save";
 	save_label = App->gui->CreateUILabel({ 40,140 }, label, this, pause_menu);
@@ -386,6 +391,7 @@ void j1Scene::OpeningPauseMenu()
 
 void j1Scene::ClosingPauseMenu()
 {
+	//TODO DELETE THIS STUPID FUNCTION XD FUNCTION CALLING ANOTHER FUNCTION IS USELESS
 	App->gui->DestroyElement(pause_menu);	
 }
 
@@ -441,8 +447,7 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 
 	else if (UIelem == (UIElement*)quit_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
 	{
-		
-
+		quit_game = true;
 	}
 
 	else if (UIelem == (UIElement*)options_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
@@ -456,15 +461,18 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		label.font_name = SOBAD_;
 		label.normal_color = { 0,0,0,255 };
 		label.is_draggable = false;
+		label.is_interactable = false;
 
 		label.text = "volume";
 		volume_label = App->gui->CreateUILabel({ 80,60 }, label, this, pause_menu);
 
 		label.text = "cap_frames";
-		vsync_label = App->gui->CreateUILabel({ 80,160 }, label, this, pause_menu);
+		to_cap_label = App->gui->CreateUILabel({ 80,160 }, label, this, pause_menu);
 
 		label.text = "camera blit";
 		camerablit_label = App->gui->CreateUILabel({ 80,260 }, label, this, pause_menu);
+
+		label.is_interactable = true;
 
 		label.text = "back";
 		back_label = App->gui->CreateUILabel({ 40,360 }, label, this, pause_menu);
@@ -477,30 +485,74 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		checkbox.pressed_tex_area = { 12,0,11,7 };
 		checkbox.is_draggable = true;
 
-		UISlider_Info volume_slider;
+		UIImage_Info slider;
+		slider.tex_name = SLIDER_;
+
+		App->gui->CreateUIImage({ 280,80 },slider, this, pause_menu);
+
+		slider.tex_name = POINTER_SLIDER_;
+
+		iPoint pos_music_pointer;
+		
+		if (App->audio->music_volume > 0 && App->audio->music_volume <= 25.6f)
+			pos_music_pointer = { 273,98 };
+		else if (App->audio->music_volume > 25.6f && App->audio->music_volume <= 51.2f)
+			pos_music_pointer = { 288,98 };
+		else if (App->audio->music_volume > 51.2f && App->audio->music_volume <= 76.8f)
+			pos_music_pointer = { 303,98 };
+		else if (App->audio->music_volume > 76.8f && App->audio->music_volume <= 102.4f)
+			pos_music_pointer = { 318,98 };
+		else if (App->audio->music_volume > 102.4f && App->audio->music_volume <= 128)
+			pos_music_pointer = { 333,98 };
+
+		slider_pointer_music = App->gui->CreateUIImage(pos_music_pointer, slider, this, pause_menu);
+
+		UIButton_Info button;
+		button.tex_name = BUTTON_SLIDER_;
+		button.normal_tex_area = {0,0,4,6};
+		button.hover_tex_area = { 0,0,4,6 };
+		button.pressed_tex_area = {5,0,4,6};
+		
+		slider_button_l = App->gui->CreateUIButton({ 260,79 }, button, this, pause_menu);
+
+		button.tex_name = BUTTON_SLIDER2_;
+
+		slider_button_r = App->gui->CreateUIButton({ 347,79 }, button, this, pause_menu);
 
 		if (App->toCap)
 			checkbox.checkbox_checked = true;
 
-		vsync_checkbox = App->gui->CreateUIButton({ 280,180 }, checkbox, this, pause_menu);
+		to_cap_checkbox = App->gui->CreateUIButton({ 300,180 }, checkbox, this, pause_menu);
 
 		if (App->map->camera_blit)
 			checkbox.checkbox_checked = true;
 		else
 			checkbox.checkbox_checked = false;
 
-		camerablit_checkbox = App->gui->CreateUIButton({ 280,280 }, checkbox, this, pause_menu);
-
-		//TODO CAP_FRAMES AND CAMERA_BLIT STARTS TRUE
-
-		//TODO ADJUST VOLUME (SLIDER?)
+		camerablit_checkbox = App->gui->CreateUIButton({ 300,280 }, checkbox, this, pause_menu);
 
 		//TODO CLEAN THIS CODE
 	}
 
-	else if (UIelem == (UIElement*)vsync_checkbox && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
+	else if (UIelem == (UIElement*)to_cap_checkbox && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
 	{
 		App->toCap = !App->toCap;
+	}
+
+	else if (UIelem == (UIElement*)slider_button_l && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
+	{
+		if (slider_pointer_music->GetLocalPos().x != 273) {
+			slider_pointer_music->DecreasePos({ 15,0 });
+			App->audio->ChangeMusicVolume(false);
+		}
+	}
+
+	else if (UIelem == (UIElement*)slider_button_r && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
+	{
+		if (slider_pointer_music->GetLocalPos().x != 333) {
+			slider_pointer_music->IncreasePos({ 15,0 });
+			App->audio->ChangeMusicVolume(true);
+		}
 	}
 
 	else if (UIelem == (UIElement*)camerablit_checkbox && UIevent == UIEvents::MOUSE_LEFT_CLICK_)

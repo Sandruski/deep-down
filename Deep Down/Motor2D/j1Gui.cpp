@@ -46,6 +46,11 @@ bool j1Gui::Start()
 	map_textures[Tex_Names::DSUI_] = App->tex->Load("Assets/Sprites/UI/DSUI.png");
 	map_textures[Tex_Names::MENU_] = App->tex->Load("Assets/Sprites/UI/MenuPause.png");
 	map_textures[Tex_Names::GENERAL_] = App->tex->Load("Assets/Sprites/Maps/GeneralTileset.png");
+	map_textures[Tex_Names::SLIDER_] = App->tex->Load("Assets/Sprites/UI/Slider.png");
+	map_textures[Tex_Names::BUTTON_SLIDER_] = App->tex->Load("Assets/Sprites/UI/Button_Slider.png");
+	map_textures[Tex_Names::BUTTON_SLIDER2_] = App->tex->Load("Assets/Sprites/UI/Button_Slider2.png");
+	map_textures[Tex_Names::POINTER_SLIDER_] = App->tex->Load("Assets/Sprites/UI/Pointer_Slider.png");
+	map_textures[Tex_Names::CAT_SCORE_] = App->tex->Load("Assets/Sprites/UI/CatScore.png");
 
 	// Load fonts
 	map_fonts[Font_Names::MSMINCHO_] = App->font->Load("Assets/Fonts/MSMINCHO.TTF");
