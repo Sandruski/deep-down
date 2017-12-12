@@ -19,8 +19,8 @@ struct UIButton_Info {
 	UIElement_HORIZONTAL_POS horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
 
-	bool is_draggable = false;
-	bool is_interactable = true;
+	bool draggable = false;
+	bool interactive = true;
 };
 
 // ---------------------------------------------------

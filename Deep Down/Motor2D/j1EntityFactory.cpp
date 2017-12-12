@@ -1051,6 +1051,21 @@ void j1EntityFactory::OnCollision(Collider* c1, Collider* c2)
 	}
 }
 
+bool j1EntityFactory::KillAllEntities() 
+{
+	bool ret = true;
+
+	for (uint i = 0; i < MAX_ENTITIES; ++i)
+	{
+		if (entities[i] != nullptr)
+		{
+			entities[i]->dead = true;
+		}
+	}
+
+	return ret;
+}
+
 bool j1EntityFactory::LoadPathsInfo()
 {
 	bool ret = true;
@@ -1158,7 +1173,7 @@ bool j1EntityFactory::AddEntities()
 	EntityInfo info;
 
 	// Player
-	if (!App->scene->loading_state) {
+	if (!App->scene->loading_state && App->scene->active) {
 		info.type = PLAYER_;
 		AddEntity(info);
 	}

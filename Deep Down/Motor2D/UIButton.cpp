@@ -8,8 +8,8 @@ UIButton::UIButton(iPoint local_pos, UIElement* parent, UIButton_Info& info, j1M
 {
 	type = UIElement_TYPE::BUTTON_;
 
-	is_draggable = info.is_draggable;
-	is_interactable = info.is_interactable;
+	draggable = info.draggable;
+	interactive = info.interactive;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	tex = App->gui->GetTexture(button.tex_name);
@@ -31,7 +31,7 @@ UIButton::UIButton(iPoint local_pos, UIElement* parent, UIButton_Info& info, j1M
 
 void UIButton::Update(float dt)
 {
-	if (listener != nullptr && is_interactable)
+	if (listener != nullptr && interactive)
 		HandleInput();
 }
 
@@ -73,7 +73,7 @@ void UIButton::HandleInput()
 
 			if (button.checkbox)
 				button.checkbox_checked = !button.checkbox_checked;
-			//listener->OnUIEvent((UIElement*)this, UIevent);
+			listener->OnUIEvent((UIElement*)this, UIevent);
 			break;
 		}
 		else if ((!tab && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED) || (tab && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)) {
@@ -84,7 +84,7 @@ void UIButton::HandleInput()
 			mouse_click_pos.x = mouse_pos.x * App->win->GetScale() - GetLocalPos().x;
 			mouse_click_pos.y = mouse_pos.y * App->win->GetScale() - GetLocalPos().y;
 
-			if (is_draggable) {
+			if (draggable) {
 				drag = true;
 				App->gui->drag_to_true = true;
 			}
@@ -93,7 +93,7 @@ void UIButton::HandleInput()
 
 			if (button.checkbox)
 				button.checkbox_checked = !button.checkbox_checked;
-			//listener->OnUIEvent((UIElement*)this, UIevent);
+			listener->OnUIEvent((UIElement*)this, UIevent);
 			break;
 		}
 
@@ -111,11 +111,11 @@ void UIButton::HandleInput()
 		if ((!tab && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_RELEASED) || (tab && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_UP)) {
 			LOG("MOUSE R CLICK FINISH");
 
-			if (is_draggable) {
+			if (draggable) {
 				drag = false;
 				App->gui->drag_to_false = true;
 			}
-
+			UIevent = UIEvents::MOUSE_RIGHT_UP_;
 			listener->OnUIEvent((UIElement*)this, UIevent);
 			UIevent = UIEvents::MOUSE_ENTER_;
 			break;
@@ -131,6 +131,7 @@ void UIButton::HandleInput()
 		}
 		else if ((!tab && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED) || (tab && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_UP)) {
 			LOG("MOUSE L CLICK FINISH");
+			UIevent = UIEvents::MOUSE_LEFT_UP_;
 			listener->OnUIEvent((UIElement*)this, UIevent);
 			UIevent = UIEvents::MOUSE_ENTER_;
 			break;
@@ -140,7 +141,7 @@ void UIButton::HandleInput()
 	case UIEvents::MOUSE_LEAVE_:
 		if (!button.checkbox_checked)
 			ChangeSprite(button.normal_tex_area);
-		//listener->OnUIEvent((UIElement*)this, UIevent);
+		listener->OnUIEvent((UIElement*)this, UIevent);
 		UIevent = NO_EVENT_;
 		break;
 	}

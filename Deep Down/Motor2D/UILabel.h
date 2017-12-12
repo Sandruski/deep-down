@@ -22,8 +22,8 @@ struct UILabel_Info {
 	UIElement_HORIZONTAL_POS horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
 
-	bool is_draggable = false;
-	bool is_interactable = true;
+	bool draggable = false;
+	bool interactive = true;
 };
 
 // ---------------------------------------------------
@@ -38,8 +38,8 @@ public:
 	void DebugDraw(iPoint blit_pos) const;
 
 	void SetText(p2SString text);
-	void SetColor(SDL_Color color);
-	iPoint GetSize() const;
+	void SetColor(SDL_Color color, bool normal = false, bool hover = false, bool pressed = false);
+	SDL_Color GetColor(bool normal = true, bool hover = false, bool pressed = false);
 
 private:
 	UILabel_Info label;

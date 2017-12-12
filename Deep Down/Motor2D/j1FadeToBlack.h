@@ -23,7 +23,7 @@ public:
 
 	bool Start();
 	bool Update(float dt);
-	bool FadeToBlack(j1Module* module_off, j1Module* module_on, float time = 2.0f, fades kind_of_fade = normal_fade);
+	bool FadeToBlack(j1Module* module_off, j1Module* module_on, float time = 2.0f, fades kind_of_fade = normal_fade, bool cleanup_off = true, bool start_on = true);
 
 	void NormalFade();
 	void SliderFade();
@@ -41,6 +41,9 @@ private:
 	SDL_Rect Slider_rect;
 	float dt = 0.0f;
 	fades thisFade;
+
+	bool cleanup_off = true;
+	bool start_on = true;
 
 public:
 

@@ -8,8 +8,8 @@ UIWindow::UIWindow(iPoint local_pos, UIElement* parent, UIWindow_Info& info, j1M
 {
 	type = UIElement_TYPE::WINDOW_;
 
-	is_draggable = info.is_draggable;
-	is_interactable = info.is_interactable;
+	draggable = info.draggable;
+	interactive = info.interactive;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	tex_area = info.tex_area;
@@ -27,7 +27,7 @@ UIWindow::UIWindow(iPoint local_pos, UIElement* parent, UIWindow_Info& info, j1M
 
 void UIWindow::Update(float dt)
 {
-	if (listener != nullptr && is_interactable)
+	if (listener != nullptr && interactive)
 		HandleInput();
 }
 
@@ -75,7 +75,7 @@ void UIWindow::HandleInput()
 			mouse_click_pos.x = mouse_pos.x * App->win->GetScale() - GetLocalPos().x;
 			mouse_click_pos.y = mouse_pos.y * App->win->GetScale() - GetLocalPos().y;
 
-			if (is_draggable) {
+			if (draggable) {
 				drag = true;
 				App->gui->drag_to_true = true;
 			}
@@ -97,7 +97,7 @@ void UIWindow::HandleInput()
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_RELEASED) {
 			LOG("MOUSE R CLICK FINISH");
 
-			if (is_draggable) {
+			if (draggable) {
 				drag = false;
 				App->gui->drag_to_false = true;
 			}

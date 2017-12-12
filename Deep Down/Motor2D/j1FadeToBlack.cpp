@@ -65,9 +65,12 @@ bool j1FadeToBlack::Update(float dt)
 }
 
 // Fade to black. At mid point deactivate one module, then activate the other
-bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float time, fades kind_of_fade)
+bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float time, fades kind_of_fade, bool cleanup_off, bool start_on)
 {
 	bool ret = false;
+
+	this->cleanup_off = cleanup_off;
+	this->start_on = start_on;
 
 	if (current_step == fade_step::none)
 	{
@@ -101,11 +104,12 @@ void j1FadeToBlack::NormalFade()
 	{
 	case fade_step::fade_to_black:
 	{
-
 		if (now >= total_time)
 		{
-			off->CleanUp();
-			on->Start();
+			if (cleanup_off)
+				off->CleanUp();
+			if (start_on)
+				on->Start();
 
 			total_time += total_time;
 			start_time = SDL_GetTicks();
@@ -126,12 +130,10 @@ void j1FadeToBlack::NormalFade()
 	// Finally render the black square with alpha on the screen
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(normalized * 255.0f));
 	SDL_RenderFillRect(App->render->renderer, &screen);
-
 }
 
 void j1FadeToBlack::SliderFade()
 {
-
 	Uint32 now = SDL_GetTicks() - start_time;
 	float normalized = MIN(1.0f, (float)now / (float)total_time);
 
@@ -141,8 +143,10 @@ void j1FadeToBlack::SliderFade()
 
 		if (now >= total_time) {
 
-			off->CleanUp();
-			on->Start();
+			if (cleanup_off)
+				off->CleanUp();
+			if (start_on)
+				on->Start();
 
 			total_time += total_time;
 			start_time = SDL_GetTicks();
@@ -164,7 +168,6 @@ void j1FadeToBlack::SliderFade()
 	Slider_rect.w = normalized*screen.w;
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
 	SDL_RenderFillRect(App->render->renderer, &Slider_rect);
-
 }
 
 void j1FadeToBlack::BlackFade()
@@ -178,8 +181,10 @@ void j1FadeToBlack::BlackFade()
 
 		if (now >= total_time) {
 
-			off->CleanUp();
-			on->Start();
+			if (cleanup_off)
+				off->CleanUp();
+			if (start_on)
+				on->Start();
 
 			total_time += total_time;
 			start_time = SDL_GetTicks();
@@ -200,5 +205,4 @@ void j1FadeToBlack::BlackFade()
 
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
 	SDL_RenderFillRect(App->render->renderer, &screen);
-
 }

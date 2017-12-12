@@ -82,6 +82,7 @@ public:
 	bool AddEntities();
 	bool AddEntity(EntityInfo& info);
 	Entity* SpawnEntity(const EntityInfo& info);
+	bool KillAllEntities();
 
 	// Get entities info
 	CatPeasantInfo& GetCatPeasantInfo() { return catPeasant; }

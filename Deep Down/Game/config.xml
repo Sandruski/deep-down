@@ -612,10 +612,16 @@
             <frame x="302" y="663" w="48" h="32"/>
             <frame x="252" y="663" w="48" h="32"/>
           </l_rise>
-          <r_jump speed="10" loop="0">
+          <r_jump speed="2" loop="0">
+            <frame x="203" y="507" w="48" h="32"/>
+            <frame x="203" y="507" w="48" h="32"/>
+            <frame x="203" y="507" w="48" h="32"/>
             <frame x="203" y="507" w="48" h="32"/>
           </r_jump>
-          <l_jump speed="10" loop="0">
+          <l_jump speed="2" loop="0">
+            <frame x="300" y="507" w="48" h="32"/>
+            <frame x="300" y="507" w="48" h="32"/>
+            <frame x="300" y="507" w="48" h="32"/>
             <frame x="300" y="507" w="48" h="32"/>
           </l_jump>
           <r_fall speed="10" loop="0">
@@ -628,17 +634,15 @@
             <frame x="352" y="716" w="48" h="32"/>
             <frame x="302" y="716" w="48" h="32"/>
           </l_fall>
-          <r_land_soft speed="10" loop="0">
+          <r_land_soft speed="5" loop="0">
             <frame x="2" y="769" w="48" h="32"/>
             <frame x="52" y="769" w="48" h="32"/>
             <frame x="102" y="769" w="48" h="32"/>
-            <frame x="152" y="769" w="48" h="32"/>
           </r_land_soft>
-          <l_land_soft speed="10" loop="0">
+          <l_land_soft speed="5" loop="0">
             <frame x="402" y="769" w="48" h="32"/>
             <frame x="352" y="769" w="48" h="32"/>
             <frame x="302" y="769" w="48" h="32"/>
-            <frame x="252" y="769" w="48" h="32"/>
           </l_land_soft>
           <r_roll speed="10" loop="0">
             <frame x="2" y="823" w="48" h="32"/>

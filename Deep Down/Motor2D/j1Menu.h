@@ -1,5 +1,5 @@
-#ifndef __j1MENU_H__
-#define __j1MENU_H__
+#ifndef __j1MENU_PAUSE_H__
+#define __j1MENU_PAUSE_H__
 
 #include "j1Module.h"
 
@@ -9,16 +9,25 @@ struct SDL_Texture;
 struct UILabel;
 struct UIImage;
 struct Cat;
+struct UIWindow;
 
 enum MenuState {
-	NO_MENU_,
-	CAT_TO_TITLE_,
+	NO_MENU_PAUSE_,
 	TITLE_TO_START_,
+	PRESS_START_,
+	TITLE_TO_MENU_PAUSE_,
+	APPEAR_MENU_OPTIONS_,
+	IN_MAIN_MENU_,
+	IN_SETTINGS_,
+	IN_CREDITS_
+};
+
+enum MenuOptions {
 	START_,
-	TITLE_TO_MENU_,
-	MAIN_MENU_,
+	CONTINUE_,
 	SETTINGS_,
-	CREDITS_
+	CREDITS_,
+	EXIT_,
 };
 
 class j1Menu : public j1Module
@@ -44,15 +53,20 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-private:
-	MenuState menuState = MenuState::NO_MENU_;
+	void OnUIEvent(UIElement* UIelem, UIEvents UIevent);
 
+private:
+	MenuState menuState = MenuState::NO_MENU_PAUSE_;
+	uint catPosition = 0;
 
 	iPoint camera_start_position = { 0,0 };
 
 	// Game title
 	UILabel* letters[8];
 	UILabel* press_any_button = nullptr;
+	UIButton* menu_buttons[5];
+	UILabel* menu_options[5];
+
 	bool is_invisible = true;
 
 	UIImage* black_screen_image;
@@ -61,6 +75,8 @@ private:
 	Uint32 start_time = 0;
 	Uint32 total_time = 0;
 	float timer = 0;
+
+	bool print_title = false;
 
 	bool next_phase = false;
 	bool visible_again = false;
@@ -73,6 +89,10 @@ private:
 	uint width = 0, height = 0;
 	int scale = 0;
 
+	UIWindow* window = nullptr;
+
+	bool camera_blit = false;
+
 public:
 	bool left_transition = false;
 	bool right_transition = false;
@@ -81,4 +101,4 @@ public:
 
 };
 
-#endif // __j1MENU_H__
+#endif // __j1MENU_PAUSE_H__

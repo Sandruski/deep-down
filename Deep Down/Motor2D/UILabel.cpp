@@ -9,8 +9,8 @@ UILabel::UILabel(iPoint local_pos, UIElement* parent, UILabel_Info& info, j1Modu
 {
 	type = UIElement_TYPE::LABEL_;
 
-	is_draggable = info.is_draggable;
-	is_interactable = info.is_interactable;
+	draggable = info.draggable;
+	interactive = info.interactive;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	font = App->gui->GetFont(label.font_name);
@@ -21,14 +21,9 @@ UILabel::UILabel(iPoint local_pos, UIElement* parent, UILabel_Info& info, j1Modu
 	SetOrientation();
 }
 
-iPoint UILabel::GetSize() const 
-{
-	return { width,height };
-}
-
 void UILabel::Update(float dt)
 {
-	if (listener != nullptr && is_interactable)
+	if (listener != nullptr && interactive)
 		HandleInput();
 }
 
@@ -72,7 +67,7 @@ void UILabel::HandleInput()
 			mouse_click_pos.x = mouse_pos.x * App->win->GetScale() - GetLocalPos().x;
 			mouse_click_pos.y = mouse_pos.y * App->win->GetScale() - GetLocalPos().y;
 
-			if (is_draggable) {
+			if (draggable) {
 				drag = true;
 				App->gui->drag_to_true = true;
 			}
@@ -93,7 +88,7 @@ void UILabel::HandleInput()
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_RELEASED) {
 			LOG("MOUSE R CLICK FINISH");
 
-			if (is_draggable) {
+			if (draggable) {
 				drag = false;
 				App->gui->drag_to_false = true;
 			}
@@ -141,13 +136,30 @@ void UILabel::SetText(p2SString text)
 	tex = App->font->Print(text.GetString(), color, font);
 }
 
-void UILabel::SetColor(SDL_Color color)
+void UILabel::SetColor(SDL_Color color, bool normal, bool hover, bool pressed)
 {
 	this->color = color;
 	tex = App->font->Print(label.text.GetString(), color, font);
+
+	if (normal)
+		label.normal_color = color;
+	else if (hover)
+		label.hover_color = color;
+	else if (pressed)
+		label.pressed_color = color;
 }
 
 UILabel::~UILabel()
 {
 	font = nullptr;
+}
+
+SDL_Color UILabel::GetColor(bool normal, bool hover, bool pressed) 
+{
+	if (normal)
+		return label.normal_color;
+	if (hover)
+		return label.hover_color;
+	if (pressed)
+		return label.pressed_color;
 }

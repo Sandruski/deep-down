@@ -12,7 +12,10 @@ enum CatState {
 	rc_roll, lc_roll,
 	rc_dead_run, lc_dead_run,
 	rc_dead, lc_dead,
-	rc_run, lc_run
+	rc_run, lc_run,
+
+	rc_land_soft, lc_land_soft,
+	rc_jump_no_fall, lc_jump_no_fall
 };
 
 struct CatInfo

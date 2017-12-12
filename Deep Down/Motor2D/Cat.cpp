@@ -310,6 +310,46 @@ void Cat::GeneralStatesMachine() {
 		animation = &cat.l_jump;
 		break;
 
+	case CatState::rc_jump_no_fall:
+
+		if (cat.r_jump.Finished()) {
+
+			UpdateCatState();
+			break;
+		}
+		animation = &cat.r_jump;
+		break;
+
+	case CatState::lc_jump_no_fall:
+
+		if (cat.l_jump.Finished()) {
+
+			UpdateCatState();
+			break;
+		}
+		animation = &cat.l_jump;
+		break;
+
+	case CatState::rc_land_soft:
+
+		if (cat.r_land_soft.Finished()) {
+
+			UpdateCatState();
+			break;
+		}
+		animation = &cat.r_land_soft;
+		break;
+
+	case CatState::lc_land_soft:
+
+		if (cat.l_land_soft.Finished()) {
+
+			UpdateCatState();
+			break;
+		}
+		animation = &cat.l_land_soft;
+		break;
+
 	case CatState::rc_roll:
 
 		if (cat.r_roll.Finished()) {
