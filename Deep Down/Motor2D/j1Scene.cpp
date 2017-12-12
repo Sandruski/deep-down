@@ -20,6 +20,7 @@
 #include "UIWindow.h"
 #include "UILabel.h"
 #include "UIButton.h"
+#include "UISlider.h"
 
 #include"Brofiler\Brofiler.h"
 
@@ -475,6 +476,8 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		checkbox.hover_tex_area = { 0,0,11,7 };
 		checkbox.pressed_tex_area = { 12,0,11,7 };
 		checkbox.is_draggable = true;
+
+		UISlider_Info volume_slider;
 
 		if (App->toCap)
 			checkbox.checkbox_checked = true;

@@ -8,15 +8,7 @@ UISlider::UISlider(iPoint local_pos, UIElement* parent, UISlider_Info& info, j1M
 	is_draggable = info.is_draggable;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
-	tex_area = info.tex_area;
 	tex = App->gui->GetTexture(slider.tex_name);
-
-	if (tex_area.w == 0)
-		SDL_QueryTexture((SDL_Texture*)tex, NULL, NULL, &width, &height);
-	else {
-		width = tex_area.w;
-		height = tex_area.h;
-	}
 
 	SetOrientation();
 }
@@ -26,17 +18,13 @@ void UISlider::Draw() const
 	iPoint blit_pos = { 0,0 };
 	blit_pos.x = GetScreenPos().x - App->render->camera.x;
 	blit_pos.y = GetScreenPos().y - App->render->camera.y;
+	for (uint i = 0; i < slider.size; ++i)
+	{
+		App->render->Blit(tex, blit_pos.x, blit_pos.y, &slider.ticks_area);
+		App->render->Blit(tex, blit_pos.x, blit_pos.y, &slider.size_area);
+	}
 
-	if (slider.quad) {
-		SDL_SetRenderDrawColor(App->render->renderer, slider.color.r, slider.color.g, slider.color.b, slider.color.a);
-		SDL_RenderFillRect(App->render->renderer, &slider.tex_area);
-	}
-	else {
-		if (tex_area.w != 0)
-			App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
-		else
-			App->render->Blit(tex, blit_pos.x, blit_pos.y);
-	}
+	App->render->Blit(tex, blit_pos.x, blit_pos.y, &slider.size_area);
 
 	if (App->gui->debug_draw)
 		DebugDraw(blit_pos);

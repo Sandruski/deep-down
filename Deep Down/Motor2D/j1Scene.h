@@ -10,6 +10,7 @@ struct UILifeBar;
 struct UIWindow;
 struct UILabel;
 struct UIButton;
+struct UISlider;
 
 class j1Scene : public j1Module
 {

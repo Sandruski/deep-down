@@ -9,12 +9,14 @@
 #include "j1Gui.h"
 
 struct UISlider_Info {
-	SDL_Rect tex_area = { 0,0,0,0 };
+	SDL_Rect pointer_area = { 0,0,0,0 };
+	SDL_Rect size_area = { 0,0,0,0 };
+	SDL_Rect ticks_area = { 0,0,0,0 };
 	Tex_Names tex_name = Tex_Names::NO_TEX_;
 	UIElement_HORIZONTAL_POS horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
-	bool quad = false;
-	SDL_Color color = { 0,0,0,255 };
+	uint size;
+	uint level;
 
 	bool is_draggable = false;
 };
@@ -27,6 +29,8 @@ public:
 	UISlider(iPoint local_pos, UIElement* parent, UISlider_Info& info, j1Module* listener = nullptr);
 	void Draw() const;
 	void DebugDraw(iPoint blit_pos) const;
+
+	SDL_Rect total_tex_area;
 
 private:
 	UISlider_Info slider;
