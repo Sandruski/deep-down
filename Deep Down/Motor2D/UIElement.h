@@ -38,7 +38,8 @@ enum UIEvents {
 	MOUSE_LEAVE_,
 	MOUSE_RIGHT_CLICK_,
 	MOUSE_LEFT_CLICK_,
-	MOUSE_UP_,
+	MOUSE_RIGHT_UP_,
+	MOUSE_LEFT_UP_,
 	MAX_EVENTS_
 };
 
@@ -53,8 +54,8 @@ protected:
 	j1Module* listener = nullptr;
 
 	bool to_remove = false;
-	bool is_draggable = false;
-	bool is_interactable = true;
+	bool draggable = false;
+	bool interactive = true;
 	iPoint mouse_click_pos = { 0,0 };
 
 	// Texture parameters
@@ -65,9 +66,6 @@ protected:
 private:
 	iPoint local_pos = { 0,0 };
 	UIElement* parent = nullptr;
-
-private:
-	SDL_Rect screen = { 0,0,0,0 };
 
 public:
 	UIElement(iPoint local_pos, UIElement* parent, j1Module* listener);
@@ -99,6 +97,8 @@ public:
 	void SetLocalPos(iPoint local_pos);
 	void IncreasePos(iPoint add_local_pos);
 	void DecreasePos(iPoint add_local_pos);
+
+	void SetInteraction(bool interactive);
 
 public:
 	bool drag = false;

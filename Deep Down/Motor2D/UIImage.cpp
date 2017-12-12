@@ -6,7 +6,7 @@ UIImage::UIImage(iPoint local_pos, UIElement* parent, UIImage_Info& info, j1Modu
 {
 	type = UIElement_TYPE::IMAGE_;
 
-	is_draggable = info.is_draggable;
+	draggable = info.draggable;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	tex_area = info.tex_area;

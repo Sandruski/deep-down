@@ -366,15 +366,15 @@ void j1Scene::DebugKeys() {
 void j1Scene::OpeningPauseMenu()
 {
 	UIWindow_Info menu;
-	menu.tex_name = MENU_;
-	menu.is_draggable = true;
+	menu.tex_name = MENU_PAUSE_;
+	menu.draggable = true;
 
 	pause_menu = App->gui->CreateUIWindow({ 256,171 }, menu, this);
 
 	UILabel_Info label;
 	label.font_name = SOBAD_;
 	label.normal_color = {0,0,0,255};
-	label.is_draggable = false;
+	label.draggable = false;
 
 	label.text = "Resume";
 	resume_label = App->gui->CreateUILabel({ 40,40 }, label, this, pause_menu);
@@ -460,8 +460,8 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		UILabel_Info label;
 		label.font_name = SOBAD_;
 		label.normal_color = { 0,0,0,255 };
-		label.is_draggable = false;
-		label.is_interactable = false;
+		label.draggable = false;
+		label.interactive = false;
 
 		label.text = "volume";
 		volume_label = App->gui->CreateUILabel({ 80,60 }, label, this, pause_menu);
@@ -472,7 +472,7 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		label.text = "camera blit";
 		camerablit_label = App->gui->CreateUILabel({ 80,260 }, label, this, pause_menu);
 
-		label.is_interactable = true;
+		label.interactive = true;
 
 		label.text = "back";
 		back_label = App->gui->CreateUILabel({ 40,360 }, label, this, pause_menu);
@@ -483,7 +483,7 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		checkbox.normal_tex_area = { 0,0,11,7 };
 		checkbox.hover_tex_area = { 0,0,11,7 };
 		checkbox.pressed_tex_area = { 12,0,11,7 };
-		checkbox.is_draggable = true;
+		checkbox.draggable = true;
 
 		UIImage_Info slider;
 		slider.tex_name = SLIDER_;

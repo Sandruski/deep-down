@@ -19,7 +19,8 @@ enum Tex_Names {
 	CURSORTEX_,
 	CHECKBOX_,
 	DSUI_,
-	MENU_,
+	MENU_PAUSE_,
+	MAIN_MENU_,
 	GENERAL_,
 	SLIDER_,
 	POINTER_SLIDER_,
@@ -34,6 +35,7 @@ enum Font_Names {
 	MSMINCHO_,
 	ZELDA_,
 	SOBAD_,
+	SOBAD_8_,
 	MAX_FONTS_
 };
 

@@ -1,5 +1,5 @@
-#ifndef __j1MENU_PAUSE_H__
-#define __j1MENU_PAUSE_H__
+#ifndef __j1MENU_PAUSE_PAUSE_H__
+#define __j1MENU_PAUSE_PAUSE_H__
 
 #include "j1Module.h"
 
@@ -12,11 +12,11 @@ struct Cat;
 struct UIWindow;
 
 enum MenuState {
-	NO_MENU_PAUSE_,
+	NO_MENU_PAUSE_PAUSE_,
 	TITLE_TO_START_,
 	PRESS_START_,
-	TITLE_TO_MENU_PAUSE_,
-	APPEAR_MENU_OPTIONS_,
+	TITLE_TO_MENU_PAUSE_PAUSE_,
+	APPEAR_MENU_PAUSE_OPTIONS_,
 	IN_MAIN_MENU_,
 	IN_SETTINGS_,
 	IN_CREDITS_
@@ -56,7 +56,7 @@ public:
 	void OnUIEvent(UIElement* UIelem, UIEvents UIevent);
 
 private:
-	MenuState menuState = MenuState::NO_MENU_PAUSE_;
+	MenuState menuState = MenuState::NO_MENU_PAUSE_PAUSE_;
 	uint catPosition = 0;
 
 	iPoint camera_start_position = { 0,0 };
@@ -64,8 +64,8 @@ private:
 	// Game title
 	UILabel* letters[8];
 	UILabel* press_any_button = nullptr;
-	UIButton* menu_buttons[5];
-	UILabel* menu_options[5];
+	UIButton* MENU_PAUSE_buttons[5];
+	UILabel* MENU_PAUSE_options[5];
 
 	bool is_invisible = true;
 
@@ -101,4 +101,4 @@ public:
 
 };
 
-#endif // __j1MENU_PAUSE_H__
+#endif // __j1MENU_PAUSE_PAUSE_H__

@@ -16,7 +16,7 @@ struct UIImage_Info {
 	bool quad = false;
 	SDL_Color color = { 0,0,0,255 };
 
-	bool is_draggable = false;
+	bool draggable = false;
 };
 
 // ---------------------------------------------------

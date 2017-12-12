@@ -16,8 +16,6 @@ UIElement::UIElement(iPoint local_pos, UIElement* parent, j1Module* listener) : 
 
 	App->win->GetWindowSize(width, height);
 	scale = App->win->GetScale();
-
-	screen = { 0, 0, static_cast<int>(width * scale), static_cast<int>(height * scale) };
 }
 
 UIElement::~UIElement()
@@ -96,7 +94,7 @@ bool UIElement::MouseHover() const
 	App->input->GetMousePosition(x, y);
 	uint scale = App->win->GetScale();
 
-	return x > GetScreenPos().x / scale && x < GetScreenPos().x / scale + width && y > GetScreenPos().y / scale && y < GetScreenPos().y / scale + height;
+	return x > GetLocalRect().x / scale && x < GetLocalRect().x / scale + GetLocalRect().w && y > GetLocalRect().y / scale && y < GetLocalRect().y / scale + GetLocalRect().h;
 }
 
 void UIElement::SetOrientation()
@@ -174,4 +172,9 @@ void UIElement::DecreasePos(iPoint add_local_pos)
 {
 	local_pos.x -= add_local_pos.x;
 	local_pos.y -= add_local_pos.y;
+}
+
+void UIElement::SetInteraction(bool interactive)
+{
+	this->interactive = interactive;
 }

@@ -141,7 +141,7 @@ bool j1Menu::Start()
 		button.normal_tex_area = { 0,i * (21 + 2),81,21 };
 		button.hover_tex_area = { 84,i * (21 + 2),81,21 };
 		button.pressed_tex_area = { 168,i * (21 + 2),81,21 };
-		menu_buttons[i] = App->gui->CreateUIButton({ 50,400 + 70 * i }, button, this);
+		MENU_PAUSE_buttons[i] = App->gui->CreateUIButton({ 50,400 + 70 * i }, button, this);
 	}
 	i = 0;
 	SDL_SetTextureAlphaMod((SDL_Texture*)App->gui->GetTexture(MAIN_MENU_), 0);
@@ -153,15 +153,15 @@ bool j1Menu::Start()
 	label.pressed_color = { 255,247,226,255 };
 	label.horizontal_orientation = CENTER_;
 	label.vertical_orientation = MIDDLE_;
-	menu_options[i] = App->gui->CreateUILabel({ menu_buttons[i]->GetLocalRect().w * scale / 2,menu_buttons[i]->GetLocalRect().h * scale / 2 }, label, this, menu_buttons[i]);
+	MENU_PAUSE_options[i] = App->gui->CreateUILabel({ MENU_PAUSE_buttons[i]->GetLocalRect().w * scale / 2,MENU_PAUSE_buttons[i]->GetLocalRect().h * scale / 2 }, label, this, MENU_PAUSE_buttons[i]);
 	label.text = "Continue";
-	menu_options[i] = App->gui->CreateUILabel({ menu_buttons[i]->GetLocalRect().w * scale / 2,menu_buttons[i]->GetLocalRect().h * scale / 2 }, label, this, menu_buttons[++i]);
+	MENU_PAUSE_options[i] = App->gui->CreateUILabel({ MENU_PAUSE_buttons[i]->GetLocalRect().w * scale / 2,MENU_PAUSE_buttons[i]->GetLocalRect().h * scale / 2 }, label, this, MENU_PAUSE_buttons[++i]);
 	label.text = "Settings";
-	menu_options[i] = App->gui->CreateUILabel({ menu_buttons[i]->GetLocalRect().w * scale / 2,menu_buttons[i]->GetLocalRect().h * scale / 2 }, label, this, menu_buttons[++i]);
+	MENU_PAUSE_options[i] = App->gui->CreateUILabel({ MENU_PAUSE_buttons[i]->GetLocalRect().w * scale / 2,MENU_PAUSE_buttons[i]->GetLocalRect().h * scale / 2 }, label, this, MENU_PAUSE_buttons[++i]);
 	label.text = "Credits";
-	menu_options[i] = App->gui->CreateUILabel({ menu_buttons[i]->GetLocalRect().w * scale / 2,menu_buttons[i]->GetLocalRect().h * scale / 2 }, label, this, menu_buttons[++i]);
+	MENU_PAUSE_options[i] = App->gui->CreateUILabel({ MENU_PAUSE_buttons[i]->GetLocalRect().w * scale / 2,MENU_PAUSE_buttons[i]->GetLocalRect().h * scale / 2 }, label, this, MENU_PAUSE_buttons[++i]);
 	label.text = "Exit";
-	menu_options[i] = App->gui->CreateUILabel({ menu_buttons[i]->GetLocalRect().w * scale / 2,menu_buttons[i]->GetLocalRect().h * scale / 2 }, label, this, menu_buttons[++i]);
+	MENU_PAUSE_options[i] = App->gui->CreateUILabel({ MENU_PAUSE_buttons[i]->GetLocalRect().w * scale / 2,MENU_PAUSE_buttons[i]->GetLocalRect().h * scale / 2 }, label, this, MENU_PAUSE_buttons[++i]);
 	i = 0;
 
 	menuState = MenuState::TITLE_TO_START_;
@@ -350,7 +350,7 @@ bool j1Menu::Update(float dt)
 					alpha2 = 255.0f;
 					total_time = (Uint32)(scene_seconds * 0.5f * 1000.0f);
 					start_time = SDL_GetTicks();
-					menuState = MenuState::TITLE_TO_MENU_PAUSE_;
+					menuState = MenuState::TITLE_TO_MENU_PAUSE_PAUSE_;
 					break;
 				}
 			}
@@ -379,39 +379,39 @@ bool j1Menu::Update(float dt)
 
 		break;
 
-	case MenuState::TITLE_TO_MENU_PAUSE_:
+	case MenuState::TITLE_TO_MENU_PAUSE_PAUSE_:
 
 		black_screen_image->SetColor({ 0,0,0,(Uint8)alpha2 });
 		press_any_button->SetColor({ 0,0,0,(Uint8)alpha2 });
 
 		if (alpha2 == 0.0f) {
 			start_time = SDL_GetTicks();
-			menuState = MenuState::APPEAR_MENU_OPTIONS_;
+			menuState = MenuState::APPEAR_MENU_PAUSE_OPTIONS_;
 			break;
 		}
 		break;
 
-	case MenuState::APPEAR_MENU_OPTIONS_:
+	case MenuState::APPEAR_MENU_PAUSE_OPTIONS_:
 
 		SDL_SetTextureAlphaMod((SDL_Texture*)App->gui->GetTexture(MAIN_MENU_), (Uint8)alpha);
 
-		SDL_Color normal = menu_options[i]->GetColor();
+		SDL_Color normal = MENU_PAUSE_options[i]->GetColor();
 
-		menu_options[i]->SetColor({ normal.r,normal.g,normal.b,(Uint8)alpha }, true);
+		MENU_PAUSE_options[i]->SetColor({ normal.r,normal.g,normal.b,(Uint8)alpha }, true);
 		if (alpha >= 51.0f)
-			menu_options[1]->SetColor({ normal.r,normal.g,normal.b,(Uint8)alpha }, true);
+			MENU_PAUSE_options[1]->SetColor({ normal.r,normal.g,normal.b,(Uint8)alpha }, true);
 		if (alpha >= 102.0f)
-			menu_options[2]->SetColor({ normal.r,normal.g,normal.b,(Uint8)alpha }, true);
+			MENU_PAUSE_options[2]->SetColor({ normal.r,normal.g,normal.b,(Uint8)alpha }, true);
 		if (alpha >= 153.0f)
-			menu_options[3]->SetColor({ normal.r,normal.g,normal.b,(Uint8)alpha }, true);
+			MENU_PAUSE_options[3]->SetColor({ normal.r,normal.g,normal.b,(Uint8)alpha }, true);
 		if (alpha >= 204.0f)
-			menu_options[4]->SetColor({ normal.r,normal.g,normal.b,(Uint8)alpha }, true);
+			MENU_PAUSE_options[4]->SetColor({ normal.r,normal.g,normal.b,(Uint8)alpha }, true);
 
 		if (alpha == 255.0f) {
 
 			for (uint i = 0; i < 5; ++i) {
-				menu_buttons[i]->SetInteraction(true);
-				menu_options[i]->SetInteraction(true);
+				MENU_PAUSE_buttons[i]->SetInteraction(true);
+				MENU_PAUSE_options[i]->SetInteraction(true);
 			}
 
 			menuState = MenuState::IN_MAIN_MENU_;
@@ -433,7 +433,7 @@ bool j1Menu::Update(float dt)
 			App->render->camera.x -= 250 * dt;
 		break;
 
-	case MenuState::NO_MENU_PAUSE_:
+	case MenuState::NO_MENU_PAUSE_PAUSE_:
 	default:
 		break;
 	}
@@ -462,36 +462,36 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 	case UIEvents::MOUSE_LEFT_CLICK_:
 
 		for (uint i = 0; i < 5; ++i) {
-			if (UIelem == menu_buttons[i]) {
-				menu_options[i]->SetColor(menu_options[i]->GetColor(false, false, true));
+			if (UIelem == MENU_PAUSE_buttons[i]) {
+				MENU_PAUSE_options[i]->SetColor(MENU_PAUSE_options[i]->GetColor(false, false, true));
 			}
 		}
 		break;
 
 	case UIEvents::MOUSE_LEFT_UP_:
 
-		if (UIelem == menu_buttons[MenuOptions::START_]) {
+		if (UIelem == MENU_PAUSE_buttons[MenuOptions::START_]) {
 			App->map->camera_blit = camera_blit;
 			App->fade->FadeToBlack(this, App->scene, 2.0f, slider_fade);
 			break;
 		}
-		else if (UIelem == menu_buttons[MenuOptions::CONTINUE_]) {
+		else if (UIelem == MENU_PAUSE_buttons[MenuOptions::CONTINUE_]) {
 			App->map->camera_blit = camera_blit;
 			App->scene->loading_state = true;
 			App->LoadGame();
 			break;
 		}
-		else if (UIelem == menu_buttons[MenuOptions::SETTINGS_]) {
+		else if (UIelem == MENU_PAUSE_buttons[MenuOptions::SETTINGS_]) {
 			menuState = MenuState::IN_SETTINGS_;
 			App->fade->FadeToBlack(this, this, 2.0f, slider_fade, false, false);
 			break;
 		}
-		else if (UIelem == menu_buttons[MenuOptions::CREDITS_]) {
+		else if (UIelem == MENU_PAUSE_buttons[MenuOptions::CREDITS_]) {
 			menuState = MenuState::IN_CREDITS_;
 			App->fade->FadeToBlack(this, this, 2.0f, slider_fade, false, false);
 			break;
 		}
-		else if (UIelem == menu_buttons[MenuOptions::EXIT_]) {
+		else if (UIelem == MENU_PAUSE_buttons[MenuOptions::EXIT_]) {
 			// QUIT GAME
 			break;
 		}
@@ -500,8 +500,8 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 	case UIEvents::MOUSE_ENTER_:
 
 		for (uint i = 0; i < 5; ++i) {
-			if (UIelem == menu_buttons[i]) {
-				menu_options[i]->SetColor(menu_options[i]->GetColor(false, true));
+			if (UIelem == MENU_PAUSE_buttons[i]) {
+				MENU_PAUSE_options[i]->SetColor(MENU_PAUSE_options[i]->GetColor(false, true));
 			}
 		}
 
@@ -510,8 +510,8 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 	case UIEvents::MOUSE_LEAVE_:
 
 		for (uint i = 0; i < 5; ++i) {
-			if (UIelem == menu_buttons[i]) {
-				menu_options[i]->SetColor(menu_options[i]->GetColor());
+			if (UIelem == MENU_PAUSE_buttons[i]) {
+				MENU_PAUSE_options[i]->SetColor(MENU_PAUSE_options[i]->GetColor());
 			}
 		}
 

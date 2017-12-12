@@ -18,8 +18,8 @@ struct UILifeBar_Info {
 	iPoint life_bar_position = { 0,0 };
 	SDL_Rect bar = { 0,0,0,0 };
 
-	bool is_draggable = false;
-	bool is_interactable = true;
+	bool draggable = false;
+	bool interactive = true;
 	
 	void SetLifeBarPosition(iPoint pos) { life_bar_position = pos; }
 

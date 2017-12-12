@@ -8,8 +8,8 @@ UILifeBar::UILifeBar(iPoint local_pos, UIElement* parent, UILifeBar_Info& info, 
 {
 	type = UIElement_TYPE::LIFEBAR_;
 
-	is_draggable = info.is_draggable;
-	is_interactable = info.is_interactable;
+	draggable = info.draggable;
+	interactive = info.interactive;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	tex_area = info.tex_area;
@@ -27,7 +27,7 @@ UILifeBar::UILifeBar(iPoint local_pos, UIElement* parent, UILifeBar_Info& info, 
 
 void UILifeBar::Update(float dt)
 {
-	if (listener != nullptr && is_interactable)
+	if (listener != nullptr && interactive)
 		HandleInput();
 
 	life_bar.bar.w = life_bar.life;
@@ -96,7 +96,7 @@ void UILifeBar::HandleInput()
 			mouse_click_pos.x = mouse_pos.x * App->win->GetScale() - GetLocalPos().x;
 			mouse_click_pos.y = mouse_pos.y * App->win->GetScale() - GetLocalPos().y;
 
-			if (is_draggable) {
+			if (draggable) {
 				drag = true;
 				App->gui->drag_to_true = true;
 			}
@@ -118,7 +118,7 @@ void UILifeBar::HandleInput()
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_RELEASED) {
 			LOG("MOUSE R CLICK FINISH");
 
-			if (is_draggable) {
+			if (draggable) {
 				drag = false;
 				App->gui->drag_to_false = true;
 			}

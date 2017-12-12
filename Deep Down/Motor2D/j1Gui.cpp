@@ -44,7 +44,8 @@ bool j1Gui::Start()
 	map_textures[Tex_Names::CURSORTEX_] = App->tex->Load("textures/wow/Point.png");
 	map_textures[Tex_Names::CHECKBOX_] = App->tex->Load("Assets/Sprites/UI/CheckBox.png");
 	map_textures[Tex_Names::DSUI_] = App->tex->Load("Assets/Sprites/UI/DSUI.png");
-	map_textures[Tex_Names::MENU_] = App->tex->Load("Assets/Sprites/UI/MenuPause.png");
+	map_textures[Tex_Names::MENU_PAUSE_] = App->tex->Load("Assets/Sprites/UI/MenuPause.png");
+	map_textures[Tex_Names::MAIN_MENU_] = App->tex->Load("Assets/Sprites/UI/MainMenu.png");
 	map_textures[Tex_Names::GENERAL_] = App->tex->Load("Assets/Sprites/Maps/GeneralTileset.png");
 	map_textures[Tex_Names::SLIDER_] = App->tex->Load("Assets/Sprites/UI/Slider.png");
 	map_textures[Tex_Names::BUTTON_SLIDER_] = App->tex->Load("Assets/Sprites/UI/Button_Slider.png");
@@ -56,6 +57,7 @@ bool j1Gui::Start()
 	map_fonts[Font_Names::MSMINCHO_] = App->font->Load("Assets/Fonts/MSMINCHO.TTF");
 	map_fonts[Font_Names::ZELDA_] = App->font->Load("Assets/Fonts/Zelda.ttf", 60);
 	map_fonts[Font_Names::SOBAD_] = App->font->Load("Assets/Fonts/So/SOBAD___.ttf");
+	map_fonts[Font_Names::SOBAD_8_] = App->font->Load("Assets/Fonts/So/SOBAD___.ttf", 8);
 
 	UI_elements_tree = new nTree<UIElement*>((UIElement*)App->win->window);
 
