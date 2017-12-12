@@ -12,6 +12,7 @@ struct Cat;
 
 enum MenuState {
 	NO_MENU_,
+	CAT_TO_TITLE_,
 	TITLE_TO_START_,
 	START_,
 	TITLE_TO_MENU_,

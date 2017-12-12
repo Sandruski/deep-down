@@ -112,27 +112,24 @@ bool j1Menu::Start()
 	letters[++i] = App->gui->CreateUILabel({ letter_position.x + (letter_size.x + tracking.x) * scale, letter_position.y }, label);
 	i = 0;
 	
-	float fade_seconds = 2.0f;
-	total_time = (Uint32)(fade_seconds * 0.5f * 1000.0f);
+	float cat_seconds = 2.0f;
+	total_time = (Uint32)(cat_seconds * 0.5f * 1000.0f);
 	//_game_title
 
 	// Cat
 	EntityInfo entity;
 	entity.type = CAT_;
 	entity.position = { -40,180 };
-
 	cat = (Cat*)App->entities->SpawnEntity(entity);
 	//_cat
 
-
-	// Press ANY BUTTON
+	// Press any button
 	label.font_name = SOBAD_;
 	label.text = "PRESS ANY BUTTON";
 	label.horizontal_orientation = CENTER_;
 	label.is_interactable = false;
 	press_any_button = App->gui->CreateUILabel({ (int)width / 2, (int)height - 100 }, label, this);
-
-	//_press_enter
+	//_press_any_button
 
 	menuState = MenuState::TITLE_TO_START_;
 	
@@ -160,7 +157,14 @@ bool j1Menu::Update(float dt)
 
 	switch (menuState) {
 
+	case MenuState::CAT_TO_TITLE_:
+
+		//cat->position.x += 20 * dt;
+		//cat->SetCatState(CatState::rc_run);
+		break;
+
 	case MenuState::TITLE_TO_START_:
+
 		if (!visible_again)
 			letters[i]->SetColor({ 255,255,255,(Uint8)alpha });
 		if (i > 0)
@@ -203,11 +207,13 @@ bool j1Menu::Update(float dt)
 			static SDL_Event event;
 
 			if (SDL_PollEvent(&event) != 0) {
-				alpha2 = 255.0f;
-				total_time = (Uint32)(scene_seconds * 0.5f * 1000.0f);
-				start_time = SDL_GetTicks();
-				menuState = MenuState::TITLE_TO_MENU_;
-				break;
+				if (event.type == SDL_KEYDOWN) {
+					alpha2 = 255.0f;
+					total_time = (Uint32)(scene_seconds * 0.5f * 1000.0f);
+					start_time = SDL_GetTicks();
+					menuState = MenuState::TITLE_TO_MENU_;
+					break;
+				}
 			}
 
 			if (!is_invisible) {
@@ -235,6 +241,7 @@ bool j1Menu::Update(float dt)
 		break;
 
 	case MenuState::TITLE_TO_MENU_:
+
 		black_screen_image->SetColor({ 0,0,0,(Uint8)alpha2 });
 		press_any_button->SetColor({ 0,0,0,(Uint8)alpha2 });
 
@@ -250,6 +257,7 @@ bool j1Menu::Update(float dt)
 		break;
 
 	case MenuState::MAIN_MENU_:
+
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN) {
 			menuState = MenuState::SETTINGS_;
 		}
@@ -270,14 +278,6 @@ bool j1Menu::Update(float dt)
 	default:
 		break;
 	}
-
-	// Game title
-	
-	//_game_title
-
-	// Cat
-
-	
 	
 	
 
@@ -311,12 +311,7 @@ bool j1Menu::Update(float dt)
 		cloud.tex_area = { 0, 877, 109, 23 };
 		UIImage* small_cloud = App->gui->CreateUIImage({ 0,0 }, cloud);
 	}
-	
-	/*
-	cat->position.x += 20 * dt;
-	cat->SetCatState(CatState::rc_run);
-	*/
-	//_cat
+
 
 	return ret;
 }
