@@ -21,6 +21,10 @@ enum Tex_Names {
 	DSUI_,
 	MENU_,
 	GENERAL_,
+	SLIDER_,
+	POINTER_SLIDER_,
+	BUTTON_SLIDER_,
+	BUTTON_SLIDER2_,
 	MAX_TEXS_
 };
 

@@ -113,7 +113,6 @@
     <ClCompile Include="UIImage.cpp" />
     <ClCompile Include="UILabel.cpp" />
     <ClCompile Include="UILifeBar.cpp" />
-    <ClCompile Include="UISlider.cpp" />
     <ClCompile Include="UIWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -158,7 +157,6 @@
     <ClInclude Include="UIImage.h" />
     <ClInclude Include="UILabel.h" />
     <ClInclude Include="UILifeBar.h" />
-    <ClInclude Include="UISlider.h" />
     <ClInclude Include="UIWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
