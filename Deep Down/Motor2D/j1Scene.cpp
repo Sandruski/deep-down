@@ -69,12 +69,14 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
+	// Ingame UI
 	UILifeBar_Info girl_life_bar;
 	girl_life_bar.bar = { 86,532,222,4 };
 	girl_life_bar.life = 222;
 	girl_life_bar.life_bar_position = { 678,209 };
 	girl_life_bar.tex_name = DSUI_;
 	girl_life_bar.tex_area = { 80,524,230,8 };
+
 	progress_bar = App->gui->CreateUILifeBar({100,100}, girl_life_bar, this);
 
 	UIImage_Info cats_obtained;
@@ -146,12 +148,6 @@ bool j1Scene::Update(float dt)
 		countdown_to_die = 0.0f;
 	}
 	countdown_to_die += dt;
-
-	pause_menu;
-
-	resume_label;
-
-	options_label;
 			
 	return true;
 }
@@ -161,7 +157,7 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->scene->quit_game)
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
 	return ret;
@@ -359,7 +355,7 @@ void j1Scene::DebugKeys() {
 	else if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN && pause == true)
 	{
 		pause = false;
-		ClosingPauseMenu();
+		App->gui->DestroyElement(pause_menu); // Closing pause menu
 	}
 }
 
@@ -377,198 +373,179 @@ void j1Scene::OpeningPauseMenu()
 	label.draggable = false;
 
 	label.text = "Resume";
-	resume_label = App->gui->CreateUILabel({ 40,40 }, label, this, pause_menu);
+	menu_pause_labels[RESUME_] = App->gui->CreateUILabel({ 40,40 }, label, this, pause_menu); // Resume label
 
 	label.text = "Save";
-	save_label = App->gui->CreateUILabel({ 40,140 }, label, this, pause_menu);
+	menu_pause_labels[SAVE_] = App->gui->CreateUILabel({ 40,140 }, label, this, pause_menu); // Save label
 
 	label.text = "Options";
-	options_label = App->gui->CreateUILabel({ 40,240 }, label, this, pause_menu);
+	menu_pause_labels[OPTIONS_] = App->gui->CreateUILabel({ 40,240 }, label, this, pause_menu); // Options label
 
 	label.text = "Quit";
-	quit_label = App->gui->CreateUILabel({ 40,340 }, label, this, pause_menu);
+	menu_pause_labels[QUIT_] = App->gui->CreateUILabel({ 40,340 }, label, this, pause_menu); // Quit label
 }
-
-void j1Scene::ClosingPauseMenu()
-{
-	App->gui->DestroyElement(pause_menu);	
-}
-
 
 void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 {
+	switch(UIevent)
 
-	if (UIelem == (UIElement*)resume_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
 	{
-		pause = false;
-		ClosingPauseMenu();
-
-	}
-	else if (UIelem == (UIElement*)resume_label && UIevent == UIEvents::MOUSE_ENTER_)
-	{
-		resume_label->IncreasePos({3,0});
-	}
-
-	else if (UIelem == (UIElement*)save_label && UIevent == UIEvents::MOUSE_ENTER_)
-	{
-		save_label->IncreasePos({ 3,0 });
-	}
-
-	else if (UIelem == (UIElement*)options_label && UIevent == UIEvents::MOUSE_ENTER_)
-	{
-		options_label->IncreasePos({ 3,0 });
-	}
-
-	else if (UIelem == (UIElement*)quit_label && UIevent == UIEvents::MOUSE_ENTER_)
-	{
-		quit_label->IncreasePos({ 3,0 });
-	}
-
-	else if (UIelem == (UIElement*)resume_label && UIevent == UIEvents::MOUSE_LEAVE_)
-	{
-		resume_label->DecreasePos({3,0});
-	}
-
-	else if (UIelem == (UIElement*)save_label && UIevent == UIEvents::MOUSE_LEAVE_)
-	{
-		save_label->DecreasePos({ 3,0 });
-	}
-
-	else if (UIelem == (UIElement*)options_label && UIevent == UIEvents::MOUSE_LEAVE_)
-	{
-		options_label->DecreasePos({ 3,0 });
-	}
-
-	else if (UIelem == (UIElement*)quit_label && UIevent == UIEvents::MOUSE_LEAVE_)
-	{
-		quit_label->DecreasePos({ 3,0 });
-	}
-
-	else if (UIelem == (UIElement*)quit_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
-	{
-		quit_game = true;
-	}
-
-	else if (UIelem == (UIElement*)options_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
-	{
-		App->gui->DestroyElement(resume_label);
-		App->gui->DestroyElement(options_label);
-		App->gui->DestroyElement(save_label);
-		App->gui->DestroyElement(quit_label);
-
-		UILabel_Info label;
-		label.font_name = SOBAD_;
-		label.normal_color = { 0,0,0,255 };
-		label.draggable = false;
-		label.interactive = false;
-
-		label.text = "volume";
-		volume_label = App->gui->CreateUILabel({ 80,60 }, label, this, pause_menu);
-
-		label.text = "cap_frames";
-		to_cap_label = App->gui->CreateUILabel({ 80,160 }, label, this, pause_menu);
-
-		label.text = "camera blit";
-		camerablit_label = App->gui->CreateUILabel({ 80,260 }, label, this, pause_menu);
-
-		label.interactive = true;
-
-		label.text = "back";
-		back_label = App->gui->CreateUILabel({ 40,360 }, label, this, pause_menu);
-
-		UIButton_Info checkbox;
-		checkbox.checkbox = true;
-		checkbox.tex_name = CHECKBOX_;
-		checkbox.normal_tex_area = { 0,0,11,7 };
-		checkbox.hover_tex_area = { 0,0,11,7 };
-		checkbox.pressed_tex_area = { 12,0,11,7 };
-		checkbox.draggable = true;
-
-		UIImage_Info slider;
-		slider.tex_name = SLIDER_;
-
-		App->gui->CreateUIImage({ 280,80 },slider, this, pause_menu);
-
-		slider.tex_name = POINTER_SLIDER_;
-
-		iPoint pos_music_pointer;
-		
-		if (App->audio->music_volume > 0 && App->audio->music_volume <= 25.6f)
-			pos_music_pointer = { 273,98 };
-		else if (App->audio->music_volume > 25.6f && App->audio->music_volume <= 51.2f)
-			pos_music_pointer = { 288,98 };
-		else if (App->audio->music_volume > 51.2f && App->audio->music_volume <= 76.8f)
-			pos_music_pointer = { 303,98 };
-		else if (App->audio->music_volume > 76.8f && App->audio->music_volume <= 102.4f)
-			pos_music_pointer = { 318,98 };
-		else if (App->audio->music_volume > 102.4f && App->audio->music_volume <= 128)
-			pos_music_pointer = { 333,98 };
-
-		slider_pointer_music = App->gui->CreateUIImage(pos_music_pointer, slider, this, pause_menu);
-
-		UIButton_Info button;
-		button.tex_name = BUTTON_SLIDER_;
-		button.normal_tex_area = {0,0,4,6};
-		button.hover_tex_area = { 0,0,4,6 };
-		button.pressed_tex_area = {5,0,4,6};
-		
-		slider_button_l = App->gui->CreateUIButton({ 260,79 }, button, this, pause_menu);
-
-		button.tex_name = BUTTON_SLIDER2_;
-
-		slider_button_r = App->gui->CreateUIButton({ 347,79 }, button, this, pause_menu);
-
-		if (App->toCap)
-			checkbox.checkbox_checked = true;
-
-		to_cap_checkbox = App->gui->CreateUIButton({ 300,180 }, checkbox, this, pause_menu);
-
-		if (App->map->camera_blit)
-			checkbox.checkbox_checked = true;
-		else
-			checkbox.checkbox_checked = false;
-
-		camerablit_checkbox = App->gui->CreateUIButton({ 300,280 }, checkbox, this, pause_menu);
-
-		//TODO CLEAN THIS CODE
-	}
-
-	else if (UIelem == (UIElement*)to_cap_checkbox && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
-	{
-		App->toCap = !App->toCap;
-	}
-
-	else if (UIelem == (UIElement*)slider_button_l && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
-	{
-		if (slider_pointer_music->GetLocalPos().x != 273) {
-			slider_pointer_music->DecreasePos({ 15,0 });
-			App->audio->ChangeMusicVolume(false);
+	case UIEvents::MOUSE_ENTER_:
+	
+		for (uint i = 0; i < 3; ++i) { // Labels: RESUME_, SAVE_, OPTIONS_, QUIT_
+			if (UIelem == (UIElement*)menu_pause_labels[i]) {
+				menu_pause_labels[i]->IncreasePos(LABELS_POS_MOUSE_ENTER);
+				continue;
+			}
 		}
-	}
 
-	else if (UIelem == (UIElement*)slider_button_r && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
-	{
-		if (slider_pointer_music->GetLocalPos().x != 333) {
-			slider_pointer_music->IncreasePos({ 15,0 });
-			App->audio->ChangeMusicVolume(true);
+		break;
+	
+	case UIEvents::MOUSE_LEAVE_:
+
+		for (uint i = 0; i < 3; ++i) { // Labels: RESUME_, SAVE_, OPTIONS_, QUIT_
+			if (UIelem == (UIElement*)menu_pause_labels[i]) {
+				menu_pause_labels[i]->DecreasePos(LABELS_POS_MOUSE_ENTER);
+				continue;
+			}
 		}
-	}
 
-	else if (UIelem == (UIElement*)camerablit_checkbox && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
-	{
-		App->map->camera_blit = !App->map->camera_blit;
-	}
+		break;
 
-	else if (UIelem == (UIElement*)back_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
-	{
-		ClosingPauseMenu();
-		OpeningPauseMenu();
-	}
+	case UIEvents::MOUSE_LEFT_CLICK_:
 
-	else if (UIelem == (UIElement*)save_label && UIevent == UIEvents::MOUSE_LEFT_CLICK_)
-	{
-		App->SaveGame();
-		last_index = index;
-	}
+		if (UIelem == (UIElement*)menu_pause_labels[RESUME_])
+		{
+			pause = false;
+			App->gui->DestroyElement(pause_menu); // Closing pause menu
+		}
+
+		else if (UIelem == (UIElement*)menu_pause_labels[SAVE_])
+		{
+			App->SaveGame();
+			last_index = index;
+		}
+
+		else if (UIelem == (UIElement*)menu_pause_labels[QUIT_])
+		{
+			App->quit_game = true;
+		}
+
+		else if (UIelem == (UIElement*)menu_pause_labels[OPTIONS_])
+		{
+			for (uint i = 0; i < 5; ++i) {
+				App->gui->DestroyElement(menu_pause_labels[i]);
+			}
+
+			UILabel_Info label;
+			label.font_name = SOBAD_;
+			label.normal_color = { 0,0,0,255 };
+			label.draggable = false;
+			label.interactive = false;
+
+			label.text = "volume";
+			App->gui->CreateUILabel({ 80,60 }, label, this, pause_menu); // Volume label
+
+			label.text = "cap_frames";
+			App->gui->CreateUILabel({ 80,160 }, label, this, pause_menu); // Cap_frames label
+
+			label.text = "camera blit";
+			App->gui->CreateUILabel({ 80,260 }, label, this, pause_menu); // Camera_blit label
+
+			label.interactive = true;
+
+			label.text = "back";
+			menu_pause_labels[BACK_] = App->gui->CreateUILabel({ 40,360 }, label, this, pause_menu); // Back label
+
+			UIButton_Info checkbox;
+			checkbox.checkbox = true;
+			checkbox.tex_name = CHECKBOX_;
+			checkbox.normal_tex_area = { 0,0,11,7 };
+			checkbox.hover_tex_area = { 0,0,11,7 };
+			checkbox.pressed_tex_area = { 12,0,11,7 };
+			checkbox.draggable = true;
+
+			UIImage_Info slider;
+			slider.tex_name = SLIDER_;
+
+			App->gui->CreateUIImage({ 280,80 }, slider, this, pause_menu);
+
+			slider.tex_name = POINTER_SLIDER_;
+
+			iPoint pos_music_pointer;
+
+			if (App->audio->music_volume > 0 && App->audio->music_volume <= 25.6f)
+				pos_music_pointer = { 273,98 };
+			else if (App->audio->music_volume > 25.6f && App->audio->music_volume <= 51.2f)
+				pos_music_pointer = { 288,98 };
+			else if (App->audio->music_volume > 51.2f && App->audio->music_volume <= 76.8f)
+				pos_music_pointer = { 303,98 };
+			else if (App->audio->music_volume > 76.8f && App->audio->music_volume <= 102.4f)
+				pos_music_pointer = { 318,98 };
+			else if (App->audio->music_volume > 102.4f && App->audio->music_volume <= 128)
+				pos_music_pointer = { 333,98 };
+
+			slider_pointer_music = App->gui->CreateUIImage(pos_music_pointer, slider, this, pause_menu);
+
+			UIButton_Info button;
+			button.tex_name = BUTTON_SLIDER_;
+			button.normal_tex_area = { 0,0,4,6 };
+			button.hover_tex_area = { 0,0,4,6 };
+			button.pressed_tex_area = { 5,0,4,6 };
+
+			slider_buttons[0] = App->gui->CreateUIButton({ 260,79 }, button, this, pause_menu); // Left slider button
+
+			button.tex_name = BUTTON_SLIDER2_;
+
+			slider_buttons[1] = App->gui->CreateUIButton({ 347,79 }, button, this, pause_menu); // Right slider button
+
+			if (App->toCap)
+				checkbox.checkbox_checked = true;
+
+			menu_pause_checkbox[0] = App->gui->CreateUIButton({ 300,180 }, checkbox, this, pause_menu); // Cap_frames checkbox
+
+			if (App->map->camera_blit)
+				checkbox.checkbox_checked = true;
+			else
+				checkbox.checkbox_checked = false;
+
+			menu_pause_checkbox[1] = App->gui->CreateUIButton({ 300,280 }, checkbox, this, pause_menu); // Camera_blit checkbox
+
+		}
+
+		else if (UIelem == (UIElement*)menu_pause_checkbox[0]) // Cap_frames checkbox
+		{
+			App->toCap = !App->toCap;
+		}
+
+		else if (UIelem == (UIElement*)menu_pause_checkbox[1]) // Camera_blit checkbox
+		{
+			App->map->camera_blit = !App->map->camera_blit;
+		}
+
+		else if (UIelem == (UIElement*)slider_buttons[0]) //Left slider button
+		{
+			if (slider_pointer_music->GetLocalPos().x != 273) {
+				slider_pointer_music->DecreasePos({ 15,0 });
+				App->audio->ChangeMusicVolume(false);
+			}
+		}
+
+		else if (UIelem == (UIElement*)slider_buttons[1]) // Right slider button
+		{
+			if (slider_pointer_music->GetLocalPos().x != 333) {
+				slider_pointer_music->IncreasePos({ 15,0 });
+				App->audio->ChangeMusicVolume(true);
+			}
+		}
+
+		else if (UIelem == (UIElement*)menu_pause_labels[BACK_])
+		{
+			App->gui->DestroyElement(pause_menu); // Closing pause menu
+			OpeningPauseMenu();
+		}
+
+		break;
+	}	
 
 }

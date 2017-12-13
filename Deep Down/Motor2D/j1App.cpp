@@ -152,7 +152,7 @@ bool j1App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if (input->GetWindowEvent(WE_QUIT) == true)
+	if (input->GetWindowEvent(WE_QUIT) == true || quit_game)
 		ret = false;
 
 	if (ret == true)

@@ -5,12 +5,24 @@
 
 #include "Animation.h"
 
+#define LABELS_POS_MOUSE_ENTER {3,0}
+
 struct SDL_Texture;
 struct UILifeBar;
 struct UIWindow;
 struct UILabel;
 struct UIButton;
 struct UIImage;
+
+enum names_labels_pause
+{
+	RESUME_,
+	SAVE_,
+	OPTIONS_,
+	QUIT_,
+	BACK_,
+	NO_NAME_
+};
 
 class j1Scene : public j1Module
 {
@@ -52,8 +64,6 @@ public:
 
 	void OpeningPauseMenu();
 
-	void ClosingPauseMenu();
-
 	void MoveCamera();
 
 	// Camera
@@ -70,7 +80,6 @@ public:
 
 	bool god = false;
 	bool pause = false;
-	bool quit_game = false;
 
 private:
 
@@ -80,25 +89,16 @@ private:
 	p2SString song2 = nullptr;
 	p2SString fx_names[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
 
-	float countdown_to_die;
+	float countdown_to_die = 0.0f;
 	uint volume_adjustment = 0;
 
 	iPoint mouse = { 0,0 };
-	UILifeBar* progress_bar;
-	UIWindow* pause_menu;
-	UILabel* resume_label;
-	UILabel* options_label;
-	UILabel* save_label;
-	UILabel* quit_label;
-	UILabel* back_label;
-	UILabel* to_cap_label;
-	UILabel* volume_label;
-	UILabel* camerablit_label;
-	UIButton* to_cap_checkbox;
-	UIButton* camerablit_checkbox;
-	UIButton* slider_button_r;
-	UIButton* slider_button_l;
-	UIImage* slider_pointer_music;
+	UILifeBar* progress_bar = nullptr;
+	UIWindow* pause_menu = nullptr;
+	UILabel* menu_pause_labels[5] = { nullptr, nullptr, nullptr, nullptr, nullptr};
+	UIButton* menu_pause_checkbox[2] = { nullptr, nullptr };
+	UIButton* slider_buttons[2] = { nullptr, nullptr };
+	UIImage* slider_pointer_music = nullptr;
 };
 
 #endif // __j1SCENE1_H__
