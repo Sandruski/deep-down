@@ -133,6 +133,7 @@ public:
 
 	uint capFrames = 0;
 	bool toCap = true;
+	bool quit_game = false;
 
 };
 
