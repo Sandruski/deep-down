@@ -16,6 +16,7 @@ struct UILifeBar_Info {
 
 	int life = 0;
 	iPoint life_bar_position = { 0,0 };
+	SDL_Rect backgorund_life_bar = { 0,0 };
 	SDL_Rect bar = { 0,0,0,0 };
 
 	bool draggable = false;

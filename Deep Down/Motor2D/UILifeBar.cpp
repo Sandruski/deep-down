@@ -31,21 +31,17 @@ void UILifeBar::Update(float dt)
 		HandleInput();
 
 	life_bar.bar.w = life_bar.life;
-
-	iPoint position;
-	position.x = -App->render->camera.x / App->win->GetScale();
-	position.y = -App->render->camera.y / App->win->GetScale();
-	SetLocalPos(position);
 }
 
 void UILifeBar::Draw() const
 {
-	iPoint blit_pos = { 0,0 };
+	iPoint blit_pos;
 	int scale = App->win->GetScale();
-	blit_pos.x = GetScreenPos().x - App->render->camera.x / scale;
-	blit_pos.y = GetScreenPos().y - App->render->camera.y / scale;
+	blit_pos.x = (GetScreenPos().x - App->render->camera.x) / scale;
+	blit_pos.y = (GetScreenPos().y - App->render->camera.y) / scale;
 
-	App->render->Blit(tex, life_bar.life_bar_position.x, life_bar.life_bar_position.y, &life_bar.bar);
+	App->render->Blit(tex, blit_pos.x + life_bar.life_bar_position.x, blit_pos.y + life_bar.life_bar_position.y, &life_bar.backgorund_life_bar);
+	App->render->Blit(tex, blit_pos.x + life_bar.life_bar_position.x, blit_pos.y + life_bar.life_bar_position.y, &life_bar.bar);
 	App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
 
 	if (App->gui->debug_draw)

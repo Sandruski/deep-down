@@ -66,6 +66,7 @@ public:
 
 	void MoveCamera();
 
+public:
 	// Camera
 	float up = false, down = false, left = false, right = false;
 	uint width = 0;
@@ -81,6 +82,10 @@ public:
 	bool god = false;
 	bool pause = false;
 
+	// Cats score
+	uint number_cats_count = 0;
+	UILabel* cats_score = nullptr;
+
 private:
 
 	p2SString map1 = nullptr;
@@ -90,10 +95,16 @@ private:
 	p2SString fx_names[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
 
 	float countdown_to_die = 0.0f;
+	float count_time = 0.0f;
 	uint volume_adjustment = 0;
 
 	iPoint mouse = { 0,0 };
+
+	// Ingame UI
 	UILifeBar* progress_bar = nullptr;
+	UILabel* countdown_time = nullptr;
+
+	// Pause_menu
 	UIWindow* pause_menu = nullptr;
 	UILabel* menu_pause_labels[5] = { nullptr, nullptr, nullptr, nullptr, nullptr};
 	UIButton* menu_pause_checkbox[2] = { nullptr, nullptr };

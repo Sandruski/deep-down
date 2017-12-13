@@ -7,6 +7,8 @@
 
 #include "j1Collision.h"
 #include "j1Particles.h"
+#include "j1Scene.h"
+#include "UILabel.h"
 
 #include "j1Audio.h"
 
@@ -447,18 +449,32 @@ void Cat::GeneralStatesMachine() {
 
 void Cat::OnCollision(Collider* c1, Collider* c2)
 {
-	if (c2->type == COLLIDER_ARROW) {
+
+	switch (c2->type)
+	{
+	case COLLIDER_ARROW:
+
 		if (right_death)
 			catState = CatState::rc_dead;
 		else
 			catState = CatState::lc_dead;
-	}
-	else if (c2->type == COLLIDER_PLAYER) {
+
+		App->scene->number_cats_count += 1;
+		App->scene->cats_score->SetText(p2SString("0%i", App->scene->number_cats_count));
+		break;
+
+	case COLLIDER_PLAYER:
+
 		if (right_death)
 			catState = CatState::rc_run;
 		else
 			catState = CatState::lc_run;
+
+		App->scene->number_cats_count += 1;
+		App->scene->cats_score->SetText(p2SString("0%i", App->scene->number_cats_count));
+		break;
 	}
+	
 }
 
 void Cat::SetCatState(uint state) 

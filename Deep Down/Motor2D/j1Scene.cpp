@@ -73,17 +73,31 @@ bool j1Scene::Start()
 	UILifeBar_Info girl_life_bar;
 	girl_life_bar.bar = { 86,532,222,4 };
 	girl_life_bar.life = 222;
-	girl_life_bar.life_bar_position = { 678,209 };
+	girl_life_bar.life_bar_position = { 5,1 };
 	girl_life_bar.tex_name = DSUI_;
 	girl_life_bar.tex_area = { 80,524,230,8 };
-
-	progress_bar = App->gui->CreateUILifeBar({100,100}, girl_life_bar, this);
+	girl_life_bar.backgorund_life_bar = { 85,538,223,4 };
+	girl_life_bar.horizontal_orientation = CENTER_;
+	progress_bar = App->gui->CreateUILifeBar({512,668}, girl_life_bar, this);
 
 	UIImage_Info cats_obtained;
 	cats_obtained.tex_name = CAT_SCORE_;
 	
 	App->gui->CreateUIImage({ 800,40 }, cats_obtained, this);
 
+	UILabel_Info numbers;
+	numbers.font_name = BLACK_BLOC_;
+	numbers.interactive = false;
+	numbers.text = "00";
+	numbers.draggable = false;
+
+	cats_score = App->gui->CreateUILabel({ 885,45 }, numbers);
+
+	numbers.text = "00";
+	numbers.font_name = DIGITAL7_;
+	countdown_time = App->gui->CreateUILabel({ 50,50 }, numbers);
+
+	// Start entities
 	if (!loading)
 		App->entities->Start();
 
@@ -142,13 +156,19 @@ bool j1Scene::Update(float dt)
 	// Set window title
 	App->input->GetMousePosition(mouse.x, mouse.y);
 
-	if (countdown_to_die >= 2.0f)
+	if (countdown_to_die >= 0.5f)
 	{
 		progress_bar->DecreaseLifeProgress(1);
 		countdown_to_die = 0.0f;
 	}
 	countdown_to_die += dt;
-			
+
+	count_time += dt;
+	if (count_time < 10)
+		countdown_time->SetText(p2SString("0%i", (int)count_time));
+	else
+		countdown_time->SetText(p2SString("%i", (int)count_time));
+
 	return true;
 }
 
