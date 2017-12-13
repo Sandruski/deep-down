@@ -131,6 +131,9 @@ bool j1Menu::Start()
 	label.text = "PRESS ANY BUTTON";
 	label.horizontal_orientation = CENTER_;
 	press_any_button = App->gui->CreateUILabel({ (int)width / 2, (int)height - 150 }, label, this);
+
+	label.text = "SKIP";
+	skip = App->gui->CreateUILabel({ 50, 30 }, label, this);
 	//_press_any_button
 
 	UIButton_Info button;
@@ -178,9 +181,14 @@ bool j1Menu::Update(float dt)
 	float normalized = MIN(1.0f, (float)now / (float)total_time);
 	float normalized2 = MIN(1.0f, (float)now / (float)total_time);
 	normalized2 = 1 - normalized2;
+	float normalized3 = MIN(1.0f, (float)now / (float)total_time);
+	normalized3= 1 - normalized3;
+	float normalized4 = MIN(1.0f, (float)now / (float)total_time);
 
 	float alpha = 255.0f * normalized;
 	float alpha2 = 255.0f * normalized2;
+	float alpha3 = 255.0f * normalized3;
+	float alpha4 = 255.0f * normalized3;
 
 	// Time variables
 	float press_any_button_speed = 1.5f;
@@ -299,6 +307,38 @@ bool j1Menu::Update(float dt)
 
 	case MenuState::TITLE_TO_START_:
 
+		// Skip
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+			is_invisible = true;
+			for (uint j = 0; j < 8; ++j)
+				letters[j]->SetColor({ 255,255,255,255 });
+			cat->position = { 416,496 };
+			start_time = SDL_GetTicks();
+			catPosition = 7;
+			menuState = MenuState::TITLE_TO_MENU_PAUSE_;
+			break;
+		}
+
+		if (!is_invisible) {
+			skip->SetColor({ 255,255,255,(Uint8)alpha4 });
+
+			if (alpha4 == 255.0f) {
+				alpha3 = 255.0f;
+				start_time = SDL_GetTicks();
+				is_invisible = true;
+			}
+		}
+		else {
+			skip->SetColor({ 255,255,255,(Uint8)alpha3 });
+
+			if (alpha3 == 0.0f) {
+				alpha4 = 0.0f;
+				start_time = SDL_GetTicks();
+				is_invisible = false;
+			}
+		}
+		//_skip
+
 		if (print_title) {
 			if (!visible_again) {
 				letters[i]->SetColor({ 255,255,255,(Uint8)alpha });
@@ -349,7 +389,7 @@ bool j1Menu::Update(float dt)
 				alpha2 = 255.0f;
 				total_time = (Uint32)(scene_seconds * 0.5f * 1000.0f);
 				start_time = SDL_GetTicks();
-				menuState = MenuState::TITLE_TO_MENU_PAUSE_PAUSE_;
+				menuState = MenuState::TITLE_TO_MENU_PAUSE_;
 				break;
 			}
 
@@ -377,7 +417,7 @@ bool j1Menu::Update(float dt)
 
 		break;
 
-	case MenuState::TITLE_TO_MENU_PAUSE_PAUSE_:
+	case MenuState::TITLE_TO_MENU_PAUSE_:
 
 		black_screen_image->SetColor({ 0,0,0,(Uint8)alpha2 });
 		press_any_button->SetColor({ 0,0,0,(Uint8)alpha2 });

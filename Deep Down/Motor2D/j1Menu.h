@@ -15,7 +15,7 @@ enum MenuState {
 	NO_MENU_PAUSE_PAUSE_,
 	TITLE_TO_START_,
 	PRESS_START_,
-	TITLE_TO_MENU_PAUSE_PAUSE_,
+	TITLE_TO_MENU_PAUSE_,
 	APPEAR_MENU_PAUSE_OPTIONS_,
 	IN_MAIN_MENU_,
 	IN_SETTINGS_,
@@ -64,6 +64,7 @@ private:
 	// Game title
 	UILabel* letters[8];
 	UILabel* press_any_button = nullptr;
+	UILabel* skip = nullptr;
 	UIButton* MENU_PAUSE_buttons[5];
 	UILabel* MENU_PAUSE_options[5];
 
