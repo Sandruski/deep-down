@@ -344,15 +344,13 @@ bool j1Menu::Update(float dt)
 
 			static SDL_Event event;
 
-			if (SDL_PollEvent(&event) != 0) {
-				if (event.type == SDL_KEYDOWN) {
-					alpha = 0.0f;
-					alpha2 = 255.0f;
-					total_time = (Uint32)(scene_seconds * 0.5f * 1000.0f);
-					start_time = SDL_GetTicks();
-					menuState = MenuState::TITLE_TO_MENU_PAUSE_PAUSE_;
-					break;
-				}
+			if (App->input->IsAnyKeyPressed()) {
+				alpha = 0.0f;
+				alpha2 = 255.0f;
+				total_time = (Uint32)(scene_seconds * 0.5f * 1000.0f);
+				start_time = SDL_GetTicks();
+				menuState = MenuState::TITLE_TO_MENU_PAUSE_PAUSE_;
+				break;
 			}
 
 			if (!is_invisible) {

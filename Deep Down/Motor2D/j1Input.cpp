@@ -59,6 +59,8 @@ bool j1Input::PreUpdate()
 	{
 		if (keys[i] == 1)
 		{
+			key_pressed = true;
+
 			if (keyboard[i] == KEY_IDLE)
 				keyboard[i] = KEY_DOWN;
 			else
@@ -159,4 +161,11 @@ void j1Input::GetMouseMotion(int& x, int& y)
 {
 	x = mouse_motion_x;
 	y = mouse_motion_y;
+}
+
+bool j1Input::IsAnyKeyPressed() 
+{
+	bool is_any_key_pressed = key_pressed;
+	key_pressed = false;
+	return is_any_key_pressed;
 }

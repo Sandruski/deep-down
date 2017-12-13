@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="44" height="34" tilewidth="16" tileheight="16" nextobjectid="3">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="44" height="34" tilewidth="16" tileheight="16" nextobjectid="3">
  <tileset firstgid="1" name="Background" tilewidth="16" tileheight="16" tilecount="187" columns="17">
-  <image source="../../../../../../Deep-Down/Deep Down/Game/Assets/Sprites/Maps/Background.png" width="272" height="190"/>
+  <image source="Background.png" width="272" height="190"/>
  </tileset>
  <tileset firstgid="188" name="GeneralTileset" tilewidth="16" tileheight="16" tilecount="992" columns="16">
-  <image source="../../../../../../Deep-Down/Deep Down/Game/Assets/Sprites/Maps/GeneralTileset.png" width="256" height="1000"/>
+  <image source="GeneralTileset.png" width="256" height="1000"/>
  </tileset>
  <tileset firstgid="1180" name="Trees" tilewidth="16" tileheight="16" tilecount="340" columns="34">
-  <image source="../../../../../../Deep-Down/Deep Down/Game/Assets/Sprites/Maps/Trees.png" width="544" height="160"/>
+  <image source="Trees.png" width="544" height="160"/>
  </tileset>
  <layer name="Parallax" width="44" height="34">
   <properties>
@@ -4515,11 +4515,13 @@
  <objectgroup name="Cats">
   <object id="1" name="Cat1" type="6" x="272" y="48" width="16" height="16">
    <properties>
+    <property name="right_death" type="bool" value="false"/>
     <property name="state1" type="int" value="0"/>
    </properties>
   </object>
   <object id="2" name="Cat2" type="6" x="416" y="496" width="16" height="16">
    <properties>
+    <property name="right_death" type="bool" value="false"/>
     <property name="state1" type="int" value="1"/>
    </properties>
   </object>
