@@ -30,8 +30,16 @@ public:
 	void SetColor(const SDL_Color color);
 	SDL_Color GetColor();
 
+	void ResetFade();
+	bool FromAlphaToAlphaFade(float from = 0.0f, float to = 0.0f, float seconds = 1.0f);
+
 private:
 	UIImage_Info image;
+
+	// Fade parameters
+	float total_time = 0.0f;
+	float start_time = 0.0f;
+	bool reset = true;
 };
 
 #endif // __UIImage_H__

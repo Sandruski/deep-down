@@ -82,16 +82,12 @@ private:
 	UIImage* black_screen_image = nullptr;
 
 	uint i = 0;
+	float timer = 0;
 
 	bool print_title = false;
 	bool blit_cat = true;
 	bool is_invisible = true;
 	bool visible_again = false;
-
-	// Time parameters
-	Uint32 start_time = 0;
-	Uint32 total_time = 0;
-	float timer = 0;
 
 	// Screen parameters
 	uint width = 0, height = 0;

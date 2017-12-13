@@ -294,14 +294,53 @@ bool j1Gui::ClearMapTextures()
 	return ret;
 }
 
-const SDL_Texture* j1Gui::GetTexture(Tex_Names name)
+_TTF_Font* j1Gui::GetFont(Font_Names font_name)
 {
-	return map_textures[name];
+	return map_fonts[font_name];
+
+}
+const SDL_Texture* j1Gui::GetTexture(Tex_Names tex_name)
+{
+	return map_textures[tex_name];
 }
 
-_TTF_Font* j1Gui::GetFont(Font_Names name)
+void j1Gui::SetTextureAlphaMod(Tex_Names tex_name, float alpha) 
 {
-	return map_fonts[name];
+	SDL_SetTextureAlphaMod((SDL_Texture*)GetTexture(tex_name), (Uint8)alpha);
+}
+
+void j1Gui::ResetAlpha() 
+{
+	reset = true;
+}
+
+float j1Gui::IncreaseDecreaseAlpha(float from, float to, float seconds)
+{
+	float calculated_alpha = 0.0f;
+
+	if (reset) {
+		start_time = SDL_GetTicks();
+		reset = false;
+	}
+
+	// Math operations
+	total_time = (Uint32)(seconds * 0.5f * 1000.0f);
+
+	Uint32 now = (SDL_GetTicks() - start_time);
+	float normalized = MIN(1.0f, (float)now / (float)total_time);
+	float normalized2 = MIN(1.0f, (float)now / (float)total_time);
+	normalized2 = 1 - normalized2;
+
+	float alpha = (to - from) * normalized;
+	float alpha2 = (from - to) * normalized2;
+
+	// Color change
+	if (from > to)
+		calculated_alpha = alpha2;
+	else
+		calculated_alpha = alpha;
+
+	return calculated_alpha;
 }
 
 void j1Gui::SetUpDraggingChildren(UIElement* elem, bool drag)

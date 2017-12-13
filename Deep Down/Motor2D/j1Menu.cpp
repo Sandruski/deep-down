@@ -80,7 +80,6 @@ bool j1Menu::Start()
 	// Game title
 	UILabel_Info label;
 	label.font_name = ZELDA_;
-	label.normal_color = White_;
 	label.interactive = false;
 
 	label.text = "D";
@@ -183,6 +182,11 @@ bool j1Menu::Start()
 	label.text = "Exit";
 	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[++i]);
 	i = 0;
+
+	for (i; i < 5; ++i)
+		main_menu_options[i]->SetColor({ main_menu_options[i]->GetColor().r,main_menu_options[i]->GetColor().g,main_menu_options[i]->GetColor().b,0 });
+
+	i = 0;
 	//_create_UI_elements
 
 	// Cat
@@ -192,7 +196,6 @@ bool j1Menu::Start()
 	cat = (Cat*)App->entities->SpawnEntity(entity);
 
 	float cat_seconds = 2.5f;
-	total_time = (Uint32)(cat_seconds * 0.5f * 1000.0f);
 
 	cat_position_increment[i] = 45.0f;
 	cat_position_increment[++i] = 65.0f;
@@ -216,24 +219,13 @@ bool j1Menu::Update(float dt)
 {
 	bool ret = true;
 
-	Uint32 now = (SDL_GetTicks() - start_time);
-	float normalized = MIN(1.0f, (float)now / (float)total_time);
-	float normalized2 = MIN(1.0f, (float)now / (float)total_time);
-	normalized2 = 1 - normalized2;
-	float normalized3 = MIN(1.0f, (float)now / (float)total_time);
-	normalized3= 1 - normalized3;
-	float normalized4 = MIN(1.0f, (float)now / (float)total_time);
-
-	float alpha = 255.0f * normalized;
-	float alpha2 = 255.0f * normalized2;
-	float alpha3 = 255.0f * normalized3;
-	float alpha4 = 255.0f * normalized3;
-
 	// Time variables
 	float press_any_button_speed = 1.5f;
 	float press_any_button_seconds = 2.0f;
+	float skip_button_speed = 2.5f;
 	float fade_seconds = 2.0f;
 	float scene_seconds = 5.0f;
+	float options_seconds = 3.0f;
 
 	// Cat variables
 	iPoint cat_final_position = { 627,190 };
@@ -266,12 +258,15 @@ bool j1Menu::Update(float dt)
 		cat->position.y -= cat_jump.y * dt;
 
 		if (cat->position.x >= camera_start_position.x + cat_position_increment[1]) {
+			
+			// Start title animation
 			print_title = true;
+			/*
 			start_time = SDL_GetTicks();
 			now = (SDL_GetTicks() - start_time);
 			normalized = MIN(1.0f, (float)now / (float)total_time);
 			alpha = 255.0f * normalized;
-
+			*/
 			cat->SetCatState(CatState::rc_run);
 			menuCatState = MenuCatState::MC_RUN_FIRST_LETTER_;
 			break;
@@ -370,6 +365,10 @@ bool j1Menu::Update(float dt)
 		break;
 	}
 
+	bool is_button_invisible = false;
+	bool is_black_screen_image_invisible = false;
+	float alpha = 0.0f;
+
 	// Update menu
 	switch (menuState) {
 
@@ -388,37 +387,19 @@ bool j1Menu::Update(float dt)
 				cat->position = { (float)cat_final_position.x, (float)cat_final_position.y };
 				menuCatState = MenuCatState::MC_AT_GROUND_;
 
-				start_time = SDL_GetTicks();
-				
 				menuState = MenuState::TRANSITION_TO_MAIN_MENU_;
 				break;
 			}
 
-			if (menuCatState < MenuCatState::MC_ROLL_SECOND_LETTER_) {
-				if (!is_invisible) {
-					skip->SetColor({ skip->GetColor().r,skip->GetColor().g,skip->GetColor().b,(Uint8)alpha4 });
-
-					if (alpha4 == 255.0f) {
-						alpha3 = 255.0f;
-						start_time = SDL_GetTicks();
-						is_invisible = true;
-					}
-				}
-				else {
-					skip->SetColor({ skip->GetColor().r,skip->GetColor().g,skip->GetColor().b,(Uint8)alpha3 });
-
-					if (alpha3 == 0.0f) {
-						alpha4 = 0.0f;
-						start_time = SDL_GetTicks();
-						is_invisible = false;
-					}
-				}
+			if (menuCatState <= MenuCatState::MC_RUN_WORD_) {
+				skip->IntermitentFade(skip_button_speed);
 			}
 			else
 				skip->SetColor({ skip->GetColor().r,skip->GetColor().g,skip->GetColor().b,0 });
 		}
 		//_skip
 
+		/*
 		if (print_title) {
 			if (!visible_again) {
 				title_letters[i]->SetColor({ title_letters[i]->GetColor().r,title_letters[i]->GetColor().g,title_letters[i]->GetColor().b,(Uint8)alpha });
@@ -456,41 +437,23 @@ bool j1Menu::Update(float dt)
 				}
 			}
 		}
+		*/
+
+		menuState = MenuState::PRESS_ANY_BUTTON_;
+
 		break;
 
 	case MenuState::PRESS_ANY_BUTTON_:
 
 		if (timer >= press_any_button_seconds) {
 
-			static SDL_Event event;
-
 			if (App->input->IsAnyKeyPressed()) {
-				alpha = 0.0f;
-				alpha2 = 255.0f;
-				total_time = (Uint32)(scene_seconds * 0.5f * 1000.0f);
-				start_time = SDL_GetTicks();
+				press_any_button->ResetFade();
 				menuState = MenuState::TRANSITION_TO_MAIN_MENU_;
 				break;
 			}
-
-			if (!is_invisible) {
-				press_any_button->SetColor({ press_any_button->GetColor().r,press_any_button->GetColor().g,press_any_button->GetColor().b,(Uint8)alpha });
-
-				if (alpha == 255.0f) {
-					alpha2 = 255.0f;
-					start_time = SDL_GetTicks();
-					is_invisible = true;
-				}
-			}
-			else {
-				press_any_button->SetColor({ press_any_button->GetColor().r,press_any_button->GetColor().g,press_any_button->GetColor().b,(Uint8)alpha2 });
-
-				if (alpha2 == 0.0f) {
-					alpha = 0.0f;
-					start_time = SDL_GetTicks();
-					is_invisible = false;
-				}
-			}
+			
+			press_any_button->IntermitentFade(press_any_button_seconds);
 		}
 		else
 			timer += 1.0f * dt;
@@ -499,11 +462,10 @@ bool j1Menu::Update(float dt)
 
 	case MenuState::TRANSITION_TO_MAIN_MENU_:
 
-		black_screen_image->SetColor({ black_screen_image->GetColor().r,black_screen_image->GetColor().g,black_screen_image->GetColor().b,(Uint8)alpha2 });
-		press_any_button->SetColor({ press_any_button->GetColor().r,press_any_button->GetColor().g,press_any_button->GetColor().b,(Uint8)alpha2 });
+		is_button_invisible = press_any_button->FromAlphaToAlphaFade(press_any_button->GetColor(false).a, 0.0f, scene_seconds);
+		is_black_screen_image_invisible = black_screen_image->FromAlphaToAlphaFade(black_screen_image->GetColor().a, 0.0f, scene_seconds);
 
-		if (alpha2 == 0.0f) {
-			start_time = SDL_GetTicks();
+		if (is_button_invisible && is_black_screen_image_invisible) {
 			menuState = MenuState::MAIN_MENU_OPTIONS_ANIMATION_;
 			break;
 		}
@@ -511,17 +473,18 @@ bool j1Menu::Update(float dt)
 
 	case MenuState::MAIN_MENU_OPTIONS_ANIMATION_:
 
-		SDL_SetTextureAlphaMod((SDL_Texture*)App->gui->GetTexture(MAIN_MENU_), (Uint8)alpha);
+		alpha = App->gui->IncreaseDecreaseAlpha(0.0f, 255.0f, options_seconds);
+		App->gui->SetTextureAlphaMod(Tex_Names::MAIN_MENU_, alpha);
 
-		main_menu_options[0]->SetColor({ main_menu_options[0]->GetColor().r,main_menu_options[0]->GetColor().g,main_menu_options[0]->GetColor().b,(Uint8)alpha }, true);
+		main_menu_options[0]->SetColor({ main_menu_options[0]->GetColor().r,main_menu_options[0]->GetColor().g,main_menu_options[0]->GetColor().b,(Uint8)alpha });
 		if (alpha >= 1.0f * (255.0f / 5.0f))
-			main_menu_options[1]->SetColor({ main_menu_options[1]->GetColor().r,main_menu_options[1]->GetColor().g,main_menu_options[1]->GetColor().b,(Uint8)alpha }, true);
+			main_menu_options[1]->SetColor({ main_menu_options[1]->GetColor().r,main_menu_options[1]->GetColor().g,main_menu_options[1]->GetColor().b,(Uint8)alpha });
 		if (alpha >= 2.0f * (255.0f / 5.0f))
-			main_menu_options[2]->SetColor({ main_menu_options[2]->GetColor().r,main_menu_options[2]->GetColor().g,main_menu_options[2]->GetColor().b,(Uint8)alpha }, true);
+			main_menu_options[2]->SetColor({ main_menu_options[2]->GetColor().r,main_menu_options[2]->GetColor().g,main_menu_options[2]->GetColor().b,(Uint8)alpha });
 		if (alpha >= 3.0f * (255.0f / 5.0f))
-			main_menu_options[3]->SetColor({ main_menu_options[3]->GetColor().r,main_menu_options[3]->GetColor().g,main_menu_options[3]->GetColor().b,(Uint8)alpha }, true);
+			main_menu_options[3]->SetColor({ main_menu_options[3]->GetColor().r,main_menu_options[3]->GetColor().g,main_menu_options[3]->GetColor().b,(Uint8)alpha });
 		if (alpha >= 4.0f * (255.0f / 5.0f))
-			main_menu_options[4]->SetColor({ main_menu_options[4]->GetColor().r,main_menu_options[4]->GetColor().g,main_menu_options[4]->GetColor().b,(Uint8)alpha }, true);
+			main_menu_options[4]->SetColor({ main_menu_options[4]->GetColor().r,main_menu_options[4]->GetColor().g,main_menu_options[4]->GetColor().b,(Uint8)alpha });
 
 		if (alpha == 255.0f) {
 
@@ -629,7 +592,7 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 
 		for (uint i = 0; i < 5; ++i) {
 			if (UIelem == main_menu_buttons[i]) {
-				main_menu_options[i]->SetColor(main_menu_options[i]->GetColor());
+				main_menu_options[i]->SetColor(main_menu_options[i]->GetColor(true));
 			}
 		}
 		break;

@@ -12,7 +12,7 @@
 #define Black_ { 0,0,0,255 }
 #define White_ { 255,255,255,255 }
 #define LightGrey_ { 231,231,231,255 }
-#define Purple_ { 47,33,56,0 }
+#define Purple_ { 47,33,56,255 }
 #define Pink_ { 183,116,141,255 }
 #define LightPink_ { 255,247,226,255 }
 
@@ -99,8 +99,12 @@ public:
 	UIWindow* CreateUIWindow(iPoint local_pos, UIWindow_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
 	UILifeBar* CreateUILifeBar(iPoint local_pos, UILifeBar_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
 
-	const SDL_Texture* GetTexture(Tex_Names name);
-	_TTF_Font* GetFont(Font_Names name);
+	_TTF_Font* GetFont(Font_Names font_name);
+	const SDL_Texture* GetTexture(Tex_Names tex_name);
+	void SetTextureAlphaMod(Tex_Names tex_name, float alpha);
+
+	float IncreaseDecreaseAlpha(float from, float to, float seconds);
+	void ResetAlpha();
 
 	bool DestroyElement(UIElement* elem);
 	bool ClearAllUI();
@@ -112,8 +116,6 @@ public:
 private:
 	p2SString atlas_file_name;
 
-
-
 	p2List<UIElement*> UI_elements_list;
 
 	p2List<UIElement*> to_spawn_UI_elements;
@@ -121,6 +123,11 @@ private:
 
 	map<Tex_Names, const SDL_Texture*> map_textures;
 	map<Font_Names, _TTF_Font*> map_fonts;
+
+	// Alpha parameters
+	float total_time = 0.0f;
+	float start_time = 0.0f;
+	bool reset = true;
 
 public:
 	nTree<UIElement*>* UI_elements_tree;

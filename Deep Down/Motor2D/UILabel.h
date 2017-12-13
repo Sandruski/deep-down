@@ -41,12 +41,23 @@ public:
 	void SetColor(SDL_Color color, bool normal = false, bool hover = false, bool pressed = false);
 	SDL_Color GetColor(bool normal = true, bool hover = false, bool pressed = false);
 
+	void IntermitentFade(float seconds = 1.0f, bool loop = true);
+	void ResetFade();
+
+	bool FromAlphaToAlphaFade(float from = 0.0f, float to = 0.0f, float seconds = 1.0f);
+
 private:
 	UILabel_Info label;
 	_TTF_Font* font = nullptr;
 	SDL_Color color = { 255,255,255,255 };
 	UIEvents UIevent = NO_EVENT_;
 	bool next_event = false;
+
+	// Fade parameters
+	float total_time = 0.0f;
+	float start_time = 0.0f;
+	bool is_invisible = true;
+	bool reset = true;
 };
 
 #endif // __UILabel_H__

@@ -158,8 +158,95 @@ SDL_Color UILabel::GetColor(bool normal, bool hover, bool pressed)
 {
 	if (normal)
 		return label.normal_color;
-	if (hover)
+	else if (hover)
 		return label.hover_color;
-	if (pressed)
+	else if (pressed)
 		return label.pressed_color;
+	else
+		return color;
+}
+
+void UILabel::IntermitentFade(float seconds, bool loop) 
+{	
+	if (reset) {
+		start_time = SDL_GetTicks();
+		reset = false;
+	}
+
+	// Math operations
+	total_time = (Uint32)(seconds * 0.5f * 1000.0f);
+
+	Uint32 now = (SDL_GetTicks() - start_time);
+	float normalized = MIN(1.0f, (float)now / (float)total_time);
+	float normalized2 = MIN(1.0f, (float)now / (float)total_time);
+	normalized2 = 1 - normalized2;
+
+	float alpha = 255.0f * normalized;
+	float alpha2 = 255.0f * normalized2;
+
+	// Color change
+	if (!is_invisible) {
+		SetColor({ GetColor().r,GetColor().g,GetColor().b,(Uint8)alpha2 });
+
+		if (alpha2 == 0.0f) {
+			if (loop) {
+				alpha = 255.0f;
+				is_invisible = true;
+			}
+			ResetFade();
+		}
+	}
+	else {
+		SetColor({ GetColor().r,GetColor().g,GetColor().b,(Uint8)alpha });
+
+		if (alpha == 255.0f) {
+			alpha2 = 0.0f;
+			is_invisible = false;
+			ResetFade();
+		}
+	}
+}
+
+bool UILabel::FromAlphaToAlphaFade(float from, float to, float seconds) 
+{
+	bool ret = false;
+
+	if (reset) {
+		start_time = SDL_GetTicks();
+		reset = false;
+	}
+
+	// Math operations
+	total_time = (Uint32)(seconds * 0.5f * 1000.0f);
+
+	Uint32 now = (SDL_GetTicks() - start_time);
+	float normalized = MIN(1.0f, (float)now / (float)total_time);
+	float normalized2 = MIN(1.0f, (float)now / (float)total_time);
+	normalized2 = 1 - normalized2;
+
+	float alpha = (to - from) * normalized;
+	float alpha2 = (from - to) * normalized2;
+
+	// Color change
+	if (from > to) {
+		SetColor({ GetColor().r,GetColor().g,GetColor().b,(Uint8)alpha2 });
+		if (alpha == from) {
+			ResetFade();
+			ret = true;
+		}
+	}
+	else {
+		SetColor({ GetColor().r,GetColor().g,GetColor().b,(Uint8)alpha });
+		if (alpha2 == from) {
+			ResetFade();
+			ret = true;
+		}
+	}
+
+	return ret;
+}
+
+void UILabel::ResetFade()
+{
+	reset = true;
 }
