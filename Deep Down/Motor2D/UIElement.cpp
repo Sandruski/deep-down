@@ -94,7 +94,7 @@ bool UIElement::MouseHover() const
 	App->input->GetMousePosition(x, y);
 	uint scale = App->win->GetScale();
 
-	return x > GetLocalRect().x / scale && x < GetLocalRect().x / scale + GetLocalRect().w && y > GetLocalRect().y / scale && y < GetLocalRect().y / scale + GetLocalRect().h;
+	return x > GetScreenPos().x/ scale && x < GetScreenPos().x / scale + GetLocalRect().w && y > GetScreenPos().y / scale && y < GetScreenPos().y / scale + GetLocalRect().h;
 }
 
 void UIElement::SetOrientation()
