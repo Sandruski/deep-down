@@ -15,9 +15,9 @@ struct SDL_Color;
 struct UILabel_Info {
 	p2SString text;
 	Font_Names font_name = Font_Names::DEFAULT_;
-	SDL_Color normal_color = { 255,255,255,255 };
-	SDL_Color hover_color = { 255,255,255,255 };
-	SDL_Color pressed_color = { 255,255,255,255 };
+	SDL_Color normal_color = White_;
+	SDL_Color hover_color = White_;
+	SDL_Color pressed_color = White_;
 
 	UIElement_HORIZONTAL_POS horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;

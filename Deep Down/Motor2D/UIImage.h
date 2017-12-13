@@ -28,6 +28,7 @@ public:
 	void Draw() const;
 	void DebugDraw(iPoint blit_pos) const;
 	void SetColor(const SDL_Color color);
+	SDL_Color GetColor();
 
 private:
 	UIImage_Info image;

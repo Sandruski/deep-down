@@ -9,6 +9,13 @@
 
 #define CURSOR_WIDTH 2
 
+#define Black_ { 0,0,0,255 }
+#define White_ { 255,255,255,255 }
+#define LightGrey_ { 231,231,231,255 }
+#define Purple_ { 47,33,56,0 }
+#define Pink_ { 183,116,141,255 }
+#define LightPink_ { 255,247,226,255 }
+
 using namespace std;
 
 struct _TTF_Font;

@@ -54,4 +54,12 @@ void UIImage::DebugDraw(iPoint blit_pos) const
 
 //---------------------------------------------------------------
 
-void UIImage::SetColor(const SDL_Color color) {	image.color = color; }
+void UIImage::SetColor(const SDL_Color color) 
+{	
+	image.color = color; 
+}
+
+SDL_Color UIImage::GetColor()
+{
+	return image.color;
+}
