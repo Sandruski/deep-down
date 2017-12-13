@@ -105,7 +105,7 @@ public:
 private:
 	p2SString atlas_file_name;
 
-	nTree<UIElement*>* UI_elements_tree;
+
 
 	p2List<UIElement*> UI_elements_list;
 
@@ -116,6 +116,7 @@ private:
 	map<Font_Names, _TTF_Font*> map_fonts;
 
 public:
+	nTree<UIElement*>* UI_elements_tree;
 	bool debug_draw = false;
 
 	bool drag_to_true = false;

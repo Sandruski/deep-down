@@ -161,8 +161,11 @@ bool j1Gui::CleanUp()
 	LOG("Freeing GUI");
 	bool ret = true;
 
-	if (ClearAllUI())
+	if (ClearAllUI()) {
+		UI_elements_tree->clear();
 		LOG("All GUI removed");
+	}
+
 
 	// Remove textures
 	if (ClearMapTextures())
@@ -265,19 +268,19 @@ bool j1Gui::ClearAllUI()
 	bool ret = false;
 
 	// Clear UI_elements list (active elements)
-	UI_elements_tree->clear();
+	UI_elements_tree->getRoot()->removeChildren();
 
 	// Clear to_spawn_UI_elements list (elements in queue)
+	
 	p2List_item<UIElement*>* UI_elem_it = UI_elements_list.start;
 
 	while (UI_elem_it != nullptr) {
 		ret = true;
-
 		RELEASE(UI_elem_it->data);
 		UI_elem_it = UI_elem_it->next;
 	}
 	UI_elements_list.clear();
-
+	
 	return ret;
 }
 

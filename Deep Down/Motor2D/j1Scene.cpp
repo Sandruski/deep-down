@@ -391,7 +391,6 @@ void j1Scene::OpeningPauseMenu()
 
 void j1Scene::ClosingPauseMenu()
 {
-	//TODO DELETE THIS STUPID FUNCTION XD FUNCTION CALLING ANOTHER FUNCTION IS USELESS
 	App->gui->DestroyElement(pause_menu);	
 }
 

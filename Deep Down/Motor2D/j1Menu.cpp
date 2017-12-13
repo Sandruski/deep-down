@@ -57,7 +57,6 @@ bool j1Menu::Start()
 		App->entities->AddEntities();
 
 	// Get screen parameters
-
 	App->win->GetWindowSize(width, height);
 	scale = App->win->GetScale();
 	//_get_screen_parameters

@@ -128,6 +128,7 @@ public:
 		}
 
 		RELEASE(item);
+
 		--size;
 		return(true);
 	}
@@ -199,7 +200,7 @@ public:
 
 		assert(p_item);
 
-		return(p_item->data);
+		return (p_item->data);
 	}
 
 	/**
