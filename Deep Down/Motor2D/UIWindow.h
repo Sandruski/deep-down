@@ -16,7 +16,6 @@ struct UIWindow_Info {
 
 	bool draggable = false;
 	bool interactive = true;
-	bool blit = true;
 };
 
 // ---------------------------------------------------
@@ -28,14 +27,21 @@ public:
 	void Update(float dt);
 	void HandleInput();
 	void DebugDraw(iPoint blit_pos) const;
-	void SetBlit(bool blit);
 
-	bool SlideTransition(float dt, bool down = true, float speed = 1.0f);
+	bool SlideTransition(float dt, float speed = 10.0f, bool bounce = true, float bounce_interval = 1.0f, bool down = true);
+	bool Bounce(float dt, float bounce_interval = 1.0f, bool down = true);
+	void InitializeBounce(float bounce_interval = 1.0f, bool down = true);
 
 private:
 	UIWindow_Info window;
 	UIEvents UIevent = NO_EVENT_;
 	bool next_event = false;
+
+	float bounce_value = 0.0f;
+	iPoint start_pos = { 0,0 };
+	bool first_bounce = true;
+	bool reset = true;
+	bool start_bouncing = false;
 };
 
 #endif // __UIWindow_H__

@@ -79,7 +79,7 @@ bool j1Menu::Start()
 
 	// Game title
 	UILabel_Info label;
-	label.font_name = ZELDA_;
+	label.font_name = Font_Names::ZELDA_;
 	label.interactive = false;
 
 	label.text = "D";
@@ -187,12 +187,6 @@ bool j1Menu::Start()
 		main_menu_options[i]->SetColor({ main_menu_options[i]->GetColor().r,main_menu_options[i]->GetColor().g,main_menu_options[i]->GetColor().b,0 });
 
 	i = 0;
-
-	// Settings window
-	UIWindow_Info window;
-	window.interactive = false;
-	window.tex_name = Tex_Names::MENU_PAUSE_;
-	settings_window = App->gui->CreateUIWindow({ 20, -500 }, window);
 	//_create_UI_elements
 
 	// Cat
@@ -493,9 +487,26 @@ bool j1Menu::Update(float dt)
 		if (App->render->camera.x < 0)
 			App->render->camera.x += 250 * dt;
 		else {
-			settings_window->SetBlit(true);
-			if (settings_window->SlideTransition(dt, true, 20.0f)) {
-				//settings_window->SetInteraction(true);
+			if (settings_window->SlideTransition(dt, 500.0f, true, 20.0f)) {
+				if (music_volume_text->IntermitentFade(1.0f, false, true)) {
+					if (FX_volume_text->IntermitentFade(1.0f, false, true)) {
+						if (fullscreen_text->IntermitentFade(1.0f, false, true)) {
+							if (cap_frames_text->IntermitentFade(1.0f, false, true)) {
+								if (camera_blit_text->IntermitentFade(1.0f, false, true)) {
+									settings_window->SetInteraction(true);
+									music_volume_text->SetInteraction(true);
+									FX_volume_text->SetInteraction(true);
+									fullscreen_text->SetInteraction(true);
+									cap_frames_text->SetInteraction(true);
+									camera_blit_text->SetInteraction(true);
+									fullscreen_checkbox->SetInteraction(true);
+									cap_frames_checkbox->SetInteraction(true);
+									camera_blit_checkbox->SetInteraction(true);
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 		break;
@@ -549,13 +560,14 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			break;
 		}
 		else if (UIelem == main_menu_buttons[MenuOptions::MM_SETTINGS_]) {
-			//App->gui->ClearAllUI();
+			App->gui->ClearAllUI();
+			CreateSettingsUIElements();
 			menuState = MenuState::AT_SETTINGS_;
 			App->fade->FadeToBlack(this, this, 2.0f, slider_fade, false, false);
 			break;
 		}
 		else if (UIelem == main_menu_buttons[MenuOptions::MM_CREDITS_]) {
-			//App->gui->ClearAllUI();
+			App->gui->ClearAllUI();
 			menuState = MenuState::AT_CREDITS_;
 			App->fade->FadeToBlack(this, this, 2.0f, slider_fade, false, false);
 			break;
@@ -566,8 +578,10 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		}
 
 		for (uint i = 0; i < 5; ++i) {
-			if (UIelem == main_menu_buttons[i]) {
-				main_menu_buttons[i]->SetInteraction(false);
+			if (main_menu_buttons[i] != nullptr) {
+				if (UIelem == main_menu_buttons[i]) {
+					main_menu_buttons[i]->SetInteraction(false);
+				}
 			}
 		}
 		break;
@@ -613,4 +627,50 @@ bool j1Menu::CleanUp()
 	App->scene->active = true;
 
 	return ret;
+}
+
+void j1Menu::CreateMainMenuUIElements() 
+{
+
+}
+
+void j1Menu::CreateSettingsUIElements()
+{
+	// Window
+	UIWindow_Info window;
+	window.interactive = false;
+	window.tex_name = Tex_Names::MENU_PAUSE_;
+	settings_window = App->gui->CreateUIWindow({ 50, -500 }, window);
+
+	// Options
+	UILabel_Info label;
+	label.interactive = false;
+	label.font_name = Font_Names::SOBAD_;
+	label.text = "Music volume";
+	music_volume_text = App->gui->CreateUILabel({ 40,50 }, label, this, settings_window);
+	music_volume_text->SetColor({ music_volume_text->GetColor().r,music_volume_text->GetColor().g,music_volume_text->GetColor().b,0 });
+	label.text = "FX volume";
+	FX_volume_text = App->gui->CreateUILabel({ 40,130 }, label, this, settings_window);
+	FX_volume_text->SetColor({ FX_volume_text->GetColor().r,FX_volume_text->GetColor().g,FX_volume_text->GetColor().b,0 });
+	label.text = "Fullscreen";
+	fullscreen_text = App->gui->CreateUILabel({ 40,210 }, label, this, settings_window);
+	fullscreen_text->SetColor({ fullscreen_text->GetColor().r,fullscreen_text->GetColor().g,fullscreen_text->GetColor().b,0 });
+	label.text = "Cap frames to 30";
+	cap_frames_text = App->gui->CreateUILabel({ 40,290 }, label, this, settings_window);
+	cap_frames_text->SetColor({ cap_frames_text->GetColor().r,cap_frames_text->GetColor().g,cap_frames_text->GetColor().b,0 });
+	label.text = "Camera blit";
+	camera_blit_text = App->gui->CreateUILabel({ 40,370 }, label, this, settings_window);
+	camera_blit_text->SetColor({ camera_blit_text->GetColor().r,camera_blit_text->GetColor().g,camera_blit_text->GetColor().b,0 });
+
+	// Checkbox
+	UIButton_Info checkbox;
+	checkbox.interactive = false;
+	checkbox.checkbox = true;
+	checkbox.tex_name = Tex_Names::CHECKBOX_;
+	checkbox.normal_tex_area = { 0,0,11,7 };
+	checkbox.hover_tex_area = { 0,0,11,7 };
+	checkbox.pressed_tex_area = { 12,0,11,7 };
+	fullscreen_checkbox = App->gui->CreateUIButton({ 40,220 }, checkbox, this, fullscreen_text);
+	cap_frames_checkbox = App->gui->CreateUIButton({ 40,300 }, checkbox, this, cap_frames_text);
+	camera_blit_checkbox = App->gui->CreateUIButton({ 40,380 }, checkbox, this, camera_blit_text);
 }

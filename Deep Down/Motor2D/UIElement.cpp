@@ -27,7 +27,6 @@ UIElement::~UIElement()
 
 void UIElement::Update(float dt) 
 {
-
 }
 
 void UIElement::UpdateDragging(float dt)
@@ -54,20 +53,18 @@ void UIElement::UpdateDragging(float dt)
 
 void UIElement::Draw() const
 {
-	if (blit) {
-		iPoint blit_pos;
-		int scale = App->win->GetScale();
-		blit_pos.x = (GetScreenPos().x - App->render->camera.x) / scale;
-		blit_pos.y = (GetScreenPos().y - App->render->camera.y) / scale;
+	iPoint blit_pos;
+	int scale = App->win->GetScale();
+	blit_pos.x = (GetScreenPos().x - App->render->camera.x) / scale;
+	blit_pos.y = (GetScreenPos().y - App->render->camera.y) / scale;
 
-		if (tex_area.w != 0)
-			App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
-		else
-			App->render->Blit(tex, blit_pos.x, blit_pos.y);
+	if (tex_area.w != 0)
+		App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
+	else
+		App->render->Blit(tex, blit_pos.x, blit_pos.y);
 
-		if (App->gui->debug_draw)
-			DebugDraw(blit_pos);
-	}
+	if (App->gui->debug_draw)
+		DebugDraw(blit_pos);
 }
 
 void UIElement::DebugDraw(iPoint blit_pos) const
@@ -164,13 +161,13 @@ void UIElement::SetLocalPos(iPoint local_pos)
 	this->local_pos = local_pos;
 }
 
-void UIElement::IncreasePos(fPoint add_local_pos)
+void UIElement::IncreasePos(iPoint add_local_pos)
 {
 	local_pos.x += add_local_pos.x;
 	local_pos.y += add_local_pos.y;
 }
 
-void UIElement::DecreasePos(fPoint add_local_pos)
+void UIElement::DecreasePos(iPoint add_local_pos)
 {
 	local_pos.x -= add_local_pos.x;
 	local_pos.y -= add_local_pos.y;

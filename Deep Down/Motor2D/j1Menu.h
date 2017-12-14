@@ -66,6 +66,9 @@ public:
 
 	void OnUIEvent(UIElement* UIelem, UIEvents UIevent);
 
+	void CreateMainMenuUIElements();
+	void CreateSettingsUIElements();
+
 private:
 	MenuState menuState = MenuState::NO_MENU_;
 	MenuCatState menuCatState = MenuCatState::NO_CAT_;
@@ -85,7 +88,15 @@ private:
 
 	// Settings
 	UIWindow* settings_window = nullptr;
+	UILabel* music_volume_text = nullptr;
+	UILabel* FX_volume_text = nullptr;
+	UILabel* fullscreen_text = nullptr;
+	UILabel* camera_blit_text = nullptr;
+	UILabel* cap_frames_text = nullptr;
 
+	UIButton* fullscreen_checkbox = nullptr;
+	UIButton* camera_blit_checkbox = nullptr;
+	UIButton* cap_frames_checkbox = nullptr;
 
 	uint i = 0;
 	float timer = 0;
