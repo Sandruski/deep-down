@@ -54,12 +54,14 @@ struct UIButton_Info;
 struct UICursor_Info;
 struct UIWindow_Info;
 struct UILifeBar_Info;
+struct UISlider_Info;
 struct UIImage;
 struct UILabel;
 struct UIButton;
 struct UICursor;
 struct UIWindow;
 struct UILifeBar;
+struct UISlider;
 
 // ---------------------------------------------------
 
@@ -100,6 +102,7 @@ public:
 	UICursor* CreateUICursor(UICursor_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
 	UIWindow* CreateUIWindow(iPoint local_pos, UIWindow_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
 	UILifeBar* CreateUILifeBar(iPoint local_pos, UILifeBar_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
+	UISlider* CreateUISlider(iPoint local_pos, UISlider_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
 
 	_TTF_Font* GetFont(Font_Names font_name);
 	const SDL_Texture* GetTexture(Tex_Names tex_name);

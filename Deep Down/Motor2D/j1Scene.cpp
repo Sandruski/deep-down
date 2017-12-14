@@ -436,7 +436,7 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 	{
 	case UIEvents::MOUSE_ENTER_:
 	
-		for (uint i = 0; i < 3; ++i) { // Labels: RESUME_, SAVE_, OPTIONS_, QUIT_
+		for (uint i = 0; i < 4; ++i) { // Labels: RESUME_, SAVE_, OPTIONS_, QUIT_
 			if (UIelem == (UIElement*)menu_pause_labels[i]) {
 				menu_pause_labels[i]->IncreasePos(LABELS_POS_MOUSE_ENTER);
 				continue;
@@ -447,7 +447,7 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 	
 	case UIEvents::MOUSE_LEAVE_:
 
-		for (uint i = 0; i < 3; ++i) { // Labels: RESUME_, SAVE_, OPTIONS_, QUIT_
+		for (uint i = 0; i < 4; ++i) { // Labels: RESUME_, SAVE_, OPTIONS_, QUIT_
 			if (UIelem == (UIElement*)menu_pause_labels[i]) {
 				menu_pause_labels[i]->DecreasePos(LABELS_POS_MOUSE_ENTER);
 				continue;

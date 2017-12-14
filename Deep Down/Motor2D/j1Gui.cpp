@@ -13,6 +13,7 @@
 #include "UICursor.h"
 #include "UIWindow.h"
 #include "UILifeBar.h"
+#include "UISlider.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -48,9 +49,6 @@ bool j1Gui::Start()
 	map_textures[Tex_Names::MAIN_MENU_] = App->tex->Load("Assets/Sprites/UI/MainMenu.png");
 	map_textures[Tex_Names::GENERAL_] = App->tex->Load("Assets/Sprites/Maps/GeneralTileset.png");
 	map_textures[Tex_Names::SLIDER_] = App->tex->Load("Assets/Sprites/UI/Slider.png");
-	map_textures[Tex_Names::BUTTON_SLIDER_] = App->tex->Load("Assets/Sprites/UI/Button_Slider.png");
-	map_textures[Tex_Names::BUTTON_SLIDER2_] = App->tex->Load("Assets/Sprites/UI/Button_Slider2.png");
-	map_textures[Tex_Names::POINTER_SLIDER_] = App->tex->Load("Assets/Sprites/UI/Pointer_Slider.png");
 	map_textures[Tex_Names::CAT_SCORE_] = App->tex->Load("Assets/Sprites/UI/CatScore.png");
 
 	// Load fonts
@@ -254,6 +252,19 @@ UILifeBar* j1Gui::CreateUILifeBar(iPoint local_pos, UILifeBar_Info& info, j1Modu
 	to_spawn_UI_parents.add(parent);
 
 	return life_bar;
+}
+
+UISlider* j1Gui::CreateUISlider(iPoint local_pos, UISlider_Info& info, j1Module* listener, UIElement* parent)
+{
+	UISlider* slider = new UISlider(local_pos, parent, info, listener);
+
+	to_spawn_UI_elements.add(slider);
+
+	if (parent == nullptr)
+		parent = (UIElement*)App->win->window;
+	to_spawn_UI_parents.add(parent);
+
+	return slider;
 }
 
 bool j1Gui::DestroyElement(UIElement* elem)
