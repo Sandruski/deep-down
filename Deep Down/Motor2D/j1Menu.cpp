@@ -137,14 +137,14 @@ bool j1Menu::Start()
 	//_game_title
 
 	// Press any button label
-	label.font_name = SOBAD_;
-	label.horizontal_orientation = CENTER_;
+	label.font_name = Font_Names::SOBAD_;
+	label.horizontal_orientation = UIElement_HORIZONTAL_POS::CENTER_;
 	label.text = "PRESS ANY BUTTON";
 	press_any_button = App->gui->CreateUILabel({ (int)width / 2, (int)height - 150 }, label, this);
 	press_any_button->SetColor({ press_any_button->GetColor().r,press_any_button->GetColor().g,press_any_button->GetColor().b,0 });
 
 	// Skip button label
-	label.font_name = SOBAD_8_;
+	label.font_name = Font_Names::SOBAD_8_;
 	label.text = "SKIP";
 	label.normal_color = LightGrey_;
 	skip = App->gui->CreateUILabel({ 50, 20 }, label, this);
@@ -152,7 +152,7 @@ bool j1Menu::Start()
 
 	// Main menu buttons
 	UIButton_Info button;
-	button.tex_name = MAIN_MENU_;
+	button.tex_name = Tex_Names::MAIN_MENU_;
 	button.interactive = false;
 
 	for (int i = 0; i < 5; ++i) {
@@ -162,10 +162,10 @@ bool j1Menu::Start()
 		main_menu_buttons[i] = App->gui->CreateUIButton({ 50,400 + 70 * i }, button, this);
 	}
 	i = 0;
-	SDL_SetTextureAlphaMod((SDL_Texture*)App->gui->GetTexture(MAIN_MENU_), 0);
+	SDL_SetTextureAlphaMod((SDL_Texture*)App->gui->GetTexture(Tex_Names::MAIN_MENU_), 0);
 
 	// Main menu options
-	label.vertical_orientation = MIDDLE_;
+	label.vertical_orientation = UIElement_VERTICAL_POS::MIDDLE_;
 	label.normal_color = Purple_;
 	label.hover_color = Pink_;
 	label.pressed_color = LightPink_;
@@ -187,11 +187,17 @@ bool j1Menu::Start()
 		main_menu_options[i]->SetColor({ main_menu_options[i]->GetColor().r,main_menu_options[i]->GetColor().g,main_menu_options[i]->GetColor().b,0 });
 
 	i = 0;
+
+	// Settings window
+	UIWindow_Info window;
+	window.interactive = false;
+	window.tex_name = Tex_Names::MENU_PAUSE_;
+	settings_window = App->gui->CreateUIWindow({ 20, -500 }, window);
 	//_create_UI_elements
 
 	// Cat
 	EntityInfo entity;
-	entity.type = CAT_;
+	entity.type = ENTITY_TYPES::CAT_;
 	entity.position = { camera_start_position.x,50 };
 	cat = (Cat*)App->entities->SpawnEntity(entity);
 
@@ -220,12 +226,13 @@ bool j1Menu::Update(float dt)
 	bool ret = true;
 
 	// Time variables
-	float press_any_button_speed = 1.5f;
-	float press_any_button_seconds = 2.0f;
 	float skip_button_speed = 2.5f;
-	float fade_seconds = 2.0f;
-	float scene_seconds = 5.0f;
+	float press_any_button_speed = 1.5f;
+
+	float press_any_button_seconds = 2.0f;
+	float scene_fade_seconds = 5.0f;
 	float options_seconds = 3.0f;
+	float title_opaque_seconds = 1.0f;
 
 	// Cat variables
 	iPoint cat_final_position = { 627,190 };
@@ -257,16 +264,10 @@ bool j1Menu::Update(float dt)
 		cat->position.x += cat_jump.x * dt;
 		cat->position.y -= cat_jump.y * dt;
 
-		if (cat->position.x >= camera_start_position.x + cat_position_increment[1]) {
-			
+		if (cat->position.x >= camera_start_position.x + cat_position_increment[1]) {		
 			// Start title animation
 			print_title = true;
-			/*
-			start_time = SDL_GetTicks();
-			now = (SDL_GetTicks() - start_time);
-			normalized = MIN(1.0f, (float)now / (float)total_time);
-			alpha = 255.0f * normalized;
-			*/
+
 			cat->SetCatState(CatState::rc_run);
 			menuCatState = MenuCatState::MC_RUN_FIRST_LETTER_;
 			break;
@@ -322,8 +323,6 @@ bool j1Menu::Update(float dt)
 			cat->position.y += cat_roll.y * dt;
 
 			if (cat->position.x >= camera_start_position.x + cat_position_increment[6]) {
-				timer = 0;
-
 				cat->SetCatState(CatState::rc_land_soft);
 				menuCatState = MenuCatState::MC_AT_GROUND_;
 				break;
@@ -399,47 +398,34 @@ bool j1Menu::Update(float dt)
 		}
 		//_skip
 
-		/*
 		if (print_title) {
-			if (!visible_again) {
-				title_letters[i]->SetColor({ title_letters[i]->GetColor().r,title_letters[i]->GetColor().g,title_letters[i]->GetColor().b,(Uint8)alpha });
-			}
-			if (i > 0)
-				title_letters[i - 1]->SetColor({ title_letters[i - 1]->GetColor().r,title_letters[i - 1]->GetColor().g,title_letters[i - 1]->GetColor().b,(Uint8)alpha2 });
+			if (title_letters[0]->IntermitentFade(1.2f, false)) {
+				if (title_letters[1]->IntermitentFade(1.2f, false)) {
+					if (title_letters[2]->IntermitentFade(1.2f, false)) {
+						if (title_letters[3]->IntermitentFade(1.2f, false)) {
+							if (title_letters[4]->IntermitentFade(1.2f, false)) {
+								if (title_letters[5]->IntermitentFade(1.2f, false)) {
+									if (title_letters[6]->IntermitentFade(1.2f, false)) {
+										if (title_letters[7]->IntermitentFade(1.2f, false)) {
 
-			if (alpha == 255.0f && i < 8 - 1) {
-				alpha = 0.0f;
-				alpha2 = 255.0f;
-				++i;
-				start_time = SDL_GetTicks();
-			}
-			else if (alpha == 255.0f && i == 8 - 1) {
-				alpha2 = 255.0f;
-				++i;
-				start_time = SDL_GetTicks();
-				visible_again = true;
-			}
+											if (timer >= title_opaque_seconds) {
+												for (uint j = 0; j < 8; ++j)
+													title_letters[j]->SetColor(title_letters[j]->GetColor());
 
-			if (visible_again) {
-				timer += 1.0f * dt;
-
-				if (timer >= 2.0f) {
-					for (uint j = 0; j < 8; ++j)
-						title_letters[j]->SetColor(title_letters[j]->GetColor());
-
-					i = 0;
-					timer = 0.0f;
-					alpha = 0.0f;
-					total_time = (Uint32)(press_any_button_speed * 0.5f * 1000.0f);
-					start_time = SDL_GetTicks();
-					menuState = MenuState::PRESS_ANY_BUTTON_;
-					break;
+												menuState = MenuState::PRESS_ANY_BUTTON_;
+												break;
+											}
+											else
+												timer += 1.0f * dt;
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			}
-		}
-		*/
-
-		menuState = MenuState::PRESS_ANY_BUTTON_;
+		}		
 
 		break;
 
@@ -462,8 +448,8 @@ bool j1Menu::Update(float dt)
 
 	case MenuState::TRANSITION_TO_MAIN_MENU_:
 
-		is_button_invisible = press_any_button->FromAlphaToAlphaFade(press_any_button->GetColor(false).a, 0.0f, scene_seconds);
-		is_black_screen_image_invisible = black_screen_image->FromAlphaToAlphaFade(black_screen_image->GetColor().a, 0.0f, scene_seconds);
+		is_button_invisible = press_any_button->FromAlphaToAlphaFade(press_any_button->GetColor(false).a, 0.0f, scene_fade_seconds);
+		is_black_screen_image_invisible = black_screen_image->FromAlphaToAlphaFade(black_screen_image->GetColor().a, 0.0f, scene_fade_seconds);
 
 		if (is_button_invisible && is_black_screen_image_invisible) {
 			menuState = MenuState::MAIN_MENU_OPTIONS_ANIMATION_;
@@ -506,6 +492,12 @@ bool j1Menu::Update(float dt)
 		blit_cat = false;
 		if (App->render->camera.x < 0)
 			App->render->camera.x += 250 * dt;
+		else {
+			settings_window->SetBlit(true);
+			if (settings_window->SlideTransition(dt, true, 20.0f)) {
+				//settings_window->SetInteraction(true);
+			}
+		}
 		break;
 
 	case MenuState::AT_CREDITS_:
@@ -535,7 +527,6 @@ bool j1Menu::Update(float dt)
 
 void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 {
-
 	switch (UIevent) {
 
 	case UIEvents::MOUSE_LEFT_CLICK_:
@@ -558,11 +549,13 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			break;
 		}
 		else if (UIelem == main_menu_buttons[MenuOptions::MM_SETTINGS_]) {
+			//App->gui->ClearAllUI();
 			menuState = MenuState::AT_SETTINGS_;
 			App->fade->FadeToBlack(this, this, 2.0f, slider_fade, false, false);
 			break;
 		}
 		else if (UIelem == main_menu_buttons[MenuOptions::MM_CREDITS_]) {
+			//App->gui->ClearAllUI();
 			menuState = MenuState::AT_CREDITS_;
 			App->fade->FadeToBlack(this, this, 2.0f, slider_fade, false, false);
 			break;

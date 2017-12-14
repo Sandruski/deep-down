@@ -41,7 +41,7 @@ public:
 	void SetColor(SDL_Color color, bool normal = false, bool hover = false, bool pressed = false);
 	SDL_Color GetColor(bool normal = true, bool hover = false, bool pressed = false);
 
-	void IntermitentFade(float seconds = 1.0f, bool loop = true);
+	bool IntermitentFade(float seconds = 1.0f, bool loop = true);
 	void ResetFade();
 
 	bool FromAlphaToAlphaFade(float from = 0.0f, float to = 0.0f, float seconds = 1.0f);

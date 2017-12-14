@@ -10,6 +10,7 @@ UIWindow::UIWindow(iPoint local_pos, UIElement* parent, UIWindow_Info& info, j1M
 
 	draggable = info.draggable;
 	interactive = info.interactive;
+	blit = info.blit;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	tex_area = info.tex_area;
@@ -129,4 +130,18 @@ void UIWindow::HandleInput()
 		UIevent = UIEvents::NO_EVENT_;
 		break;
 	}
+}
+
+bool UIWindow::SlideTransition(float dt, bool down, float speed) 
+{
+	bool ret = true;
+
+	DecreasePos({ 0, speed * dt });
+
+	return ret;
+}
+
+void UIWindow::SetBlit(bool blit) 
+{
+	this->blit = blit;
 }

@@ -9,6 +9,7 @@ struct SDL_Texture;
 struct Cat;
 struct UILabel;
 struct UIImage;
+struct UIWindow;
 
 enum MenuState {
 	NO_MENU_,
@@ -73,6 +74,7 @@ private:
 	float cat_position_increment[8];
 
 	// UI Elements
+	// Main menu
 	UILabel* title_letters[8];
 	UIButton* main_menu_buttons[5];
 	UILabel* main_menu_options[5];
@@ -81,13 +83,16 @@ private:
 	UILabel* skip = nullptr;
 	UIImage* black_screen_image = nullptr;
 
+	// Settings
+	UIWindow* settings_window = nullptr;
+
+
 	uint i = 0;
 	float timer = 0;
 
 	bool print_title = false;
 	bool blit_cat = true;
 	bool is_invisible = true;
-	bool visible_again = false;
 
 	// Screen parameters
 	uint width = 0, height = 0;

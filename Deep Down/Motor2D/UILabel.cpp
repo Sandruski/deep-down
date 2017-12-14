@@ -166,8 +166,10 @@ SDL_Color UILabel::GetColor(bool normal, bool hover, bool pressed)
 		return color;
 }
 
-void UILabel::IntermitentFade(float seconds, bool loop) 
+bool UILabel::IntermitentFade(float seconds, bool loop)
 {	
+	bool ret = false;
+
 	if (reset) {
 		start_time = SDL_GetTicks();
 		reset = false;
@@ -192,8 +194,9 @@ void UILabel::IntermitentFade(float seconds, bool loop)
 			if (loop) {
 				alpha = 255.0f;
 				is_invisible = true;
+				ResetFade();
 			}
-			ResetFade();
+			ret = true;
 		}
 	}
 	else {
@@ -205,6 +208,8 @@ void UILabel::IntermitentFade(float seconds, bool loop)
 			ResetFade();
 		}
 	}
+
+	return ret;
 }
 
 bool UILabel::FromAlphaToAlphaFade(float from, float to, float seconds) 

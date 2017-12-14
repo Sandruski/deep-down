@@ -56,6 +56,7 @@ protected:
 	bool to_remove = false;
 	bool draggable = false;
 	bool interactive = true;
+	bool blit = true;
 	iPoint mouse_click_pos = { 0,0 };
 
 	// Texture parameters
@@ -95,8 +96,8 @@ public:
 	iPoint GetScreenPos() const;
 	iPoint GetLocalPos() const;
 	void SetLocalPos(iPoint local_pos);
-	void IncreasePos(iPoint add_local_pos);
-	void DecreasePos(iPoint add_local_pos);
+	void IncreasePos(fPoint add_local_pos);
+	void DecreasePos(fPoint add_local_pos);
 
 	void SetInteraction(bool interactive);
 

@@ -16,6 +16,7 @@ struct UIWindow_Info {
 
 	bool draggable = false;
 	bool interactive = true;
+	bool blit = true;
 };
 
 // ---------------------------------------------------
@@ -27,6 +28,9 @@ public:
 	void Update(float dt);
 	void HandleInput();
 	void DebugDraw(iPoint blit_pos) const;
+	void SetBlit(bool blit);
+
+	bool SlideTransition(float dt, bool down = true, float speed = 1.0f);
 
 private:
 	UIWindow_Info window;
