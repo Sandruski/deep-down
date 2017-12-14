@@ -82,7 +82,7 @@ bool j1Scene::Start()
 
 	UIImage_Info cats_obtained;
 	cats_obtained.tex_name = CAT_SCORE_;
-	
+	cats_obtained.tex_area = { 0,0,26,26 };
 	App->gui->CreateUIImage({ 800,40 }, cats_obtained, this);
 
 	UILabel_Info numbers;

@@ -43,6 +43,8 @@ enum Font_Names {
 	ZELDA_,
 	SOBAD_,
 	SOBAD_8_,
+	DIGITAL7_,
+	BLACK_BLOC_,
 	MAX_FONTS_
 };
 
