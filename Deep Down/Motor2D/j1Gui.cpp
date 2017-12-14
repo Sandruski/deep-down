@@ -269,11 +269,11 @@ bool j1Gui::ClearAllUI()
 {
 	bool ret = false;
 
-	// Clear UI_elements list (active elements)
+	// Clear UI_elements tree
 	UI_elements_tree->getRoot()->removeChildren();
 
-	// Clear to_spawn_UI_elements list (elements in queue)
-	
+	// Clear UI_elements list (active elements)
+	/*
 	p2List_item<UIElement*>* UI_elem_it = UI_elements_list.start;
 
 	while (UI_elem_it != nullptr) {
@@ -282,7 +282,7 @@ bool j1Gui::ClearAllUI()
 		UI_elem_it = UI_elem_it->next;
 	}
 	UI_elements_list.clear();
-	
+	*/
 	return ret;
 }
 

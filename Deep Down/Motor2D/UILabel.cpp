@@ -166,7 +166,7 @@ SDL_Color UILabel::GetColor(bool normal, bool hover, bool pressed)
 		return color;
 }
 
-bool UILabel::IntermitentFade(float seconds, bool loop)
+bool UILabel::IntermitentFade(float seconds, bool loop, bool half_loop)
 {	
 	bool ret = false;
 
@@ -203,9 +203,13 @@ bool UILabel::IntermitentFade(float seconds, bool loop)
 		SetColor({ GetColor().r,GetColor().g,GetColor().b,(Uint8)alpha });
 
 		if (alpha == 255.0f) {
-			alpha2 = 0.0f;
-			is_invisible = false;
-			ResetFade();
+			if (!half_loop) {
+				alpha2 = 0.0f;
+				is_invisible = false;
+				ResetFade();
+			}
+			else
+				ret = true;
 		}
 	}
 
