@@ -21,6 +21,7 @@
 #include "UILabel.h"
 #include "UIButton.h"
 #include "UIImage.h"
+#include "UISlider.h"
 
 #include"Brofiler\Brofiler.h"
 
@@ -83,7 +84,7 @@ bool j1Scene::Start()
 	UIImage_Info cats_obtained;
 	cats_obtained.tex_name = CAT_SCORE_;
 	cats_obtained.tex_area = { 0,0,26,26 };
-	App->gui->CreateUIImage({ 800,40 }, cats_obtained, this);
+	cat_UI = App->gui->CreateUIImage({ 800,40 }, cats_obtained, this);
 
 	UILabel_Info numbers;
 	numbers.font_name = BLACK_BLOC_;
@@ -169,6 +170,9 @@ bool j1Scene::Update(float dt)
 	else
 		countdown_time->SetText(p2SString("%i", (int)count_time));
 
+	if (activate_UI_anim)
+		StartUICatAnimation(dt);
+
 	return true;
 }
 
@@ -214,6 +218,26 @@ void j1Scene::MoveCamera() {
 	else {
 		if (App->entities->playerData != nullptr)
 			App->render->camera.y = (int)(App->entities->playerData->position.y - 150) * (-1) *  App->win->GetScale();
+	}
+}
+
+void j1Scene::StartUICatAnimation(float dt)
+{
+	timer_cat_UI += 1 * dt;
+	if (timer_cat_UI >= 0 && timer_cat_UI < 0.25f)
+		cat_UI->SetNewRect(SDL_Rect({ 26,0,26,26 }));
+	else if (timer_cat_UI >= 0.25f && timer_cat_UI < 0.5f)
+		cat_UI->SetNewRect(SDL_Rect({ 0,26,26,26 }));
+	else if (timer_cat_UI >= 0.5f && timer_cat_UI < 0.75f)
+		cat_UI->SetNewRect(SDL_Rect({ 26,26,26,26 }));
+	else if (timer_cat_UI >= 0.75f && timer_cat_UI < 1.0f)
+		cat_UI->SetNewRect(SDL_Rect({ 0,26,26,26 }));
+	else if (timer_cat_UI >= 1.0f && timer_cat_UI < 1.25f)
+		cat_UI->SetNewRect(SDL_Rect({ 26,0,26,26 }));
+	else if (timer_cat_UI >= 1.25f) {
+		cat_UI->SetNewRect(SDL_Rect({ 0,0,26,26 }));
+		activate_UI_anim = false;
+		timer_cat_UI = 0.0f;
 	}
 }
 
@@ -477,6 +501,15 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			label.text = "back";
 			menu_pause_labels[BACK_] = App->gui->CreateUILabel({ 40,360 }, label, this, pause_menu); // Back label
 
+			UISlider_Info slider;
+
+			slider.tex_name = SLIDER_;
+			slider.draggable = false;
+			slider.tex_area = { 9,0,54,9 };
+			slider.button_slider_area = { 0,1,9,10 };
+
+			App->gui->CreateUISlider({ 100,100 }, slider, this, pause_menu);
+
 			UIButton_Info checkbox;
 			checkbox.checkbox = true;
 			checkbox.tex_name = CHECKBOX_;
@@ -484,40 +517,6 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			checkbox.hover_tex_area = { 0,0,11,7 };
 			checkbox.pressed_tex_area = { 12,0,11,7 };
 			checkbox.draggable = true;
-
-			UIImage_Info slider;
-			slider.tex_name = SLIDER_;
-
-			App->gui->CreateUIImage({ 280,80 }, slider, this, pause_menu);
-
-			slider.tex_name = POINTER_SLIDER_;
-
-			iPoint pos_music_pointer;
-
-			if (App->audio->music_volume > 0 && App->audio->music_volume <= 25.6f)
-				pos_music_pointer = { 273,98 };
-			else if (App->audio->music_volume > 25.6f && App->audio->music_volume <= 51.2f)
-				pos_music_pointer = { 288,98 };
-			else if (App->audio->music_volume > 51.2f && App->audio->music_volume <= 76.8f)
-				pos_music_pointer = { 303,98 };
-			else if (App->audio->music_volume > 76.8f && App->audio->music_volume <= 102.4f)
-				pos_music_pointer = { 318,98 };
-			else if (App->audio->music_volume > 102.4f && App->audio->music_volume <= 128)
-				pos_music_pointer = { 333,98 };
-
-			slider_pointer_music = App->gui->CreateUIImage(pos_music_pointer, slider, this, pause_menu);
-
-			UIButton_Info button;
-			button.tex_name = BUTTON_SLIDER_;
-			button.normal_tex_area = { 0,0,4,6 };
-			button.hover_tex_area = { 0,0,4,6 };
-			button.pressed_tex_area = { 5,0,4,6 };
-
-			slider_buttons[0] = App->gui->CreateUIButton({ 260,79 }, button, this, pause_menu); // Left slider button
-
-			button.tex_name = BUTTON_SLIDER2_;
-
-			slider_buttons[1] = App->gui->CreateUIButton({ 347,79 }, button, this, pause_menu); // Right slider button
 
 			if (App->toCap)
 				checkbox.checkbox_checked = true;
@@ -543,22 +542,6 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			App->map->camera_blit = !App->map->camera_blit;
 		}
 
-		else if (UIelem == (UIElement*)slider_buttons[0]) //Left slider button
-		{
-			if (slider_pointer_music->GetLocalPos().x != 273) {
-				slider_pointer_music->DecreasePos({ 15,0 });
-				App->audio->ChangeMusicVolume(false);
-			}
-		}
-
-		else if (UIelem == (UIElement*)slider_buttons[1]) // Right slider button
-		{
-			if (slider_pointer_music->GetLocalPos().x != 333) {
-				slider_pointer_music->IncreasePos({ 15,0 });
-				App->audio->ChangeMusicVolume(true);
-			}
-		}
-
 		else if (UIelem == (UIElement*)menu_pause_labels[BACK_])
 		{
 			App->gui->DestroyElement(pause_menu); // Closing pause menu
@@ -567,5 +550,4 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 
 		break;
 	}	
-
 }

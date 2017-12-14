@@ -1,8 +1,8 @@
-#include "UIImage.h"
+#include "UISlider.h"
 #include "j1Render.h"
 #include "j1Window.h"
 
-UIImage::UIImage(iPoint local_pos, UIElement* parent, UIImage_Info& info, j1Module* listener) : UIElement(local_pos, parent, listener), image(info)
+UISlider::UISlider(iPoint local_pos, UIElement* parent, UISlider_Info& info, j1Module* listener) : UIElement(local_pos, parent, listener), slider(info)
 {
 	type = UIElement_TYPE::IMAGE_;
 
@@ -10,7 +10,7 @@ UIImage::UIImage(iPoint local_pos, UIElement* parent, UIImage_Info& info, j1Modu
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	tex_area = info.tex_area;
-	tex = App->gui->GetTexture(image.tex_name);
+	tex = App->gui->GetTexture(slider.tex_name);
 
 	if (tex_area.w == 0)
 		SDL_QueryTexture((SDL_Texture*)tex, NULL, NULL, &width, &height);
@@ -22,29 +22,21 @@ UIImage::UIImage(iPoint local_pos, UIElement* parent, UIImage_Info& info, j1Modu
 	SetOrientation();
 }
 
-void UIImage::Draw() const
+void UISlider::Draw() const
 {
 	iPoint blit_pos;
 	int scale = App->win->GetScale();
 	blit_pos.x = (GetScreenPos().x - App->render->camera.x) / scale;
 	blit_pos.y = (GetScreenPos().y - App->render->camera.y) / scale;
 
-	if (image.quad) {
-		SDL_SetRenderDrawColor(App->render->renderer, image.color.r, image.color.g, image.color.b, image.color.a);
-		SDL_RenderFillRect(App->render->renderer, &image.tex_area);
-	}
-	else {
-		if (tex_area.w != 0)
-			App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
-		else
-			App->render->Blit(tex, blit_pos.x, blit_pos.y);
-	}
+	App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
+	App->render->Blit(tex, blit_pos.x, blit_pos.y, &slider.button_slider_area);
 
 	if (App->gui->debug_draw)
 		DebugDraw(blit_pos);
 }
 
-void UIImage::DebugDraw(iPoint blit_pos) const
+void UISlider::DebugDraw(iPoint blit_pos) const
 {
 	Uint8 alpha = 80;
 
@@ -54,17 +46,17 @@ void UIImage::DebugDraw(iPoint blit_pos) const
 
 //---------------------------------------------------------------
 
-void UIImage::SetColor(const SDL_Color color) 
-{	
-	image.color = color; 
-}
-
-SDL_Color UIImage::GetColor()
+void UISlider::SetColor(const SDL_Color color)
 {
-	return image.color;
+	slider.color = color;
 }
 
-bool UIImage::FromAlphaToAlphaFade(float from, float to, float seconds)
+SDL_Color UISlider::GetColor()
+{
+	return slider.color;
+}
+
+bool UISlider::FromAlphaToAlphaFade(float from, float to, float seconds)
 {
 	bool ret = false;
 
@@ -103,17 +95,17 @@ bool UIImage::FromAlphaToAlphaFade(float from, float to, float seconds)
 	return ret;
 }
 
-void UIImage::ResetFade()
+void UISlider::ResetFade()
 {
 	reset = true;
 }
 
-void UIImage::SetNewRect(SDL_Rect& new_rect)
+void UISlider::SetNewRect(SDL_Rect& new_rect)
 {
 	tex_area = new_rect;
 }
 
-SDL_Rect UIImage::GetRect()
+SDL_Rect UISlider::GetRect()
 {
 	return tex_area;
 }

@@ -1,5 +1,5 @@
-#ifndef __UIImage_H__
-#define __UIImage_H__
+#ifndef __UISlider_H__
+#define __UISlider_H__
 
 #include "SDL\include\SDL.h"
 #include "p2Defs.h"
@@ -8,12 +8,12 @@
 #include "j1App.h"
 #include "j1Gui.h"
 
-struct UIImage_Info {
+struct UISlider_Info {
 	SDL_Rect tex_area = { 0,0,0,0 };
+	SDL_Rect button_slider_area = { 0,0,0,0 };
 	Tex_Names tex_name = Tex_Names::NO_TEX_;
 	UIElement_HORIZONTAL_POS horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
-	bool quad = false;
 	SDL_Color color = { 0,0,0,255 };
 
 	bool draggable = false;
@@ -21,10 +21,10 @@ struct UIImage_Info {
 
 // ---------------------------------------------------
 
-class UIImage : public UIElement
+class UISlider : public UIElement
 {
 public:
-	UIImage(iPoint local_pos, UIElement* parent, UIImage_Info& info, j1Module* listener = nullptr);
+	UISlider(iPoint local_pos, UIElement* parent, UISlider_Info& info, j1Module* listener = nullptr);
 	void Draw() const;
 	void DebugDraw(iPoint blit_pos) const;
 	void SetColor(const SDL_Color color);
@@ -36,7 +36,7 @@ public:
 	bool FromAlphaToAlphaFade(float from = 0.0f, float to = 0.0f, float seconds = 1.0f);
 
 private:
-	UIImage_Info image;
+	UISlider_Info slider;
 
 	// Fade parameters
 	float total_time = 0.0f;
@@ -44,4 +44,4 @@ private:
 	bool reset = true;
 };
 
-#endif // __UIImage_H__
+#endif // __UISlider_H__

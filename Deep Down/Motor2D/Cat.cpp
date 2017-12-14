@@ -459,6 +459,7 @@ void Cat::OnCollision(Collider* c1, Collider* c2)
 		else
 			catState = CatState::lc_dead;
 
+		App->scene->activate_UI_anim = true;
 		App->scene->number_cats_count += 1;
 		App->scene->cats_score->SetText(p2SString("0%i", App->scene->number_cats_count));
 		break;
@@ -470,6 +471,7 @@ void Cat::OnCollision(Collider* c1, Collider* c2)
 		else
 			catState = CatState::lc_run;
 
+		App->scene->activate_UI_anim = true;
 		App->scene->number_cats_count += 1;
 		App->scene->cats_score->SetText(p2SString("0%i", App->scene->number_cats_count));
 		break;

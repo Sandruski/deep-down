@@ -66,6 +66,8 @@ public:
 
 	void MoveCamera();
 
+	void StartUICatAnimation(float dt);
+
 public:
 	// Camera
 	float up = false, down = false, left = false, right = false;
@@ -85,6 +87,7 @@ public:
 	// Cats score
 	uint number_cats_count = 0;
 	UILabel* cats_score = nullptr;
+	bool activate_UI_anim = false;
 
 private:
 
@@ -103,13 +106,13 @@ private:
 	// Ingame UI
 	UILifeBar* progress_bar = nullptr;
 	UILabel* countdown_time = nullptr;
+	UIImage* cat_UI = nullptr;
+	float timer_cat_UI = 0.0f;
 
 	// Pause_menu
 	UIWindow* pause_menu = nullptr;
 	UILabel* menu_pause_labels[5] = { nullptr, nullptr, nullptr, nullptr, nullptr};
 	UIButton* menu_pause_checkbox[2] = { nullptr, nullptr };
-	UIButton* slider_buttons[2] = { nullptr, nullptr };
-	UIImage* slider_pointer_music = nullptr;
 };
 
 #endif // __j1SCENE1_H__
