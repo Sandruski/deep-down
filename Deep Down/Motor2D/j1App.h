@@ -131,10 +131,10 @@ private:
 
 public:
 
-	uint capFrames = 0;
-	bool toCap = true;
-	bool quit_game = false;
-
+	uint				capFrames = 0;
+	bool				toCap = true;
+	bool				quit_game = false;
+	double				auxiliar_dt = 0;
 };
 
 extern j1App* App; // No student is asking me about that ... odd :-S

@@ -136,8 +136,6 @@ bool UIWindow::SlideTransition(float dt, int end_pos_y, float speed, bool bounce
 	bool ret = false;
 
 	iPoint pos = GetLocalPos();
-	uint x, y;
-	App->win->GetWindowSize(x, y);
 
 	if (down) {
 		if (pos.y + height >= (int)end_pos_y - height / 2) {

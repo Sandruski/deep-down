@@ -191,6 +191,18 @@ bool j1Scene::Update(float dt)
 		App->audio->SetMusicVolume(volume);
 	}
 
+	if (menu_bouncing) {
+		if (pause_menu->SlideTransition(App->auxiliar_dt, height / 2, 500.0f, true, 20.0f, 2.0f, false)) {
+			menu_position = pause_menu->GetLocalPos();
+			menu_pause_labels[RESUME_]->SetInteraction(true);
+			menu_pause_labels[SAVE_]->SetInteraction(true);
+			menu_pause_labels[OPTIONS_]->SetInteraction(true);
+			menu_pause_labels[QUIT_]->SetInteraction(true);
+			closeWindow->SetInteraction(true);
+			menu_bouncing = false;
+		}
+	}
+
 	return true;
 }
 
@@ -398,8 +410,7 @@ void j1Scene::DebugKeys() {
 	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
 		App->audio->ChangeMusicVolume(false); //music volume - 8
 
-											  //camera blit
-
+	// 1, 2, 3: camera blit
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->map->blit_offset < 15 && App->map->camera_blit)
 		App->map->blit_offset += 7;
 
@@ -409,30 +420,41 @@ void j1Scene::DebugKeys() {
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 		App->map->camera_blit = !App->map->camera_blit;
 
+	// Tab: open in-game pause menu
 	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN && pause == false)
 	{
 		pause = true;
-		OpeningPauseMenu();
+		menu_bouncing = true;
+		OpeningPauseMenu(true);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN && pause == true)
 	{
 		pause = false;
-		App->gui->DestroyElement(pause_menu); // Closing pause menu
+		App->gui->DestroyElement(pause_menu); // close pause menu
 	}
 }
 
-void j1Scene::OpeningPauseMenu()
+void j1Scene::OpeningPauseMenu(bool from_scratch)
 {
 	UIWindow_Info menu;
 	menu.tex_name = MENU_PAUSE_;
-	menu.draggable = true;
-
-	pause_menu = App->gui->CreateUIWindow({ 256,171 }, menu, this);
+	
+	if (from_scratch) {
+		pause_menu = App->gui->CreateUIWindow({ 256, (int)height + 500 }, menu, this);
+		menu.interactive = false;
+	}
+	else {
+		int tex_width, tex_height;
+		SDL_QueryTexture((SDL_Texture*)App->gui->GetTexture(Tex_Names::CREDITS_WINDOW_), NULL, NULL, &tex_width, &tex_height);
+		pause_menu = App->gui->CreateUIWindow({ 256, menu_position.y }, menu, this);
+	}
 
 	UILabel_Info label;
+	if (from_scratch)
+		label.interactive = false;
+	label.draggable = false;
 	label.font_name = SOBAD_;
 	label.normal_color = { 0,0,0,255 };
-	label.draggable = false;
 
 	label.text = "Resume";
 	menu_pause_labels[RESUME_] = App->gui->CreateUILabel({ 40,40 }, label, this, pause_menu); // Resume label
@@ -447,6 +469,8 @@ void j1Scene::OpeningPauseMenu()
 	menu_pause_labels[QUIT_] = App->gui->CreateUILabel({ 40,340 }, label, this, pause_menu); // Quit label
 
 	UIButton_Info close_window;
+	if (from_scratch)
+		close_window.interactive = false;
 	close_window.tex_name = CLOSING_WINDOW;
 	close_window.pressed_tex_area = { 7,0,7,8 };
 	close_window.hover_tex_area = { 0,0,7,7 };
@@ -589,7 +613,6 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		{
 			swap_music = true;
 		}
-
 		break;
 
 	case UIEvents::MOUSE_LEFT_UP_:
@@ -605,7 +628,6 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			App->gui->DestroyElement(pause_menu);
 			App->audio->PlayFx(10);
 		}
-
 		break;
 	}
 }

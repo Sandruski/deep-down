@@ -63,7 +63,7 @@ public:
 	// Debug keys
 	void DebugKeys();
 
-	void OpeningPauseMenu();
+	void OpeningPauseMenu(bool from_scratch = false);
 
 	void MoveCamera();
 
@@ -91,6 +91,9 @@ public:
 	uint cats_second_map = 0;
 	UILabel* cats_score = nullptr;
 	bool activate_UI_anim = false;
+
+	bool menu_bouncing = false;
+	iPoint menu_position = { 0,0 };
 
 private:
 

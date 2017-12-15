@@ -186,9 +186,7 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
-
 	perfClock.Start();
-
 }
 
 // ---------------------------------------------
@@ -265,8 +263,10 @@ void j1App::FinishUpdate()
 	sprintf_s(title, 256, "FPS: %.2f | AvgFPS: %.2f | Last Frame Ms: %02u | capFrames: %s | Vsync: %s | CameraBlit: %s | GOD: %s",
 		fps, avgFPS, actual_frame_ms, capOnOff.GetString(), vsyncOnOff.GetString(), CB.GetString(), GM.GetString());
 
-	if (App->scene->pause)
+	if (App->scene->pause) {
+		auxiliar_dt = dt;
 		dt = 0.0f;
+	}
 
 	App->win->SetTitle(title);
 

@@ -612,8 +612,8 @@ bool j1Menu::Update(float dt)
 		if (App->render->camera.y > -(int)height - 2*16*scale)
 			App->render->camera.y -= 250 * dt;
 		else {
-			if (credits_window->SlideTransition(dt, height / 2 + height / 8, 500.0f, true, 20.0f, false)) {
-				if (back_to_main_menu_from_credits->SlideTransition(dt, 50, 500.0f, true, 10.0f)) {
+			if (credits_window->SlideTransition(dt, height / 2 + height / 8, 500.0f, true, 20.0f, 2.0f, false)) {
+				if (back_to_main_menu_from_credits->SlideTransition(dt, 50, 500.0f, true, 10.0f, 2.0f)) {
 					website_button->SetInteraction(true);
 					back_to_main_menu_from_credits->SetInteraction(true);
 				}
