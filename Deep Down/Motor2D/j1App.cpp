@@ -211,8 +211,13 @@ void j1App::FinishUpdate()
 	uint32 frames_on_last_update = 0;
 	frame_count++;
 
-	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN && (App->entities->playerData->animationPlayer == &App->entities->playerData->player.idle || App->entities->playerData->animationPlayer == &App->entities->playerData->player.idle2))
-		toCap = !toCap;
+	if (App->entities->playerData != nullptr) {
+		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN && (App->entities->playerData->animationPlayer == &App->entities->playerData->player.idle || App->entities->playerData->animationPlayer == &App->entities->playerData->player.idle2))
+			toCap = !toCap;
+	}
+	else
+		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+			toCap = !toCap;
 
 	//cap frames
 	if (!App->render->vsync && toCap) {

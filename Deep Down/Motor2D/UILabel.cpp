@@ -9,13 +9,15 @@ UILabel::UILabel(iPoint local_pos, UIElement* parent, UILabel_Info& info, j1Modu
 {
 	type = UIElement_TYPE::LABEL_;
 
-	draggable = info.draggable;
-	interactive = info.interactive;
-	horizontal = info.horizontal_orientation;
-	vertical = info.vertical_orientation;
+	draggable = label.draggable;
+	interactive = label.interactive;
+	horizontal = label.horizontal_orientation;
+	vertical = label.vertical_orientation;
 	font = App->gui->GetFont(label.font_name);
 	color = label.normal_color;
-	tex = App->font->Print(label.text.GetString(), color, font);
+
+	tex = App->font->Print(label.text.GetString(), color, font, (Uint32)label.text_wrap_length);
+
 	App->font->CalcSize(label.text.GetString(), width, height, font);
 
 	SetOrientation();

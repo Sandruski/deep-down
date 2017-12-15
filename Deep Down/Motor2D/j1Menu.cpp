@@ -19,6 +19,7 @@
 #include "UIImage.h"
 #include "UILabel.h"
 #include "UIWindow.h"
+#include "UISlider.h"
 
 #include "SDL/include/SDL_render.h"
 #include "SDL/include/SDL_timer.h"
@@ -221,7 +222,7 @@ bool j1Menu::Start()
 
 	menuState = MenuState::TITLE_ANIMATION_;
 	menuCatState = MenuCatState::MC_APPEAR_RUNNING_;
-
+	
 	return ret;
 }
 
@@ -571,13 +572,13 @@ bool j1Menu::Update(float dt)
 		if (App->render->camera.x < 0)
 			App->render->camera.x += 250 * dt;
 		else {
-			if (settings_window->SlideTransition(dt, height / 2, 500.0f, true, 20.0f)) {
+			if (settings_window->SlideTransition(dt, height / 2, 500.0f, true, 20.0f, 2.0f)) {
 				if (music_volume_text->IntermitentFade(1.0f, false, true)) {
 					if (FX_volume_text->IntermitentFade(1.0f, false, true)) {
 						if (fullscreen_text->IntermitentFade(1.0f, false, true)) {
 							if (cap_frames_text->IntermitentFade(1.0f, false, true)) {
 								if (camera_blit_text->IntermitentFade(1.0f, false, true)) {
-									if (back_to_main_menu_from_settings->SlideTransition(dt, height - 50, 500.0f, true, 10.0f, false)) {
+									if (back_to_main_menu_from_settings->SlideTransition(dt, height - 50, 500.0f, true, 10.0f, 2.0f, false)) {
 										settings_window->SetInteraction(true);
 										music_volume_text->SetInteraction(true);
 										FX_volume_text->SetInteraction(true);
@@ -601,6 +602,13 @@ bool j1Menu::Update(float dt)
 	case MenuState::AT_CREDITS_:
 		blit_cat = false;
 		
+		// Text slider
+		if (sliding) {
+			int percent = license_slider->GetPercent();
+			percent = license_description->GetLocalRect().w * percent / 100;
+			license_description->SetLocalPos({ license_description->GetLocalPos().x, -percent / 3 + 20 });
+		}
+
 		if (App->render->camera.y > -(int)height - 2*16*scale)
 			App->render->camera.y -= 250 * dt;
 		else {
@@ -643,6 +651,12 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 				main_menu_options[i]->SetColor(main_menu_options[i]->GetColor(false, false, true));
 			}
 		}
+
+		if (UIelem == license_slider) {
+			sliding = true;
+			break;
+		}
+
 		break;
 
 	case UIEvents::MOUSE_LEFT_UP_:
@@ -691,12 +705,14 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			from_credits = true;
 			menuState = MenuState::MAIN_MENU_OPTIONS_ANIMATION_;
 			break;
-		}
-		
+		}		
 		else if (UIelem == website_button)
 		{
-
 			open_url("https://sandruski.github.io/Deep-Down-Game/");
+		}
+		else if (UIelem == license_slider) {
+			sliding = false;
+			break;
 		}
 
 		for (uint i = 0; i < 5; ++i) {
@@ -893,9 +909,9 @@ void j1Menu::CreateSettingsUIElements()
 	checkbox.normal_tex_area = { 0,0,11,7 };
 	checkbox.hover_tex_area = { 0,0,11,7 };
 	checkbox.pressed_tex_area = { 12,0,11,7 };
-	fullscreen_checkbox = App->gui->CreateUIButton({ 200,220 }, checkbox, this);
-	cap_frames_checkbox = App->gui->CreateUIButton({ 200,300 }, checkbox, this);
-	camera_blit_checkbox = App->gui->CreateUIButton({ 200,380 }, checkbox, this);
+	fullscreen_checkbox = App->gui->CreateUIButton({ 300,fullscreen_text->GetLocalPos().y + fullscreen_text->GetLocalRect().h }, checkbox, this, settings_window);
+	cap_frames_checkbox = App->gui->CreateUIButton({ 300,cap_frames_text->GetLocalPos().y + cap_frames_text->GetLocalRect().h }, checkbox, this, settings_window);
+	camera_blit_checkbox = App->gui->CreateUIButton({ 300,camera_blit_text->GetLocalPos().y + camera_blit_text->GetLocalRect().h }, checkbox, this, settings_window);
 
 	// Back to main menu button
 	UIButton_Info button;
@@ -950,5 +966,19 @@ void j1Menu::CreateCreditsUIElements()
 	label.horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	label.vertical_orientation = UIElement_VERTICAL_POS::TOP_;
 	label.text = "Sandra Alvarez Garcia and Guillem Costa Miquel";
-	authors_description = App->gui->CreateUILabel({ 0, 50 }, label, this, authors_title);
+	authors_description = App->gui->CreateUILabel({ 120, (int)height / 2 + (int)height / 8 - tex_height * scale / 2 + 50 }, label, this);
+	label.text = "MIT License Copyright(c) 2017 Sandra Alvarez & Guillem Costa\n\n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files(the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\n THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
+	label.text_wrap_length = 110;
+	license_description = App->gui->CreateUILabel({ 10,30 }, label, this, credits_window);
+
+	// Slider to scroll the previous text
+	UISlider_Info slider;
+	slider.tex_name = SLIDER_;
+	slider.draggable = false;
+	slider.tex_area = { 9,0,54,9 };
+	slider.button_slider_area = { 0,1,9,10 };
+	slider.slider_button_pos.x = 0;
+	slider.offset = 3;
+	slider.buggy_offset = -1;
+	license_slider = App->gui->CreateUISlider({ credits_window->GetLocalRect().w / 2,10 }, slider, this, credits_window);
 }

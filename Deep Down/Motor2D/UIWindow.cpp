@@ -131,7 +131,7 @@ void UIWindow::HandleInput()
 	}
 }
 
-bool UIWindow::SlideTransition(float dt, int end_pos_y, float speed, bool bounce, float bounce_interval, bool down)
+bool UIWindow::SlideTransition(float dt, int end_pos_y, float speed, bool bounce, float bounce_interval, float bounce_speed, bool down)
 {
 	bool ret = false;
 
@@ -161,7 +161,7 @@ bool UIWindow::SlideTransition(float dt, int end_pos_y, float speed, bool bounce
 	}
 
 	if (start_bouncing) {
-		if (Bounce(dt, bounce_interval, down)) {
+		if (Bounce(dt, bounce_interval, bounce_speed, down)) {
 			ret = true;
 		}
 	}
@@ -169,7 +169,7 @@ bool UIWindow::SlideTransition(float dt, int end_pos_y, float speed, bool bounce
 	return ret;
 }
 
-bool UIWindow::Bounce(float dt, float bounce_interval, bool down) 
+bool UIWindow::Bounce(float dt, float bounce_interval, float bounce_speed, bool down) 
 {
 	bool ret = false;
 
@@ -180,12 +180,12 @@ bool UIWindow::Bounce(float dt, float bounce_interval, bool down)
 		reset = false;
 	}
 
-	if (bounce_value <= 2.0f)
+	if (bounce_value <= bounce_speed)
 		ret = true;
 
 	if (first_bounce) {		
 		if (pos.y >= start_pos.y + bounce_value) {
-			bounce_value -= 2.0f;
+			bounce_value -= bounce_speed;
 			first_bounce = false;
 		}
 		else
@@ -193,7 +193,7 @@ bool UIWindow::Bounce(float dt, float bounce_interval, bool down)
 	}
 	else {		
 		if (pos.y <= start_pos.y - bounce_value) {
-			bounce_value -= 2.0f;
+			bounce_value -= bounce_speed;
 			first_bounce = true;
 		}
 		else

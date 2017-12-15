@@ -39,8 +39,8 @@ public:
 	SDL_Rect GetNormalSprite() const;
 	UIEvents GetActualEvent() const;
 
-	bool SlideTransition(float dt, int end_pos_y, float speed = 10.0f, bool bounce = true, float bounce_interval = 1.0f, bool down = true);
-	bool Bounce(float dt, float bounce_interval = 1.0f, bool down = true);
+	bool SlideTransition(float dt, int end_pos_y, float speed = 10.0f, bool bounce = true, float bounce_interval = 1.0f, float bounce_speed = 2.0f, bool down = true);
+	bool Bounce(float dt, float bounce_interval = 1.0f, float bounce_speed = 2.0f, bool down = true);
 	void InitializeBounce(float bounce_interval = 1.0f, bool down = true);
 
 private:
