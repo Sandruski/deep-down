@@ -15,6 +15,7 @@
 #define Purple_ { 47,33,56,255 }
 #define Pink_ { 183,116,141,255 }
 #define LightPink_ { 255,247,226,255 }
+#define WarmYellow_ { 255,193,82,255 }
 
 using namespace std;
 
@@ -116,8 +117,6 @@ public:
 	void SetTextureAlphaMod(Tex_Names tex_name, float alpha);
 	float IncreaseDecreaseAlpha(float from, float to, float seconds);
 	void ResetAlpha();
-
-	void CreateTextStartLevel(uint level);
 
 private:
 	p2SString atlas_file_name;

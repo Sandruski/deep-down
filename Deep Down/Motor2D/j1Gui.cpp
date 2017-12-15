@@ -398,19 +398,5 @@ void j1Gui::SetUpDraggingNode(bool drag)
 	SetUpDraggingChildren(dragging_node, drag);
 }
 
-void j1Gui::CreateTextStartLevel(uint level) 
-{
-	uint width, height;
-	App->win->GetWindowSize(width, height);
-
-	UILabel_Info label;
-	label.text = "Blablabla";
-	label.font_name = Font_Names::MSMINCHO_;
-	label.draggable = false;
-	label.interactive = false;
-
-	CreateUILabel({ (int)width / 2,(int)height / 2 }, label);
-}
-
 // class Gui ---------------------------------------------------
 

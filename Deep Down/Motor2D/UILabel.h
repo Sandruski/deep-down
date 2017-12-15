@@ -46,6 +46,8 @@ public:
 
 	bool FromAlphaToAlphaFade(float from = 0.0f, float to = 0.0f, float seconds = 1.0f);
 
+	void RandomAlphaPainting(float dt, SDL_Color color = White_, int base_alpha = 255.0f, int min_alpha = 0.0f, int max_alpha = 255.0f, float speed = 1.0f);
+
 private:
 	UILabel_Info label;
 	_TTF_Font* font = nullptr;
@@ -58,6 +60,9 @@ private:
 	float start_time = 0.0f;
 	bool is_invisible = true;
 	bool reset = true;
+
+	// Alpha painting parameters
+	float timer = 0.0f;
 };
 
 #endif // __UILabel_H__

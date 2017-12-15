@@ -7,6 +7,8 @@
 #include "j1Window.h"
 #include "j1FadeToBlack.h"
 #include "j1Textures.h"
+#include "j1Scene.h"
+#include "UILabel.h"
 
 #include <math.h>
 
@@ -65,7 +67,7 @@ bool j1FadeToBlack::Update(float dt)
 }
 
 // Fade to black. At mid point deactivate one module, then activate the other
-bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float time, fades kind_of_fade, bool cleanup_off, bool start_on)
+bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float time, fades kind_of_fade, bool cleanup_off, bool start_on, bool level_text, uint num_level, bool cats_picked_text, uint cats_picked)
 {
 	bool ret = false;
 
@@ -73,8 +75,7 @@ bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float
 	this->start_on = start_on;
 
 	if (current_step == fade_step::none)
-	{
-		
+	{		
 		thisFade = kind_of_fade;
 		
 		current_step = fade_step::fade_to_black;
@@ -83,6 +84,11 @@ bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float
 
 		off = module_off;
 		on = module_on;
+
+		this->level_text = level_text;
+		this->num_level = num_level;
+		this->cats_picked_text = cats_picked_text;
+		this->cats_picked = cats_picked;
 
 		ret = true;
 	}
@@ -104,6 +110,20 @@ void j1FadeToBlack::NormalFade()
 	{
 	case fade_step::fade_to_black:
 	{
+		if (now >= total_time - total_time / 2) {
+			if (level_text) {
+				blit_level_text = App->scene->CreateLevelNameText(num_level);
+				level_text = false;
+			}
+		}
+
+		if (now >= total_time - total_time / 10) {
+			if (cats_picked_text) {
+				blit_cats_picked_text = App->scene->CreateCatsPickedText(cats_picked);
+				cats_picked_text = false;
+			}
+		}
+
 		if (now >= total_time)
 		{
 			if (cleanup_off)
@@ -121,15 +141,27 @@ void j1FadeToBlack::NormalFade()
 	{
 		normalized = 1.0f - normalized;
 
-		if (now >= total_time)
-			current_step = fade_step::none;
+		if (now >= total_time - total_time / 3) {
+			App->gui->DestroyElement(blit_level_text);
+			blit_level_text = nullptr;
+			App->gui->DestroyElement(blit_cats_picked_text);
+			blit_cats_picked_text = nullptr;
+		}
 
+		if (now >= total_time) {
+			current_step = fade_step::none;
+		}
 	} break;
 	}
 
 	// Finally render the black square with alpha on the screen
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(normalized * 255.0f));
 	SDL_RenderFillRect(App->render->renderer, &screen);
+
+	if (blit_level_text != nullptr)
+		blit_level_text->Draw();
+	if (blit_cats_picked_text != nullptr)
+		blit_cats_picked_text->Draw();
 }
 
 void j1FadeToBlack::SliderFade()
@@ -141,6 +173,20 @@ void j1FadeToBlack::SliderFade()
 	{
 	case fade_step::fade_to_black:
 
+		if (now >= total_time - total_time / 2) {
+			if (level_text) {
+				blit_level_text = App->scene->CreateLevelNameText(num_level);				
+				level_text = false;
+			}
+		}
+
+		if (now >= total_time - total_time / 10) {
+			if (cats_picked_text) {
+				blit_cats_picked_text = App->scene->CreateCatsPickedText(cats_picked);
+				cats_picked_text = false;
+			}
+		}
+
 		if (now >= total_time) {
 
 			if (cleanup_off)
@@ -152,32 +198,61 @@ void j1FadeToBlack::SliderFade()
 			start_time = SDL_GetTicks();
 
 			current_step = fade_from_black;
-
 		}
 		break;
 
 	case fade_step::fade_from_black:
 
 		normalized = 1.0f - normalized;
-		if (now >= total_time)
+
+		if (now >= total_time - total_time / 3) {
+			App->gui->DestroyElement(blit_level_text);
+			blit_level_text = nullptr;
+			App->gui->DestroyElement(blit_cats_picked_text);
+			blit_cats_picked_text = nullptr;
+		}
+
+		if (now >= total_time) {
 			current_step = fade_step::none;
-
+		}
 		break;
-
 	}
+
 	Slider_rect.w = normalized*screen.w;
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
 	SDL_RenderFillRect(App->render->renderer, &Slider_rect);
+
+	if (blit_level_text != nullptr) {
+		blit_level_text->Draw();
+		blit_level_text->RandomAlphaPainting(dt, WarmYellow_, 255 / 2, 255 / 5, 255 / 2 + 255 / 3, 0.1f);
+	}
+	if (blit_cats_picked_text != nullptr) {
+		blit_cats_picked_text->Draw();
+		blit_level_text->RandomAlphaPainting(dt);
+	}
 }
 
 void j1FadeToBlack::BlackFade()
 {
-
 	Uint32 now = SDL_GetTicks() - start_time;
 
 	switch (current_step)
 	{
 	case fade_step::fade_to_black:
+
+		if (now >= total_time - total_time / 2) {
+			if (level_text) {
+				blit_level_text = App->scene->CreateLevelNameText(num_level);
+				level_text = false;
+			}
+		}
+
+		if (now >= total_time - total_time / 10) {
+			if (cats_picked_text) {
+				blit_cats_picked_text = App->scene->CreateCatsPickedText(cats_picked);
+				cats_picked_text = false;
+			}
+		}
 
 		if (now >= total_time) {
 
@@ -196,13 +271,24 @@ void j1FadeToBlack::BlackFade()
 
 	case fade_step::fade_from_black:
 
-		if (now >= total_time)
+		if (now >= total_time - total_time / 3) {
+			App->gui->DestroyElement(blit_level_text);
+			blit_level_text = nullptr;
+			App->gui->DestroyElement(blit_cats_picked_text);
+			blit_cats_picked_text = nullptr;
+		}
+
+		if (now >= total_time) {
 			current_step = fade_step::none;
-
+		}
 		break;
-
 	}
 
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
 	SDL_RenderFillRect(App->render->renderer, &screen);
+
+	if (blit_level_text != nullptr)
+		blit_level_text->Draw();
+	if (blit_cats_picked_text != nullptr)
+		blit_cats_picked_text->Draw();
 }

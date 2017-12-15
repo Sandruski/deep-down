@@ -7,6 +7,8 @@
 
 #include "SDL\include\SDL_rect.h"
 
+struct UILabel;
+
 enum fades
 {
 	no_fade,
@@ -23,7 +25,7 @@ public:
 
 	bool Start();
 	bool Update(float dt);
-	bool FadeToBlack(j1Module* module_off, j1Module* module_on, float time = 2.0f, fades kind_of_fade = normal_fade, bool cleanup_off = true, bool start_on = true);
+	bool FadeToBlack(j1Module* module_off, j1Module* module_on, float time = 2.0f, fades kind_of_fade = normal_fade, bool cleanup_off = true, bool start_on = true, bool level_text = false, uint num_level = 0, bool cats_picked_text = false, uint cats_picked = 0);
 
 	void NormalFade();
 	void SliderFade();
@@ -45,8 +47,14 @@ private:
 	bool cleanup_off = true;
 	bool start_on = true;
 
-public:
+	bool level_text = true;
+	bool cats_picked_text = true;
+	uint num_level = 0;
+	uint cats_picked = 0;
+	UILabel* blit_level_text = nullptr;
+	UILabel* blit_cats_picked_text = nullptr;
 
+public:
 	enum fade_step
 	{
 		none,

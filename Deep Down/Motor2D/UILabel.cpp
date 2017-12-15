@@ -259,3 +259,29 @@ void UILabel::ResetFade()
 {
 	reset = true;
 }
+
+void UILabel::RandomAlphaPainting(float dt, SDL_Color color, int base_alpha, int min_alpha, int max_alpha, float speed)
+{
+	if (timer >= speed) {
+		int random = rand() % 2;
+
+		int min = min_alpha + rand() % (base_alpha - min_alpha + 1);
+		int max = min_alpha + rand() % (max_alpha - min_alpha + 1);
+
+		if (min >= 0 && min <= 255 && max >= 0 && max <= 255) {
+			switch (random) {
+			case 0:
+				SetColor({ color.r, color.g, color.b, (Uint8)min });
+				break;
+			case 1:
+				SetColor({ color.r, color.g, color.b, (Uint8)max });
+				break;
+			default:
+				break;
+			}
+		}
+		timer = 0.0f;
+	}
+
+	timer += 1.0f * dt;
+}
