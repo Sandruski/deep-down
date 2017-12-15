@@ -24,6 +24,9 @@ struct UILabel_Info {
 
 	bool draggable = false;
 	bool interactive = true;
+
+	// Support for paragraphs
+	int text_wrap_length = 0;
 };
 
 // ---------------------------------------------------

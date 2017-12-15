@@ -55,15 +55,20 @@ void UIElement::Draw() const
 {
 	iPoint blit_pos;
 	int scale = App->win->GetScale();
-	blit_pos.x = (GetScreenPos().x - App->render->camera.x) / scale;
-	blit_pos.y = (GetScreenPos().y - App->render->camera.y) / scale;
+	blit_pos.x = (GetLocalPos().x - App->render->camera.x) / scale;
+	blit_pos.y = (GetLocalPos().y - App->render->camera.y) / scale;
 
-	//SDL_RenderSetViewport(App->render->renderer, &GetScreenRect());
+	if (parent != nullptr) {
+		SDL_Rect daddy = parent->GetScreenRect();
+		App->render->SetViewPort({ daddy.x,daddy.y,daddy.w * scale,daddy.h * scale });
+	}
 
 	if (tex_area.w != 0)
 		App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
 	else
 		App->render->Blit(tex, blit_pos.x, blit_pos.y);
+
+	App->render->ResetViewPort();
 
 	if (App->gui->debug_draw)
 		DebugDraw(blit_pos);

@@ -36,8 +36,6 @@ public:
 	void SetNewRect(SDL_Rect& new_rect);
 	SDL_Rect GetRect();
 
-	void ResetFade();
-	bool FromAlphaToAlphaFade(float from = 0.0f, float to = 0.0f, float seconds = 1.0f);
 	uint GetPercent();
 
 private:
@@ -45,10 +43,6 @@ private:
 
 	UIEvents UIevent = NO_EVENT_;
 	bool next_event = false;
-	// Fade parameters
-	float total_time = 0.0f;
-	float start_time = 0.0f;
-	bool reset = true;
 
 public:
 	bool lets_move = false;

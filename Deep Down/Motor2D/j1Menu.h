@@ -88,7 +88,7 @@ private:
 	UIImage* black_screen_image = nullptr;
 
 	// Settings
-	UIWindow* settings_window = nullptr;
+
 	UILabel* music_volume_text = nullptr;
 	UILabel* FX_volume_text = nullptr;
 	UILabel* fullscreen_text = nullptr;
@@ -109,6 +109,12 @@ private:
 	UILabel* website_title = nullptr;
 	UILabel* website_description = nullptr;
 	UILabel* license_title = nullptr;
+	UILabel* license_description = nullptr;
+	UISlider* license_slider = nullptr;
+
+	// Credits slider
+	bool sliding = false;
+	int last_slide = 0;
 
 	float timer = 0;
 
@@ -126,6 +132,9 @@ private:
 
 	iPoint camera_start_position = { 0,0 };
 	bool camera_blit = false;
+
+public:
+	UIWindow* settings_window = nullptr;
 };
 
 #endif // __j1MENU_PAUSE_PAUSE_H__
