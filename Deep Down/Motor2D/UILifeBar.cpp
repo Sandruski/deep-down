@@ -158,9 +158,14 @@ void UILifeBar::SetLifeProgress(const int life)
 void UILifeBar::IncreaseLifeProgress(const int life)
 {
 	life_bar.life += life;
+	if (life_bar.life > life_bar.backgorund_life_bar.w)
+		life_bar.life = life_bar.backgorund_life_bar.w;
 }
 
 void UILifeBar::DecreaseLifeProgress(const int life)
 {
 	life_bar.life -= life;
+	if (life_bar.life < 0)
+		life_bar.life = 0;
+
 }

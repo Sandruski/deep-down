@@ -106,7 +106,6 @@ private:
 	iPoint mouse = { 0,0 };
 
 	// Ingame UI
-	UILifeBar* progress_bar = nullptr;
 	UILabel* countdown_time = nullptr;
 	UIImage* cat_UI = nullptr;
 	Animation catsUI_anim;
@@ -117,6 +116,8 @@ private:
 	UIButton* menu_pause_checkbox[2] = { nullptr, nullptr };
 	UISlider* volume_slider;
 	bool swap_music = false;
+public:
+	UILifeBar* progress_bar = nullptr;
 };
 
 #endif // __j1SCENE1_H__
