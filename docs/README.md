@@ -86,3 +86,5 @@ Alvarez Garcia, Sandra:
 Costa Miquel, Guillem:
 
 •	GitHub account: [DatBeQuiet](https://github.com/DatBeQuiet)
+
+theme: jekyll-theme-minimal
