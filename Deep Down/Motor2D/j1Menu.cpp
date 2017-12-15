@@ -21,7 +21,7 @@
 #include "UIWindow.h"
 
 #include "SDL/include/SDL_render.h"
-#include "SDL/include/SDL_timer.h""
+#include "SDL/include/SDL_timer.h"
 
 #include"Brofiler\Brofiler.h"
 
@@ -465,50 +465,64 @@ bool j1Menu::Update(float dt)
 
 	case MenuState::MAIN_MENU_OPTIONS_ANIMATION_:
 
-		if (from_settings) {
-			if (App->render->camera.x > -camera_start_position.x * scale)
-				App->render->camera.x -= 250 * dt;
-			else {
-				blit_cat = true;
+		if (from_settings || from_credits) {
+			if (from_settings) {
+				if (App->render->camera.x > -(camera_start_position.x + 10) * scale)
+					App->render->camera.x -= 250 * dt;
+				else
+					camera_moved = true;
+			}
+			else if (from_credits) {
+				if (App->render->camera.y < 0)
+					App->render->camera.y += 250 * dt;
+				else
+					camera_moved = true;
+			}
+		}
 
-				alpha = App->gui->IncreaseDecreaseAlpha(0.0f, 255.0f, options_seconds);
-				App->gui->SetTextureAlphaMod(Tex_Names::MAIN_MENU_, alpha);
+		if (camera_moved) {
+			blit_cat = true;
 
-				main_menu_options[0]->SetColor({ main_menu_options[0]->GetColor().r,main_menu_options[0]->GetColor().g,main_menu_options[0]->GetColor().b,(Uint8)alpha });
-				if (alpha >= 1.0f * (255.0f / 5.0f))
-					main_menu_options[1]->SetColor({ main_menu_options[1]->GetColor().r,main_menu_options[1]->GetColor().g,main_menu_options[1]->GetColor().b,(Uint8)alpha });
-				if (alpha >= 2.0f * (255.0f / 5.0f))
-					main_menu_options[2]->SetColor({ main_menu_options[2]->GetColor().r,main_menu_options[2]->GetColor().g,main_menu_options[2]->GetColor().b,(Uint8)alpha });
-				if (alpha >= 3.0f * (255.0f / 5.0f))
-					main_menu_options[3]->SetColor({ main_menu_options[3]->GetColor().r,main_menu_options[3]->GetColor().g,main_menu_options[3]->GetColor().b,(Uint8)alpha });
-				if (alpha >= 4.0f * (255.0f / 5.0f))
-					main_menu_options[4]->SetColor({ main_menu_options[4]->GetColor().r,main_menu_options[4]->GetColor().g,main_menu_options[4]->GetColor().b,(Uint8)alpha });
+			alpha = App->gui->IncreaseDecreaseAlpha(0.0f, 255.0f, options_seconds);
+			App->gui->SetTextureAlphaMod(Tex_Names::MAIN_MENU_, alpha);
 
-				if (alpha == 255.0f) {
+			main_menu_options[0]->SetColor({ main_menu_options[0]->GetColor().r,main_menu_options[0]->GetColor().g,main_menu_options[0]->GetColor().b,(Uint8)alpha });
+			if (alpha >= 1.0f * (255.0f / 5.0f))
+				main_menu_options[1]->SetColor({ main_menu_options[1]->GetColor().r,main_menu_options[1]->GetColor().g,main_menu_options[1]->GetColor().b,(Uint8)alpha });
+			if (alpha >= 2.0f * (255.0f / 5.0f))
+				main_menu_options[2]->SetColor({ main_menu_options[2]->GetColor().r,main_menu_options[2]->GetColor().g,main_menu_options[2]->GetColor().b,(Uint8)alpha });
+			if (alpha >= 3.0f * (255.0f / 5.0f))
+				main_menu_options[3]->SetColor({ main_menu_options[3]->GetColor().r,main_menu_options[3]->GetColor().g,main_menu_options[3]->GetColor().b,(Uint8)alpha });
+			if (alpha >= 4.0f * (255.0f / 5.0f))
+				main_menu_options[4]->SetColor({ main_menu_options[4]->GetColor().r,main_menu_options[4]->GetColor().g,main_menu_options[4]->GetColor().b,(Uint8)alpha });
 
-					first_letter = title_letters[0]->IntermitentFade(1.2f, false, true);
-					second_letter = title_letters[1]->IntermitentFade(1.2f, false, true);
-					third_letter = title_letters[2]->IntermitentFade(1.2f, false, true);
-					fourth_letter = title_letters[3]->IntermitentFade(1.2f, false, true);
-					fifth_letter = title_letters[4]->IntermitentFade(1.2f, false, true);
-					sixth_letter = title_letters[5]->IntermitentFade(1.2f, false, true);
-					seventh_letter = title_letters[6]->IntermitentFade(1.2f, false, true);
-					eighth_letter = title_letters[7]->IntermitentFade(1.2f, false, true);
+			if (alpha == 255.0f) {
 
-					if (first_letter && second_letter && third_letter && fourth_letter && fifth_letter && sixth_letter && seventh_letter && eighth_letter) {
-						for (uint i = 0; i < 5; ++i) {
-							main_menu_buttons[i]->SetInteraction(true);
-							main_menu_options[i]->SetInteraction(true);
-						}
+				first_letter = title_letters[0]->IntermitentFade(1.2f, false, true);
+				second_letter = title_letters[1]->IntermitentFade(1.2f, false, true);
+				third_letter = title_letters[2]->IntermitentFade(1.2f, false, true);
+				fourth_letter = title_letters[3]->IntermitentFade(1.2f, false, true);
+				fifth_letter = title_letters[4]->IntermitentFade(1.2f, false, true);
+				sixth_letter = title_letters[5]->IntermitentFade(1.2f, false, true);
+				seventh_letter = title_letters[6]->IntermitentFade(1.2f, false, true);
+				eighth_letter = title_letters[7]->IntermitentFade(1.2f, false, true);
 
-						from_settings = false;
-						menuState = MenuState::AT_MAIN_MENU_;
-						break;
+				if (first_letter && second_letter && third_letter && fourth_letter && fifth_letter && sixth_letter && seventh_letter && eighth_letter) {
+					for (uint i = 0; i < 5; ++i) {
+						main_menu_buttons[i]->SetInteraction(true);
+						main_menu_options[i]->SetInteraction(true);
 					}
+
+					from_settings = false;
+					from_credits = false;
+					camera_moved = false;
+
+					menuState = MenuState::AT_MAIN_MENU_;
+					break;
 				}
 			}
 		}
-		else {
+		else if (!from_settings && !from_credits) {
 			alpha = App->gui->IncreaseDecreaseAlpha(0.0f, 255.0f, options_seconds);
 			App->gui->SetTextureAlphaMod(Tex_Names::MAIN_MENU_, alpha);
 
@@ -541,6 +555,7 @@ bool j1Menu::Update(float dt)
 
 	case MenuState::AT_SETTINGS_:
 		blit_cat = false;
+
 		if (App->render->camera.x < 0)
 			App->render->camera.x += 250 * dt;
 		else {
@@ -550,7 +565,7 @@ bool j1Menu::Update(float dt)
 						if (fullscreen_text->IntermitentFade(1.0f, false, true)) {
 							if (cap_frames_text->IntermitentFade(1.0f, false, true)) {
 								if (camera_blit_text->IntermitentFade(1.0f, false, true)) {
-									if (back_to_main_menu->SlideTransition(dt, height - 50, 500.0f, true, 10.0f, false)) {
+									if (back_to_main_menu_from_settings->SlideTransition(dt, height - 50, 500.0f, true, 10.0f, false)) {
 										settings_window->SetInteraction(true);
 										music_volume_text->SetInteraction(true);
 										FX_volume_text->SetInteraction(true);
@@ -560,7 +575,7 @@ bool j1Menu::Update(float dt)
 										fullscreen_checkbox->SetInteraction(true);
 										cap_frames_checkbox->SetInteraction(true);
 										camera_blit_checkbox->SetInteraction(true);
-										back_to_main_menu->SetInteraction(true);
+										back_to_main_menu_from_settings->SetInteraction(true);
 									}
 								}
 							}
@@ -573,6 +588,14 @@ bool j1Menu::Update(float dt)
 
 	case MenuState::AT_CREDITS_:
 		blit_cat = false;
+
+		
+		if (App->render->camera.y > -(int)height - 2*16*scale)
+			App->render->camera.y -= 250 * dt;
+		else {
+
+		}
+		
 		
 		break;
 
@@ -628,6 +651,7 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		}
 		else if (UIelem == main_menu_buttons[MenuOptions::MM_CREDITS_]) {
 			App->gui->ClearAllUI();
+			CreateCreditsUIElements();
 			menuState = MenuState::AT_CREDITS_;
 			//App->fade->FadeToBlack(this, this, 2.0f, slider_fade, false, false);
 			break;
@@ -637,11 +661,20 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			break;
 		}
 
-		//Settings
-		else if (UIelem == back_to_main_menu) {
+		// Settings
+		else if (UIelem == back_to_main_menu_from_settings) {
 			App->gui->ClearAllUI();
 			CreateMainMenuUIElements();
 			from_settings = true;
+			menuState = MenuState::MAIN_MENU_OPTIONS_ANIMATION_;
+			break;
+		}
+
+		// Credits
+		else if (UIelem == back_to_main_menu_from_credits) {
+			App->gui->ClearAllUI();
+			CreateMainMenuUIElements();
+			from_credits = true;
 			menuState = MenuState::MAIN_MENU_OPTIONS_ANIMATION_;
 			break;
 		}
@@ -843,11 +876,24 @@ void j1Menu::CreateSettingsUIElements()
 	cap_frames_checkbox = App->gui->CreateUIButton({ 200,300 }, checkbox, this);
 	camera_blit_checkbox = App->gui->CreateUIButton({ 200,380 }, checkbox, this);
 
+	// Back to main menu button
 	UIButton_Info button;
 	button.tex_name = Tex_Names::MAIN_MENU_;
 	button.interactive = false;
 	button.normal_tex_area = { 0,119,24,20 };
 	button.hover_tex_area = { 27,119,24,20 };
 	button.pressed_tex_area = { 54,119,24,20 };
-	back_to_main_menu = App->gui->CreateUIButton({ (int)width - 100, (int)height + 200 }, button, this);
+	back_to_main_menu_from_settings = App->gui->CreateUIButton({ (int)width - 100, (int)height + 200 }, button, this);
+}
+
+void j1Menu::CreateCreditsUIElements() 
+{
+	// Back to main menu button
+	UIButton_Info button;
+	button.tex_name = Tex_Names::MAIN_MENU_;
+	//button.interactive = false;
+	button.normal_tex_area = { 0,119,24,20 };
+	button.hover_tex_area = { 27,119,24,20 };
+	button.pressed_tex_area = { 54,119,24,20 };
+	back_to_main_menu_from_credits = App->gui->CreateUIButton({ (int)width - 100, (int)height - 200 }, button, this);
 }

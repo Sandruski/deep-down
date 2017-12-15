@@ -58,6 +58,8 @@ void UIElement::Draw() const
 	blit_pos.x = (GetScreenPos().x - App->render->camera.x) / scale;
 	blit_pos.y = (GetScreenPos().y - App->render->camera.y) / scale;
 
+	//SDL_RenderSetViewport(App->render->renderer, &GetScreenRect());
+
 	if (tex_area.w != 0)
 		App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
 	else

@@ -68,6 +68,7 @@ public:
 
 	void CreateMainMenuUIElements();
 	void CreateSettingsUIElements();
+	void CreateCreditsUIElements();
 
 private:
 	MenuState menuState = MenuState::NO_MENU_;
@@ -97,7 +98,10 @@ private:
 	UIButton* fullscreen_checkbox = nullptr;
 	UIButton* camera_blit_checkbox = nullptr;
 	UIButton* cap_frames_checkbox = nullptr;
-	UIButton* back_to_main_menu = nullptr;
+	UIButton* back_to_main_menu_from_settings = nullptr;
+
+	// Credits
+	UIButton* back_to_main_menu_from_credits = nullptr;
 
 	uint i = 0;
 	float timer = 0;
@@ -108,6 +112,7 @@ private:
 
 	bool from_settings = false;
 	bool from_credits = false;
+	bool camera_moved = false;
 
 	// Screen parameters
 	uint width = 0, height = 0;
