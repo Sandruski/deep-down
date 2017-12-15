@@ -7,6 +7,7 @@
 #include "UIElement.h"
 #include "j1App.h"
 #include "j1Gui.h"
+#include "Animation.h"
 
 struct UIImage_Info {
 	SDL_Rect tex_area = { 0,0,0,0 };
@@ -15,7 +16,6 @@ struct UIImage_Info {
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
 	bool quad = false;
 	SDL_Color color = { 0,0,0,255 };
-
 	bool draggable = false;
 };
 
@@ -28,6 +28,8 @@ public:
 	void Draw() const;
 	void DebugDraw(iPoint blit_pos) const;
 	void SetColor(const SDL_Color color);
+	void StartAnimation(Animation anim);
+	void Update(float dt);
 	SDL_Color GetColor();
 	void SetNewRect(SDL_Rect& new_rect);
 	SDL_Rect GetRect();
@@ -42,6 +44,11 @@ private:
 	float total_time = 0.0f;
 	float start_time = 0.0f;
 	bool reset = true;
+
+	Animation anim_to_play;
+	Animation* anim;
+	float speed = 0.0f;
+	bool start_aimation = false;
 };
 
 #endif // __UIImage_H__

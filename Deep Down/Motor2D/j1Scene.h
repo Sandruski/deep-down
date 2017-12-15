@@ -67,8 +67,6 @@ public:
 
 	void MoveCamera();
 
-	void StartUICatAnimation(float dt);
-
 	UILabel* CreateLevelNameText(uint level = 0);
 	UILabel* CreateCatsPickedText(uint cats_picked = 0);
 
@@ -108,10 +106,9 @@ private:
 	iPoint mouse = { 0,0 };
 
 	// Ingame UI
-	UILifeBar* progress_bar = nullptr;
 	UILabel* countdown_time = nullptr;
 	UIImage* cat_UI = nullptr;
-	float timer_cat_UI = 0.0f;
+	Animation catsUI_anim;
 
 	// Pause_menu
 	UIWindow* pause_menu = nullptr;
@@ -119,6 +116,8 @@ private:
 	UIButton* menu_pause_checkbox[2] = { nullptr, nullptr };
 	UISlider* volume_slider;
 	bool swap_music = false;
+public:
+	UILifeBar* progress_bar = nullptr;
 };
 
 #endif // __j1SCENE1_H__

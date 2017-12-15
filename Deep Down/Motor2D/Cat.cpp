@@ -9,6 +9,7 @@
 #include "j1Particles.h"
 #include "j1Scene.h"
 #include "UILabel.h"
+#include "UILifeBar.h"
 
 #include "j1Audio.h"
 
@@ -462,6 +463,7 @@ void Cat::OnCollision(Collider* c1, Collider* c2)
 		App->scene->activate_UI_anim = true;
 		App->scene->number_cats_count += 1;
 		App->scene->cats_score->SetText(p2SString("0%i", App->scene->number_cats_count));
+		App->scene->progress_bar->IncreaseLifeProgress(10);
 		break;
 
 	case COLLIDER_PLAYER:
@@ -474,6 +476,7 @@ void Cat::OnCollision(Collider* c1, Collider* c2)
 		App->scene->activate_UI_anim = true;
 		App->scene->number_cats_count += 1;
 		App->scene->cats_score->SetText(p2SString("0%i", App->scene->number_cats_count));
+		App->scene->progress_bar->IncreaseLifeProgress(10);
 		break;
 	}
 	

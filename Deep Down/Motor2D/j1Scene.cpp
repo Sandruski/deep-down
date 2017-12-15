@@ -64,6 +64,16 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	for (pugi::xml_node node = config.child("audio").child("fx").child("fx"); node; node = node.next_sibling("fx"))
 		App->audio->LoadFx(node.attribute("name").as_string());
 
+	catsUI_anim.PushBack({ 0,0,26,26 });
+	catsUI_anim.PushBack({ 26,0,26,26 });
+	catsUI_anim.PushBack({ 26,0,26,26 });
+	catsUI_anim.PushBack({ 0,26,26,26 });
+	catsUI_anim.PushBack({ 26,26,26,26 });
+	catsUI_anim.PushBack({ 0,26,26,26 });
+	catsUI_anim.PushBack({ 26,0,26,26 });
+	catsUI_anim.speed = 2.5f;
+	//TODO ADD TO XML
+
 	return ret;
 }
 
@@ -170,8 +180,10 @@ bool j1Scene::Update(float dt)
 	else
 		countdown_time->SetText(p2SString("%i", (int)count_time));
 
-	if (activate_UI_anim)
-		StartUICatAnimation(dt);
+	if (activate_UI_anim) {
+		cat_UI->StartAnimation(catsUI_anim);
+		activate_UI_anim = false;
+	}
 
 	if (swap_music) {
 		int volume = volume_slider->GetPercent();
@@ -224,26 +236,6 @@ void j1Scene::MoveCamera() {
 	else {
 		if (App->entities->playerData != nullptr)
 			App->render->camera.y = (int)(App->entities->playerData->position.y - 150) * (-1) *  App->win->GetScale();
-	}
-}
-
-void j1Scene::StartUICatAnimation(float dt)
-{
-	timer_cat_UI += 1 * dt;
-	if (timer_cat_UI >= 0 && timer_cat_UI < 0.25f)
-		cat_UI->SetNewRect(SDL_Rect({ 26,0,26,26 }));
-	else if (timer_cat_UI >= 0.25f && timer_cat_UI < 0.5f)
-		cat_UI->SetNewRect(SDL_Rect({ 0,26,26,26 }));
-	else if (timer_cat_UI >= 0.5f && timer_cat_UI < 0.75f)
-		cat_UI->SetNewRect(SDL_Rect({ 26,26,26,26 }));
-	else if (timer_cat_UI >= 0.75f && timer_cat_UI < 1.0f)
-		cat_UI->SetNewRect(SDL_Rect({ 0,26,26,26 }));
-	else if (timer_cat_UI >= 1.0f && timer_cat_UI < 1.25f)
-		cat_UI->SetNewRect(SDL_Rect({ 26,0,26,26 }));
-	else if (timer_cat_UI >= 1.25f) {
-		cat_UI->SetNewRect(SDL_Rect({ 0,0,26,26 }));
-		activate_UI_anim = false;
-		timer_cat_UI = 0.0f;
 	}
 }
 
