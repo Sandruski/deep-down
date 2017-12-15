@@ -111,6 +111,8 @@ private:
 
 	bool hurt_fx = false;
 
+	bool lava_dead = false;
+
 public:
 	PlayerInfo player;
 };

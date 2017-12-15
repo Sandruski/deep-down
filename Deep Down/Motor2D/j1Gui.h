@@ -36,6 +36,7 @@ enum Tex_Names {
 	BUTTON_SLIDER_,
 	BUTTON_SLIDER2_,
 	CAT_SCORE_,
+	CLOSING_WINDOW,
 	MAX_TEXS_
 };
 

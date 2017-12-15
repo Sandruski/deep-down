@@ -445,6 +445,13 @@ void j1Scene::OpeningPauseMenu()
 
 	label.text = "Quit";
 	menu_pause_labels[QUIT_] = App->gui->CreateUILabel({ 40,340 }, label, this, pause_menu); // Quit label
+
+	UIButton_Info close_window;
+	close_window.tex_name = CLOSING_WINDOW;
+	close_window.pressed_tex_area = { 7,0,7,8 };
+	close_window.hover_tex_area = { 0,0,7,7 };
+	close_window.normal_tex_area = { 0,0,7,7 };
+	closeWindow = App->gui->CreateUIButton({ 490,3 }, close_window, this, pause_menu);
 }
 
 void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
@@ -581,6 +588,12 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		if (UIelem == (UIElement*)volume_slider)
 		{
 			swap_music = false;
+		}
+
+		else if (UIelem == (UIElement*)closeWindow)
+		{
+			pause = false;
+			App->gui->DestroyElement(pause_menu);
 		}
 
 		break;

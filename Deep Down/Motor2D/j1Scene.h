@@ -115,6 +115,7 @@ private:
 	UIWindow* pause_menu = nullptr;
 	UILabel* menu_pause_labels[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
 	UIButton* menu_pause_checkbox[2] = { nullptr, nullptr };
+	UIButton* closeWindow;
 	UISlider* volume_slider = nullptr;
 	bool swap_music = false;
 
