@@ -27,6 +27,16 @@
 
 #include "UILifeBar.h"
 
+#ifdef _WIN32	
+#include <shellapi.h>
+void open_url(const string& url)
+{
+	ShellExecute(GetActiveWindow(),"open", url.c_str(), NULL, NULL, SW_SHOWNORMAL);
+}
+#else
+void open_url(const string& url) {}
+#endif
+
 j1Menu::j1Menu() : j1Module()
 {
 	name.create("menu");
@@ -681,6 +691,12 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			from_credits = true;
 			menuState = MenuState::MAIN_MENU_OPTIONS_ANIMATION_;
 			break;
+		}
+		
+		else if (UIelem == website_button)
+		{
+
+			open_url("https://sandruski.github.io/Deep-Down-Game/");
 		}
 
 		for (uint i = 0; i < 5; ++i) {
