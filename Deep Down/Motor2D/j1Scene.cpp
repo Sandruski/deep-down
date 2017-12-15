@@ -79,7 +79,7 @@ bool j1Scene::Start()
 	girl_life_bar.tex_area = { 80,524,230,8 };
 	girl_life_bar.backgorund_life_bar = { 85,538,223,4 };
 	girl_life_bar.horizontal_orientation = CENTER_;
-	progress_bar = App->gui->CreateUILifeBar({512,668}, girl_life_bar, this);
+	progress_bar = App->gui->CreateUILifeBar({ 512,668 }, girl_life_bar, this);
 
 	UIImage_Info cats_obtained;
 	cats_obtained.tex_name = CAT_SCORE_;
@@ -143,7 +143,7 @@ bool j1Scene::PreUpdate()
 			App->entities->playerData->position = App->entities->playerData->start_pos;
 		}
 		loading = false;
-	} 
+	}
 
 	return true;
 }
@@ -153,7 +153,7 @@ bool j1Scene::Update(float dt)
 {
 	// F1, F2, F3, F4, F5, F6, +, -
 	DebugKeys();
-	
+
 	// Set window title
 	App->input->GetMousePosition(mouse.x, mouse.y);
 
@@ -172,6 +172,12 @@ bool j1Scene::Update(float dt)
 
 	if (activate_UI_anim)
 		StartUICatAnimation(dt);
+
+	if (swap_music) {
+		int volume = volume_slider->GetPercent();
+		volume = 128 * volume / 100;
+		App->audio->SetMusicVolume(volume);
+	}
 
 	return true;
 }
@@ -207,7 +213,7 @@ void j1Scene::MoveCamera() {
 	else if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) //move camera right (debug functionality)
 		App->render->camera.x -= 5;
 	else {
-		if(App->entities->playerData != nullptr)
+		if (App->entities->playerData != nullptr)
 			App->render->camera.x = (int)(App->entities->playerData->position.x - 100) * (-1) * App->win->GetScale();
 	}
 
@@ -291,7 +297,7 @@ bool j1Scene::Load(pugi::xml_node& save) {
 // Debug keys
 void j1Scene::DebugKeys() {
 	// F1: start from the beginning of the first level
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { 
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
 		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
 			|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
 			loading_state = false;
@@ -311,7 +317,7 @@ void j1Scene::DebugKeys() {
 	}
 
 	// F2: start from the beginning of the current level
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) { 
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
 		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
 			|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
 			loading_state = false;
@@ -380,7 +386,7 @@ void j1Scene::DebugKeys() {
 	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
 		App->audio->ChangeMusicVolume(false); //music volume - 8
 
-	//camera blit
+											  //camera blit
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->map->blit_offset < 15 && App->map->camera_blit)
 		App->map->blit_offset += 7;
@@ -413,7 +419,7 @@ void j1Scene::OpeningPauseMenu()
 
 	UILabel_Info label;
 	label.font_name = SOBAD_;
-	label.normal_color = {0,0,0,255};
+	label.normal_color = { 0,0,0,255 };
 	label.draggable = false;
 
 	label.text = "Resume";
@@ -431,11 +437,11 @@ void j1Scene::OpeningPauseMenu()
 
 void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 {
-	switch(UIevent)
+	switch (UIevent)
 
 	{
 	case UIEvents::MOUSE_ENTER_:
-	
+
 		for (uint i = 0; i < 4; ++i) { // Labels: RESUME_, SAVE_, OPTIONS_, QUIT_
 			if (UIelem == (UIElement*)menu_pause_labels[i]) {
 				menu_pause_labels[i]->IncreasePos(LABELS_POS_MOUSE_ENTER);
@@ -444,7 +450,7 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		}
 
 		break;
-	
+
 	case UIEvents::MOUSE_LEAVE_:
 
 		for (uint i = 0; i < 4; ++i) { // Labels: RESUME_, SAVE_, OPTIONS_, QUIT_
@@ -507,8 +513,11 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			slider.draggable = false;
 			slider.tex_area = { 9,0,54,9 };
 			slider.button_slider_area = { 0,1,9,10 };
+			slider.offset = 3;
+			slider.slider_button_pos.x = App->audio->music_volume * (slider.tex_area.w) / 128;
+			slider.buggy_offset = -1;
 
-			App->gui->CreateUISlider({ 100,100 }, slider, this, pause_menu);
+			volume_slider = App->gui->CreateUISlider({ 240,70 }, slider, this, pause_menu);
 
 			UIButton_Info checkbox;
 			checkbox.checkbox = true;
@@ -548,6 +557,20 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			OpeningPauseMenu();
 		}
 
+		else if (UIelem == (UIElement*)volume_slider)
+		{
+			swap_music = true;
+		}
+
 		break;
-	}	
+
+	case UIEvents::MOUSE_LEFT_UP_:
+
+		if (UIelem == (UIElement*)volume_slider)
+		{
+			swap_music = false;
+		}
+
+		break;
+	}
 }
