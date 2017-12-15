@@ -380,6 +380,17 @@ void Cat::GeneralStatesMachine() {
 			if (cat.r_run.Finished()) {
 				App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_CAT_SPARKLE, NULL, { 0.0f,0.0f });
 				dead = true;
+
+				if (App->scene->index == 0) {
+					App->scene->cats_first_map += 1;
+					App->scene->cats_score->SetText(p2SString("0%i", App->scene->cats_first_map));
+				}
+				else {
+					App->scene->cats_second_map += 1;
+					App->scene->cats_score->SetText(p2SString("0%i", App->scene->cats_second_map));
+				}
+
+				App->scene->progress_bar->IncreaseLifeProgress(10);
 				break;
 			}
 			animation = &cat.r_run;
@@ -397,6 +408,17 @@ void Cat::GeneralStatesMachine() {
 			if (cat.l_run.Finished()) {
 				App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_CAT_SPARKLE, NULL, { 0.0f,0.0f });
 				dead = true;
+
+				if (App->scene->index == 0) {
+					App->scene->cats_first_map += 1;
+					App->scene->cats_score->SetText(p2SString("0%i", App->scene->cats_first_map));
+				}
+				else {
+					App->scene->cats_second_map += 1;
+					App->scene->cats_score->SetText(p2SString("0%i", App->scene->cats_second_map));
+				}
+
+				App->scene->progress_bar->IncreaseLifeProgress(10);
 				break;
 			}
 			animation = &cat.l_run;
@@ -410,6 +432,17 @@ void Cat::GeneralStatesMachine() {
 		if (cat.r_dead.Finished()) {
 			App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_CAT_SPARKLE, NULL, { 0.0f,0.0f });
 			dead = true;
+
+			if (App->scene->index == 0) {
+				App->scene->cats_first_map += 1;
+				App->scene->cats_score->SetText(p2SString("0%i", App->scene->cats_first_map));
+			}
+			else {
+				App->scene->cats_second_map += 1;
+				App->scene->cats_score->SetText(p2SString("0%i", App->scene->cats_second_map));
+			}
+
+			App->scene->progress_bar->IncreaseLifeProgress(10);
 			break;
 		}
 		animation = &cat.r_dead;
@@ -420,6 +453,17 @@ void Cat::GeneralStatesMachine() {
 		if (cat.l_dead.Finished()) {
 			App->particles->AddParticle(App->particles->sparkle, i_pos.x, i_pos.y, COLLIDER_TYPE::COLLIDER_CAT_SPARKLE, NULL, { 0.0f,0.0f });
 			dead = true;
+
+			if (App->scene->index == 0) {
+				App->scene->cats_first_map += 1;
+				App->scene->cats_score->SetText(p2SString("0%i", App->scene->cats_first_map));
+			}
+			else {
+				App->scene->cats_second_map += 1;
+				App->scene->cats_score->SetText(p2SString("0%i", App->scene->cats_second_map));
+			}
+
+			App->scene->progress_bar->IncreaseLifeProgress(10);
 			break;
 		}
 		animation = &cat.l_dead;
@@ -450,7 +494,6 @@ void Cat::GeneralStatesMachine() {
 
 void Cat::OnCollision(Collider* c1, Collider* c2)
 {
-
 	switch (c2->type)
 	{
 	case COLLIDER_ARROW:
@@ -461,25 +504,18 @@ void Cat::OnCollision(Collider* c1, Collider* c2)
 			catState = CatState::lc_dead;
 
 		App->scene->activate_UI_anim = true;
-		App->scene->number_cats_count += 1;
-		App->scene->cats_score->SetText(p2SString("0%i", App->scene->number_cats_count));
-		App->scene->progress_bar->IncreaseLifeProgress(10);
 		break;
 
 	case COLLIDER_PLAYER:
 
 		if (right_death)
-			catState = CatState::rc_run;
+			catState = CatState::rc_dead_run;
 		else
-			catState = CatState::lc_run;
+			catState = CatState::lc_dead_run;
 
 		App->scene->activate_UI_anim = true;
-		App->scene->number_cats_count += 1;
-		App->scene->cats_score->SetText(p2SString("0%i", App->scene->number_cats_count));
-		App->scene->progress_bar->IncreaseLifeProgress(10);
 		break;
 	}
-	
 }
 
 void Cat::SetCatState(uint state) 

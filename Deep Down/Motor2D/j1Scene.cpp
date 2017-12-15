@@ -215,6 +215,13 @@ bool j1Scene::CleanUp()
 	if (!loading_state)
 		App->entities->CleanUp();
 
+	cats_first_map = 0;
+	cats_second_map = 0;
+	countdown_to_die = 0.0f;
+	count_time = 0.0f;
+
+	App->gui->ClearAllUI();
+
 	return true;
 }
 
@@ -303,8 +310,8 @@ void j1Scene::DebugKeys() {
 			}
 			else {
 				index = 0;
-				App->fade->FadeToBlack(this, this, 1);
 			}
+			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade, true, true, true, 0, true, cats_first_map);
 		}
 	}
 
@@ -318,6 +325,14 @@ void j1Scene::DebugKeys() {
 			App->entities->playerData->position = App->entities->playerData->start_pos;
 			gate = false;
 			fx = false;
+
+			uint cats = 0;
+			if (index == 0)
+				cats = cats_first_map;
+			else
+				cats = cats_second_map;
+
+			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade, true, true, true, index, true, cats);
 		}
 	}
 
@@ -330,13 +345,18 @@ void j1Scene::DebugKeys() {
 				|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
 				loading_state = false;
 
-				if (index == 0)
+				uint cats = 0;
+				if (index == 0) {
 					index = 1;
-				else
+					cats = cats_second_map;
+				}
+				else {
 					index = 0;
+					cats = cats_first_map;
+				}
 
 				App->entities->playerData->player.SetState(stop_);
-				App->fade->FadeToBlack(this, this, 1.0f, fades::slider_fade);
+				App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade, true, true, true, index, true, cats);
 			}
 		}
 	}

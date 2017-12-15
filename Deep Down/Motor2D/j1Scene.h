@@ -87,7 +87,8 @@ public:
 	bool pause = false;
 
 	// Cats score
-	uint number_cats_count = 0;
+	uint cats_first_map = 0;
+	uint cats_second_map = 0;
 	UILabel* cats_score = nullptr;
 	bool activate_UI_anim = false;
 
@@ -114,8 +115,9 @@ private:
 	UIWindow* pause_menu = nullptr;
 	UILabel* menu_pause_labels[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
 	UIButton* menu_pause_checkbox[2] = { nullptr, nullptr };
-	UISlider* volume_slider;
+	UISlider* volume_slider = nullptr;
 	bool swap_music = false;
+
 public:
 	UILifeBar* progress_bar = nullptr;
 };
