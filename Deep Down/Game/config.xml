@@ -55,6 +55,8 @@
         <fx name="ImpScream.wav"/>
         <fx name="MonkeyScream.wav"/>
         <fx name="CatPeasantScream.wav"/>
+        <fx name="TinyButton.wav"/>
+        <fx name="ButtonClick.wav"/>
       </fx>
     </audio>
   </scene>

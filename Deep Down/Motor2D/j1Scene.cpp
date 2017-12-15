@@ -464,9 +464,13 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		for (uint i = 0; i < 4; ++i) { // Labels: RESUME_, SAVE_, OPTIONS_, QUIT_
 			if (UIelem == (UIElement*)menu_pause_labels[i]) {
 				menu_pause_labels[i]->IncreasePos(LABELS_POS_MOUSE_ENTER);
+				App->audio->PlayFx(9);
 				continue;
 			}
 		}
+
+		if (UIelem == (UIElement*)menu_pause_labels[BACK_])
+			App->audio->PlayFx(9);
 
 		break;
 
@@ -487,21 +491,25 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		{
 			pause = false;
 			App->gui->DestroyElement(pause_menu); // Closing pause menu
+			App->audio->PlayFx(10);
 		}
 
 		else if (UIelem == (UIElement*)menu_pause_labels[SAVE_])
 		{
 			App->SaveGame();
 			last_index = index;
+			App->audio->PlayFx(10);
 		}
 
 		else if (UIelem == (UIElement*)menu_pause_labels[QUIT_])
 		{
 			App->quit_game = true;
+			App->audio->PlayFx(10);
 		}
 
 		else if (UIelem == (UIElement*)menu_pause_labels[OPTIONS_])
 		{
+			App->audio->PlayFx(10);
 			for (uint i = 0; i < 5; ++i) {
 				App->gui->DestroyElement(menu_pause_labels[i]);
 			}
@@ -574,6 +582,7 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		{
 			App->gui->DestroyElement(pause_menu); // Closing pause menu
 			OpeningPauseMenu();
+			App->audio->PlayFx(10);
 		}
 
 		else if (UIelem == (UIElement*)volume_slider)
@@ -594,6 +603,7 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		{
 			pause = false;
 			App->gui->DestroyElement(pause_menu);
+			App->audio->PlayFx(10);
 		}
 
 		break;
