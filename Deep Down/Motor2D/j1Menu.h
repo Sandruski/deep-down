@@ -97,6 +97,7 @@ private:
 	UIButton* fullscreen_checkbox = nullptr;
 	UIButton* camera_blit_checkbox = nullptr;
 	UIButton* cap_frames_checkbox = nullptr;
+	UIButton* back_to_main_menu = nullptr;
 
 	uint i = 0;
 	float timer = 0;
@@ -104,6 +105,9 @@ private:
 	bool print_title = false;
 	bool blit_cat = true;
 	bool is_invisible = true;
+
+	bool from_settings = false;
+	bool from_credits = false;
 
 	// Screen parameters
 	uint width = 0, height = 0;

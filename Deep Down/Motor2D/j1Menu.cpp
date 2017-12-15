@@ -145,9 +145,9 @@ bool j1Menu::Start()
 
 	// Skip button label
 	label.font_name = Font_Names::SOBAD_8_;
-	label.text = "SKIP";
+	label.text = "SKIP INTRO";
 	label.normal_color = LightGrey_;
-	skip = App->gui->CreateUILabel({ 50, 20 }, label, this);
+	skip = App->gui->CreateUILabel({ 60, 20 }, label, this);
 	skip->SetColor({ skip->GetColor().r,skip->GetColor().g,skip->GetColor().b,0 });
 
 	// Main menu buttons
@@ -218,6 +218,9 @@ bool j1Menu::Start()
 bool j1Menu::Update(float dt)
 {
 	bool ret = true;
+
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		App->quit_game = true;
 
 	// Time variables
 	float skip_button_speed = 2.5f;
@@ -362,6 +365,15 @@ bool j1Menu::Update(float dt)
 	bool is_black_screen_image_invisible = false;
 	float alpha = 0.0f;
 
+	bool first_letter = false;
+	bool second_letter = false;
+	bool third_letter = false;
+	bool fourth_letter = false;
+	bool fifth_letter = false;
+	bool sixth_letter = false;
+	bool seventh_letter = false;
+	bool eighth_letter = false;
+
 	// Update menu
 	switch (menuState) {
 
@@ -370,7 +382,7 @@ bool j1Menu::Update(float dt)
 		// Skip
 		if (menuCatState > MenuCatState::NO_CAT_) {
 
-			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+			if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
 				skip->SetColor({ skip->GetColor().r,skip->GetColor().g,skip->GetColor().b,0 });
 				is_invisible = true;
 
@@ -453,33 +465,78 @@ bool j1Menu::Update(float dt)
 
 	case MenuState::MAIN_MENU_OPTIONS_ANIMATION_:
 
-		alpha = App->gui->IncreaseDecreaseAlpha(0.0f, 255.0f, options_seconds);
-		App->gui->SetTextureAlphaMod(Tex_Names::MAIN_MENU_, alpha);
+		if (from_settings) {
+			if (App->render->camera.x > -camera_start_position.x * scale)
+				App->render->camera.x -= 250 * dt;
+			else {
+				blit_cat = true;
 
-		main_menu_options[0]->SetColor({ main_menu_options[0]->GetColor().r,main_menu_options[0]->GetColor().g,main_menu_options[0]->GetColor().b,(Uint8)alpha });
-		if (alpha >= 1.0f * (255.0f / 5.0f))
-			main_menu_options[1]->SetColor({ main_menu_options[1]->GetColor().r,main_menu_options[1]->GetColor().g,main_menu_options[1]->GetColor().b,(Uint8)alpha });
-		if (alpha >= 2.0f * (255.0f / 5.0f))
-			main_menu_options[2]->SetColor({ main_menu_options[2]->GetColor().r,main_menu_options[2]->GetColor().g,main_menu_options[2]->GetColor().b,(Uint8)alpha });
-		if (alpha >= 3.0f * (255.0f / 5.0f))
-			main_menu_options[3]->SetColor({ main_menu_options[3]->GetColor().r,main_menu_options[3]->GetColor().g,main_menu_options[3]->GetColor().b,(Uint8)alpha });
-		if (alpha >= 4.0f * (255.0f / 5.0f))
-			main_menu_options[4]->SetColor({ main_menu_options[4]->GetColor().r,main_menu_options[4]->GetColor().g,main_menu_options[4]->GetColor().b,(Uint8)alpha });
+				alpha = App->gui->IncreaseDecreaseAlpha(0.0f, 255.0f, options_seconds);
+				App->gui->SetTextureAlphaMod(Tex_Names::MAIN_MENU_, alpha);
 
-		if (alpha == 255.0f) {
+				main_menu_options[0]->SetColor({ main_menu_options[0]->GetColor().r,main_menu_options[0]->GetColor().g,main_menu_options[0]->GetColor().b,(Uint8)alpha });
+				if (alpha >= 1.0f * (255.0f / 5.0f))
+					main_menu_options[1]->SetColor({ main_menu_options[1]->GetColor().r,main_menu_options[1]->GetColor().g,main_menu_options[1]->GetColor().b,(Uint8)alpha });
+				if (alpha >= 2.0f * (255.0f / 5.0f))
+					main_menu_options[2]->SetColor({ main_menu_options[2]->GetColor().r,main_menu_options[2]->GetColor().g,main_menu_options[2]->GetColor().b,(Uint8)alpha });
+				if (alpha >= 3.0f * (255.0f / 5.0f))
+					main_menu_options[3]->SetColor({ main_menu_options[3]->GetColor().r,main_menu_options[3]->GetColor().g,main_menu_options[3]->GetColor().b,(Uint8)alpha });
+				if (alpha >= 4.0f * (255.0f / 5.0f))
+					main_menu_options[4]->SetColor({ main_menu_options[4]->GetColor().r,main_menu_options[4]->GetColor().g,main_menu_options[4]->GetColor().b,(Uint8)alpha });
 
-			for (uint i = 0; i < 5; ++i) {
-				main_menu_buttons[i]->SetInteraction(true);
-				main_menu_options[i]->SetInteraction(true);
+				if (alpha == 255.0f) {
+
+					first_letter = title_letters[0]->IntermitentFade(1.2f, false, true);
+					second_letter = title_letters[1]->IntermitentFade(1.2f, false, true);
+					third_letter = title_letters[2]->IntermitentFade(1.2f, false, true);
+					fourth_letter = title_letters[3]->IntermitentFade(1.2f, false, true);
+					fifth_letter = title_letters[4]->IntermitentFade(1.2f, false, true);
+					sixth_letter = title_letters[5]->IntermitentFade(1.2f, false, true);
+					seventh_letter = title_letters[6]->IntermitentFade(1.2f, false, true);
+					eighth_letter = title_letters[7]->IntermitentFade(1.2f, false, true);
+
+					if (first_letter && second_letter && third_letter && fourth_letter && fifth_letter && sixth_letter && seventh_letter && eighth_letter) {
+						for (uint i = 0; i < 5; ++i) {
+							main_menu_buttons[i]->SetInteraction(true);
+							main_menu_options[i]->SetInteraction(true);
+						}
+
+						from_settings = false;
+						menuState = MenuState::AT_MAIN_MENU_;
+						break;
+					}
+				}
 			}
+		}
+		else {
+			alpha = App->gui->IncreaseDecreaseAlpha(0.0f, 255.0f, options_seconds);
+			App->gui->SetTextureAlphaMod(Tex_Names::MAIN_MENU_, alpha);
 
-			menuState = MenuState::AT_MAIN_MENU_;
-			break;
+			main_menu_options[0]->SetColor({ main_menu_options[0]->GetColor().r,main_menu_options[0]->GetColor().g,main_menu_options[0]->GetColor().b,(Uint8)alpha });
+			if (alpha >= 1.0f * (255.0f / 5.0f))
+				main_menu_options[1]->SetColor({ main_menu_options[1]->GetColor().r,main_menu_options[1]->GetColor().g,main_menu_options[1]->GetColor().b,(Uint8)alpha });
+			if (alpha >= 2.0f * (255.0f / 5.0f))
+				main_menu_options[2]->SetColor({ main_menu_options[2]->GetColor().r,main_menu_options[2]->GetColor().g,main_menu_options[2]->GetColor().b,(Uint8)alpha });
+			if (alpha >= 3.0f * (255.0f / 5.0f))
+				main_menu_options[3]->SetColor({ main_menu_options[3]->GetColor().r,main_menu_options[3]->GetColor().g,main_menu_options[3]->GetColor().b,(Uint8)alpha });
+			if (alpha >= 4.0f * (255.0f / 5.0f))
+				main_menu_options[4]->SetColor({ main_menu_options[4]->GetColor().r,main_menu_options[4]->GetColor().g,main_menu_options[4]->GetColor().b,(Uint8)alpha });
+
+			if (alpha == 255.0f) {
+
+				for (uint i = 0; i < 5; ++i) {
+					main_menu_buttons[i]->SetInteraction(true);
+					main_menu_options[i]->SetInteraction(true);
+				}
+
+				menuState = MenuState::AT_MAIN_MENU_;
+				break;
+			}
 		}
 		break;
 
 	case MenuState::AT_MAIN_MENU_:
-		blit_cat = true;
+		
 		break;
 
 	case MenuState::AT_SETTINGS_:
@@ -487,21 +544,24 @@ bool j1Menu::Update(float dt)
 		if (App->render->camera.x < 0)
 			App->render->camera.x += 250 * dt;
 		else {
-			if (settings_window->SlideTransition(dt, 500.0f, true, 20.0f)) {
+			if (settings_window->SlideTransition(dt, height / 2, 500.0f, true, 20.0f)) {
 				if (music_volume_text->IntermitentFade(1.0f, false, true)) {
 					if (FX_volume_text->IntermitentFade(1.0f, false, true)) {
 						if (fullscreen_text->IntermitentFade(1.0f, false, true)) {
 							if (cap_frames_text->IntermitentFade(1.0f, false, true)) {
 								if (camera_blit_text->IntermitentFade(1.0f, false, true)) {
-									settings_window->SetInteraction(true);
-									music_volume_text->SetInteraction(true);
-									FX_volume_text->SetInteraction(true);
-									fullscreen_text->SetInteraction(true);
-									cap_frames_text->SetInteraction(true);
-									camera_blit_text->SetInteraction(true);
-									fullscreen_checkbox->SetInteraction(true);
-									cap_frames_checkbox->SetInteraction(true);
-									camera_blit_checkbox->SetInteraction(true);
+									if (back_to_main_menu->SlideTransition(dt, height - 50, 500.0f, true, 10.0f, false)) {
+										settings_window->SetInteraction(true);
+										music_volume_text->SetInteraction(true);
+										FX_volume_text->SetInteraction(true);
+										fullscreen_text->SetInteraction(true);
+										cap_frames_text->SetInteraction(true);
+										camera_blit_text->SetInteraction(true);
+										fullscreen_checkbox->SetInteraction(true);
+										cap_frames_checkbox->SetInteraction(true);
+										camera_blit_checkbox->SetInteraction(true);
+										back_to_main_menu->SetInteraction(true);
+									}
 								}
 							}
 						}
@@ -513,8 +573,7 @@ bool j1Menu::Update(float dt)
 
 	case MenuState::AT_CREDITS_:
 		blit_cat = false;
-		if (App->render->camera.y > -(camera_start_position.y + 10) * App->win->GetScale())
-			App->render->camera.x -= 250 * dt;
+		
 		break;
 
 	case MenuState::NO_MENU_:
@@ -551,6 +610,7 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 
 	case UIEvents::MOUSE_LEFT_UP_:
 
+		// Main menu
 		if (UIelem == main_menu_buttons[MenuOptions::MM_START_]) {
 			menuCatState = MenuCatState::MC_START_;
 			break;
@@ -563,17 +623,26 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			App->gui->ClearAllUI();
 			CreateSettingsUIElements();
 			menuState = MenuState::AT_SETTINGS_;
-			App->fade->FadeToBlack(this, this, 2.0f, slider_fade, false, false);
+			//App->fade->FadeToBlack(this, this, 2.0f, slider_fade, false, false);
 			break;
 		}
 		else if (UIelem == main_menu_buttons[MenuOptions::MM_CREDITS_]) {
 			App->gui->ClearAllUI();
 			menuState = MenuState::AT_CREDITS_;
-			App->fade->FadeToBlack(this, this, 2.0f, slider_fade, false, false);
+			//App->fade->FadeToBlack(this, this, 2.0f, slider_fade, false, false);
 			break;
 		}
 		else if (UIelem == main_menu_buttons[MenuOptions::MM_EXIT_]) {
-			// QUIT GAME
+			App->quit_game = true;
+			break;
+		}
+
+		//Settings
+		else if (UIelem == back_to_main_menu) {
+			App->gui->ClearAllUI();
+			CreateMainMenuUIElements();
+			from_settings = true;
+			menuState = MenuState::MAIN_MENU_OPTIONS_ANIMATION_;
 			break;
 		}
 
@@ -631,7 +700,107 @@ bool j1Menu::CleanUp()
 
 void j1Menu::CreateMainMenuUIElements() 
 {
+	App->gui->ResetAlpha();
 
+	// Game title
+	UILabel_Info label;
+	label.font_name = Font_Names::ZELDA_;
+	label.interactive = false;
+
+	label.text = "D";
+	iPoint title_position = { 70 * scale,55 * scale };
+	iPoint tracking = { 5,12 };
+	title_letters[i] = App->gui->CreateUILabel({ title_position.x,title_position.y }, label);
+
+	label.text = "e";
+	SDL_Rect letter_size = title_letters[i]->GetLocalRect();
+	iPoint letter_position = title_letters[i]->GetLocalPos();
+	title_position = { letter_position.x + (letter_size.w + tracking.x) * scale, letter_position.y + tracking.y * scale };
+	title_letters[++i] = App->gui->CreateUILabel({ title_position.x,title_position.y }, label);
+
+	label.text = "e";
+	letter_size = title_letters[i]->GetLocalRect();
+	letter_position = title_letters[i]->GetLocalPos();
+	title_position = { letter_position.x + (letter_size.w + tracking.x) * scale, letter_position.y };
+	title_letters[++i] = App->gui->CreateUILabel({ title_position.x,title_position.y }, label);
+
+	label.text = "p";
+	letter_size = title_letters[i]->GetLocalRect();
+	letter_position = title_letters[i]->GetLocalPos();
+	title_position = { letter_position.x + (letter_size.w + tracking.x) * scale, letter_position.y };
+	title_letters[++i] = App->gui->CreateUILabel({ title_position.x,title_position.y }, label);
+
+	label.text = "D";
+	letter_size = title_letters[i]->GetLocalRect();
+	letter_position = title_letters[i]->GetLocalPos();
+	title_position = { letter_position.x - 2 * letter_size.w * scale, letter_position.y + (letter_size.h - letter_size.h / scale) * scale };
+	title_letters[++i] = App->gui->CreateUILabel({ title_position.x,title_position.y }, label);
+
+	label.text = "o";
+	letter_size = title_letters[i]->GetLocalRect();
+	letter_position = title_letters[i]->GetLocalPos();
+	title_position = { letter_position.x + (letter_size.w + tracking.x) * scale, letter_position.y + tracking.y * scale };
+	title_letters[++i] = App->gui->CreateUILabel({ title_position.x,title_position.y }, label);
+
+	label.text = "w";
+	letter_size = title_letters[i]->GetLocalRect();
+	letter_position = title_letters[i]->GetLocalPos();
+	title_position = { letter_position.x + (letter_size.w + tracking.x) * scale, letter_position.y };
+	title_letters[++i] = App->gui->CreateUILabel({ title_position.x,title_position.y }, label);
+
+	label.text = "n";
+	letter_size = title_letters[i]->GetLocalRect();
+	letter_position = title_letters[i]->GetLocalPos();
+	title_position = { letter_position.x + (letter_size.w + tracking.x) * scale, letter_position.y };
+	title_letters[++i] = App->gui->CreateUILabel({ title_position.x,title_position.y }, label);
+	i = 0;
+
+	for (i; i < 8; ++i)
+		title_letters[i]->SetColor({ title_letters[i]->GetColor().r,title_letters[i]->GetColor().g,title_letters[i]->GetColor().b,0 });
+
+	i = 0;
+	//_game_title
+
+	// Main menu buttons
+	UIButton_Info button;
+	button.tex_name = Tex_Names::MAIN_MENU_;
+	button.interactive = false;
+
+	for (int i = 0; i < 5; ++i) {
+		button.normal_tex_area = { 0,i * (21 + 2),81,21 };
+		button.hover_tex_area = { 84,i * (21 + 2),81,21 };
+		button.pressed_tex_area = { 168,i * (21 + 2),81,21 };
+		main_menu_buttons[i] = App->gui->CreateUIButton({ 50,400 + 70 * i }, button, this);
+	}
+	i = 0;
+	SDL_SetTextureAlphaMod((SDL_Texture*)App->gui->GetTexture(Tex_Names::MAIN_MENU_), 0);
+
+	// Main menu options
+	label.font_name = Font_Names::SOBAD_8_;
+	label.horizontal_orientation = UIElement_HORIZONTAL_POS::CENTER_;
+	label.vertical_orientation = UIElement_VERTICAL_POS::MIDDLE_;
+	label.normal_color = Purple_;
+	label.hover_color = Pink_;
+	label.pressed_color = LightPink_;
+
+	label.text = "Play";
+	iPoint options_position = { main_menu_buttons[i]->GetLocalRect().w * scale / 2,main_menu_buttons[i]->GetLocalRect().h * scale / 2 };
+	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[i]);
+	label.text = "Continue";
+	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[++i]);
+	label.text = "Settings";
+	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[++i]);
+	label.text = "Credits";
+	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[++i]);
+	label.text = "Exit";
+	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[++i]);
+	i = 0;
+
+	for (i; i < 5; ++i)
+		main_menu_options[i]->SetColor({ main_menu_options[i]->GetColor().r,main_menu_options[i]->GetColor().g,main_menu_options[i]->GetColor().b,0 });
+
+	i = 0;
+	//_create_UI_elements
 }
 
 void j1Menu::CreateSettingsUIElements()
@@ -640,7 +809,7 @@ void j1Menu::CreateSettingsUIElements()
 	UIWindow_Info window;
 	window.interactive = false;
 	window.tex_name = Tex_Names::MENU_PAUSE_;
-	settings_window = App->gui->CreateUIWindow({ 50, -500 }, window);
+	settings_window = App->gui->CreateUIWindow({ 50, -500 }, window, this);
 
 	// Options
 	UILabel_Info label;
@@ -670,7 +839,15 @@ void j1Menu::CreateSettingsUIElements()
 	checkbox.normal_tex_area = { 0,0,11,7 };
 	checkbox.hover_tex_area = { 0,0,11,7 };
 	checkbox.pressed_tex_area = { 12,0,11,7 };
-	fullscreen_checkbox = App->gui->CreateUIButton({ 40,220 }, checkbox, this, fullscreen_text);
-	cap_frames_checkbox = App->gui->CreateUIButton({ 40,300 }, checkbox, this, cap_frames_text);
-	camera_blit_checkbox = App->gui->CreateUIButton({ 40,380 }, checkbox, this, camera_blit_text);
+	fullscreen_checkbox = App->gui->CreateUIButton({ 200,220 }, checkbox, this);
+	cap_frames_checkbox = App->gui->CreateUIButton({ 200,300 }, checkbox, this);
+	camera_blit_checkbox = App->gui->CreateUIButton({ 200,380 }, checkbox, this);
+
+	UIButton_Info button;
+	button.tex_name = Tex_Names::MAIN_MENU_;
+	button.interactive = false;
+	button.normal_tex_area = { 0,119,24,20 };
+	button.hover_tex_area = { 27,119,24,20 };
+	button.pressed_tex_area = { 54,119,24,20 };
+	back_to_main_menu = App->gui->CreateUIButton({ (int)width - 100, (int)height + 200 }, button, this);
 }

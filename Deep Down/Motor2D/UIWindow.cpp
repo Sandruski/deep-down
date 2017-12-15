@@ -131,7 +131,7 @@ void UIWindow::HandleInput()
 	}
 }
 
-bool UIWindow::SlideTransition(float dt, float speed, bool bounce, float bounce_interval, bool down)
+bool UIWindow::SlideTransition(float dt, int end_pos_y, float speed, bool bounce, float bounce_interval, bool down)
 {
 	bool ret = false;
 
@@ -140,7 +140,7 @@ bool UIWindow::SlideTransition(float dt, float speed, bool bounce, float bounce_
 	App->win->GetWindowSize(x, y);
 
 	if (down) {
-		if (pos.y + height >= (int)y / 2 - height / 2) {
+		if (pos.y + height >= (int)end_pos_y - height / 2) {
 			if (bounce && !start_bouncing)
 				start_bouncing = true;
 			else if (!bounce)
@@ -150,14 +150,14 @@ bool UIWindow::SlideTransition(float dt, float speed, bool bounce, float bounce_
 			IncreasePos({ 0,(int)(speed * dt) });
 	}
 	else {
-		if (pos.y + height <= (int)y / 2 - height / 2) {
+		if (pos.y + height <= (int)end_pos_y - height / 2) {
 			if (bounce && !start_bouncing)
 				start_bouncing = true;
 			else if (!bounce)
 				ret = true;
 		}
 		else if (!start_bouncing)
-			IncreasePos({ 0,(int)(speed * dt) });
+			DecreasePos({ 0,(int)(speed * dt) });
 	}
 
 	if (start_bouncing) {
