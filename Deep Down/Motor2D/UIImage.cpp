@@ -22,6 +22,18 @@ UIImage::UIImage(iPoint local_pos, UIElement* parent, UIImage_Info& info, j1Modu
 	SetOrientation();
 }
 
+void UIImage::Update(float dt)
+{
+	if (start_aimation && anim_to_play.Finished()) {
+		anim_to_play.Reset();
+		start_aimation = false;
+	}
+	else if (start_aimation) {
+		anim_to_play.speed = speed * dt;
+		anim = &anim_to_play;
+	}
+}
+
 void UIImage::Draw() const
 {
 	iPoint blit_pos;
@@ -34,8 +46,11 @@ void UIImage::Draw() const
 		SDL_RenderFillRect(App->render->renderer, &image.tex_area);
 	}
 	else {
-		if (tex_area.w != 0)
+		if (tex_area.w != 0 && start_aimation)
+			App->render->Blit(tex, blit_pos.x, blit_pos.y, &anim->GetCurrentFrame());
+		else if (tex_area.w != 0 && !start_aimation){
 			App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
+			}
 		else
 			App->render->Blit(tex, blit_pos.x, blit_pos.y);
 	}
@@ -116,4 +131,11 @@ void UIImage::SetNewRect(SDL_Rect& new_rect)
 SDL_Rect UIImage::GetRect()
 {
 	return tex_area;
+}
+void UIImage::StartAnimation(Animation anim)
+{
+		start_aimation = true;
+		anim_to_play = anim;
+		speed = anim_to_play.speed;
+		this->anim = &anim_to_play;
 }
