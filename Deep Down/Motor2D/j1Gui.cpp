@@ -164,6 +164,17 @@ bool j1Gui::CleanUp()
 
 	if (ClearAllUI()) {
 		UI_elements_tree->clear();
+
+		// Clear UI_elements list (active elements)
+		p2List_item<UIElement*>* UI_elem_it = UI_elements_list.start;
+
+		while (UI_elem_it != nullptr) {
+			ret = true;
+			RELEASE(UI_elem_it->data);
+			UI_elem_it = UI_elem_it->next;
+		}
+
+		UI_elements_list.clear();
 		LOG("All GUI removed");
 	}
 
@@ -283,17 +294,6 @@ bool j1Gui::ClearAllUI()
 	// Clear UI_elements tree
 	UI_elements_tree->getRoot()->removeChildren();
 
-	// Clear UI_elements list (active elements)
-	/*
-	p2List_item<UIElement*>* UI_elem_it = UI_elements_list.start;
-
-	while (UI_elem_it != nullptr) {
-		ret = true;
-		RELEASE(UI_elem_it->data);
-		UI_elem_it = UI_elem_it->next;
-	}
-	UI_elements_list.clear();
-	*/
 	return ret;
 }
 

@@ -239,7 +239,7 @@ bool j1Menu::Update(float dt)
 
 	float press_any_button_seconds = 2.0f;
 	float scene_fade_seconds = 5.0f;
-	float level_fade_seconds = 8.0f;
+	float level_fade_seconds = 6.0f;
 	float options_seconds = 3.0f;
 	float title_opaque_seconds = 1.0f;
 
