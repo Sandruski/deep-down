@@ -69,6 +69,9 @@ public:
 
 	void StartUICatAnimation(float dt);
 
+	UILabel* CreateLevelNameText(uint level = 0);
+	UILabel* CreateCatsPickedText(uint cats_picked = 0);
+
 public:
 	// Camera
 	float up = false, down = false, left = false, right = false;

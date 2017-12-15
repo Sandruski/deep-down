@@ -574,3 +574,39 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		break;
 	}
 }
+
+UILabel* j1Scene::CreateLevelNameText(uint level)
+{
+	uint width, height;
+	App->win->GetWindowSize(width, height);
+
+	UILabel_Info label;
+	label.normal_color = WarmYellow_;
+	if (level == 0)
+		label.text = "CONSUMED KING'S GARDEEP";
+	else if (level == 1)
+		label.text = "ANOR LONDEEP";
+	label.horizontal_orientation = UIElement_HORIZONTAL_POS::CENTER_;
+	label.vertical_orientation = UIElement_VERTICAL_POS::MIDDLE_;
+	label.font_name = Font_Names::MSMINCHO_;
+	label.draggable = false;
+	label.interactive = false;
+
+	return App->gui->CreateUILabel({ (int)width / 2,(int)height / 2 }, label);
+}
+
+UILabel* j1Scene::CreateCatsPickedText(uint cats_picked)
+{
+	uint width, height;
+	App->win->GetWindowSize(width, height);
+
+	UILabel_Info label;
+	p2SString tmp("%s%d%s", "Cats picked ", cats_picked, "/5");
+	label.text = tmp.GetString();
+	label.horizontal_orientation = UIElement_HORIZONTAL_POS::CENTER_;
+	label.font_name = Font_Names::MSMINCHO_;
+	label.draggable = false;
+	label.interactive = false;
+
+	return App->gui->CreateUILabel({ (int)width / 2,(int)height / 2 + 30 }, label);
+}
