@@ -13,6 +13,7 @@
 #include "j1Map.h"
 #include "j1Render.h"
 #include "j1Window.h"
+#include "j1Audio.h"
 
 #include "UIButton.h"
 #include "UICursor.h"
@@ -649,6 +650,8 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		for (uint i = 0; i < 5; ++i) {
 			if (UIelem == main_menu_buttons[i]) {
 				main_menu_options[i]->SetColor(main_menu_options[i]->GetColor(false, false, true));
+				App->audio->PlayFx(10);
+				continue;
 			}
 		}
 
@@ -729,6 +732,8 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		for (uint i = 0; i < 5; ++i) {
 			if (UIelem == main_menu_buttons[i]) {
 				main_menu_options[i]->SetColor(main_menu_options[i]->GetColor(false, true));
+				App->audio->PlayFx(9);
+				continue;
 			}
 		}
 		break;
