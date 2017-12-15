@@ -50,6 +50,7 @@ bool j1Gui::Start()
 	map_textures[Tex_Names::GENERAL_] = App->tex->Load("Assets/Sprites/Maps/GeneralTileset.png");
 	map_textures[Tex_Names::SLIDER_] = App->tex->Load("Assets/Sprites/UI/Slider.png");
 	map_textures[Tex_Names::CAT_SCORE_] = App->tex->Load("Assets/Sprites/UI/CatScore.png");
+	map_textures[Tex_Names::CREDITS_WINDOW_] = App->tex->Load("Assets/Sprites/UI/CreditsWindow.png");
 
 	// Load fonts
 	map_fonts[Font_Names::MSMINCHO_] = App->font->Load("Assets/Fonts/MSMINCHO.TTF");
@@ -165,7 +166,6 @@ bool j1Gui::CleanUp()
 		UI_elements_tree->clear();
 		LOG("All GUI removed");
 	}
-
 
 	// Remove textures
 	if (ClearMapTextures())

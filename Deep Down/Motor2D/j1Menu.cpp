@@ -85,6 +85,7 @@ bool j1Menu::Start()
 	label.text = "D";
 	iPoint title_position = { 70 * scale,55 * scale };
 	iPoint tracking = { 5,12 };
+	uint i = 0;
 	title_letters[i] = App->gui->CreateUILabel({ title_position.x,title_position.y }, label);
 
 	label.text = "e";
@@ -387,8 +388,8 @@ bool j1Menu::Update(float dt)
 				skip->SetColor({ skip->GetColor().r,skip->GetColor().g,skip->GetColor().b,0 });
 				is_invisible = true;
 
-				for (uint j = 0; j < 8; ++j)
-					title_letters[j]->SetColor(title_letters[j]->GetColor());
+				for (uint i = 0; i < 8; ++i)
+					title_letters[i]->SetColor(title_letters[i]->GetColor());
 
 				cat->position = { (float)cat_final_position.x, (float)cat_final_position.y };
 				menuCatState = MenuCatState::MC_AT_GROUND_;
@@ -416,8 +417,8 @@ bool j1Menu::Update(float dt)
 										if (title_letters[7]->IntermitentFade(1.2f, false)) {
 
 											if (timer >= title_opaque_seconds) {
-												for (uint j = 0; j < 8; ++j)
-													title_letters[j]->SetColor(title_letters[j]->GetColor());
+												for (uint i = 0; i < 8; ++i)
+													title_letters[i]->SetColor(title_letters[i]->GetColor());
 
 												menuState = MenuState::PRESS_ANY_BUTTON_;
 												break;
@@ -589,15 +590,17 @@ bool j1Menu::Update(float dt)
 
 	case MenuState::AT_CREDITS_:
 		blit_cat = false;
-
 		
 		if (App->render->camera.y > -(int)height - 2*16*scale)
 			App->render->camera.y -= 250 * dt;
 		else {
-
+			if (credits_window->SlideTransition(dt, height / 2 + height / 8, 500.0f, true, 20.0f, false)) {
+				if (back_to_main_menu_from_credits->SlideTransition(dt, 50, 500.0f, true, 10.0f)) {
+					website_button->SetInteraction(true);
+					back_to_main_menu_from_credits->SetInteraction(true);
+				}
+			}
 		}
-		
-		
 		break;
 
 	case MenuState::NO_MENU_:
@@ -744,6 +747,7 @@ void j1Menu::CreateMainMenuUIElements()
 	label.text = "D";
 	iPoint title_position = { 70 * scale,55 * scale };
 	iPoint tracking = { 5,12 };
+	uint i = 0;
 	title_letters[i] = App->gui->CreateUILabel({ title_position.x,title_position.y }, label);
 
 	label.text = "e";
@@ -889,12 +893,46 @@ void j1Menu::CreateSettingsUIElements()
 
 void j1Menu::CreateCreditsUIElements() 
 {
+	// Window
+	UIWindow_Info window;
+	window.interactive = false;
+	window.tex_name = Tex_Names::CREDITS_WINDOW_;
+	int tex_width, tex_height;
+	SDL_QueryTexture((SDL_Texture*)App->gui->GetTexture(Tex_Names::CREDITS_WINDOW_), NULL, NULL, &tex_width, &tex_height);
+	credits_window = App->gui->CreateUIWindow({ (int)width - 100 - (tex_width * scale), (int)height + 500 }, window, this);
+
 	// Back to main menu button
 	UIButton_Info button;
 	button.tex_name = Tex_Names::MAIN_MENU_;
-	//button.interactive = false;
-	button.normal_tex_area = { 0,119,24,20 };
-	button.hover_tex_area = { 27,119,24,20 };
-	button.pressed_tex_area = { 54,119,24,20 };
-	back_to_main_menu_from_credits = App->gui->CreateUIButton({ (int)width - 100, (int)height - 200 }, button, this);
+	button.interactive = false;
+	button.normal_tex_area = { 84,119,20,24 };
+	button.hover_tex_area = { 111,119,20,24 };
+	button.pressed_tex_area = { 138,119,20,24 };
+	back_to_main_menu_from_credits = App->gui->CreateUIButton({ 50, -200 }, button, this);
+
+	// Website button
+	button.normal_tex_area = { 168, 119,46,20 };
+	button.hover_tex_area = { 214, 119,46,20 };
+	button.pressed_tex_area = { 214, 140,46,20 };
+	website_button = App->gui->CreateUIButton({ 220,480 }, button, this);
+
+	// Labels
+	UILabel_Info label;
+	label.interactive = false;
+	label.font_name = Font_Names::SOBAD_; // big titles
+	label.text = "Authors";
+	authors_title = App->gui->CreateUILabel({ 120, (int)height / 2 + (int)height / 8 - tex_height * scale / 2 }, label);
+	label.text = "License";
+	website_title = App->gui->CreateUILabel({ (int)width - 100 - (tex_width * scale), 200 }, label);
+
+	label.horizontal_orientation = UIElement_HORIZONTAL_POS::CENTER_;
+	label.vertical_orientation = UIElement_VERTICAL_POS::MIDDLE_;
+	label.text = "Website";
+	website_title = App->gui->CreateUILabel({ (website_button->GetLocalRect().w * scale) / 2, (website_button->GetLocalRect().h * scale) / 2 }, label, this, website_button);
+
+	label.font_name = Font_Names::SOBAD_8_; // small descriptions
+	label.horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
+	label.vertical_orientation = UIElement_VERTICAL_POS::TOP_;
+	label.text = "Sandra Alvarez Garcia and Guillem Costa Miquel";
+	authors_description = App->gui->CreateUILabel({ 0, 50 }, label, this, authors_title);
 }

@@ -101,9 +101,15 @@ private:
 	UIButton* back_to_main_menu_from_settings = nullptr;
 
 	// Credits
+	UIWindow* credits_window = nullptr;
 	UIButton* back_to_main_menu_from_credits = nullptr;
+	UIButton* website_button = nullptr;
+	UILabel* authors_title = nullptr;
+	UILabel* authors_description = nullptr;
+	UILabel* website_title = nullptr;
+	UILabel* website_description = nullptr;
+	UILabel* license_title = nullptr;
 
-	uint i = 0;
 	float timer = 0;
 
 	bool print_title = false;
