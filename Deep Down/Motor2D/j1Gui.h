@@ -104,19 +104,20 @@ public:
 	UILifeBar* CreateUILifeBar(iPoint local_pos, UILifeBar_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
 	UISlider* CreateUISlider(iPoint local_pos, UISlider_Info& info, j1Module* listener = nullptr, UIElement* parent = nullptr);
 
-	_TTF_Font* GetFont(Font_Names font_name);
-	const SDL_Texture* GetTexture(Tex_Names tex_name);
-	void SetTextureAlphaMod(Tex_Names tex_name, float alpha);
-
-	float IncreaseDecreaseAlpha(float from, float to, float seconds);
-	void ResetAlpha();
-
 	bool DestroyElement(UIElement* elem);
 	bool ClearAllUI();
 	bool ClearMapTextures();
 
 	void SetUpDraggingChildren(UIElement* elem, bool dragging);
 	void SetUpDraggingNode(bool drag);
+
+	_TTF_Font* GetFont(Font_Names font_name);
+	const SDL_Texture* GetTexture(Tex_Names tex_name);
+	void SetTextureAlphaMod(Tex_Names tex_name, float alpha);
+	float IncreaseDecreaseAlpha(float from, float to, float seconds);
+	void ResetAlpha();
+
+	void CreateTextStartLevel(uint level);
 
 private:
 	p2SString atlas_file_name;
