@@ -167,5 +167,8 @@ void UILifeBar::DecreaseLifeProgress(const int life)
 	life_bar.life -= life;
 	if (life_bar.life < 0)
 		life_bar.life = 0;
+}
 
+int UILifeBar::GetProgress() const {
+	return life_bar.life;
 }

@@ -12,6 +12,7 @@
 #include "j1Scene.h"
 #include "j1Window.h"
 #include "j1Particles.h"
+#include "UILifeBar.h"
 
 #include "Player.h"
 #include "Brofiler\Brofiler.h"
@@ -83,6 +84,10 @@ void Player::Move(float dt)
 	CheckCollision(collider_pos, { player.coll_size.x + player.coll_offset.w, player.coll_size.y + player.coll_offset.h }, player.check_collision_offset, up, down, left, right, player.GetState());
 
 	CheckIfDead();
+
+	if (App->scene->progress_bar->GetProgress() <= 0 && time >= 1.0f) {
+		//TODO ADD WHATEVER
+	}
 
 	// Update state
 	if (!App->scene->pause)
@@ -259,10 +264,10 @@ void Player::CheckIfDead() {
 	if (time >= 1.0f) {
 		respawnGOD = true;
 		App->scene->god = true;
-		position = start_pos;
 		player.SetState(idle_);
 		time = 0;
 	}
+	
 }
 
 void Player::PlayerStateMachine() {
@@ -775,6 +780,11 @@ void Player::PlayerStateMachine() {
 	case punished_:
 		if (!hurt_fx) {
 			App->audio->PlayFx(5);
+			App->scene->progress_bar->DecreaseLifeProgress(40);
+			if (lava_dead) {
+				App->scene->progress_bar->SetLifeProgress(0);
+				lava_dead = false;
+			}
 			hurt_fx = true;
 		}
 
@@ -848,8 +858,10 @@ void Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, ui
 	if (SDL_HasIntersection(&A_up, &B)) {
 		if (id == 1181 || (id == 1182 && App->scene->gate == false))
 			up = false;
-		else if (id == 1183 && state != null_)
+		else if (id == 1183 && state != null_) {
 			player.SetState(punished_);
+			lava_dead = true;
+		}
 	}
 
 	//DOWN
@@ -857,24 +869,30 @@ void Player::CalculateCollision(iPoint position, iPoint size, uint x, uint y, ui
 	if (SDL_HasIntersection(&A_down, &B))
 		if (id == 1181 || (id == 1182 && App->scene->gate == false))
 			down = false;
-		else if (id == 1183 && state != null_)
+		else if (id == 1183 && state != null_) {
 			player.SetState(punished_);
+			lava_dead = true;
+		}
 
 	//LEFT
 	SDL_Rect A_left = { position.x + c_left.x, position.y + c_left.y, size.x, size.y }; //player rectangle
 	if (SDL_HasIntersection(&A_left, &B))
 		if (id == 1181 || (id == 1182 && App->scene->gate == false))
 			left = false;
-		else if (id == 1183 && state != null_)
+		else if (id == 1183 && state != null_) {
 			player.SetState(punished_);
+			lava_dead = true;
+		}
 
 	//RIGHT
 	SDL_Rect A_right = { position.x + c_right.x, position.y + c_right.y, size.x, size.y }; //player rectangle
 	if (SDL_HasIntersection(&A_right, &B))
 		if (id == 1181 || (id == 1182 && App->scene->gate == false))
 			right = false;
-		else if (id == 1183 && state != null_)
+		else if (id == 1183 && state != null_) {
 			player.SetState(punished_);
+			lava_dead = true;
+		}
 }
 
 // -------------------------------------------------------------

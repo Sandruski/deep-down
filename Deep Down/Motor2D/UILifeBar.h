@@ -41,6 +41,7 @@ public:
 	void SetLifeProgress(const int life);
 	void IncreaseLifeProgress(const int life);
 	void DecreaseLifeProgress(const int life);
+	int GetProgress() const;
 
 private:
 	UIEvents UIevent = NO_EVENT_;
