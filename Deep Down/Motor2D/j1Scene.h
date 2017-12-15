@@ -13,6 +13,7 @@ struct UIWindow;
 struct UILabel;
 struct UIButton;
 struct UIImage;
+struct UISlider;
 
 enum names_labels_pause
 {
@@ -111,8 +112,10 @@ private:
 
 	// Pause_menu
 	UIWindow* pause_menu = nullptr;
-	UILabel* menu_pause_labels[5] = { nullptr, nullptr, nullptr, nullptr, nullptr};
+	UILabel* menu_pause_labels[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
 	UIButton* menu_pause_checkbox[2] = { nullptr, nullptr };
+	UISlider* volume_slider;
+	bool swap_music = false;
 };
 
 #endif // __j1SCENE1_H__

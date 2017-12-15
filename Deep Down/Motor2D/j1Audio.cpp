@@ -224,4 +224,5 @@ void j1Audio::PauseMusic() const {
 // Set music volume
 void j1Audio::SetMusicVolume(int volume) {
 	Mix_VolumeMusic(volume);
+	music_volume = volume;
 }
