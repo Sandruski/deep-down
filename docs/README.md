@@ -33,12 +33,12 @@ Two of its modules(GUI and Entity Factory) manage a subsystem of modules that fo
 
 ### Innovations
 
-# First Assignament:
+<br>First Assignament:</br>
 
 • Tiled Objects layers that allows the designer to implement any locked door and it is respective activator wherever he wants from Tiled
 
 
-# Second Assignament:
+<br>Second Assignament:</br>
 
 • Collider Culing 
 
@@ -47,7 +47,7 @@ Two of its modules(GUI and Entity Factory) manage a subsystem of modules that fo
 • Path and enemy behaviour full implemented in Tiled
 
 
-# Third Assignament:
+<br>Third Assignament:</br>
 
 • Pause Menu
 
