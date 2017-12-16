@@ -16,6 +16,7 @@
 #define Pink_ { 183,116,141,255 }
 #define LightPink_ { 255,247,226,255 }
 #define WarmYellow_ { 255,193,82,255 }
+#define BloodyRed_ { 85,5,0,255 }
 
 using namespace std;
 

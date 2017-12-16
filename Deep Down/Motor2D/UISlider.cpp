@@ -9,6 +9,7 @@ UISlider::UISlider(iPoint local_pos, UIElement* parent, UISlider_Info& info, j1M
 	type = UIElement_TYPE::IMAGE_;
 
 	draggable = info.draggable;
+	interactive = info.interactive;
 	horizontal = info.horizontal_orientation;
 	vertical = info.vertical_orientation;
 	tex_area = info.tex_area;
@@ -26,24 +27,24 @@ UISlider::UISlider(iPoint local_pos, UIElement* parent, UISlider_Info& info, j1M
 
 void UISlider::Update(float dt)
 {
-	int scale = App->win->GetScale();
-	int mouseX = 0;
-	int mouseY = 0;
-	App->input->GetMousePosition(mouseX, mouseY);
+	if (interactive) {
+		int scale = App->win->GetScale();
+		int mouseX = 0;
+		int mouseY = 0;
+		App->input->GetMousePosition(mouseX, mouseY);
 
-	if (App->input->GetMouseButtonDown((SDL_BUTTON_LEFT) == KEY_DOWN) && mouseX > GetScreenPos().x / scale + slider.offset && mouseX < (GetScreenPos().x / scale + tex_area.w - slider.button_slider_area.w - slider.offset) && mouseY >  GetScreenPos().y / scale && mouseY < GetScreenPos().y / scale + tex_area.h)
-		lets_move = true;
-	else if (App->input->GetMouseButtonDown((SDL_BUTTON_LEFT) == KEY_UP))
-		lets_move = false;
+		if (App->input->GetMouseButtonDown((SDL_BUTTON_LEFT) == KEY_DOWN) && mouseX > GetScreenPos().x / scale + slider.offset && mouseX < (GetScreenPos().x / scale + tex_area.w - slider.button_slider_area.w - slider.offset) && mouseY >  GetScreenPos().y / scale && mouseY < GetScreenPos().y / scale + tex_area.h)
+			lets_move = true;
+		else if (App->input->GetMouseButtonDown((SDL_BUTTON_LEFT) == KEY_UP))
+			lets_move = false;
 
-	if (lets_move) {
+		if (lets_move) {
+			slider.slider_button_pos.x = mouseX - GetScreenPos().x / scale;
+		}
 
-		slider.slider_button_pos.x = mouseX - GetScreenPos().x / scale;
+		if (listener != nullptr)
+			HandleInput();
 	}
-
-	if (listener != nullptr && interactive)
-		HandleInput();
-
 }
 
 void UISlider::Draw() const
@@ -69,16 +70,6 @@ void UISlider::DebugDraw(iPoint blit_pos) const
 }
 
 //---------------------------------------------------------------
-
-void UISlider::SetColor(const SDL_Color color)
-{
-	slider.color = color;
-}
-
-SDL_Color UISlider::GetColor()
-{
-	return slider.color;
-}
 
 void UISlider::HandleInput()
 {
@@ -186,4 +177,83 @@ SDL_Rect UISlider::GetRect()
 uint UISlider::GetPercent()
 {
 	return 100 * (slider.slider_button_pos.x + slider.buggy_offset - slider.offset) / (tex_area.w - slider.offset);
+}
+
+bool UISlider::SlideTransition(float dt, int end_pos_y, float speed, bool bounce, float bounce_interval, float bounce_speed, bool down)
+{
+	bool ret = false;
+
+	iPoint pos = GetLocalPos();
+
+	if (down) {
+		if (pos.y + height >= (int)end_pos_y - height / 2) {
+			if (bounce && !start_bouncing)
+				start_bouncing = true;
+			else if (!bounce)
+				ret = true;
+		}
+		else if (!start_bouncing)
+			IncreasePos({ 0,(int)(speed * dt) });
+	}
+	else {
+		if (pos.y + height <= (int)end_pos_y - height / 2) {
+			if (bounce && !start_bouncing)
+				start_bouncing = true;
+			else if (!bounce)
+				ret = true;
+		}
+		else if (!start_bouncing)
+			DecreasePos({ 0,(int)(speed * dt) });
+	}
+
+	if (start_bouncing) {
+		if (Bounce(dt, bounce_interval, bounce_speed, down)) {
+			ret = true;
+		}
+	}
+
+	return ret;
+}
+
+bool UISlider::Bounce(float dt, float bounce_interval, float bounce_speed, bool down)
+{
+	bool ret = false;
+
+	iPoint pos = GetLocalPos();
+
+	if (reset) {
+		InitializeBounce(bounce_interval, down);
+		reset = false;
+	}
+
+	if (bounce_value <= bounce_speed)
+		ret = true;
+
+	if (first_bounce) {
+		if (pos.y >= start_pos.y + bounce_value) {
+			bounce_value -= bounce_speed;
+			first_bounce = false;
+		}
+		else
+			IncreasePos({ 0, (int)(bounce_value * 10.0f * dt) });
+	}
+	else {
+		if (pos.y <= start_pos.y - bounce_value) {
+			bounce_value -= bounce_speed;
+			first_bounce = true;
+		}
+		else
+			DecreasePos({ 0, (int)(bounce_value * 10.0f * dt) });
+	}
+
+	return ret;
+}
+
+void UISlider::InitializeBounce(float bounce_interval, bool down)
+{
+	bounce_value = bounce_interval;
+	start_pos = GetLocalPos();
+
+	if (!down)
+		first_bounce = false;
 }

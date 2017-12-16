@@ -51,6 +51,10 @@ public:
 
 	void RandomAlphaPainting(float dt, SDL_Color color = White_, int base_alpha = 255.0f, int min_alpha = 0.0f, int max_alpha = 255.0f, float speed = 1.0f);
 
+	bool SlideTransition(float dt, int end_pos_y, float speed = 10.0f, bool bounce = true, float bounce_interval = 1.0f, float bounce_speed = 2.0f, bool down = true);
+	bool Bounce(float dt, float bounce_interval = 1.0f, float bounce_speed = 2.0f, bool down = true);
+	void InitializeBounce(float bounce_interval = 1.0f, bool down = true);
+
 private:
 	UILabel_Info label;
 	_TTF_Font* font = nullptr;
@@ -66,6 +70,12 @@ private:
 
 	// Alpha painting parameters
 	float timer = 0.0f;
+
+	// Bounce parameters
+	float bounce_value = 0.0f;
+	iPoint start_pos = { 0,0 };
+	bool first_bounce = true;
+	bool start_bouncing = false;
 };
 
 #endif // __UILabel_H__

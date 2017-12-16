@@ -18,7 +18,9 @@ struct UISlider_Info {
 	iPoint slider_button_pos = { 0,0 };
 	int offset = 0;
 	int buggy_offset = 0;
+
 	bool draggable = false;
+	bool interactive = true;
 };
 
 // ---------------------------------------------------
@@ -31,12 +33,13 @@ public:
 	void Update(float dt);
 	void DebugDraw(iPoint blit_pos) const;
 	void HandleInput();
-	void SetColor(const SDL_Color color);
-	SDL_Color GetColor();
 	void SetNewRect(SDL_Rect& new_rect);
 	SDL_Rect GetRect();
-
 	uint GetPercent();
+
+	bool SlideTransition(float dt, int end_pos_y, float speed = 10.0f, bool bounce = true, float bounce_interval = 1.0f, float bounce_speed = 2.0f, bool down = true);
+	bool Bounce(float dt, float bounce_interval = 1.0f, float bounce_speed = 2.0f, bool down = true);
+	void InitializeBounce(float bounce_interval = 1.0f, bool down = true);
 
 private:
 	UISlider_Info slider;
@@ -46,6 +49,13 @@ private:
 
 public:
 	bool lets_move = false;
+
+	// Bounce parameters
+	float bounce_value = 0.0f;
+	iPoint start_pos = { 0,0 };
+	bool first_bounce = true;
+	bool reset = true;
+	bool start_bouncing = false;
 };
 
 #endif // __UISlider_H__

@@ -14,6 +14,7 @@
 #include "j1Render.h"
 #include "j1Window.h"
 #include "j1Audio.h"
+#include "j1Fonts.h"
 
 #include "UIButton.h"
 #include "UICursor.h"
@@ -200,6 +201,22 @@ bool j1Menu::Start()
 		main_menu_options[i]->SetColor({ main_menu_options[i]->GetColor().r,main_menu_options[i]->GetColor().g,main_menu_options[i]->GetColor().b,0 });
 
 	i = 0;
+
+	// Highscore
+	label.font_name = Font_Names::MSMINCHO_;
+	label.horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
+	label.vertical_orientation = UIElement_VERTICAL_POS::TOP_;
+	label.normal_color = White_;
+	label.text = "HIGHSCORE";
+	highscore_text = App->gui->CreateUILabel({ (int)width - 50, -500 }, label);
+	int font_width, font_height;
+	App->font->CalcSize(label.text.GetString(), font_width, font_height, App->gui->GetFont(Font_Names::MSMINCHO_));
+	highscore_text->DecreasePos({ font_width * scale, font_height * scale });
+	p2SString tmp("%d", 10000);
+	label.text = tmp.GetString();
+	highscore_value = App->gui->CreateUILabel({ (int)width - 50, -500 }, label);
+	App->font->CalcSize(label.text.GetString(), font_width, font_height, App->gui->GetFont(Font_Names::MSMINCHO_));
+	highscore_value->DecreasePos({ font_width * scale, font_height * scale });
 	//_create_UI_elements
 
 	// Cat
@@ -244,6 +261,8 @@ bool j1Menu::Update(float dt)
 	float level_fade_seconds = 6.0f;
 	float options_seconds = 3.0f;
 	float title_opaque_seconds = 1.0f;
+
+	float camera_speed = 300.0f;
 
 	// Cat variables
 	iPoint cat_final_position = { 627,190 };
@@ -482,13 +501,13 @@ bool j1Menu::Update(float dt)
 		if (from_settings || from_credits) {
 			if (from_settings) {
 				if (App->render->camera.x > -(camera_start_position.x + 10) * scale)
-					App->render->camera.x -= 250 * dt;
+					App->render->camera.x -= camera_speed * dt;
 				else
 					camera_moved = true;
 			}
 			else if (from_credits) {
 				if (App->render->camera.y < 0)
-					App->render->camera.y += 250 * dt;
+					App->render->camera.y += camera_speed * dt;
 				else
 					camera_moved = true;
 			}
@@ -522,17 +541,22 @@ bool j1Menu::Update(float dt)
 				eighth_letter = title_letters[7]->IntermitentFade(1.2f, false, true);
 
 				if (first_letter && second_letter && third_letter && fourth_letter && fifth_letter && sixth_letter && seventh_letter && eighth_letter) {
-					for (uint i = 0; i < 5; ++i) {
-						main_menu_buttons[i]->SetInteraction(true);
-						main_menu_options[i]->SetInteraction(true);
+
+					if (highscore_value->SlideTransition(dt, (int)height / 6, 800.0f, true, 10.0f, 2.0f)) {
+						if (highscore_text->SlideTransition(dt, (int)height / 10, 800.0f, true, 10.0f, 2.0f)) {
+							for (uint i = 0; i < 5; ++i) {
+								main_menu_buttons[i]->SetInteraction(true);
+								main_menu_options[i]->SetInteraction(true);
+							}
+
+							from_settings = false;
+							from_credits = false;
+							camera_moved = false;
+
+							menuState = MenuState::AT_MAIN_MENU_;
+							break;
+						}
 					}
-
-					from_settings = false;
-					from_credits = false;
-					camera_moved = false;
-
-					menuState = MenuState::AT_MAIN_MENU_;
-					break;
 				}
 			}
 		}
@@ -552,13 +576,18 @@ bool j1Menu::Update(float dt)
 
 			if (alpha == 255.0f) {
 
-				for (uint i = 0; i < 5; ++i) {
-					main_menu_buttons[i]->SetInteraction(true);
-					main_menu_options[i]->SetInteraction(true);
-				}
+				if (highscore_value->SlideTransition(dt, (int)height / 6, 800.0f, true, 10.0f, 2.0f)) {
+					if (highscore_text->SlideTransition(dt, (int)height / 10, 800.0f, true, 10.0f, 2.0f)) {
 
-				menuState = MenuState::AT_MAIN_MENU_;
-				break;
+						for (uint i = 0; i < 5; ++i) {
+							main_menu_buttons[i]->SetInteraction(true);
+							main_menu_options[i]->SetInteraction(true);
+						}
+
+						menuState = MenuState::AT_MAIN_MENU_;
+						break;
+					}
+				}
 			}
 		}
 		break;
@@ -571,7 +600,7 @@ bool j1Menu::Update(float dt)
 		blit_cat = false;
 
 		if (App->render->camera.x < 0)
-			App->render->camera.x += 250 * dt;
+			App->render->camera.x += camera_speed * dt;
 		else {
 			if (settings_window->SlideTransition(dt, height / 2, 500.0f, true, 20.0f, 2.0f)) {
 				if (music_volume_text->IntermitentFade(1.0f, false, true)) {
@@ -611,12 +640,24 @@ bool j1Menu::Update(float dt)
 		}
 
 		if (App->render->camera.y > -(int)height - 2*16*scale)
-			App->render->camera.y -= 250 * dt;
+			App->render->camera.y -= camera_speed * dt;
 		else {
-			if (credits_window->SlideTransition(dt, height / 2 + height / 8, 500.0f, true, 20.0f, 2.0f, false)) {
-				if (back_to_main_menu_from_credits->SlideTransition(dt, 50, 500.0f, true, 10.0f, 2.0f)) {
-					website_button->SetInteraction(true);
-					back_to_main_menu_from_credits->SetInteraction(true);
+			if (license_slider->SlideTransition(dt, (int)height / 2 - (int)height / 5, 800.0f, true, 10.0f, 2.0f, false)) {
+				if (credits_window->SlideTransition(dt, (int)height / 2 + (int)height / 8, 500.0f, true, 20.0f, 2.0f, false)) {
+					if (license_title->IntermitentFade(1.0f, false, true)) {
+						if (authors_title->IntermitentFade(1.0f, false, true)) {
+							if (authors_description->IntermitentFade(1.0f, false, true)) {
+								if (website_button->SlideTransition(dt, (int)height / 2 + (int)height / 6, 800.0f, true, 10.0f, 2.0f, false)) {
+									if (back_to_main_menu_from_credits->SlideTransition(dt, 50, 500.0f, true, 10.0f, 2.0f)) {
+										website_button->SetInteraction(true);
+										website_title->SetInteraction(true);
+										back_to_main_menu_from_credits->SetInteraction(true);
+										license_slider->SetInteraction(true);
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -875,6 +916,22 @@ void j1Menu::CreateMainMenuUIElements()
 		main_menu_options[i]->SetColor({ main_menu_options[i]->GetColor().r,main_menu_options[i]->GetColor().g,main_menu_options[i]->GetColor().b,0 });
 
 	i = 0;
+
+	// Highscore
+	label.font_name = Font_Names::MSMINCHO_;
+	label.horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
+	label.vertical_orientation = UIElement_VERTICAL_POS::TOP_;
+	label.normal_color = White_;
+	label.text = "HIGHSCORE";
+	highscore_text = App->gui->CreateUILabel({ (int)width - 50, -500 }, label);
+	int font_width, font_height;
+	App->font->CalcSize(label.text.GetString(), font_width, font_height, App->gui->GetFont(Font_Names::MSMINCHO_));
+	highscore_text->DecreasePos({ font_width * scale, font_height * scale });
+	p2SString tmp("%d", 10000);
+	label.text = tmp.GetString();
+	highscore_value = App->gui->CreateUILabel({ (int)width - 50, -500 }, label);
+	App->font->CalcSize(label.text.GetString(), font_width, font_height, App->gui->GetFont(Font_Names::MSMINCHO_));
+	highscore_value->DecreasePos({ font_width * scale, font_height * scale });
 	//_create_UI_elements
 }
 
@@ -889,6 +946,9 @@ void j1Menu::CreateSettingsUIElements()
 	// Options
 	UILabel_Info label;
 	label.interactive = false;
+	label.normal_color = Purple_;
+	label.hover_color = Pink_;
+	label.pressed_color = LightPink_;
 	label.font_name = Font_Names::SOBAD_;
 	label.text = "Music volume";
 	music_volume_text = App->gui->CreateUILabel({ 40,50 }, label, this, settings_window);
@@ -951,7 +1011,7 @@ void j1Menu::CreateCreditsUIElements()
 	button.normal_tex_area = { 168, 119,46,20 };
 	button.hover_tex_area = { 214, 119,46,20 };
 	button.pressed_tex_area = { 214, 140,46,20 };
-	website_button = App->gui->CreateUIButton({ 220,480 }, button, this);
+	website_button = App->gui->CreateUIButton({ 220, (int)height + 500 }, button, this);
 
 	// Labels
 	UILabel_Info label;
@@ -959,19 +1019,26 @@ void j1Menu::CreateCreditsUIElements()
 	label.font_name = Font_Names::SOBAD_; // big titles
 	label.text = "Authors";
 	authors_title = App->gui->CreateUILabel({ 120, (int)height / 2 + (int)height / 8 - tex_height * scale / 2 }, label);
+	authors_title->SetColor({ authors_title->GetColor().r,authors_title->GetColor().g,authors_title->GetColor().b,0 });
 	label.text = "License";
-	website_title = App->gui->CreateUILabel({ (int)width - 100 - (tex_width * scale), 200 }, label);
+	license_title = App->gui->CreateUILabel({ (int)width - 100 - (tex_width * scale), 200 }, label);
+	license_title->SetColor({ license_title->GetColor().r,license_title->GetColor().g,license_title->GetColor().b,0 });
 
 	label.horizontal_orientation = UIElement_HORIZONTAL_POS::CENTER_;
 	label.vertical_orientation = UIElement_VERTICAL_POS::MIDDLE_;
+	label.normal_color = Purple_;
+	label.hover_color = Pink_;
+	label.pressed_color = LightPink_;
 	label.text = "Website";
 	website_title = App->gui->CreateUILabel({ (website_button->GetLocalRect().w * scale) / 2, (website_button->GetLocalRect().h * scale) / 2 }, label, this, website_button);
 
 	label.font_name = Font_Names::SOBAD_8_; // small descriptions
 	label.horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	label.vertical_orientation = UIElement_VERTICAL_POS::TOP_;
+	label.normal_color = White_;
 	label.text = "Sandra Alvarez Garcia and Guillem Costa Miquel";
 	authors_description = App->gui->CreateUILabel({ 120, (int)height / 2 + (int)height / 8 - tex_height * scale / 2 + 50 }, label, this);
+	authors_description->SetColor({ authors_title->GetColor().r,authors_title->GetColor().g,authors_title->GetColor().b,0 });
 	label.text = "MIT License Copyright(c) 2017 Sandra Alvarez & Guillem Costa\n\n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files(the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\n THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
 	label.text_wrap_length = 110;
 	license_description = App->gui->CreateUILabel({ 10,30 }, label, this, credits_window);
@@ -979,11 +1046,12 @@ void j1Menu::CreateCreditsUIElements()
 	// Slider to scroll the previous text
 	UISlider_Info slider;
 	slider.tex_name = SLIDER_;
+	slider.interactive = false;
 	slider.draggable = false;
 	slider.tex_area = { 9,0,54,9 };
 	slider.button_slider_area = { 0,1,9,10 };
 	slider.slider_button_pos.x = 0;
 	slider.offset = 3;
 	slider.buggy_offset = -1;
-	license_slider = App->gui->CreateUISlider({ credits_window->GetLocalRect().w / 2,10 }, slider, this, credits_window);
+	license_slider = App->gui->CreateUISlider({ credits_window->GetLocalPos().x + (credits_window->GetLocalRect().w * scale) / 2,(int)height + 500 }, slider, this);
 }

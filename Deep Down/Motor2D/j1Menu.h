@@ -83,6 +83,8 @@ private:
 	UIButton* main_menu_buttons[5];
 	UILabel* main_menu_options[5];
 
+	UILabel* highscore_text = nullptr;
+	UILabel* highscore_value = nullptr;
 	UILabel* press_any_button = nullptr;
 	UILabel* skip = nullptr;
 	UIImage* black_screen_image = nullptr;
