@@ -186,16 +186,24 @@ bool UIWindow::Bounce(float dt, float bounce_interval, float bounce_speed, bool 
 			bounce_value -= bounce_speed;
 			first_bounce = false;
 		}
-		else
-			IncreasePos({ 0, (int)(bounce_value * 10.0f * dt) });
+		else {
+			if ((int)(bounce_value * 10.0f * dt) >= 1)
+				IncreasePos({ 0, (int)(bounce_value * 10.0f * dt) });
+			else
+				IncreasePos({ 0, 1 });
+		}
 	}
 	else {		
 		if (pos.y <= start_pos.y - bounce_value) {
 			bounce_value -= bounce_speed;
 			first_bounce = true;
 		}
-		else
-			DecreasePos({ 0, (int)(bounce_value * 10.0f * dt) });
+		else {
+			if ((int)(bounce_value * 10.0f * dt) >= 1)
+				DecreasePos({ 0, (int)(bounce_value * 10.0f * dt) });
+			else
+				DecreasePos({ 0, 1 });
+		}
 	}
 
 	return ret;

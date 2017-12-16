@@ -619,6 +619,8 @@ bool j1Menu::Update(float dt)
 										cap_frames_checkbox->SetInteraction(true);
 										camera_blit_checkbox->SetInteraction(true);
 										back_to_main_menu_from_settings->SetInteraction(true);
+										FX_slider->SetInteraction(true);
+										music_slider->SetInteraction(true);
 									}
 								}
 							}
@@ -977,6 +979,20 @@ void j1Menu::CreateSettingsUIElements()
 	fullscreen_checkbox = App->gui->CreateUIButton({ 300,fullscreen_text->GetLocalPos().y + fullscreen_text->GetLocalRect().h }, checkbox, this, settings_window);
 	cap_frames_checkbox = App->gui->CreateUIButton({ 300,cap_frames_text->GetLocalPos().y + cap_frames_text->GetLocalRect().h }, checkbox, this, settings_window);
 	camera_blit_checkbox = App->gui->CreateUIButton({ 300,camera_blit_text->GetLocalPos().y + camera_blit_text->GetLocalRect().h }, checkbox, this, settings_window);
+
+	// Sliders
+	UISlider_Info slider;
+	slider.tex_name = Tex_Names::SLIDER_;
+	slider.draggable = false;
+	slider.interactive = false;
+	slider.tex_area = { 9,0,54,9 };
+	slider.button_slider_area = { 0,1,9,10 };
+	slider.offset = 3;
+	slider.buggy_offset = -1;
+	slider.slider_button_pos.x = App->audio->music_volume * (slider.tex_area.w) / 128;
+	music_slider = App->gui->CreateUISlider({ 300,music_volume_text->GetLocalPos().y + 10 }, slider, this, settings_window);
+	slider.slider_button_pos.x = App->audio->fx_volume * (slider.tex_area.w) / 128;
+	FX_slider = App->gui->CreateUISlider({ 300,FX_volume_text->GetLocalPos().y + 10 }, slider, this, settings_window);
 
 	// Back to main menu button
 	UIButton_Info button;

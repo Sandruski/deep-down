@@ -90,7 +90,6 @@ private:
 	UIImage* black_screen_image = nullptr;
 
 	// Settings
-
 	UILabel* music_volume_text = nullptr;
 	UILabel* FX_volume_text = nullptr;
 	UILabel* fullscreen_text = nullptr;
@@ -101,6 +100,9 @@ private:
 	UIButton* camera_blit_checkbox = nullptr;
 	UIButton* cap_frames_checkbox = nullptr;
 	UIButton* back_to_main_menu_from_settings = nullptr;
+
+	UISlider* music_slider = nullptr;
+	UISlider* FX_slider = nullptr;
 
 	// Credits
 	UIWindow* credits_window = nullptr;
