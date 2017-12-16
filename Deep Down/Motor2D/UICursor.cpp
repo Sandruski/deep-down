@@ -1,6 +1,7 @@
 #include "UICursor.h"
 #include "j1Input.h"
 #include "j1Render.h"
+#include "j1Window.h"
 
 UICursor::UICursor(iPoint local_pos, UIElement* parent, UICursor_Info& info, j1Module* listener) : UIElement(local_pos, parent, listener), cursor(info)
 {
@@ -67,9 +68,10 @@ void UICursor::HandleInput()
 
 void UICursor::SetMousePosition()
 {
+	int scale = App->win->GetScale();
 	iPoint mouse_position;
 	App->input->GetMousePosition(mouse_position.x, mouse_position.y);
-	mouse_position.x -= App->render->camera.x;
-	mouse_position.y -= App->render->camera.y;
+	mouse_position.x *= scale;
+	mouse_position.y *= scale;
 	SetLocalPos(mouse_position);
 }

@@ -22,6 +22,7 @@
 #include "UIButton.h"
 #include "UIImage.h"
 #include "UISlider.h"
+#include "UICursor.h"
 
 #include"Brofiler\Brofiler.h"
 
@@ -80,6 +81,14 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
+	// Cursor
+	UICursor_Info cursor;
+	cursor.tex_name = CURSORTEX_;
+	cursor.default = { 0,0,16,16 };
+	cursor.on_click = { 16,0,16,16 };
+	
+	App->gui->CreateUICursor(cursor, this);
+
 	// Ingame UI
 	UILifeBar_Info girl_life_bar;
 	girl_life_bar.bar = { 86,532,222,4 };
