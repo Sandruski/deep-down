@@ -65,6 +65,8 @@ public:
 
 	void OpeningPauseMenu(bool from_scratch = false);
 
+	void OpeningSubMenuOptions();
+
 	void MoveCamera();
 
 	UILabel* CreateLevelNameText(uint level = 0);
@@ -120,7 +122,9 @@ private:
 	UIButton* menu_pause_checkbox[2] = { nullptr, nullptr };
 	UIButton* closeWindow;
 	UISlider* volume_slider = nullptr;
+	UISlider* fx_slider = nullptr;
 	bool swap_music = false;
+	bool swap_fx = false;
 
 public:
 	UILifeBar* progress_bar = nullptr;

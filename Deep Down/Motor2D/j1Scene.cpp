@@ -190,6 +190,11 @@ bool j1Scene::Update(float dt)
 		volume = 128 * volume / 100;
 		App->audio->SetMusicVolume(volume);
 	}
+	else if (swap_fx && App->audio->active) {
+		int volume = fx_slider->GetPercent();
+		volume = 128 * volume / 100;
+		App->audio->SetFxVolume(volume);
+	}
 
 	if (menu_bouncing) {
 		if (pause_menu->SlideTransition(App->auxiliar_dt, height / 2, 500.0f, true, 20.0f, 2.0f, false)) {
@@ -537,59 +542,7 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			for (uint i = 0; i < 5; ++i) {
 				App->gui->DestroyElement(menu_pause_labels[i]);
 			}
-
-			UILabel_Info label;
-			label.font_name = SOBAD_;
-			label.normal_color = { 0,0,0,255 };
-			label.draggable = false;
-			label.interactive = false;
-
-			label.text = "volume";
-			App->gui->CreateUILabel({ 80,60 }, label, this, pause_menu); // Volume label
-
-			label.text = "cap_frames";
-			App->gui->CreateUILabel({ 80,160 }, label, this, pause_menu); // Cap_frames label
-
-			label.text = "camera blit";
-			App->gui->CreateUILabel({ 80,260 }, label, this, pause_menu); // Camera_blit label
-
-			label.interactive = true;
-
-			label.text = "back";
-			menu_pause_labels[BACK_] = App->gui->CreateUILabel({ 40,360 }, label, this, pause_menu); // Back label
-
-			UISlider_Info slider;
-
-			slider.tex_name = SLIDER_;
-			slider.draggable = false;
-			slider.tex_area = { 9,0,54,9 };
-			slider.button_slider_area = { 0,1,9,10 };
-			slider.offset = 3;
-			slider.slider_button_pos.x = App->audio->music_volume * (slider.tex_area.w) / 128;
-			slider.buggy_offset = -1;
-
-			volume_slider = App->gui->CreateUISlider({ 240,70 }, slider, this, pause_menu);
-
-			UIButton_Info checkbox;
-			checkbox.checkbox = true;
-			checkbox.tex_name = CHECKBOX_;
-			checkbox.normal_tex_area = { 0,0,11,7 };
-			checkbox.hover_tex_area = { 0,0,11,7 };
-			checkbox.pressed_tex_area = { 12,0,11,7 };
-			checkbox.draggable = true;
-
-			if (App->toCap)
-				checkbox.checkbox_checked = true;
-
-			menu_pause_checkbox[0] = App->gui->CreateUIButton({ 300,180 }, checkbox, this, pause_menu); // Cap_frames checkbox
-
-			if (App->map->camera_blit)
-				checkbox.checkbox_checked = true;
-			else
-				checkbox.checkbox_checked = false;
-
-			menu_pause_checkbox[1] = App->gui->CreateUIButton({ 300,280 }, checkbox, this, pause_menu); // Camera_blit checkbox
-
+			OpeningSubMenuOptions();		
 		}
 
 		else if (UIelem == (UIElement*)menu_pause_checkbox[0]) // Cap_frames checkbox
@@ -613,6 +566,11 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		{
 			swap_music = true;
 		}
+
+		else if (UIelem == (UIElement*)fx_slider)
+		{
+			swap_fx = true;
+		}
 		break;
 
 	case UIEvents::MOUSE_LEFT_UP_:
@@ -620,6 +578,11 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		if (UIelem == (UIElement*)volume_slider)
 		{
 			swap_music = false;
+		}
+
+		if (UIelem == (UIElement*)volume_slider)
+		{
+			swap_fx = false;
 		}
 
 		else if (UIelem == (UIElement*)closeWindow)
@@ -666,4 +629,64 @@ UILabel* j1Scene::CreateCatsPickedText(uint cats_picked)
 	label.interactive = false;
 
 	return App->gui->CreateUILabel({ (int)width / 2,(int)height / 2 + 30 }, label);
+}
+
+void j1Scene::OpeningSubMenuOptions()
+{
+	UILabel_Info label;
+	label.font_name = SOBAD_;
+	label.normal_color = { 0,0,0,255 };
+	label.draggable = false;
+	label.interactive = false;
+
+	label.text = "volume";
+	App->gui->CreateUILabel({ 80,60 }, label, this, pause_menu); // Volume label
+
+	label.text = "FX volume";
+	App->gui->CreateUILabel({ 80,150 }, label, this, pause_menu); // FX Volume label
+
+	label.text = "cap_frames";
+	App->gui->CreateUILabel({ 80,240 }, label, this, pause_menu); // Cap_frames label
+
+	label.text = "camera blit";
+	App->gui->CreateUILabel({ 80,330 }, label, this, pause_menu); // Camera_blit label
+
+	label.interactive = true;
+
+	label.text = "back";
+	menu_pause_labels[BACK_] = App->gui->CreateUILabel({ 40,400 }, label, this, pause_menu); // Back label
+
+	UISlider_Info slider;
+
+	slider.tex_name = SLIDER_;
+	slider.draggable = false;
+	slider.tex_area = { 9,0,54,9 };
+	slider.button_slider_area = { 0,1,9,10 };
+	slider.offset = 3;
+	slider.slider_button_pos.x = App->audio->music_volume * (slider.tex_area.w) / 128;
+	slider.buggy_offset = -1;
+
+	volume_slider = App->gui->CreateUISlider({ 240,75 }, slider, this, pause_menu);
+
+	fx_slider = App->gui->CreateUISlider({ 240,165 }, slider, this, pause_menu);
+
+	UIButton_Info checkbox;
+	checkbox.checkbox = true;
+	checkbox.tex_name = CHECKBOX_;
+	checkbox.normal_tex_area = { 0,0,11,7 };
+	checkbox.hover_tex_area = { 0,0,11,7 };
+	checkbox.pressed_tex_area = { 12,0,11,7 };
+	checkbox.draggable = true;
+
+	if (App->toCap)
+		checkbox.checkbox_checked = true;
+
+	menu_pause_checkbox[0] = App->gui->CreateUIButton({ 300,260 }, checkbox, this, pause_menu); // Cap_frames checkbox
+
+	if (App->map->camera_blit)
+		checkbox.checkbox_checked = true;
+	else
+		checkbox.checkbox_checked = false;
+
+	menu_pause_checkbox[1] = App->gui->CreateUIButton({ 300,350 }, checkbox, this, pause_menu); // Camera_blit checkbox
 }

@@ -38,6 +38,9 @@ public:
 	// Set music volume
 	void SetMusicVolume(int volume);
 
+	// Set fx volume
+	void SetFxVolume(int volume);
+
 	// Save
 	bool Save(pugi::xml_node&) const;
 
@@ -56,6 +59,7 @@ private:
 
 public:
 	int music_volume = 0;
+	int fx_volume = 0;
 };
 
 #endif // __j1AUDIO_H__
