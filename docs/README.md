@@ -33,12 +33,12 @@ Two of its modules(GUI and Entity Factory) manage a subsystem of modules that fo
 
 ### Innovations
 
-#First Assignament:
+# First Assignament:
 
 • Tiled Objects layers that allows the designer to implement any locked door and it is respective activator wherever he wants from Tiled
 
 
-#Second Assignament:[/b]
+# Second Assignament:
 
 • Collider Culing 
 
@@ -47,7 +47,7 @@ Two of its modules(GUI and Entity Factory) manage a subsystem of modules that fo
 • Path and enemy behaviour full implemented in Tiled
 
 
-#Third Assignament:
+# Third Assignament:
 
 • Pause Menu
 
@@ -56,9 +56,9 @@ Two of its modules(GUI and Entity Factory) manage a subsystem of modules that fo
 
 ## GITHUB Repository and release page
 
-• GitHub repository: [Deep Down](https://github.com/Sandruski/Deep-Down-Game)
+• GitHub repository: [Here](https://github.com/Sandruski/Deep-Down-Game)
 
-• Last Release: [Deep Down](https://github.com/Sandruski/Deep-Down-Game/releases)
+• Last Release: [Here](https://github.com/Sandruski/Deep-Down-Game/releases)
 
 ## Deep Down Trailer
 
