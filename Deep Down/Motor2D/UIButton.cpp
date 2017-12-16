@@ -54,6 +54,7 @@ void UIButton::HandleInput()
 		if (MouseHover() || tab) {
 			next_event = false;
 			UIevent = UIEvents::MOUSE_ENTER_;
+			listener->OnUIEvent((UIElement*)this, UIevent);
 			break;
 		}
 		break;
@@ -101,7 +102,6 @@ void UIButton::HandleInput()
 			LOG("MOUSE ENTER");
 			if (!button.checkbox_checked)
 				ChangeSprite(button.hover_tex_area);
-			listener->OnUIEvent((UIElement*)this, UIevent);
 			next_event = true;
 		}
 

@@ -70,6 +70,9 @@ bool j1Menu::Start()
 	if (App->map->Load("menu.tmx"))
 		App->entities->AddEntities();
 
+	App->audio->PlayMusic("MenuTheme.ogg");
+	App->audio->SetMusicVolume(100);
+
 	// Get screen parameters
 	App->win->GetWindowSize(width, height);
 	scale = App->win->GetScale();
@@ -733,6 +736,28 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			break;
 		}
 
+		else if (UIelem == (UIElement*)fullscreen_checkbox)
+		{
+			if (App->win->fullscreen) {
+				App->win->fullscreen = false;
+				SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_SHOWN);
+			}
+			else {
+				App->win->fullscreen = true;
+				SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			}
+		}
+
+		else if (UIelem == (UIElement*)cap_frames_checkbox)
+		{
+			App->toCap = !App->toCap;
+		}
+
+		else if (UIelem == (UIElement*)camera_blit_checkbox)
+		{
+			App->map->camera_blit = !App->map->camera_blit;
+		}
+
 		break;
 
 	case UIEvents::MOUSE_LEFT_UP_:
@@ -1016,8 +1041,24 @@ void j1Menu::CreateSettingsUIElements()
 	checkbox.normal_tex_area = { 0,0,11,7 };
 	checkbox.hover_tex_area = { 0,0,11,7 };
 	checkbox.pressed_tex_area = { 12,0,11,7 };
+
+	if (App->win->fullscreen)
+		checkbox.checkbox_checked = true;
+
 	fullscreen_checkbox = App->gui->CreateUIButton({ 300,fullscreen_text->GetLocalPos().y + fullscreen_text->GetLocalRect().h }, checkbox, this, settings_window);
+
+	if (App->toCap)
+		checkbox.checkbox_checked = true;
+	else
+		checkbox.checkbox_checked = false;
+
 	cap_frames_checkbox = App->gui->CreateUIButton({ 300,cap_frames_text->GetLocalPos().y + cap_frames_text->GetLocalRect().h }, checkbox, this, settings_window);
+
+	if (App->map->camera_blit)
+		checkbox.checkbox_checked = true;
+	else
+		checkbox.checkbox_checked = false;
+
 	camera_blit_checkbox = App->gui->CreateUIButton({ 300,camera_blit_text->GetLocalPos().y + camera_blit_text->GetLocalRect().h }, checkbox, this, settings_window);
 
 	// Sliders
