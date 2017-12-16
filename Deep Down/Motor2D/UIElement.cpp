@@ -68,10 +68,10 @@ void UIElement::Draw() const
 	else
 		App->render->Blit(tex, blit_pos.x, blit_pos.y);
 
-	App->render->ResetViewPort();
-
 	if (App->gui->debug_draw)
 		DebugDraw(blit_pos);
+
+	App->render->ResetViewPort();
 }
 
 void UIElement::DebugDraw(iPoint blit_pos) const

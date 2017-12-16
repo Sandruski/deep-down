@@ -1,5 +1,5 @@
-#ifndef __j1MENU_PAUSE_PAUSE_H__
-#define __j1MENU_PAUSE_PAUSE_H__
+#ifndef __j1MENU_H__
+#define __j1MENU_H__
 
 #include "j1Module.h"
 
@@ -9,6 +9,9 @@ struct SDL_Texture;
 struct Cat;
 struct UILabel;
 struct UIImage;
+struct UIWindow;
+struct UIButton;
+struct UISlider;
 struct UIWindow;
 
 enum MenuState {
@@ -79,14 +82,15 @@ private:
 
 	// UI Elements
 	// Main menu
-	UILabel* title_letters[8];
-	UIButton* main_menu_buttons[5];
-	UILabel* main_menu_options[5];
-
+	UILabel* title_letters[8] = { nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr };
+	UILabel* main_menu_options[5] = { nullptr,nullptr,nullptr,nullptr,nullptr };
 	UILabel* highscore_text = nullptr;
 	UILabel* highscore_value = nullptr;
 	UILabel* press_any_button = nullptr;
 	UILabel* skip = nullptr;
+
+	UIButton* main_menu_buttons[5] = { nullptr,nullptr,nullptr,nullptr,nullptr };
+
 	UIImage* black_screen_image = nullptr;
 
 	// Settings
@@ -106,14 +110,17 @@ private:
 
 	// Credits
 	UIWindow* credits_window = nullptr;
-	UIButton* back_to_main_menu_from_credits = nullptr;
-	UIButton* website_button = nullptr;
+
 	UILabel* authors_title = nullptr;
 	UILabel* authors_description = nullptr;
 	UILabel* website_title = nullptr;
 	UILabel* website_description = nullptr;
 	UILabel* license_title = nullptr;
 	UILabel* license_description = nullptr;
+
+	UIButton* back_to_main_menu_from_credits = nullptr;
+	UIButton* website_button = nullptr;
+
 	UISlider* license_slider = nullptr;
 
 	// Credits slider
@@ -124,7 +131,6 @@ private:
 
 	bool print_title = false;
 	bool blit_cat = true;
-	bool is_invisible = true;
 
 	bool from_settings = false;
 	bool from_credits = false;
@@ -141,4 +147,4 @@ public:
 	UIWindow* settings_window = nullptr;
 };
 
-#endif // __j1MENU_PAUSE_PAUSE_H__
+#endif // __j1MENU_H__

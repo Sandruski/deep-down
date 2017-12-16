@@ -23,6 +23,8 @@ public:
 	void Update(float dt);
 	void SetMousePosition();
 	void HandleInput();
+	void Draw() const;
+	void DrawAbove() const;
 
 private:
 	UIEvents UIevent = NO_EVENT_;

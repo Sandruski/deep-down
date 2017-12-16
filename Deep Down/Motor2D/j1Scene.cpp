@@ -10,6 +10,7 @@
 #include "j1Collision.h"
 #include "j1Particles.h"
 #include "j1Render.h"
+#include "j1Menu.h"
 #include "j1Window.h"
 #include "j1Map.h"
 #include "j1Scene.h"
@@ -23,6 +24,7 @@
 #include "UIImage.h"
 #include "UISlider.h"
 #include "UICursor.h"
+#include "j1BetweenTransitions.h"
 
 #include"Brofiler\Brofiler.h"
 
@@ -81,15 +83,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	// Cursor
-	UICursor_Info cursor;
-	cursor.tex_name = CURSORTEX_;
-	cursor.default = { 0,0,16,16 };
-	cursor.on_click = { 16,0,16,16 };
-	
-	App->gui->CreateUICursor(cursor, this);
-
-	// Ingame UI
+	// In-game UI
 	UILifeBar_Info girl_life_bar;
 	girl_life_bar.bar = { 86,532,222,4 };
 	girl_life_bar.life = 222;
@@ -189,6 +183,12 @@ bool j1Scene::Update(float dt)
 	else
 		countdown_time->SetText(p2SString("%i", (int)count_time));
 
+	// If player dies, go back to main menu
+	if (App->entities->playerData->player_is_dead) {
+		App->trans->SetNextTransitionInfo(index, false);
+		App->fade->FadeToBlack(this, App->menu, 6.0f, fades::slider_fade, true, true);
+	}
+
 	if (activate_UI_anim) {
 		cat_UI->StartAnimation(catsUI_anim);
 		activate_UI_anim = false;
@@ -217,6 +217,46 @@ bool j1Scene::Update(float dt)
 		}
 	}
 
+
+	if (App->entities->playerData != nullptr) {
+
+		loading_state = false;
+
+		if (App->entities->playerData->player_is_dead) {
+			App->entities->KillAllEntities();
+			App->trans->back_to_main_menu = true;
+			App->trans->SetNextTransitionInfo(1, false);
+			App->fade->FadeToBlack(this, App->menu, 8.0f, fades::slider_fade);
+			return true;
+		}
+
+		if (App->map->data.CheckIfEnter("Player", "EndPos", App->entities->playerData->position) && App->fade->GetStep() == 0) {
+			if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
+				|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
+
+				if (index == 0)
+					index = 1;
+				else
+					index = 0;
+
+				App->entities->playerData->player.SetState(stop_);
+
+				if (index == 1) {
+					App->trans->SetNextTransitionInfo(index, true);
+					App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade);
+					return true;
+				}
+				else {
+					App->entities->KillAllEntities();
+					App->trans->back_to_main_menu = true;
+					App->trans->SetNextTransitionInfo(1, false);
+					App->fade->FadeToBlack(this, App->menu, 8.0f, fades::slider_fade);
+					return true;
+				}
+			}
+		}
+	}
+
 	return true;
 }
 
@@ -241,10 +281,10 @@ bool j1Scene::CleanUp()
 	if (!loading_state)
 		App->entities->CleanUp();
 
-	cats_first_map = 0;
-	cats_second_map = 0;
-	countdown_to_die = 0.0f;
-	count_time = 0.0f;
+	//cats_first_map = 0;
+	//cats_second_map = 0;
+	//countdown_to_die = 0.0f;
+	//count_time = 0.0f;
 
 	App->gui->ClearAllUI();
 
@@ -310,12 +350,19 @@ bool j1Scene::Load(pugi::xml_node& save) {
 	if (save.child("index") != NULL) {
 		if (save.child("index").attribute("index").as_uint() != index && App->fade->GetStep() == 0) {
 			index = save.child("index").attribute("index").as_uint();
-			App->fade->FadeToBlack(this, this, 1);
+
+			App->trans->SetNextTransitionInfo(index, true);
+			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade);
+		}
+		else {
+			App->trans->SetNextTransitionInfo(index, true);
+			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade, false, false);
 		}
 	}
 	loading = true;
 
 	ret = true;
+
 	return ret;
 }
 
@@ -334,10 +381,11 @@ void j1Scene::DebugKeys() {
 				gate = false;
 				fx = false;
 			}
-			else {
+			else
 				index = 0;
-			}
-			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade, true, true, true, 0, true, cats_first_map);
+
+			App->trans->SetNextTransitionInfo(0, true);
+			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade);
 		}
 	}
 
@@ -352,13 +400,8 @@ void j1Scene::DebugKeys() {
 			gate = false;
 			fx = false;
 
-			uint cats = 0;
-			if (index == 0)
-				cats = cats_first_map;
-			else
-				cats = cats_second_map;
-
-			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade, true, true, true, index, true, cats);
+			App->trans->SetNextTransitionInfo(index, true);
+			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade);
 		}
 	}
 
@@ -366,26 +409,24 @@ void j1Scene::DebugKeys() {
 
 	// F4: change between maps
 	if (App->entities->playerData != nullptr) {
-		if ((App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || App->map->data.CheckIfEnter("Player", "EndPos", App->entities->playerData->position)) && App->fade->GetStep() == 0) {
+		if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
 			if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
 				|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
 				loading_state = false;
 
-				uint cats = 0;
-				if (index == 0) {
+				if (index == 0)
 					index = 1;
-					cats = cats_second_map;
-				}
-				else {
+				else
 					index = 0;
-					cats = cats_first_map;
-				}
 
 				App->entities->playerData->player.SetState(stop_);
-				App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade, true, true, true, index, true, cats);
+
+				App->trans->SetNextTransitionInfo(index, true);
+				App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade);
 			}
 		}
 	}
+
 	// F5: save the current state
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN && App->entities->playerData->player.GetState() != playerstates::punished_)
 	{
@@ -602,42 +643,6 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		}
 		break;
 	}
-}
-
-UILabel* j1Scene::CreateLevelNameText(uint level)
-{
-	uint width, height;
-	App->win->GetWindowSize(width, height);
-
-	UILabel_Info label;
-	label.normal_color = WarmYellow_;
-	if (level == 0)
-		label.text = "CONSUMED KING'S GARDEEP";
-	else if (level == 1)
-		label.text = "ANOR LONDEEP";
-	label.horizontal_orientation = UIElement_HORIZONTAL_POS::CENTER_;
-	label.vertical_orientation = UIElement_VERTICAL_POS::MIDDLE_;
-	label.font_name = Font_Names::MSMINCHO_;
-	label.draggable = false;
-	label.interactive = false;
-
-	return App->gui->CreateUILabel({ (int)width / 2,(int)height / 2 }, label);
-}
-
-UILabel* j1Scene::CreateCatsPickedText(uint cats_picked)
-{
-	uint width, height;
-	App->win->GetWindowSize(width, height);
-
-	UILabel_Info label;
-	p2SString tmp("%s%d%s", "Cats picked ", cats_picked, "/5");
-	label.text = tmp.GetString();
-	label.horizontal_orientation = UIElement_HORIZONTAL_POS::CENTER_;
-	label.font_name = Font_Names::MSMINCHO_;
-	label.draggable = false;
-	label.interactive = false;
-
-	return App->gui->CreateUILabel({ (int)width / 2,(int)height / 2 + 30 }, label);
 }
 
 void j1Scene::OpeningSubMenuOptions()

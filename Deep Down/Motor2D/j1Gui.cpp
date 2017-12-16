@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Render.h"
+#include "j1BetweenTransitions.h"
 #include "j1Textures.h"
 #include "j1Fonts.h"
 #include "j1Input.h"
@@ -294,6 +295,9 @@ bool j1Gui::ClearAllUI()
 
 	// Clear UI_elements tree
 	UI_elements_tree->getRoot()->removeChildren();
+
+	// Delete trans pointer to cursor?
+	App->trans->CreateCursor();
 
 	return ret;
 }

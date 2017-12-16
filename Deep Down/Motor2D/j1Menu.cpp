@@ -15,6 +15,7 @@
 #include "j1Window.h"
 #include "j1Audio.h"
 #include "j1Fonts.h"
+#include "j1BetweenTransitions.h"
 
 #include "UIButton.h"
 #include "UICursor.h"
@@ -65,10 +66,6 @@ bool j1Menu::Start()
 	camera_blit = App->map->camera_blit;
 	App->map->camera_blit = false;
 
-	memset(title_letters, 0, 8);
-	memset(main_menu_buttons, 0, 5);
-	memset(main_menu_options, 0, 5);
-
 	// Load menu map
 	if (App->map->Load("menu.tmx"))
 		App->entities->AddEntities();
@@ -81,14 +78,17 @@ bool j1Menu::Start()
 	camera_start_position = { 22,0 };
 	camera_start_position = App->map->MapToWorld(camera_start_position.x, camera_start_position.y);
 	App->render->camera.x = -(camera_start_position.x + 10) * scale;
+	App->render->camera.y = camera_start_position.y * scale;
 
 	// Create UI elements
 	// Black quad
-	UIImage_Info black_screen;
-	black_screen.color = Black_;
-	black_screen.quad = true;
-	black_screen.tex_area = { 0, 0, (int)(width * scale), (int)(height * scale) };
-	black_screen_image = App->gui->CreateUIImage({ 0,0 }, black_screen);
+	if (!App->trans->back_to_main_menu) {
+		UIImage_Info black_screen;
+		black_screen.color = Black_;
+		black_screen.quad = true;
+		black_screen.tex_area = { 0, 0, (int)(width * scale), (int)(height * scale) };
+		black_screen_image = App->gui->CreateUIImage({ 0,0 }, black_screen);
+	}
 
 	// Game title
 	UILabel_Info label;
@@ -219,6 +219,11 @@ bool j1Menu::Start()
 	highscore_value->DecreasePos({ font_width * scale, font_height * scale });
 	//_create_UI_elements
 
+	if (App->trans->back_to_main_menu) {
+		App->entities->Start();
+		App->entities->playerData = nullptr;
+	}
+
 	// Cat
 	EntityInfo entity;
 	entity.type = ENTITY_TYPES::CAT_;
@@ -238,9 +243,17 @@ bool j1Menu::Start()
 	i = 0;
 	//_cat
 
-	menuState = MenuState::TITLE_ANIMATION_;
-	menuCatState = MenuCatState::MC_APPEAR_RUNNING_;
-	
+	iPoint cat_final_position = { 627,190 };
+	if (App->trans->back_to_main_menu) {
+		cat->position = { (float)cat_final_position.x, (float)cat_final_position.y };
+		menuCatState = MenuCatState::MC_AT_GROUND_;
+		menuState = MenuState::MAIN_MENU_OPTIONS_ANIMATION_;
+	}
+	else {
+		menuCatState = MenuCatState::MC_APPEAR_RUNNING_;
+		menuState = MenuState::TITLE_ANIMATION_;
+	}
+
 	return ret;
 }
 
@@ -280,6 +293,7 @@ bool j1Menu::Update(float dt)
 	switch (menuCatState) {
 
 	case MenuCatState::MC_APPEAR_RUNNING_:
+		
 		cat->SetCatState(CatState::rc_run);
 		cat->position.x += cat_run * dt;
 
@@ -371,7 +385,9 @@ bool j1Menu::Update(float dt)
 		if (cat->position.x >= camera_start_position.x + cat_position_increment[7]) {
 			menuCatState = MenuCatState::NO_CAT_;
 			App->map->camera_blit = camera_blit;
-			App->fade->FadeToBlack(this, App->scene, level_fade_seconds, fades::slider_fade, true, true, true, 0, true); //the level has to be sincronized with the saved game
+
+			App->trans->SetNextTransitionInfo(0, true);
+			App->fade->FadeToBlack(this, App->scene, level_fade_seconds, fades::slider_fade);
 			break;
 		}
 		break;
@@ -383,6 +399,11 @@ bool j1Menu::Update(float dt)
 		if (cat->position.x >= camera_start_position.x + cat_position_increment[7]) {
 			menuCatState = MenuCatState::NO_CAT_;
 			App->map->camera_blit = camera_blit;
+
+			// Fade? On-off?
+			CleanUp();
+			App->scene->active = true;
+
 			App->scene->loading_state = true;
 			App->LoadGame();
 			break;
@@ -417,7 +438,6 @@ bool j1Menu::Update(float dt)
 
 			if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
 				skip->SetColor({ skip->GetColor().r,skip->GetColor().g,skip->GetColor().b,0 });
-				is_invisible = true;
 
 				for (uint i = 0; i < 8; ++i)
 					title_letters[i]->SetColor(title_letters[i]->GetColor());
@@ -513,6 +533,16 @@ bool j1Menu::Update(float dt)
 			}
 		}
 
+		if (App->trans->back_to_main_menu) {
+			timer += 1.0f * dt;
+
+			if (timer >= 3.0f) {
+				App->trans->back_to_main_menu = false;
+				camera_moved = true;
+				timer = 0.0f;
+			}
+		}
+
 		if (camera_moved) {
 			blit_cat = true;
 
@@ -542,8 +572,8 @@ bool j1Menu::Update(float dt)
 
 				if (first_letter && second_letter && third_letter && fourth_letter && fifth_letter && sixth_letter && seventh_letter && eighth_letter) {
 
-					if (highscore_value->SlideTransition(dt, (int)height / 6, 800.0f, true, 10.0f, 2.0f)) {
-						if (highscore_text->SlideTransition(dt, (int)height / 10, 800.0f, true, 10.0f, 2.0f)) {
+					if (highscore_value->SlideTransition(dt, (int)height / 6, 800.0f, true, 10.0f, 3.0f)) {
+						if (highscore_text->SlideTransition(dt, (int)height / 10, 800.0f, true, 10.0f, 3.0f)) {
 							for (uint i = 0; i < 5; ++i) {
 								main_menu_buttons[i]->SetInteraction(true);
 								main_menu_options[i]->SetInteraction(true);
@@ -576,8 +606,8 @@ bool j1Menu::Update(float dt)
 
 			if (alpha == 255.0f) {
 
-				if (highscore_value->SlideTransition(dt, (int)height / 6, 800.0f, true, 10.0f, 2.0f)) {
-					if (highscore_text->SlideTransition(dt, (int)height / 10, 800.0f, true, 10.0f, 2.0f)) {
+				if (highscore_value->SlideTransition(dt, (int)height / 6, 800.0f, true, 10.0f, 3.0f)) {
+					if (highscore_text->SlideTransition(dt, (int)height / 10, 800.0f, true, 10.0f, 3.0f)) {
 
 						for (uint i = 0; i < 5; ++i) {
 							main_menu_buttons[i]->SetInteraction(true);
@@ -599,7 +629,7 @@ bool j1Menu::Update(float dt)
 	case MenuState::AT_SETTINGS_:
 		blit_cat = false;
 
-		if (App->render->camera.x < 0)
+		if (App->render->camera.x < -1)
 			App->render->camera.x += camera_speed * dt;
 		else {
 			if (settings_window->SlideTransition(dt, height / 2, 500.0f, true, 20.0f, 2.0f)) {
@@ -709,10 +739,20 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 
 		// Main menu
 		if (UIelem == main_menu_buttons[MenuOptions::MM_START_]) {
+			main_menu_buttons[MenuOptions::MM_CONTINUE_]->SetInteraction(false);
+			main_menu_buttons[MenuOptions::MM_SETTINGS_]->SetInteraction(false);
+			main_menu_buttons[MenuOptions::MM_CREDITS_]->SetInteraction(false);
+			main_menu_buttons[MenuOptions::MM_EXIT_]->SetInteraction(false);
+
 			menuCatState = MenuCatState::MC_START_;
 			break;
 		}
 		else if (UIelem == main_menu_buttons[MenuOptions::MM_CONTINUE_]) {
+			main_menu_buttons[MenuOptions::MM_CONTINUE_]->SetInteraction(false);
+			main_menu_buttons[MenuOptions::MM_SETTINGS_]->SetInteraction(false);
+			main_menu_buttons[MenuOptions::MM_CREDITS_]->SetInteraction(false);
+			main_menu_buttons[MenuOptions::MM_EXIT_]->SetInteraction(false);
+
 			menuCatState = MenuCatState::MC_CONTINUE_;
 			break;
 		}

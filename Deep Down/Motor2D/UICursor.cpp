@@ -27,6 +27,24 @@ void UICursor::Update(float dt)
 		HandleInput();
 }
 
+void UICursor::Draw() const {}
+
+void  UICursor::DrawAbove() const 
+{
+	iPoint blit_pos;
+	int scale = App->win->GetScale();
+	blit_pos.x = (GetLocalPos().x - App->render->camera.x) / scale;
+	blit_pos.y = (GetLocalPos().y - App->render->camera.y) / scale;
+
+	if (tex_area.w != 0)
+		App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
+	else
+		App->render->Blit(tex, blit_pos.x, blit_pos.y);
+
+	if (App->gui->debug_draw)
+		DebugDraw(blit_pos);
+}
+
 void UICursor::HandleInput()
 {
 	switch (UIevent)

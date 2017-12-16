@@ -18,6 +18,8 @@
 #include "j1Pathfinding.h"
 #include "j1Collision.h"
 #include "j1Gui.h"
+#include "j1FadeToBlack.h"
+#include "j1Menu.h"
 
 #define SPAWN_MARGIN 50
 
@@ -880,7 +882,8 @@ bool j1EntityFactory::Update(float dt)
 		}
 	}
 
-	App->scene->MoveCamera();
+	if (App->scene->active)
+		App->scene->MoveCamera();
 
 	// Draw Map
 	App->map->Draw();
@@ -1173,7 +1176,8 @@ bool j1EntityFactory::AddEntities()
 	EntityInfo info;
 
 	// Player
-	if (!App->scene->loading_state && App->scene->active) {
+	if (!App->scene->loading_state && !App->menu->active) {
+
 		info.type = PLAYER_;
 		AddEntity(info);
 	}

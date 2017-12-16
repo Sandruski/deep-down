@@ -4,13 +4,13 @@
 	<window />
 	<textures />
 	<audio>
-		<volume default="-8" />
+		<volume default="32" />
 	</audio>
 	<map />
 	<pathfinding />
 	<entities>
 		<player>
-			<position position.x="672" position.y="219.026321" />
+			<position position.x="672" position.y="219.160767" />
 			<state state="2" />
 			<speed speed.x="0" speed.y="0" />
 		</player>
@@ -25,6 +25,7 @@
 	</scene>
 	<menu />
 	<fade />
+	<trans />
 	<renderer>
 		<camera x="-1716" y="-207" />
 	</renderer>

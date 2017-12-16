@@ -45,8 +45,7 @@ enum Font_Names {
 	DEFAULT_,
 	MSMINCHO_,
 	ZELDA_,
-	SOBAD_,
-	SOBAD_8_,
+	SOBAD_, SOBAD_8_,
 	DIGITAL7_,
 	BLACK_BLOC_,
 	MAX_FONTS_

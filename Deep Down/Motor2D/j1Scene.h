@@ -69,9 +69,6 @@ public:
 
 	void MoveCamera();
 
-	UILabel* CreateLevelNameText(uint level = 0);
-	UILabel* CreateCatsPickedText(uint cats_picked = 0);
-
 public:
 	// Camera
 	float up = false, down = false, left = false, right = false;
@@ -87,6 +84,7 @@ public:
 
 	bool god = false;
 	bool pause = false;
+	bool back_to_main_menu = false;
 
 	// Cats score
 	uint cats_first_map = 0;

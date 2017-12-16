@@ -17,6 +17,13 @@ enum fades
 	total_black_fade
 };
 
+enum fade_step
+{
+	none,
+	fade_to_black,
+	fade_from_black
+};
+
 class j1FadeToBlack : public j1Module
 {
 public:
@@ -25,20 +32,28 @@ public:
 
 	bool Start();
 	bool Update(float dt);
-	bool FadeToBlack(j1Module* module_off, j1Module* module_on, float time = 2.0f, fades kind_of_fade = normal_fade, bool cleanup_off = true, bool start_on = true, bool level_text = false, uint num_level = 0, bool cats_picked_text = false, uint cats_picked = 0);
+	bool FadeToBlack(j1Module* module_off, j1Module* module_on, float time = 2.0f, fades kind_of_fade = normal_fade, bool cleanup_off = true, bool start_on = true);
 
+	bool IsFading() const;
+	fade_step GetStep() const;
+	Uint32 GetNow() const;
+	Uint32 GetTotalTime() const;
+
+private:
 	void NormalFade();
 	void SliderFade();
 	void BlackFade();
-	bool IsFading() const;
 
+private:
 	j1Module* off;
 	j1Module* on;
 
-private:
+	fade_step current_step = fade_step::none;
 	
+	Uint32 now = 0;
 	Uint32 start_time = 0;
 	Uint32 total_time = 0;
+
 	SDL_Rect screen;
 	SDL_Rect Slider_rect;
 	float dt = 0.0f;
@@ -46,23 +61,6 @@ private:
 
 	bool cleanup_off = true;
 	bool start_on = true;
-
-	bool level_text = true;
-	bool cats_picked_text = true;
-	uint num_level = 0;
-	uint cats_picked = 0;
-	UILabel* blit_level_text = nullptr;
-	UILabel* blit_cats_picked_text = nullptr;
-
-public:
-	enum fade_step
-	{
-		none,
-		fade_to_black,
-		fade_from_black
-	} current_step = fade_step::none;
-
-	fade_step GetStep() { return current_step; }
 };
 
 #endif // __j1MODULEFADETOBLACK_H__

@@ -115,6 +115,7 @@ private:
 
 public:
 	PlayerInfo player;
+	bool player_is_dead = false;
 };
 
 #endif

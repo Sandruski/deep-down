@@ -26,6 +26,7 @@ class j1EntityFactory;
 class j1Fonts;
 class j1Gui;
 class j1Menu;
+class j1BetweenTransitions;
 
 class j1App
 {
@@ -92,21 +93,22 @@ private:
 public:
 
 	// Modules
-	j1Window*			win = nullptr;
-	j1Input*			input = nullptr;
-	j1Render*			render = nullptr;
-	j1Textures*			tex = nullptr;
-	j1Audio*			audio = nullptr;
-	j1Scene*			scene = nullptr;
-	j1Map*				map = nullptr;
-	j1Particles*		particles = nullptr;
-	j1Collision*		collision = nullptr;
-	j1FadeToBlack*		fade = nullptr;
-	j1EntityFactory*	entities = nullptr;
-	j1PathFinding*		pathfinding = nullptr;
-	j1Fonts*			font = nullptr;
-	j1Gui*				gui = nullptr;
-	j1Menu*				menu = nullptr;
+	j1Window*					win = nullptr;
+	j1Input*					input = nullptr;
+	j1Render*					render = nullptr;
+	j1Textures*					tex = nullptr;
+	j1Audio*					audio = nullptr;
+	j1Scene*					scene = nullptr;
+	j1Map*						map = nullptr;
+	j1Particles*				particles = nullptr;
+	j1Collision*				collision = nullptr;
+	j1FadeToBlack*				fade = nullptr;
+	j1EntityFactory*			entities = nullptr;
+	j1PathFinding*				pathfinding = nullptr;
+	j1Fonts*					font = nullptr;
+	j1Gui*						gui = nullptr;
+	j1Menu*						menu = nullptr;
+	j1BetweenTransitions*		trans = nullptr;
 
 private:
 

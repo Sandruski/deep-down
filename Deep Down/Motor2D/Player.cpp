@@ -13,6 +13,7 @@
 #include "j1Window.h"
 #include "j1Particles.h"
 #include "UILifeBar.h"
+#include "j1BetweenTransitions.h"
 
 #include "Player.h"
 #include "Brofiler\Brofiler.h"
@@ -73,8 +74,17 @@ void Player::Move(float dt)
 
 	player.gravity = 125.0f * dt;
 
-	if (App->fade->GetStep() == App->fade->fade_to_black || App->fade->GetStep() == App->fade->fade_from_black)
+	if (App->fade->GetStep() == fade_step::fade_to_black || App->fade->GetStep() == fade_step::fade_from_black)
 		player.gravity = 0;
+
+	// Check if dead
+	if (player.GetState() == punished_)
+		time += 1 * dt;
+
+	if (App->scene->progress_bar->GetProgress() <= 0 && time >= 1.0f)
+		player_is_dead = true;
+
+	CheckIfDead();
 
 	// Check for collisions
 	up = true;
@@ -82,12 +92,6 @@ void Player::Move(float dt)
 	left = true;
 	right = true;
 	CheckCollision(collider_pos, { player.coll_size.x + player.coll_offset.w, player.coll_size.y + player.coll_offset.h }, player.check_collision_offset, up, down, left, right, player.GetState());
-
-	CheckIfDead();
-
-	if (App->scene->progress_bar->GetProgress() <= 0 && time >= 1.0f) {
-		//TODO ADD WHATEVER
-	}
 
 	// Update state
 	if (!App->scene->pause)
@@ -258,8 +262,6 @@ void Player::ShotLeft() {
 }
 
 void Player::CheckIfDead() {
-	if (player.GetState() == punished_)
-		time += 1 * dt;
 
 	if (time >= 1.0f) {
 		respawnGOD = true;
@@ -267,7 +269,6 @@ void Player::CheckIfDead() {
 		player.SetState(idle_);
 		time = 0;
 	}
-	
 }
 
 void Player::PlayerStateMachine() {
@@ -819,13 +820,15 @@ void Player::CheckCollision(iPoint position, iPoint size, int offset, bool &up, 
 	for (int i = position.x - App->map->culing_offset; i < position.x + App->map->culing_offset; i++) {
 		for (int j = position.y - App->map->culing_offset; j < position.y + App->map->culing_offset; j++) {
 
-			iPoint ij = App->map->WorldToMap(i, j);
+			if (!App->trans->back_to_main_menu) {
+				iPoint ij = App->map->WorldToMap(i, j);
 
-			uint id = App->map->collisionLayer->Get(ij.x, ij.y);
+				uint id = App->map->collisionLayer->Get(ij.x, ij.y);
 
-			if (id != 0) {
-				iPoint world = App->map->MapToWorld(ij.x, ij.y);
-				CalculateCollision(position, size, world.x, world.y, id, offset, up, down, left, right, state);
+				if (id != 0) {
+					iPoint world = App->map->MapToWorld(ij.x, ij.y);
+					CalculateCollision(position, size, world.x, world.y, id, offset, up, down, left, right, state);
+				}
 			}
 		}
 	}
