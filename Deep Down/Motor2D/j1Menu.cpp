@@ -557,8 +557,12 @@ bool j1Menu::Update(float dt)
 
 		if (from_settings || from_credits) {
 			if (from_settings) {
-				if (App->render->camera.x > -(camera_start_position.x + 10) * scale)
-					App->render->camera.x -= camera_speed * dt;
+				if (App->render->camera.x > -(camera_start_position.x + 10) * scale) {
+					if (camera_speed * dt > 1)
+						App->render->camera.x -= camera_speed * dt;
+					else
+						App->render->camera.x -= 1;
+				}
 				else {
 					if (App->render->camera.x < -(camera_start_position.x + 10) * scale)
 						App->render->camera.x = -(camera_start_position.x + 10) * scale;
@@ -566,8 +570,12 @@ bool j1Menu::Update(float dt)
 				}
 			}
 			else if (from_credits) {
-				if (App->render->camera.y < 0)
-					App->render->camera.y += camera_speed * dt;
+				if (App->render->camera.y < 0) {
+					if (camera_speed * dt > 1)
+						App->render->camera.y += camera_speed * dt;
+					else
+						App->render->camera.y += 1;
+				}
 				else {
 					if (App->render->camera.y > 0)
 						App->render->camera.y = 0;
@@ -663,8 +671,12 @@ bool j1Menu::Update(float dt)
 	case MenuState::AT_SETTINGS_:
 		blit_cat = false;
 
-		if (App->render->camera.x < -10)
-			App->render->camera.x += camera_speed * dt;
+		if (App->render->camera.x < -10) {
+			if (camera_speed * dt > 1)
+				App->render->camera.x += camera_speed * dt;
+			else
+				App->render->camera.x += 1;
+		}
 		else {
 			if (!settings_done) {
 				if (App->render->camera.x > -10)
@@ -706,8 +718,12 @@ bool j1Menu::Update(float dt)
 			license_description->SetLocalPos({ license_description->GetLocalPos().x, -percent / 3 + 20 });
 		}
 
-		if (App->render->camera.y > -(int)height - 2*16*scale)
-			App->render->camera.y -= camera_speed * dt;
+		if (App->render->camera.y > -(int)height - 2 * 16 * scale) {
+			if (camera_speed * dt > 1)
+				App->render->camera.y -= camera_speed * dt;
+			else
+				App->render->camera.y -= 1;
+		}
 		else {
 			if (!credits_done) {
 				if (App->render->camera.y < -(int)height - 2 * 16 * scale)
@@ -1144,16 +1160,13 @@ void j1Menu::CreateSettingsUIElements()
 	// Sliders
 	UISlider_Info slider;
 	slider.draggable = false;
-	slider.interactive = false;
 	slider.tex_area = UIElement_Rect::SLIDER_BAR_;
 	slider.button_slider_area = UIElement_Rect::SLIDER_BUTTON_;
 	slider.offset = 3;
+	slider.slider_button_pos.x = App->audio->music_volume * 54 / 128;
 	slider.buggy_offset = -1;
-
-	//slider.slider_button_pos.x = App->audio->music_volume * (App->gui->GetRectFromAtlas(UIElement_Rect::SLIDER_BUTTON_).w) / 128;
 	music_slider = App->gui->CreateUISlider({ 300,music_volume_text->GetLocalPos().y + 10 }, slider, this, settings_window);
-
-	//slider.slider_button_pos.x = App->audio->fx_volume * (App->gui->GetRectFromAtlas(UIElement_Rect::SLIDER_BUTTON_).w) / 128;
+	slider.slider_button_pos.x = App->audio->fx_volume * 54 / 128;
 	FX_slider = App->gui->CreateUISlider({ 300,FX_volume_text->GetLocalPos().y + 10 }, slider, this, settings_window);
 
 	// Back to main menu button

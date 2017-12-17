@@ -223,12 +223,11 @@ bool j1Scene::Update(float dt)
 		}
 	}
 
-
 	if (App->entities->playerData != nullptr) {
 
-		loading_state = false;
-
 		if (App->entities->playerData->player_is_dead) {
+			loading_state = false;
+
 			App->entities->KillAllEntities();
 			App->trans->back_to_main_menu = true;
 			App->trans->SetNextTransitionInfo(1, false);
@@ -239,6 +238,7 @@ bool j1Scene::Update(float dt)
 		if (App->map->data.CheckIfEnter("Player", "EndPos", App->entities->playerData->position) && App->fade->GetStep() == 0) {
 			if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
 				|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
+				loading_state = false;
 				god = true;
 
 				if (index == 0)
@@ -637,7 +637,7 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		else if (UIelem == (UIElement*)menu_pause_labels[OPTIONS_])
 		{
 			App->audio->PlayFx(10);
-			for (uint i = 0; i < 5; ++i) {
+			for (uint i = 0; i < 4; ++i) {
 				App->gui->DestroyElement(menu_pause_labels[i]);
 			}
 			OpeningSubMenuOptions();		
@@ -699,7 +699,6 @@ void j1Scene::OpeningSubMenuOptions()
 	label.font_name = Font_Names::MSMINCHO_;
 	label.normal_color = { 0,0,0,255 };
 	label.draggable = false;
-	label.interactive = false;
 
 	label.text = "volume";
 	App->gui->CreateUILabel({ 80,60 }, label, this, pause_menu); // Volume label
@@ -723,10 +722,10 @@ void j1Scene::OpeningSubMenuOptions()
 	slider.tex_area = UIElement_Rect::SLIDER_BAR_;
 	slider.button_slider_area = UIElement_Rect::SLIDER_BUTTON_;
 	slider.offset = 3;
-	slider.slider_button_pos.x = App->audio->music_volume * (App->gui->GetRectFromAtlas(UIElement_Rect::SLIDER_BAR_).w) / 128;
+	slider.slider_button_pos.x = App->audio->music_volume * 54 / 128;
 	slider.buggy_offset = -1;
-
 	volume_slider = App->gui->CreateUISlider({ 300,75 }, slider, this, pause_menu);
+	slider.slider_button_pos.x = App->audio->fx_volume * 54 / 128;
 	fx_slider = App->gui->CreateUISlider({ 300,165 }, slider, this, pause_menu);
 
 	UIButton_Info checkbox;

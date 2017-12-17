@@ -188,8 +188,12 @@ bool UISlider::SlideTransition(float dt, int end_pos_y, float speed, bool bounce
 			else if (!bounce)
 				ret = true;
 		}
-		else if (!start_bouncing)
-			IncreasePos({ 0,(int)(speed * dt) });
+		else if (!start_bouncing) {
+			if ((int)(speed * dt) >= 1)
+				IncreasePos({ 0,(int)(speed * dt) });
+			else
+				IncreasePos({ 0, 1 });
+		}
 	}
 	else {
 		if (pos.y + height <= (int)end_pos_y - height / 2) {
@@ -198,8 +202,12 @@ bool UISlider::SlideTransition(float dt, int end_pos_y, float speed, bool bounce
 			else if (!bounce)
 				ret = true;
 		}
-		else if (!start_bouncing)
-			DecreasePos({ 0,(int)(speed * dt) });
+		else if (!start_bouncing) {
+			if ((int)(speed * dt) >= 1)
+				DecreasePos({ 0,(int)(speed * dt) });
+			else
+				DecreasePos({ 0, 1 });
+		}
 	}
 
 	if (start_bouncing) {
@@ -230,16 +238,24 @@ bool UISlider::Bounce(float dt, float bounce_interval, float bounce_speed, bool 
 			bounce_value -= bounce_speed;
 			first_bounce = false;
 		}
-		else
-			IncreasePos({ 0, (int)(bounce_value * 10.0f * dt) });
+		else {
+			if ((int)(bounce_value * 10.0f * dt) >= 1)
+				IncreasePos({ 0, (int)(bounce_value * 10.0f * dt) });
+			else
+				IncreasePos({ 0, 1 });
+		}
 	}
 	else {
 		if (pos.y <= start_pos.y - bounce_value) {
 			bounce_value -= bounce_speed;
 			first_bounce = true;
 		}
-		else
-			DecreasePos({ 0, (int)(bounce_value * 10.0f * dt) });
+		else {
+			if ((int)(bounce_value * 10.0f * dt) >= 1)
+				DecreasePos({ 0, (int)(bounce_value * 10.0f * dt) });
+			else
+				DecreasePos({ 0, 1 });
+		}
 	}
 
 	return ret;

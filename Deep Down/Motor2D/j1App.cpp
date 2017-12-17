@@ -213,11 +213,13 @@ void j1App::FinishUpdate()
 	frame_count++;
 
 	if (App->entities->playerData != nullptr) {
-		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN && (App->entities->playerData->animationPlayer == &App->entities->playerData->player.idle || App->entities->playerData->animationPlayer == &App->entities->playerData->player.idle2))
+		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN 
+			&& (App->entities->playerData->animationPlayer == &App->entities->playerData->player.idle || App->entities->playerData->animationPlayer == &App->entities->playerData->player.idle2)
+			&& !App->menu->active)
 			toCap = !toCap;
 	}
 	else
-		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN && !App->menu->active)
 			toCap = !toCap;
 
 	//cap frames
@@ -394,7 +396,6 @@ void j1App::LoadGame()
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
-
 
 	want_to_load = true;
 }

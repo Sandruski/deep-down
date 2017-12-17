@@ -4,13 +4,13 @@
 	<window />
 	<textures />
 	<audio>
-		<volume default="164" />
+		<volume default="100" />
 	</audio>
 	<map />
 	<pathfinding />
 	<entities>
 		<player>
-			<position position.x="512.965454" position.y="1115.21448" />
+			<position position.x="584.831787" position.y="749.657349" />
 			<state state="2" />
 			<speed speed.x="0" speed.y="0" />
 		</player>
@@ -20,16 +20,16 @@
 	<fonts />
 	<gui />
 	<scene>
-		<index index="1" />
+		<index index="0" />
 		<gate opened="false" fx="false" />
-		<cats_obtained cats1="2" />
-		<cats_obtained cats2="1" />
-		<lifebar lifebar="210" />
+		<cats_obtained cats1="0" />
+		<cats_obtained cats2="0" />
+		<lifebar lifebar="147" />
 	</scene>
 	<menu />
 	<fade />
 	<trans />
 	<renderer>
-		<camera x="-1236" y="-2895" />
+		<camera x="-1452" y="-1797" />
 	</renderer>
 </game_state>
