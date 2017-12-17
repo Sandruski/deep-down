@@ -98,7 +98,12 @@ bool j1Scene::Start()
 	numbers.font_name = Font_Names::MSMINCHO_;
 	numbers.interactive = false;
 	numbers.draggable = false;
-	numbers.text = "00";
+
+	if (index == 0)
+		numbers.text = p2SString("%i", cats_first_map);
+	else
+		numbers.text = p2SString("%i", cats_second_map);
+
 	cats_score = App->gui->CreateUILabel({ 885,45 }, numbers);
 	numbers.text = "00";
 	countdown_time = App->gui->CreateUILabel({ 50,50 }, numbers);
@@ -132,7 +137,6 @@ bool j1Scene::Start()
 
 	loading = true;
 
-
 	return true;
 }
 
@@ -152,18 +156,6 @@ bool j1Scene::PreUpdate()
 		loading = false;
 	}
 
-	if (App->trans->continue_game) {
-		loading_state = true;
-		App->LoadGame();
-		App->trans->continue_game = false;
-		check_continue = true;
-		if (index == 0) {
-			cats_score->SetText(p2SString("%i", (int)cats_first_map));
-		}
-		else if (index == 1) {
-			cats_score->SetText(p2SString("%i", (int)cats_second_map));
-		}
-	}
 	return true;
 }
 
@@ -188,12 +180,6 @@ bool j1Scene::Update(float dt)
 		countdown_time->SetText(p2SString("0%i", (int)count_time));
 	else
 		countdown_time->SetText(p2SString("%i", (int)count_time));
-
-	// If player dies, go back to main menu
-	if (App->entities->playerData->player_is_dead) {
-		App->trans->SetNextTransitionInfo(index, false);
-		App->fade->FadeToBlack(this, App->menu, 6.0f, fades::slider_fade, true, true);
-	}
 
 	if (activate_UI_anim) {
 		cat_UI->StartAnimation(catsUI_anim);
@@ -225,17 +211,18 @@ bool j1Scene::Update(float dt)
 
 	if (App->entities->playerData != nullptr) {
 
+		// If player dies, go back to main menu
 		if (App->entities->playerData->player_is_dead) {
 			loading_state = false;
 
+			App->trans->do_transition = true;
 			App->entities->KillAllEntities();
 			App->trans->back_to_main_menu = true;
-			App->trans->SetNextTransitionInfo(1, false);
 			App->fade->FadeToBlack(this, App->menu, 8.0f, fades::slider_fade);
 			return true;
 		}
 
-		if (App->map->data.CheckIfEnter("Player", "EndPos", App->entities->playerData->position) && App->fade->GetStep() == 0) {
+		if (App->map->data.CheckIfEnter("Player", "EndPos", App->entities->playerData->position) && App->fade->GetStep() == fade_step::none) {
 			if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
 				|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
 				loading_state = false;
@@ -249,7 +236,7 @@ bool j1Scene::Update(float dt)
 				App->entities->playerData->player.SetState(stop_);
 
 				if (index == 1) {
-					App->trans->SetNextTransitionInfo(index, true);
+					App->trans->SetNextTransitionInfo(1, true);
 					App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade);
 					return true;
 				}
@@ -257,8 +244,8 @@ bool j1Scene::Update(float dt)
 					App->entities->KillAllEntities();
 					App->trans->back_to_main_menu = true;
 					App->trans->SetNextTransitionInfo(1, false);
-					App->fade->FadeToBlack(this, App->menu, 8.0f, fades::slider_fade);
 					App->trans->highscore = cats_first_map * 100 + cats_second_map * 100 + progress_bar->GetProgress() - count_time;
+					App->fade->FadeToBlack(this, App->menu, 8.0f, fades::slider_fade);
 					return true;
 				}
 			}
@@ -286,13 +273,13 @@ bool j1Scene::CleanUp()
 	App->audio->PauseMusic();
 	App->map->UnLoad();
 
+	if (forced_cleanup) {
+		App->entities->KillAllEntitiesExceptPlayer();
+		forced_cleanup = false;
+	}
+
 	if (!loading_state)
 		App->entities->CleanUp();
-
-	//cats_first_map = 0;
-	//cats_second_map = 0;
-	//countdown_to_die = 0.0f;
-	//count_time = 0.0f;
 
 	App->gui->ClearAllUI();
 
@@ -341,12 +328,12 @@ bool j1Scene::Save(pugi::xml_node& save) const {
 	}
 
 	if (save.child("cats_obtained") == NULL) {
-		save.append_child("cats_obtained").append_attribute("cats1") = cats_first_map;
-		save.append_child("cats_obtained").append_attribute("cats2") = cats_second_map;
+		save.append_child("cats_obtained1").append_attribute("cats1") = cats_first_map;
+		save.append_child("cats_obtained2").append_attribute("cats2") = cats_second_map;
 	}
 	else {
-		save.append_child("cats_obtained").attribute("cats1") = cats_first_map;
-		save.append_child("cats_obtained").attribute("cats2") = cats_second_map;
+		save.append_child("cats_obtained1").attribute("cats1") = cats_first_map;
+		save.append_child("cats_obtained2").attribute("cats2") = cats_second_map;
 	}
 
 	if (save.child("lifebar") == NULL) {
@@ -371,30 +358,24 @@ bool j1Scene::Load(pugi::xml_node& save) {
 		fx = save.child("gate").attribute("fx").as_bool();
 	}
 
-	if (!App->trans->continue_game) {
-		if (save.child("index") != NULL) {
-			if (save.child("index").attribute("index").as_uint() != index && App->fade->GetStep() == 0) {
-				index = save.child("index").attribute("index").as_uint();
-				App->trans->SetNextTransitionInfo(index, true);
-				App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade);
+	if (save.child("index") != NULL) {
+		if (save.child("index").attribute("index").as_uint() != index && App->fade->GetStep() != fade_to_black) {
 
+			if (App->trans->continue_game) {
+				forced_cleanup = true;
+				App->trans->continue_game = false;
 			}
-			else {
-				App->trans->SetNextTransitionInfo(index, true);
-				App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade, false, false);
-			}
-		}
-	} 
-	else if (App->trans->continue_game)
-	{
-		if (save.child("index") != NULL) {
+
 			index = save.child("index").attribute("index").as_uint();
-			if (index == 1) {
-				App->map->UnLoad();
-				App->map->Load(map2.GetString());
-				App->audio->PlayMusic(song2.GetString());
-				App->audio->SetMusicVolume(App->audio->music_volume + volume_adjustment);
-			}
+			App->trans->SetNextTransitionInfo(index, true);
+			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade);
+		}
+		else {
+			forced_cleanup = true;
+
+			App->trans->continue_game = false;
+			App->trans->SetNextTransitionInfo(index, true);
+			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade); // false false
 		}
 	}
 
@@ -403,8 +384,8 @@ bool j1Scene::Load(pugi::xml_node& save) {
 	}
 
 	if (save.child("cats_obtained") != NULL) {
-		cats_first_map = save.child("cats_obtained").attribute("cats1").as_uint();
-		cats_second_map = save.child("cats_obtained").attribute("cats2").as_uint();
+		cats_first_map = save.child("cats_obtained1").attribute("cats1").as_uint();
+		cats_second_map = save.child("cats_obtained2").attribute("cats2").as_uint();
 	}
 
 	loading = true;
@@ -486,7 +467,7 @@ void j1Scene::DebugKeys() {
 	}
 
 	// F6: load the previous state
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN || App->trans->continue_game) {
 		loading_state = true;
 		App->LoadGame();
 	}

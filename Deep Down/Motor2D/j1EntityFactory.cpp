@@ -1071,6 +1071,47 @@ bool j1EntityFactory::KillAllEntities()
 	return ret;
 }
 
+bool j1EntityFactory::KillAllEntitiesExceptPlayer()
+{
+	bool ret = true;
+
+	// Remove all paths
+	p2List_item<PathInfo*>* item;
+	item = paths.start;
+
+	while (item != NULL)
+	{
+		RELEASE(item->data);
+		item = item->next;
+	}
+	paths.clear();
+
+	App->tex->UnLoad(CatPeasantTex);
+	App->tex->UnLoad(MonkeyTex);
+	App->tex->UnLoad(ImpTex);
+	App->tex->UnLoad(PlayerTex);
+	App->tex->UnLoad(CatTex);
+
+	for (uint i = 0; i < MAX_ENTITIES; ++i)
+	{
+		if (queue[i].type != ENTITY_TYPES::NO_TYPE && queue[i].type != PLAYER_)
+		{
+			queue[i].type = ENTITY_TYPES::NO_TYPE;
+			queue[i].position = { 0,0 };
+		}
+
+		if (entities[i] != nullptr)
+		{
+			if (entities[i] != playerData) {
+				delete entities[i];
+				entities[i] = nullptr;
+			}
+		}
+	}
+
+	return ret;
+}
+
 bool j1EntityFactory::LoadPathsInfo()
 {
 	bool ret = true;

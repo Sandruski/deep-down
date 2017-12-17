@@ -74,7 +74,7 @@ bool j1FadeToBlack::FadeToBlack(j1Module* module_off, j1Module* module_on, float
 	this->cleanup_off = cleanup_off;
 	this->start_on = start_on;
 
-	if (current_step == fade_step::none)
+	if (current_step != fade_step::fade_to_black)
 	{		
 		thisFade = kind_of_fade;
 		

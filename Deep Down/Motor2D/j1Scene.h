@@ -78,6 +78,7 @@ public:
 
 	bool gate = false, fx = false, loading = true;
 	bool loading_state = false;
+	bool forced_cleanup = false;
 
 	uint index = 0;
 	uint last_index = 0;

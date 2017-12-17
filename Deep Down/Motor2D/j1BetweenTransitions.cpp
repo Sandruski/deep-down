@@ -12,6 +12,7 @@
 #include "j1Gui.h"
 #include "UILabel.h"
 #include "UICursor.h"
+#include "UIImage.h"
 
 #include"Brofiler\Brofiler.h"
 
@@ -50,7 +51,28 @@ bool j1BetweenTransitions::Update(float dt)
 {
 	bool ret = true;
 
-	if (App->fade->IsFading()) {
+	// Black quad
+	if (continue_game) {
+		if (create_black_quad) {
+			black_screen_image = CreateBlackQuad();
+			create_black_quad = false;
+		}
+	}
+
+	if (black_screen_image != nullptr) {
+		timer += 1.0f * dt;
+
+		if (timer <= 7.0f)
+			black_screen_image->Draw();
+		else {
+			timer = 0.0f;
+			create_black_quad = true;
+			App->gui->DestroyElement(black_screen_image);
+			black_screen_image = nullptr;
+		}
+	}
+
+	if (App->fade->IsFading() && do_transition) {
 
 		Uint32 total_time = App->fade->GetTotalTime();
 		Uint32 now = App->fade->GetNow();
@@ -128,7 +150,7 @@ bool j1BetweenTransitions::Update(float dt)
 			if (now >= total_time - total_time / 16) {
 
 				if (score_text && scene_index == 1 && !start && !player_death) {
-					l_score_text = CreateScoreText(1000);
+					l_score_text = CreateScoreText(highscore);
 					score_text = false;
 				}
 			}
@@ -172,6 +194,7 @@ bool j1BetweenTransitions::Update(float dt)
 				}
 
 				bloody = false;
+				do_transition = false;
 			}
 
 			break;
@@ -212,7 +235,6 @@ bool j1BetweenTransitions::Update(float dt)
 				l_died->RandomAlphaPainting(dt, BloodyRed_, 255 / 2, 255 / 5, 255 / 2 + 255 / 3, 0.1f);
 		}
 	}
-	
 
 	if (game_cursor != nullptr)
 		game_cursor->DrawAbove();
@@ -241,6 +263,8 @@ void j1BetweenTransitions::SetNextTransitionInfo(uint scene_index, bool start)
 	score_text = true;
 	you = true;
 	died = true;
+
+	do_transition = true;
 }
 
 UILabel* j1BetweenTransitions::CreateLevelNameText(uint level)
@@ -347,4 +371,14 @@ UICursor* j1BetweenTransitions::CreateCursor()
 	game_cursor = App->gui->CreateUICursor(cursor, this);
 
 	return game_cursor;
+}
+
+UIImage* j1BetweenTransitions::CreateBlackQuad() 
+{
+	UIImage_Info black_screen;
+	black_screen.color = Black_;
+	black_screen.quad = true;
+	black_screen.quad_area = { 0, 0, (int)(width * scale), (int)(height * scale) };
+
+	return App->gui->CreateUIImage({ 0,0 }, black_screen);
 }
