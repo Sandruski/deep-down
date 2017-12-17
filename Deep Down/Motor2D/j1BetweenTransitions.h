@@ -7,6 +7,7 @@
 
 struct UILabel;
 struct UICursor;
+struct UIImage;
 
 class j1BetweenTransitions : public j1Module
 {
@@ -40,6 +41,8 @@ private:
 	UILabel* CreateScoreText(int score = 0);
 	UILabel* CreateYouDiedText(uint word = 0);
 
+	UIImage* CreateBlackQuad();
+
 public:
 	// Camera
 	uint width = 0;
@@ -47,7 +50,7 @@ public:
 	uint scale = 0;
 
 private:
-	UICursor* game_cursor;
+	UICursor* game_cursor = nullptr;
 
 	// Create labels
 	bool level_name = true;
@@ -64,6 +67,7 @@ private:
 	bool start = true;
 
 	bool bloody = false;
+	float timer = 0.0f;
 
 public:
 	// Store labels
@@ -75,11 +79,14 @@ public:
 	UILabel* l_score_text = nullptr;
 	UILabel* l_you = nullptr;
 	UILabel* l_died = nullptr;
+	UIImage* black_screen_image = nullptr;
 
 	// General game info
 	bool back_to_main_menu = false;
 	int highscore = 0;
 	bool continue_game = false;
+	bool do_transition = false;
+	bool create_black_quad = true;
 };
 
 #endif // ___j1BETWEEN_TRANSITIONS_H___

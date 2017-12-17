@@ -305,7 +305,8 @@ bool j1Menu::Update(float dt)
 
 	float press_any_button_seconds = 2.0f;
 	float scene_fade_seconds = 5.0f;
-	float level_fade_seconds = 6.0f;
+	float start_fade_seconds = 6.0f;
+	float continue_fade_seconds = 1.0f;
 	float options_seconds = 3.0f;
 	float title_opaque_seconds = 1.0f;
 
@@ -419,8 +420,11 @@ bool j1Menu::Update(float dt)
 		if (cat->position.x >= camera_start_position.x + cat_position_increment[7]) {
 			menuCatState = MenuCatState::NO_CAT_;
 
+			App->scene->index = 0;
+			App->trans->continue_game = false;
+
 			App->trans->SetNextTransitionInfo(0, true);
-			App->fade->FadeToBlack(this, App->scene, level_fade_seconds, fades::slider_fade);
+			App->fade->FadeToBlack(this, App->scene, start_fade_seconds, fades::slider_fade);
 			break;
 		}
 		break;
@@ -432,17 +436,9 @@ bool j1Menu::Update(float dt)
 		if (cat->position.x >= camera_start_position.x + cat_position_increment[7]) {
 			menuCatState = MenuCatState::NO_CAT_;
 
-			// Fade? On-off?
-			/*
-			CleanUp();
-			App->scene->active = true;
-
-			App->scene->loading_state = true;
-			App->LoadGame();
-			*/
 			App->trans->continue_game = true;
-			App->trans->SetNextTransitionInfo(0, true);
-			App->fade->FadeToBlack(this, App->scene, level_fade_seconds, fades::slider_fade);
+
+			App->fade->FadeToBlack(this, App->scene, continue_fade_seconds, fades::slider_fade);
 			break;
 		}
 		break;
