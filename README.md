@@ -77,6 +77,11 @@ Music and sound effects are from <i>Momodora: Reverie Under the Moonlight</i> an
 - In case the player gets stuck, press Space several times.
 - Don't save game while jumping. Loading it may cause trouble (player avoids collision detection, etc.).
 
+## Art
+
+Special kudos to Dark Souls saga, Momodora: Reviere Under the Moonlight, Cave Story, Zelda: BOTW and Pokémon for the art.
+
+
 ## Team members
 
 Alvarez Garcia, Sandra:

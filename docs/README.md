@@ -18,13 +18,17 @@ Alvarez Garcia, Sandra:
 
 •	GitHub account: [Sandruski](https://github.com/Sandruski)
 
-•	
+•	IA programmer, Main menu UI programmer, Tiled stuff and pixel artist
 
 Costa Miquel, Guillem:
 
 •	GitHub account: [DatBeQuiet](https://github.com/DatBeQuiet)
 
-•
+•	Gameplay programmer, frames_manager programmer, in-game UI programmer and pixel artists
+
+- We worked together in the entire code game so both of us coded a bit of everything.
+
+- We had no manager or milestones, need to improve it for next project.
 
 ## Core of the game
 
@@ -40,7 +44,7 @@ Two of its modules(GUI and Entity Factory) manage a subsystem of modules that fo
 • Tiled Objects layers that allows the designer to implement any locked door and it is respective activator wherever he wants from Tiled
 
 
-<br>Second Assignament:</br>
+<br>Second Assignament:
 
 • Collider Culing 
 
@@ -49,7 +53,7 @@ Two of its modules(GUI and Entity Factory) manage a subsystem of modules that fo
 • Path and enemy behaviour full implemented in Tiled
 
 
-<br>Third Assignament:</br>
+<br>Third Assignament:
 
 • Pause Menu
 
