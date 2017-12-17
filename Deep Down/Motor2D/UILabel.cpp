@@ -4,6 +4,7 @@
 #include "p2Log.h"
 #include "j1Render.h"
 #include "j1Window.h"
+#include "j1Textures.h"
 
 UILabel::UILabel(iPoint local_pos, UIElement* parent, UILabel_Info& info, j1Module* listener) : UIElement(local_pos, parent, listener), label(info)
 {
@@ -171,12 +172,14 @@ void UILabel::HandleInput()
 
 void UILabel::SetText(p2SString text)
 {
+	App->tex->UnLoad((SDL_Texture*)tex);
 	tex = App->font->Print(text.GetString(), color, font);
 }
 
 void UILabel::SetColor(SDL_Color color, bool normal, bool hover, bool pressed)
 {
 	this->color = color;
+	App->tex->UnLoad((SDL_Texture*)tex);
 	tex = App->font->Print(label.text.GetString(), color, font);
 
 	if (normal)

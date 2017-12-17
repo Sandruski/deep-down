@@ -169,9 +169,6 @@ private:
 
 	p2List<UIElement*> UI_elements_list;
 
-	p2List<UIElement*> to_spawn_UI_elements;
-	p2List<UIElement*> to_spawn_UI_parents;
-
 	map<UIElement_Rect, SDL_Rect> UI_elements_rects;
 	map<Font_Names, _TTF_Font*> map_fonts;
 

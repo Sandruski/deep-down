@@ -74,19 +74,6 @@ bool j1Gui::PreUpdate()
 {
 	bool ret = true;
 
-	p2List_item<UIElement*>* UI_elem_it = to_spawn_UI_elements.start;
-	p2List_item<UIElement*>* UI_parent_it = to_spawn_UI_parents.start;
-
-	while (UI_elem_it != nullptr && UI_parent_it != nullptr) {
-
-		UI_elements_tree->insertChild(UI_elem_it->data, UI_parent_it->data);
-
-		UI_elem_it = UI_elem_it->next;
-		UI_parent_it = UI_parent_it->next;
-	}
-
-	to_spawn_UI_elements.clear();
-	to_spawn_UI_parents.clear();
 	UI_elements_list.clear();
 
 	UI_elements_tree->recursivePreOrderList(UI_elements_tree->getRoot(), &UI_elements_list);
@@ -196,11 +183,10 @@ UIImage* j1Gui::CreateUIImage(iPoint local_pos, UIImage_Info& info, j1Module* li
 {
 	UIImage* image = new UIImage(local_pos, parent, info, listener);
 
-	to_spawn_UI_elements.add(image);
-	
 	if (parent == nullptr)
 		parent = (UIElement*)App->win->window;
-	to_spawn_UI_parents.add(parent);
+
+	UI_elements_tree->insertChild((UIElement*)image, parent);
 
 	return image;
 }
@@ -209,11 +195,10 @@ UILabel* j1Gui::CreateUILabel(iPoint local_pos, UILabel_Info& info, j1Module* li
 {
 	UILabel* label = new UILabel(local_pos, parent, info, listener);
 
-	to_spawn_UI_elements.add(label);
-
 	if (parent == nullptr)
 		parent = (UIElement*)App->win->window;
-	to_spawn_UI_parents.add(parent);
+
+	UI_elements_tree->insertChild((UIElement*)label, parent);
 
 	return label;
 }
@@ -222,11 +207,10 @@ UIButton* j1Gui::CreateUIButton(iPoint local_pos, UIButton_Info& info, j1Module*
 {
 	UIButton* button = new UIButton(local_pos, parent, info, listener);
 
-	to_spawn_UI_elements.add(button);
-
 	if (parent == nullptr)
 		parent = (UIElement*)App->win->window;
-	to_spawn_UI_parents.add(parent);
+
+	UI_elements_tree->insertChild((UIElement*)button, parent);
 
 	return button;
 }
@@ -237,11 +221,10 @@ UICursor* j1Gui::CreateUICursor(UICursor_Info& info, j1Module* listener, UIEleme
 
 	UICursor* cursor = new UICursor(local_pos, parent, info, listener);
 
-	to_spawn_UI_elements.add(cursor);
-
 	if (parent == nullptr)
 		parent = (UIElement*)App->win->window;
-	to_spawn_UI_parents.add(parent);
+
+	UI_elements_tree->insertChild((UIElement*)cursor, parent);
 
 	return cursor;
 }
@@ -250,11 +233,10 @@ UIWindow* j1Gui::CreateUIWindow(iPoint local_pos, UIWindow_Info& info, j1Module*
 {
 	UIWindow* window = new UIWindow(local_pos, parent, info, listener);
 
-	to_spawn_UI_elements.add(window);
-
 	if (parent == nullptr)
 		parent = (UIElement*)App->win->window;
-	to_spawn_UI_parents.add(parent);
+
+	UI_elements_tree->insertChild((UIElement*)window, parent);
 
 	return window;
 }
@@ -263,11 +245,10 @@ UILifeBar* j1Gui::CreateUILifeBar(iPoint local_pos, UILifeBar_Info& info, j1Modu
 {
 	UILifeBar* life_bar = new UILifeBar(local_pos, parent, info, listener);
 
-	to_spawn_UI_elements.add(life_bar);
-
 	if (parent == nullptr)
 		parent = (UIElement*)App->win->window;
-	to_spawn_UI_parents.add(parent);
+
+	UI_elements_tree->insertChild((UIElement*)life_bar, parent);
 
 	return life_bar;
 }
@@ -276,11 +257,10 @@ UISlider* j1Gui::CreateUISlider(iPoint local_pos, UISlider_Info& info, j1Module*
 {
 	UISlider* slider = new UISlider(local_pos, parent, info, listener);
 
-	to_spawn_UI_elements.add(slider);
-
 	if (parent == nullptr)
 		parent = (UIElement*)App->win->window;
-	to_spawn_UI_parents.add(parent);
+
+	UI_elements_tree->insertChild((UIElement*)slider, parent);
 
 	return slider;
 }
@@ -290,6 +270,7 @@ bool j1Gui::DestroyElement(UIElement* elem)
 	bool ret = false;
 
 	UI_elements_tree->remove(elem);
+	elem->to_remove = true;
 
 	return ret;
 }
@@ -300,9 +281,17 @@ bool j1Gui::ClearAllUI()
 
 	// Clear UI_elements tree
 	UI_elements_tree->getRoot()->removeChildren();
-
+	
 	// Delete trans pointer to cursor?
 	App->trans->CreateCursor();
+
+	p2List_item<UIElement*>* UI_elem_it = UI_elements_list.start;
+
+	while (UI_elem_it != nullptr) {
+
+		UI_elem_it->data->to_remove = true;
+		UI_elem_it = UI_elem_it->next;
+	}
 
 	return ret;
 }

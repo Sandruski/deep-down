@@ -135,6 +135,8 @@ private:
 	bool from_settings = false;
 	bool from_credits = false;
 	bool camera_moved = false;
+	bool settings_done = false;
+	bool credits_done = false;
 
 	// Screen parameters
 	uint width = 0, height = 0;

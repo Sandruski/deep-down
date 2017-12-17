@@ -54,7 +54,6 @@ protected:
 	UIElement_VERTICAL_POS vertical = UIElement_VERTICAL_POS::TOP_;
 	j1Module* listener = nullptr;
 
-	bool to_remove = false;
 	bool draggable = false;
 	bool interactive = true;
 	iPoint mouse_click_pos = { 0,0 };
@@ -104,7 +103,7 @@ public:
 
 public:
 	bool drag = false;
-
+	bool to_remove = false;
 };
 
 #endif // __UIElement_H__

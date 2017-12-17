@@ -664,7 +664,7 @@ bool j1Menu::Update(float dt)
 
 		if (App->render->camera.x < -1)
 			App->render->camera.x += camera_speed * dt;
-		else {
+		else if (!settings_done) {
 			if (settings_window->SlideTransition(dt, height / 2, 500.0f, true, 20.0f, 2.0f)) {
 				if (music_volume_text->IntermitentFade(1.0f, false, true)) {
 					if (FX_volume_text->IntermitentFade(1.0f, false, true)) {
@@ -673,17 +673,13 @@ bool j1Menu::Update(float dt)
 								if (camera_blit_text->IntermitentFade(1.0f, false, true)) {
 									if (back_to_main_menu_from_settings->SlideTransition(dt, height - 50, 500.0f, true, 10.0f, 2.0f, false)) {
 										settings_window->SetInteraction(true);
-										music_volume_text->SetInteraction(true);
-										FX_volume_text->SetInteraction(true);
-										fullscreen_text->SetInteraction(true);
-										cap_frames_text->SetInteraction(true);
-										camera_blit_text->SetInteraction(true);
 										fullscreen_checkbox->SetInteraction(true);
 										cap_frames_checkbox->SetInteraction(true);
 										camera_blit_checkbox->SetInteraction(true);
 										back_to_main_menu_from_settings->SetInteraction(true);
 										FX_slider->SetInteraction(true);
 										music_slider->SetInteraction(true);
+										settings_done = true;
 									}
 								}
 							}
@@ -706,7 +702,7 @@ bool j1Menu::Update(float dt)
 
 		if (App->render->camera.y > -(int)height - 2*16*scale)
 			App->render->camera.y -= camera_speed * dt;
-		else {
+		else if (!credits_done) {
 			if (license_slider->SlideTransition(dt, (int)height / 2 - (int)height / 5, 800.0f, true, 10.0f, 2.0f, false)) {
 				if (credits_window->SlideTransition(dt, (int)height / 2 + (int)height / 8, 500.0f, true, 20.0f, 2.0f, false)) {
 					if (license_title->IntermitentFade(1.0f, false, true)) {
@@ -718,6 +714,7 @@ bool j1Menu::Update(float dt)
 										website_title->SetInteraction(true);
 										back_to_main_menu_from_credits->SetInteraction(true);
 										license_slider->SetInteraction(true);
+										credits_done = true;
 									}
 								}
 							}
@@ -733,17 +730,6 @@ bool j1Menu::Update(float dt)
 		break;
 	}
 
-	// Clouds transition
-	/*
-	UIImage_Info cloud;
-	cloud.tex_name = GENERAL_;
-	cloud.tex_area = { 0, 754, 208, 57 };
-	UIImage* big_cloud = App->gui->CreateUIImage({ 0,0 }, cloud);
-	cloud.tex_area = { 16, 832, 112, 27 };
-	UIImage* medium_cloud = App->gui->CreateUIImage({ 0,0 }, cloud);
-	cloud.tex_area = { 0, 877, 109, 23 };
-	UIImage* small_cloud = App->gui->CreateUIImage({ 0,0 }, cloud);
-	*/
 	return ret;
 }
 
@@ -758,26 +744,39 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			break;
 		}
 
-		else if (UIelem == (UIElement*)fullscreen_checkbox)
+		else if (UIelem == fullscreen_checkbox)
 		{
 			if (App->win->fullscreen) {
 				App->win->fullscreen = false;
 				SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_SHOWN);
+				break;
 			}
 			else {
 				App->win->fullscreen = true;
 				SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+				break;
 			}
 		}
 
-		else if (UIelem == (UIElement*)cap_frames_checkbox)
+		else if (UIelem == cap_frames_checkbox)
 		{
 			App->toCap = !App->toCap;
+			break;
 		}
 
-		else if (UIelem == (UIElement*)camera_blit_checkbox)
+		else if (UIelem == camera_blit_checkbox)
 		{
 			App->map->camera_blit = !App->map->camera_blit;
+			break;
+		}
+
+		else if (UIelem == music_slider) {
+			swap_music = true;
+			break;
+		}
+		else if (UIelem == FX_slider) {
+			swap_fx = true;
+			break;
 		}
 
 		break;
@@ -827,6 +826,7 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			App->gui->ClearAllUI();
 			CreateMainMenuUIElements();
 			from_settings = true;
+			settings_done = false;
 			menuState = MenuState::MAIN_MENU_OPTIONS_ANIMATION_;
 			break;
 		}
@@ -836,12 +836,14 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			App->gui->ClearAllUI();
 			CreateMainMenuUIElements();
 			from_credits = true;
+			credits_done = false;
 			menuState = MenuState::MAIN_MENU_OPTIONS_ANIMATION_;
 			break;
 		}		
 		else if (UIelem == website_button)
 		{
 			open_url("https://sandruski.github.io/Deep-Down-Game/");
+			break;
 		}
 		else if (UIelem == license_slider) {
 			sliding = false;
@@ -849,9 +851,11 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		}
 		else if (UIelem == music_slider) {
 			swap_music = false;
+			break;
 		}
 		else if (UIelem == FX_slider) {
 			swap_fx = false;
+			break;
 		}
 
 		break;
@@ -1017,7 +1021,7 @@ void j1Menu::CreateMainMenuUIElements()
 	int font_width, font_height;
 	App->font->CalcSize(label.text.GetString(), font_width, font_height, App->gui->GetFont(Font_Names::MSMINCHO_));
 	highscore_text->DecreasePos({ font_width * scale, font_height * scale });
-	p2SString tmp("%d", 10000);
+	p2SString tmp("%i", App->trans->highscore);
 	label.text = tmp.GetString();
 	highscore_value = App->gui->CreateUILabel({ (int)width - 50, -500 }, label);
 	App->font->CalcSize(label.text.GetString(), font_width, font_height, App->gui->GetFont(Font_Names::MSMINCHO_));
@@ -1036,6 +1040,7 @@ void j1Menu::CreateSettingsUIElements()
 	// Options
 	UILabel_Info label;
 	label.interactive = false;
+	label.draggable = false;
 	label.normal_color = Purple_;
 	label.hover_color = Pink_;
 	label.pressed_color = LightPink_;
