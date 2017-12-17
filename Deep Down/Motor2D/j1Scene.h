@@ -124,6 +124,8 @@ private:
 	bool swap_music = false;
 	bool swap_fx = false;
 
+	bool check_continue = false;
+
 public:
 	UILifeBar* progress_bar = nullptr;
 };

@@ -438,11 +438,16 @@ bool j1Menu::Update(float dt)
 			App->map->camera_blit = camera_blit;
 
 			// Fade? On-off?
+			/*
 			CleanUp();
 			App->scene->active = true;
 
 			App->scene->loading_state = true;
 			App->LoadGame();
+			*/
+			App->trans->continue_game = true;
+			App->trans->SetNextTransitionInfo(0, true);
+			App->fade->FadeToBlack(this, App->scene, level_fade_seconds, fades::slider_fade);
 			break;
 		}
 		break;

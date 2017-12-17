@@ -81,6 +81,7 @@ private:
 public:
 	bool back_to_main_menu = false;
 	int highscore = 0;
+	bool continue_game = false;
 };
 
 #endif // ___j1BETWEEN_TRANSITIONS_H___
