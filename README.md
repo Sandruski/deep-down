@@ -4,6 +4,7 @@
 This is Deep Down, a side-scrolling platformer game about exploring an abandoned and mysterious cave. It has two different levels:
 while the first one follows the player entering the underground world, the second one is about an epic chase towards the exit of this dangerous place.<br>
 
+•	Web: [Deep Down Website](https://sandruski.github.io/Deep-Down-Game/)
 •	GitHub repository: [Deep Down](https://github.com/Sandruski/Deep-Down-Game)
 
 ## Inputs
@@ -23,6 +24,9 @@ Left Shift: dash
 A: shoot
 
 X: attack (you can make a kind of combo if x is pressed in a short period of time)
+
+Tab: open Pause Menu
+
 ### Debug
 
 F1: start from the beggining of the first level
@@ -36,6 +40,8 @@ F5: save game state
 F6: load game state
 
 F7: fullscreen (or return to default screen size)
+
+F8: UI elements debug
 
 F9: show colliders
 
@@ -51,9 +57,9 @@ Number 3: enable/disable "onlyBlittingCamera"
 
 ## Innovation:
 
-- Menu Pause implemented
+- In-game Pause Menu
 
-- New Transition
+- UI elements transitions fully independent and reusable
 
 ## Tools used:
 
@@ -64,18 +70,17 @@ Number 3: enable/disable "onlyBlittingCamera"
 - Graphics edition: Adobe Photoshop, Microsoft Paint
 
 ## Assets
-Visual art is from <i>Momodora: Reverie Under the Moonlight</i> and <i>Cave Story</i>, and the rest of the sprites used are royalty free.<br>
-Music and sound effects are from <i>Momodora: Reverie Under the Moonlight</i> and <i>Zelda: series</i>, and the rest of them are royalty free, too.
+
+Visual art is from <i>Momodora: Reverie Under the Moonlight</i>, <i>Pokemon</i> and <i>Cave Story</i>, and the rest of the sprites used are royalty free.<br>
+Music and sound effects are from <i>Momodora: Reverie Under the Moonlight</i>, <i>Dark Souls</i> and <i>Zelda: series</i>, and the rest of them are royalty free, too.
 
 ## Known bugs
 
 - In case the player gets stuck, press Space several times.
-- Don't save game while jumping. Loading it may cause trouble (player avoids collision detection, etc.).
 
 ## Art
 
-Special kudos to Dark Souls saga, Momodora: Reviere Under the Moonlight, Cave Story, Zelda: BOTW and Pokémon for the art.
-
+Special kudos to Dark Souls saga, Momodora: Reverie Under the Moonlight, Cave Story, Zelda: BOTW and Pokemon!
 
 ## Team members
 
