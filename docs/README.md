@@ -39,7 +39,7 @@ Two of its modules(GUI and Entity Factory) manage a subsystem of modules that fo
 
 ### Innovations
 
-<br>First Assignament:</br>
+<br>First Assignament:
 
 • Tiled Objects layers that allows the designer to implement any locked door and it is respective activator wherever he wants from Tiled
 
@@ -70,6 +70,7 @@ Two of its modules(GUI and Entity Factory) manage a subsystem of modules that fo
 
 <iframe width="854" height="480" src="https://www.youtube.com/embed/e67cpTBXW1c" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
 
+<br>
 ## How to play?
 
 ### Gameplay
@@ -88,6 +89,8 @@ A: shoot
 
 X: attack (you can make a kind of combo if x is pressed in a short period of time)
 
+Tab: open Pause Menu
+
 ### Debug
 
 F1: start from the beggining of the first level
@@ -101,6 +104,8 @@ F5: save game state
 F6: load game state
 
 F7: fullscreen (or return to default screen size)
+
+F8: UI elements debug
 
 F9: show colliders
 
