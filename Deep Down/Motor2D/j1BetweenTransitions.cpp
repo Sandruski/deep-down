@@ -77,9 +77,7 @@ bool j1BetweenTransitions::Update(float dt)
 		Uint32 total_time = App->fade->GetTotalTime();
 		Uint32 now = App->fade->GetNow();
 
-		bool player_death = false;
-
-		if (died && back_to_main_menu)
+		if (died && back_to_main_menu && !App->scene->end_of_level_reached)
 			player_death = true;
 
 		switch (App->fade->GetStep()) {
@@ -195,6 +193,7 @@ bool j1BetweenTransitions::Update(float dt)
 
 				bloody = false;
 				do_transition = false;
+				player_death = false;
 			}
 
 			break;
@@ -337,7 +336,7 @@ UILabel* j1BetweenTransitions::CreateScoreText(int score)
 	label.font_name = Font_Names::MSMINCHO_;
 	label.normal_color = WarmYellow_;
 
-	p2SString tmp("%s%d", "SCORE ", 1000);
+	p2SString tmp("%s%d", "SCORE ", score);
 	label.text = tmp.GetString();
 
 	return App->gui->CreateUILabel({ (int)width / 2,(int)height / 2 + 100 }, label);

@@ -4,14 +4,14 @@
 	<window />
 	<textures />
 	<audio>
-		<volume default="132" />
+		<volume default="148" />
 	</audio>
 	<map />
 	<pathfinding />
 	<entities>
 		<player>
-			<position position.x="293.775116" position.y="1115.13928" />
-			<state state="3" />
+			<position position.x="386.609131" position.y="1115.13928" />
+			<state state="2" />
 			<speed speed.x="0" speed.y="0" />
 		</player>
 	</entities>
@@ -22,14 +22,14 @@
 	<scene>
 		<index index="1" />
 		<gate opened="false" fx="false" />
-		<cats_obtained1 cats1="1" />
-		<cats_obtained2 cats2="1" />
-		<lifebar lifebar="206" />
+		<cats_obtained1 cats1="0" />
+		<cats_obtained2 cats2="0" />
+		<lifebar lifebar="204" />
 	</scene>
 	<menu />
 	<fade />
 	<trans />
 	<renderer>
-		<camera x="-579" y="-2895" />
+		<camera x="-858" y="-2895" />
 	</renderer>
 </game_state>

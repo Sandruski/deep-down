@@ -96,7 +96,7 @@ bool j1Gui::Update(float dt)
 
 	bool ret = true;
 
-	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 		debug_draw = !debug_draw;
 
 	p2List_item<UIElement*>* UI_elem_it = UI_elements_list.start;

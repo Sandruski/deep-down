@@ -66,6 +66,7 @@ private:
 	uint scene_index = 0;
 	bool start = true;
 
+	bool player_death = false;
 	bool bloody = false;
 	float timer = 0.0f;
 
