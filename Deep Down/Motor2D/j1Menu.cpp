@@ -288,12 +288,12 @@ bool j1Menu::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		App->quit_game = true;
 
-	if (swap_music) {
+	if (swap_music && music_slider != nullptr) {
 		int volume = music_slider->GetPercent();
 		volume = 128 * volume / 100;
 		App->audio->SetMusicVolume(volume);
 	}
-	else if (swap_fx && App->audio->active) {
+	else if (swap_fx && App->audio->active && FX_slider != nullptr) {
 		int volume = FX_slider->GetPercent();
 		volume = 128 * volume / 100;
 		App->audio->SetFxVolume(volume);
@@ -766,6 +766,14 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 
 	case UIEvents::MOUSE_LEFT_CLICK_:
 
+		for (uint i = 0; i < 5; ++i)
+		{
+			if (UIelem == main_menu_buttons[i]) {
+				App->audio->PlayFx(10);
+				continue;
+			}
+		}
+
 		if (UIelem == (UIElement*)license_slider) {
 			sliding = true;
 			break;
@@ -930,7 +938,13 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		break;
 
 	case UIEvents::MOUSE_ENTER_:
-
+		for (uint i = 0; i < 5; ++i)
+		{
+			if (UIelem == main_menu_buttons[i]) {
+				App->audio->PlayFx(9);
+				continue;
+			}
+		}
 		break;
 
 	case UIEvents::MOUSE_LEAVE_:
