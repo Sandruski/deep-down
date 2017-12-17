@@ -18,16 +18,9 @@ UIElement::UIElement(iPoint local_pos, UIElement* parent, j1Module* listener) : 
 	scale = App->win->GetScale();
 }
 
-UIElement::~UIElement()
-{
-	if (tex != nullptr)
-		App->tex->UnLoad((SDL_Texture*)tex);
-	tex = nullptr;
-}
+UIElement::~UIElement() {}
 
-void UIElement::Update(float dt) 
-{
-}
+void UIElement::Update(float dt) {}
 
 void UIElement::UpdateDragging(float dt)
 {
@@ -64,9 +57,9 @@ void UIElement::Draw() const
 	}
 
 	if (tex_area.w != 0)
-		App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
+		App->render->Blit(App->gui->GetAtlas(), blit_pos.x, blit_pos.y, &tex_area);
 	else
-		App->render->Blit(tex, blit_pos.x, blit_pos.y);
+		App->render->Blit(App->gui->GetAtlas(), blit_pos.x, blit_pos.y);
 
 	if (App->gui->debug_draw)
 		DebugDraw(blit_pos);
@@ -183,4 +176,9 @@ void UIElement::DecreasePos(iPoint add_local_pos)
 void UIElement::SetInteraction(bool interactive)
 {
 	this->interactive = interactive;
+}
+
+UIElement* UIElement::GetParent() const 
+{
+	return parent;
 }

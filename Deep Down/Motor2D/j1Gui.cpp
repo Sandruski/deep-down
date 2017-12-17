@@ -33,6 +33,16 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 
 	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
 
+	pugi::xml_node rects = conf.child("UI_elements_rects");
+	pugi::xml_node node;
+	uint i = 0;
+	UI_elements_rects[(UIElement_Rect)i] = { 0,0,0,0 };
+
+	for (node = rects.child("rect"); node; node = node.next_sibling("rect")) {
+		UI_elements_rects[(UIElement_Rect)++i] = { node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() };
+	}
+	//UI_elements_rects
+
 	return ret;
 }
 
@@ -42,17 +52,7 @@ bool j1Gui::Start()
 	bool ret = true;
 
 	// Load textures
-	map_textures[Tex_Names::ATLAS_] = App->tex->Load(atlas_file_name.GetString());
-	map_textures[Tex_Names::CURSORTEX_] = App->tex->Load("Assets/Sprites/UI/Point.png");
-	map_textures[Tex_Names::CHECKBOX_] = App->tex->Load("Assets/Sprites/UI/CheckBox.png");
-	map_textures[Tex_Names::DSUI_] = App->tex->Load("Assets/Sprites/UI/DSUI.png");
-	map_textures[Tex_Names::MENU_PAUSE_] = App->tex->Load("Assets/Sprites/UI/MenuPause.png");
-	map_textures[Tex_Names::MAIN_MENU_] = App->tex->Load("Assets/Sprites/UI/MainMenu.png");
-	map_textures[Tex_Names::GENERAL_] = App->tex->Load("Assets/Sprites/Maps/GeneralTileset.png");
-	map_textures[Tex_Names::SLIDER_] = App->tex->Load("Assets/Sprites/UI/Slider.png");
-	map_textures[Tex_Names::CAT_SCORE_] = App->tex->Load("Assets/Sprites/UI/CatScore.png");
-	map_textures[Tex_Names::CREDITS_WINDOW_] = App->tex->Load("Assets/Sprites/UI/CreditsWindow.png");
-	map_textures[Tex_Names::CLOSING_WINDOW] = App->tex->Load("Assets/Sprites/UI/CloseWindow.png");
+	atlas = App->tex->Load(atlas_file_name.GetString());
 
 	// Load fonts
 	map_fonts[Font_Names::MSMINCHO_] = App->font->Load("Assets/Fonts/MSMINCHO.TTF");
@@ -120,7 +120,6 @@ bool j1Gui::Update(float dt)
 	}
 
 	UI_elem_it = UI_elements_list.start;
-
 
 	return ret;
 }
@@ -306,8 +305,7 @@ bool j1Gui::ClearMapTextures()
 {
 	bool ret = true;
 
-	for (uint i = 0; i < map_textures.size(); ++i)
-		App->tex->UnLoad((SDL_Texture*)map_textures[(Tex_Names)i]);
+	App->tex->UnLoad((SDL_Texture*)atlas);
 
 	return ret;
 }
@@ -315,16 +313,21 @@ bool j1Gui::ClearMapTextures()
 _TTF_Font* j1Gui::GetFont(Font_Names font_name)
 {
 	return map_fonts[font_name];
-
-}
-const SDL_Texture* j1Gui::GetTexture(Tex_Names tex_name)
-{
-	return map_textures[tex_name];
 }
 
-void j1Gui::SetTextureAlphaMod(Tex_Names tex_name, float alpha) 
+const SDL_Texture* j1Gui::GetAtlas() const
 {
-	SDL_SetTextureAlphaMod((SDL_Texture*)GetTexture(tex_name), (Uint8)alpha);
+	return atlas;
+}
+
+SDL_Rect j1Gui::GetRectFromAtlas(UIElement_Rect rect)
+{
+	return UI_elements_rects[rect];
+}
+
+void j1Gui::SetTextureAlphaMod(float alpha) 
+{
+	SDL_SetTextureAlphaMod((SDL_Texture*)atlas, (Uint8)alpha);
 }
 
 void j1Gui::ResetAlpha() 

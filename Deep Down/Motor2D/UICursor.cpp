@@ -6,15 +6,13 @@
 UICursor::UICursor(iPoint local_pos, UIElement* parent, UICursor_Info& info, j1Module* listener) : UIElement(local_pos, parent, listener), cursor(info)
 {
 	type = UIElement_TYPE::CURSOR_;
-	tex_area = info.default;
-	tex = App->gui->GetTexture(cursor.tex_name);
 
-	if (tex_area.w == 0)
-		SDL_QueryTexture((SDL_Texture*)tex, NULL, NULL, &width, &height);
-	else {
-		width = tex_area.w;
-		height = tex_area.h;
-	}
+	default = App->gui->GetRectFromAtlas(cursor.default);
+	on_click = App->gui->GetRectFromAtlas(cursor.on_click);
+
+	tex_area = default;
+	width = tex_area.w;
+	height = tex_area.h;
 
 	SDL_ShowCursor(0);
 }
@@ -37,9 +35,9 @@ void  UICursor::DrawAbove() const
 	blit_pos.y = (GetLocalPos().y - App->render->camera.y) / scale;
 
 	if (tex_area.w != 0)
-		App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
+		App->render->Blit(App->gui->GetAtlas(), blit_pos.x, blit_pos.y, &tex_area);
 	else
-		App->render->Blit(tex, blit_pos.x, blit_pos.y);
+		App->render->Blit(App->gui->GetAtlas(), blit_pos.x, blit_pos.y);
 
 	if (App->gui->debug_draw)
 		DebugDraw(blit_pos);
@@ -52,13 +50,13 @@ void UICursor::HandleInput()
 	case UIEvents::NO_EVENT_:
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED) {
 			UIevent = UIEvents::MOUSE_LEFT_CLICK_;
-			tex_area = cursor.on_click;
+			tex_area = on_click;
 			listener->OnUIEvent(this, UIevent);
 			break;
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED) {
 			UIevent = UIEvents::MOUSE_RIGHT_CLICK_;
-			tex_area = cursor.on_click;
+			tex_area = on_click;
 			listener->OnUIEvent(this, UIevent);
 			break;
 		}
@@ -66,7 +64,7 @@ void UICursor::HandleInput()
 	case UIEvents::MOUSE_LEFT_CLICK_:
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED) {
 			UIevent = UIEvents::NO_EVENT_;
-			tex_area = cursor.default;
+			tex_area = default;
 			listener->OnUIEvent(this, UIevent);
 			break;
 		}
@@ -74,7 +72,7 @@ void UICursor::HandleInput()
 	case UIEvents::MOUSE_RIGHT_CLICK_:
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_RELEASED) {
 			UIevent = UIEvents::NO_EVENT_;
-			tex_area = cursor.default;
+			tex_area = default;
 			listener->OnUIEvent(this, UIevent);
 			break;
 		}

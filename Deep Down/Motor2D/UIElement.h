@@ -17,7 +17,7 @@ enum UIElement_TYPE
 	WINDOW_,
 	LIFEBAR_,
 	CURSOR_,
-	TEXT_SLIDER_,
+	SLIDER_,
 	MAX_TYPES_
 };
 
@@ -60,7 +60,6 @@ protected:
 	iPoint mouse_click_pos = { 0,0 };
 
 	// Texture parameters
-	const SDL_Texture* tex = nullptr;
 	SDL_Rect tex_area = { 0,0,0,0 };
 	int width = 0, height = 0;
 
@@ -91,6 +90,8 @@ public:
 
 	void SetOrientation();
 
+	void SetInteraction(bool interactive);
+
 	SDL_Rect GetScreenRect() const;
 	SDL_Rect GetLocalRect() const;
 	iPoint GetScreenPos() const;
@@ -99,7 +100,7 @@ public:
 	void IncreasePos(iPoint add_local_pos);
 	void DecreasePos(iPoint add_local_pos);
 
-	void SetInteraction(bool interactive);
+	UIElement* GetParent() const;
 
 public:
 	bool drag = false;

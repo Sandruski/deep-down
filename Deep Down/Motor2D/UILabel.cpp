@@ -17,7 +17,6 @@ UILabel::UILabel(iPoint local_pos, UIElement* parent, UILabel_Info& info, j1Modu
 	color = label.normal_color;
 
 	tex = App->font->Print(label.text.GetString(), color, font, (Uint32)label.text_wrap_length);
-
 	App->font->CalcSize(label.text.GetString(), width, height, font);
 
 	SetOrientation();
@@ -27,6 +26,49 @@ void UILabel::Update(float dt)
 {
 	if (listener != nullptr && interactive)
 		HandleInput();
+}
+
+void UILabel::Draw() const
+{
+	iPoint blit_pos;
+	int scale = App->win->GetScale();
+	blit_pos.x = (GetLocalPos().x - App->render->camera.x) / scale;
+	blit_pos.y = (GetLocalPos().y - App->render->camera.y) / scale;
+
+	if (GetParent() != nullptr) {
+		SDL_Rect daddy = GetParent()->GetScreenRect();
+		App->render->SetViewPort({ daddy.x,daddy.y,daddy.w * scale,daddy.h * scale });
+	}
+
+	if (tex_area.w != 0)
+		App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
+	else
+		App->render->Blit(tex, blit_pos.x, blit_pos.y);
+
+	if (App->gui->debug_draw)
+		DebugDraw(blit_pos);
+
+	App->render->ResetViewPort();
+}
+
+void UILabel::DebugDraw(iPoint blit_pos) const
+{
+	Uint8 alpha = 80;
+
+	SDL_Rect quad = { blit_pos.x, blit_pos.y, width, height };
+	App->render->DrawQuad(quad, 10, 30, 5, alpha, false);
+}
+
+bool UILabel::MouseHover() const
+{
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	uint scale = App->win->GetScale();
+
+	if (!label.interaction_from_father)
+		return x > GetScreenPos().x / scale && x < GetScreenPos().x / scale + GetLocalRect().w && y > GetScreenPos().y / scale && y < GetScreenPos().y / scale + GetLocalRect().h;
+	else
+		return x > GetParent()->GetScreenPos().x / scale && x < GetParent()->GetScreenPos().x / scale + GetParent()->GetLocalRect().w && y > GetParent()->GetScreenPos().y / scale && y < GetParent()->GetScreenPos().y / scale + GetParent()->GetLocalRect().h;
 }
 
 void UILabel::HandleInput()
@@ -125,13 +167,7 @@ void UILabel::HandleInput()
 	}
 }
 
-void UILabel::DebugDraw(iPoint blit_pos) const
-{
-	Uint8 alpha = 80;
-
-	SDL_Rect quad = { blit_pos.x, blit_pos.y, width, height };
-	App->render->DrawQuad(quad, 10, 30, 5, alpha, false);
-}
+//---------------------------------------------------------------
 
 void UILabel::SetText(p2SString text)
 {

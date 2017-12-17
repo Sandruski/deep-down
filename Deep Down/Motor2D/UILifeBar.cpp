@@ -8,19 +8,16 @@ UILifeBar::UILifeBar(iPoint local_pos, UIElement* parent, UILifeBar_Info& info, 
 {
 	type = UIElement_TYPE::LIFEBAR_;
 
-	draggable = info.draggable;
-	interactive = info.interactive;
-	horizontal = info.horizontal_orientation;
-	vertical = info.vertical_orientation;
-	tex_area = info.tex_area;
-	tex = App->gui->GetTexture(life_bar.tex_name);
+	tex_area = App->gui->GetRectFromAtlas(life_bar.tex_area);
+	bar = App->gui->GetRectFromAtlas(life_bar.bar);
+	background = App->gui->GetRectFromAtlas(life_bar.background);
 
-	if (tex_area.w == 0)
-		SDL_QueryTexture((SDL_Texture*)tex, NULL, NULL, &width, &height);
-	else {
-		width = tex_area.w;
-		height = tex_area.h;
-	}
+	draggable = life_bar.draggable;
+	interactive = life_bar.interactive;
+	horizontal = life_bar.horizontal_orientation;
+	vertical = life_bar.vertical_orientation;
+	width = tex_area.w;
+	height = tex_area.h;
 
 	SetOrientation();
 }
@@ -30,7 +27,7 @@ void UILifeBar::Update(float dt)
 	if (listener != nullptr && interactive)
 		HandleInput();
 
-	life_bar.bar.w = life_bar.life;
+	bar.w = life_bar.life;
 }
 
 void UILifeBar::Draw() const
@@ -40,9 +37,9 @@ void UILifeBar::Draw() const
 	blit_pos.x = (GetScreenPos().x - App->render->camera.x) / scale;
 	blit_pos.y = (GetScreenPos().y - App->render->camera.y) / scale;
 
-	App->render->Blit(tex, blit_pos.x + life_bar.life_bar_position.x, blit_pos.y + life_bar.life_bar_position.y, &life_bar.backgorund_life_bar);
-	App->render->Blit(tex, blit_pos.x + life_bar.life_bar_position.x, blit_pos.y + life_bar.life_bar_position.y, &life_bar.bar);
-	App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
+	App->render->Blit(App->gui->GetAtlas(), blit_pos.x + life_bar.life_bar_position.x, blit_pos.y + life_bar.life_bar_position.y, &background);
+	App->render->Blit(App->gui->GetAtlas(), blit_pos.x + life_bar.life_bar_position.x, blit_pos.y + life_bar.life_bar_position.y, &bar);
+	App->render->Blit(App->gui->GetAtlas(), blit_pos.x, blit_pos.y, &tex_area);
 
 	if (App->gui->debug_draw)
 		DebugDraw(blit_pos);
@@ -53,7 +50,7 @@ void UILifeBar::DebugDraw(iPoint blit_pos) const
 	Uint8 alpha = 80;
 
 	SDL_Rect quad = { blit_pos.x, blit_pos.y, width, height };
-	App->render->DrawQuad(quad, 10, 100, 255, alpha, false);
+	App->render->DrawQuad(quad, 255, 20, 255, alpha, false);
 }
 
 void UILifeBar::HandleInput()
@@ -158,8 +155,8 @@ void UILifeBar::SetLifeProgress(const int life)
 void UILifeBar::IncreaseLifeProgress(const int life)
 {
 	life_bar.life += life;
-	if (life_bar.life > life_bar.backgorund_life_bar.w)
-		life_bar.life = life_bar.backgorund_life_bar.w;
+	if (life_bar.life > background.w)
+		life_bar.life = background.w;
 }
 
 void UILifeBar::DecreaseLifeProgress(const int life)

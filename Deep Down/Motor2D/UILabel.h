@@ -24,6 +24,7 @@ struct UILabel_Info {
 
 	bool draggable = false;
 	bool interactive = true;
+	bool interaction_from_father = false;
 
 	// Support for paragraphs
 	int text_wrap_length = 0;
@@ -38,6 +39,8 @@ public:
 	~UILabel();
 	void Update(float dt);
 	void HandleInput();
+	bool MouseHover() const;
+	void Draw() const;
 	void DebugDraw(iPoint blit_pos) const;
 
 	void SetText(p2SString text);
@@ -58,6 +61,7 @@ public:
 private:
 	UILabel_Info label;
 	_TTF_Font* font = nullptr;
+	const SDL_Texture* tex = nullptr;
 	SDL_Color color = { 255,255,255,255 };
 	UIEvents UIevent = NO_EVENT_;
 	bool next_event = false;

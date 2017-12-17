@@ -9,9 +9,8 @@
 #include "j1Gui.h"
 
 struct UICursor_Info {
-	SDL_Rect default = { 0,0,0,0 };
-	SDL_Rect on_click = { 0,0,0,0 };
-	Tex_Names tex_name = Tex_Names::NO_TEX_;
+	UIElement_Rect default = UIElement_Rect::NO_ELEMENT_RECT_;
+	UIElement_Rect on_click = UIElement_Rect::NO_ELEMENT_RECT_;
 };
 
 // ---------------------------------------------------
@@ -29,6 +28,9 @@ public:
 private:
 	UIEvents UIevent = NO_EVENT_;
 	UICursor_Info cursor;
+
+	SDL_Rect default = { 0,0,0,0 };
+	SDL_Rect on_click = { 0,0,0,0 };
 };
 
 #endif // __UIImage_H__

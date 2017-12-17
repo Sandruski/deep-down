@@ -6,18 +6,13 @@ UIImage::UIImage(iPoint local_pos, UIElement* parent, UIImage_Info& info, j1Modu
 {
 	type = UIElement_TYPE::IMAGE_;
 
-	draggable = info.draggable;
-	horizontal = info.horizontal_orientation;
-	vertical = info.vertical_orientation;
-	tex_area = info.tex_area;
-	tex = App->gui->GetTexture(image.tex_name);
+	tex_area = App->gui->GetRectFromAtlas(image.tex_area);
 
-	if (tex_area.w == 0)
-		SDL_QueryTexture((SDL_Texture*)tex, NULL, NULL, &width, &height);
-	else {
-		width = tex_area.w;
-		height = tex_area.h;
-	}
+	draggable = image.draggable;
+	horizontal = image.horizontal_orientation;
+	vertical = image.vertical_orientation;
+	width = tex_area.w;
+	height = tex_area.h;
 
 	SetOrientation();
 }
@@ -43,16 +38,16 @@ void UIImage::Draw() const
 
 	if (image.quad) {
 		SDL_SetRenderDrawColor(App->render->renderer, image.color.r, image.color.g, image.color.b, image.color.a);
-		SDL_RenderFillRect(App->render->renderer, &image.tex_area);
+		SDL_RenderFillRect(App->render->renderer, &image.quad_area);
 	}
 	else {
 		if (tex_area.w != 0 && start_aimation)
-			App->render->Blit(tex, blit_pos.x, blit_pos.y, &anim->GetCurrentFrame());
+			App->render->Blit(App->gui->GetAtlas(), blit_pos.x, blit_pos.y, &anim->GetCurrentFrame());
 		else if (tex_area.w != 0 && !start_aimation){
-			App->render->Blit(tex, blit_pos.x, blit_pos.y, &tex_area);
+			App->render->Blit(App->gui->GetAtlas(), blit_pos.x, blit_pos.y, &tex_area);
 			}
 		else
-			App->render->Blit(tex, blit_pos.x, blit_pos.y);
+			App->render->Blit(App->gui->GetAtlas(), blit_pos.x, blit_pos.y);
 	}
 
 	if (App->gui->debug_draw)
@@ -134,8 +129,8 @@ SDL_Rect UIImage::GetRect()
 }
 void UIImage::StartAnimation(Animation anim)
 {
-		start_aimation = true;
-		anim_to_play = anim;
-		speed = anim_to_play.speed;
-		this->anim = &anim_to_play;
+	start_aimation = true;
+	anim_to_play = anim;
+	speed = anim_to_play.speed;
+	this->anim = &anim_to_play;
 }

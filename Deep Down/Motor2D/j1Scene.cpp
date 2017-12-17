@@ -67,15 +67,10 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	for (pugi::xml_node node = config.child("audio").child("fx").child("fx"); node; node = node.next_sibling("fx"))
 		App->audio->LoadFx(node.attribute("name").as_string());
 
-	catsUI_anim.PushBack({ 0,0,26,26 });
-	catsUI_anim.PushBack({ 26,0,26,26 });
-	catsUI_anim.PushBack({ 26,0,26,26 });
-	catsUI_anim.PushBack({ 0,26,26,26 });
-	catsUI_anim.PushBack({ 26,26,26,26 });
-	catsUI_anim.PushBack({ 0,26,26,26 });
-	catsUI_anim.PushBack({ 26,0,26,26 });
-	catsUI_anim.speed = 2.5f;
-	//TODO ADD TO XML
+	// Load cat animation
+	for (pugi::xml_node node = config.child("UI_cat").child("animation").child("frame"); node; node = node.next_sibling("frame"))
+		catsUI_anim.PushBack({ node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() });
+	catsUI_anim.speed = config.child("UI_cat").child("animation").attribute("speed").as_float();
 
 	return ret;
 }
@@ -83,32 +78,29 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
+	god = false;
+
 	// In-game UI
 	UILifeBar_Info girl_life_bar;
-	girl_life_bar.bar = { 86,532,222,4 };
+	girl_life_bar.tex_area = UIElement_Rect::LIFEBAR_FRAME_;
+	girl_life_bar.background = UIElement_Rect::LIFEBAR_BROWN_;
+	girl_life_bar.bar = UIElement_Rect::LIFEBAR_RED_;
 	girl_life_bar.life = 222;
 	girl_life_bar.life_bar_position = { 5,1 };
-	girl_life_bar.tex_name = DSUI_;
-	girl_life_bar.tex_area = { 80,524,230,8 };
-	girl_life_bar.backgorund_life_bar = { 85,538,223,4 };
 	girl_life_bar.horizontal_orientation = CENTER_;
 	progress_bar = App->gui->CreateUILifeBar({ 512,668 }, girl_life_bar, this);
 
 	UIImage_Info cats_obtained;
-	cats_obtained.tex_name = CAT_SCORE_;
-	cats_obtained.tex_area = { 0,0,26,26 };
+	cats_obtained.tex_area = UIElement_Rect::CAT_CIRCLE_IDLE_;
 	cat_UI = App->gui->CreateUIImage({ 800,40 }, cats_obtained, this);
 
 	UILabel_Info numbers;
-	numbers.font_name = BLACK_BLOC_;
+	numbers.font_name = Font_Names::MSMINCHO_;
 	numbers.interactive = false;
-	numbers.text = "00";
 	numbers.draggable = false;
-
-	cats_score = App->gui->CreateUILabel({ 885,45 }, numbers);
-
 	numbers.text = "00";
-	numbers.font_name = DIGITAL7_;
+	cats_score = App->gui->CreateUILabel({ 885,45 }, numbers);
+	numbers.text = "00";
 	countdown_time = App->gui->CreateUILabel({ 50,50 }, numbers);
 
 	// Start entities
@@ -233,6 +225,7 @@ bool j1Scene::Update(float dt)
 		if (App->map->data.CheckIfEnter("Player", "EndPos", App->entities->playerData->position) && App->fade->GetStep() == 0) {
 			if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
 				|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
+				god = true;
 
 				if (index == 0)
 					index = 1;
@@ -373,6 +366,7 @@ void j1Scene::DebugKeys() {
 		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
 			|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
 			loading_state = false;
+			god = true;
 
 			App->entities->playerData->player.SetState(stop_);
 
@@ -394,6 +388,7 @@ void j1Scene::DebugKeys() {
 		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
 			|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
 			loading_state = false;
+			god = true;
 
 			App->entities->playerData->player.SetState(stop_);
 			App->entities->playerData->position = App->entities->playerData->start_pos;
@@ -413,6 +408,7 @@ void j1Scene::DebugKeys() {
 			if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
 				|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
 				loading_state = false;
+				god = true;
 
 				if (index == 0)
 					index = 1;
@@ -492,15 +488,13 @@ void j1Scene::DebugKeys() {
 void j1Scene::OpeningPauseMenu(bool from_scratch)
 {
 	UIWindow_Info menu;
-	menu.tex_name = MENU_PAUSE_;
-	
+	menu.tex_area = UIElement_Rect::BIG_WINDOW_;
+
 	if (from_scratch) {
 		pause_menu = App->gui->CreateUIWindow({ 256, (int)height + 500 }, menu, this);
 		menu.interactive = false;
 	}
 	else {
-		int tex_width, tex_height;
-		SDL_QueryTexture((SDL_Texture*)App->gui->GetTexture(Tex_Names::CREDITS_WINDOW_), NULL, NULL, &tex_width, &tex_height);
 		pause_menu = App->gui->CreateUIWindow({ 256, menu_position.y }, menu, this);
 	}
 
@@ -508,7 +502,7 @@ void j1Scene::OpeningPauseMenu(bool from_scratch)
 	if (from_scratch)
 		label.interactive = false;
 	label.draggable = false;
-	label.font_name = SOBAD_;
+	label.font_name = Font_Names::MSMINCHO_;
 	label.normal_color = { 0,0,0,255 };
 
 	label.text = "Resume";
@@ -526,10 +520,9 @@ void j1Scene::OpeningPauseMenu(bool from_scratch)
 	UIButton_Info close_window;
 	if (from_scratch)
 		close_window.interactive = false;
-	close_window.tex_name = CLOSING_WINDOW;
-	close_window.pressed_tex_area = { 7,0,7,8 };
-	close_window.hover_tex_area = { 0,0,7,7 };
-	close_window.normal_tex_area = { 0,0,7,7 };
+	close_window.normal_tex_area = UIElement_Rect::CLOSE_BUTTON_NORMAL_;
+	close_window.hover_tex_area = UIElement_Rect::CLOSE_BUTTON_NORMAL_;
+	close_window.pressed_tex_area = UIElement_Rect::CLOSE_BUTTON_PRESSED_;
 	closeWindow = App->gui->CreateUIButton({ 490,3 }, close_window, this, pause_menu);
 }
 
@@ -648,7 +641,7 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 void j1Scene::OpeningSubMenuOptions()
 {
 	UILabel_Info label;
-	label.font_name = SOBAD_;
+	label.font_name = Font_Names::MSMINCHO_;
 	label.normal_color = { 0,0,0,255 };
 	label.draggable = false;
 	label.interactive = false;
@@ -671,25 +664,21 @@ void j1Scene::OpeningSubMenuOptions()
 	menu_pause_labels[BACK_] = App->gui->CreateUILabel({ 40,400 }, label, this, pause_menu); // Back label
 
 	UISlider_Info slider;
-
-	slider.tex_name = SLIDER_;
 	slider.draggable = false;
-	slider.tex_area = { 9,0,54,9 };
-	slider.button_slider_area = { 0,1,9,10 };
+	slider.tex_area = UIElement_Rect::SLIDER_BAR_;
+	slider.button_slider_area = UIElement_Rect::SLIDER_BUTTON_;
 	slider.offset = 3;
-	slider.slider_button_pos.x = App->audio->music_volume * (slider.tex_area.w) / 128;
+	slider.slider_button_pos.x = App->audio->music_volume * (App->gui->GetRectFromAtlas(UIElement_Rect::SLIDER_BAR_).w) / 128;
 	slider.buggy_offset = -1;
 
-	volume_slider = App->gui->CreateUISlider({ 240,75 }, slider, this, pause_menu);
-
-	fx_slider = App->gui->CreateUISlider({ 240,165 }, slider, this, pause_menu);
+	volume_slider = App->gui->CreateUISlider({ 300,75 }, slider, this, pause_menu);
+	fx_slider = App->gui->CreateUISlider({ 300,165 }, slider, this, pause_menu);
 
 	UIButton_Info checkbox;
 	checkbox.checkbox = true;
-	checkbox.tex_name = CHECKBOX_;
-	checkbox.normal_tex_area = { 0,0,11,7 };
-	checkbox.hover_tex_area = { 0,0,11,7 };
-	checkbox.pressed_tex_area = { 12,0,11,7 };
+	checkbox.normal_tex_area = UIElement_Rect::CHECKBOX_NORMAL_;
+	checkbox.hover_tex_area = UIElement_Rect::CHECKBOX_NORMAL_;
+	checkbox.pressed_tex_area = UIElement_Rect::CHECKBOX_PRESSED_;
 	checkbox.draggable = true;
 
 	if (App->toCap)

@@ -89,7 +89,7 @@ bool j1Menu::Start()
 		UIImage_Info black_screen;
 		black_screen.color = Black_;
 		black_screen.quad = true;
-		black_screen.tex_area = { 0, 0, (int)(width * scale), (int)(height * scale) };
+		black_screen.quad_area = { 0, 0, (int)(width * scale), (int)(height * scale) };
 		black_screen_image = App->gui->CreateUIImage({ 0,0 }, black_screen);
 	}
 
@@ -97,6 +97,7 @@ bool j1Menu::Start()
 	UILabel_Info label;
 	label.font_name = Font_Names::ZELDA_;
 	label.interactive = false;
+	label.draggable = false;
 
 	label.text = "D";
 	iPoint title_position = { 70 * scale,55 * scale };
@@ -154,34 +155,48 @@ bool j1Menu::Start()
 	//_game_title
 
 	// Press any button label
-	label.font_name = Font_Names::SOBAD_;
+	label.font_name = Font_Names::MSMINCHO_;
 	label.horizontal_orientation = UIElement_HORIZONTAL_POS::CENTER_;
 	label.text = "PRESS ANY BUTTON";
 	press_any_button = App->gui->CreateUILabel({ (int)width / 2, (int)height - 150 }, label, this);
 	press_any_button->SetColor({ press_any_button->GetColor().r,press_any_button->GetColor().g,press_any_button->GetColor().b,0 });
 
 	// Skip button label
-	label.font_name = Font_Names::SOBAD_8_;
-	label.text = "SKIP INTRO";
+	label.font_name = Font_Names::MSMINCHO_;
+	label.text = "SKIP";
 	label.normal_color = LightGrey_;
 	skip = App->gui->CreateUILabel({ 60, 20 }, label, this);
 	skip->SetColor({ skip->GetColor().r,skip->GetColor().g,skip->GetColor().b,0 });
 
 	// Main menu buttons
 	UIButton_Info button;
-	button.tex_name = Tex_Names::MAIN_MENU_;
 	button.interactive = false;
-
-	for (int i = 0; i < 5; ++i) {
-		button.normal_tex_area = { 0,i * (21 + 2),81,21 };
-		button.hover_tex_area = { 84,i * (21 + 2),81,21 };
-		button.pressed_tex_area = { 168,i * (21 + 2),81,21 };
-		main_menu_buttons[i] = App->gui->CreateUIButton({ 50,400 + 70 * i }, button, this);
-	}
+	button.draggable = false;
+	button.normal_tex_area = UIElement_Rect::MM_OPT_1_NORMAL_;
+	button.hover_tex_area = UIElement_Rect::MM_OPT_1_HOVER_;
+	button.pressed_tex_area = UIElement_Rect::MM_OPT_1_PRESSED_;
+	main_menu_buttons[i] = App->gui->CreateUIButton({ 50,400 }, button, this);
+	button.normal_tex_area = UIElement_Rect::MM_OPT_2_NORMAL_;
+	button.hover_tex_area = UIElement_Rect::MM_OPT_2_HOVER_;
+	button.pressed_tex_area = UIElement_Rect::MM_OPT_2_PRESSED_;
+	main_menu_buttons[++i] = App->gui->CreateUIButton({ 50,400 + 70 }, button, this);
+	button.normal_tex_area = UIElement_Rect::MM_OPT_3_NORMAL_;
+	button.hover_tex_area = UIElement_Rect::MM_OPT_3_HOVER_;
+	button.pressed_tex_area = UIElement_Rect::MM_OPT_3_PRESSED_;
+	main_menu_buttons[++i] = App->gui->CreateUIButton({ 50,400 + 70 * 2 }, button, this);
+	button.normal_tex_area = UIElement_Rect::MM_OPT_4_NORMAL_;
+	button.hover_tex_area = UIElement_Rect::MM_OPT_4_HOVER_;
+	button.pressed_tex_area = UIElement_Rect::MM_OPT_4_PRESSED_;
+	main_menu_buttons[++i] = App->gui->CreateUIButton({ 50,400 + 70 * 3 }, button, this);
+	button.normal_tex_area = UIElement_Rect::MM_OPT_5_NORMAL_;
+	button.hover_tex_area = UIElement_Rect::MM_OPT_5_HOVER_;
+	button.pressed_tex_area = UIElement_Rect::MM_OPT_5_PRESSED_;
+	main_menu_buttons[++i] = App->gui->CreateUIButton({ 50,400 + 70 * 4 }, button, this);
 	i = 0;
-	SDL_SetTextureAlphaMod((SDL_Texture*)App->gui->GetTexture(Tex_Names::MAIN_MENU_), 0);
+	App->gui->SetTextureAlphaMod(0);
 
 	// Main menu options
+	label.interaction_from_father = true;
 	label.vertical_orientation = UIElement_VERTICAL_POS::MIDDLE_;
 	label.normal_color = Purple_;
 	label.hover_color = Pink_;
@@ -206,11 +221,12 @@ bool j1Menu::Start()
 	i = 0;
 
 	// Highscore
+	label.interaction_from_father = false;
 	label.font_name = Font_Names::MSMINCHO_;
 	label.horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	label.vertical_orientation = UIElement_VERTICAL_POS::TOP_;
 	label.normal_color = White_;
-	label.text = "HIGHSCORE";
+	label.text = "LAST SCORE";
 	highscore_text = App->gui->CreateUILabel({ (int)width - 50, -500 }, label);
 	int font_width, font_height;
 	App->font->CalcSize(label.text.GetString(), font_width, font_height, App->gui->GetFont(Font_Names::MSMINCHO_));
@@ -225,6 +241,9 @@ bool j1Menu::Start()
 	if (App->trans->back_to_main_menu) {
 		App->entities->Start();
 		App->entities->playerData = nullptr;
+		highscore_text->ResetFade();
+		highscore_value->ResetFade();
+		camera_moved = true;
 	}
 
 	// Cat
@@ -536,21 +555,11 @@ bool j1Menu::Update(float dt)
 			}
 		}
 
-		if (App->trans->back_to_main_menu) {
-			timer += 1.0f * dt;
-
-			if (timer >= 3.0f) {
-				App->trans->back_to_main_menu = false;
-				camera_moved = true;
-				timer = 0.0f;
-			}
-		}
-
 		if (camera_moved) {
 			blit_cat = true;
 
 			alpha = App->gui->IncreaseDecreaseAlpha(0.0f, 255.0f, options_seconds);
-			App->gui->SetTextureAlphaMod(Tex_Names::MAIN_MENU_, alpha);
+			App->gui->SetTextureAlphaMod(alpha);
 
 			main_menu_options[0]->SetColor({ main_menu_options[0]->GetColor().r,main_menu_options[0]->GetColor().g,main_menu_options[0]->GetColor().b,(Uint8)alpha });
 			if (alpha >= 1.0f * (255.0f / 5.0f))
@@ -585,6 +594,7 @@ bool j1Menu::Update(float dt)
 							from_settings = false;
 							from_credits = false;
 							camera_moved = false;
+							App->trans->back_to_main_menu = false;
 
 							menuState = MenuState::AT_MAIN_MENU_;
 							break;
@@ -593,9 +603,9 @@ bool j1Menu::Update(float dt)
 				}
 			}
 		}
-		else if (!from_settings && !from_credits) {
+		else if (!from_settings && !from_credits && !App->trans->back_to_main_menu) {
 			alpha = App->gui->IncreaseDecreaseAlpha(0.0f, 255.0f, options_seconds);
-			App->gui->SetTextureAlphaMod(Tex_Names::MAIN_MENU_, alpha);
+			App->gui->SetTextureAlphaMod(alpha);
 
 			main_menu_options[0]->SetColor({ main_menu_options[0]->GetColor().r,main_menu_options[0]->GetColor().g,main_menu_options[0]->GetColor().b,(Uint8)alpha });
 			if (alpha >= 1.0f * (255.0f / 5.0f))
@@ -723,14 +733,6 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 
 	case UIEvents::MOUSE_LEFT_CLICK_:
 
-		for (uint i = 0; i < 5; ++i) {
-			if (UIelem == main_menu_buttons[i]) {
-				main_menu_options[i]->SetColor(main_menu_options[i]->GetColor(false, false, true));
-				App->audio->PlayFx(10);
-				continue;
-			}
-		}
-
 		if (UIelem == license_slider) {
 			sliding = true;
 			break;
@@ -826,33 +828,14 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			break;
 		}
 
-		for (uint i = 0; i < 5; ++i) {
-			if (main_menu_buttons[i] != nullptr) {
-				if (UIelem == main_menu_buttons[i]) {
-					main_menu_buttons[i]->SetInteraction(false);
-				}
-			}
-		}
 		break;
 
 	case UIEvents::MOUSE_ENTER_:
 
-		for (uint i = 0; i < 5; ++i) {
-			if (UIelem == main_menu_buttons[i]) {
-				main_menu_options[i]->SetColor(main_menu_options[i]->GetColor(false, true));
-				App->audio->PlayFx(9);
-				continue;
-			}
-		}
 		break;
 
 	case UIEvents::MOUSE_LEAVE_:
 
-		for (uint i = 0; i < 5; ++i) {
-			if (UIelem == main_menu_buttons[i]) {
-				main_menu_options[i]->SetColor(main_menu_options[i]->GetColor(true));
-			}
-		}
 		break;
 	}
 }
@@ -946,20 +929,34 @@ void j1Menu::CreateMainMenuUIElements()
 
 	// Main menu buttons
 	UIButton_Info button;
-	button.tex_name = Tex_Names::MAIN_MENU_;
 	button.interactive = false;
-
-	for (int i = 0; i < 5; ++i) {
-		button.normal_tex_area = { 0,i * (21 + 2),81,21 };
-		button.hover_tex_area = { 84,i * (21 + 2),81,21 };
-		button.pressed_tex_area = { 168,i * (21 + 2),81,21 };
-		main_menu_buttons[i] = App->gui->CreateUIButton({ 50,400 + 70 * i }, button, this);
-	}
+	button.draggable = false;
+	button.normal_tex_area = UIElement_Rect::MM_OPT_1_NORMAL_;
+	button.hover_tex_area = UIElement_Rect::MM_OPT_1_HOVER_;
+	button.pressed_tex_area = UIElement_Rect::MM_OPT_1_PRESSED_;
+	main_menu_buttons[i] = App->gui->CreateUIButton({ 50,400 }, button, this);
+	button.normal_tex_area = UIElement_Rect::MM_OPT_2_NORMAL_;
+	button.hover_tex_area = UIElement_Rect::MM_OPT_2_HOVER_;
+	button.pressed_tex_area = UIElement_Rect::MM_OPT_2_PRESSED_;
+	main_menu_buttons[++i] = App->gui->CreateUIButton({ 50,400 + 70 }, button, this);
+	button.normal_tex_area = UIElement_Rect::MM_OPT_3_NORMAL_;
+	button.hover_tex_area = UIElement_Rect::MM_OPT_3_HOVER_;
+	button.pressed_tex_area = UIElement_Rect::MM_OPT_3_PRESSED_;
+	main_menu_buttons[++i] = App->gui->CreateUIButton({ 50,400 + 70 * 2 }, button, this);
+	button.normal_tex_area = UIElement_Rect::MM_OPT_4_NORMAL_;
+	button.hover_tex_area = UIElement_Rect::MM_OPT_4_HOVER_;
+	button.pressed_tex_area = UIElement_Rect::MM_OPT_4_PRESSED_;
+	main_menu_buttons[++i] = App->gui->CreateUIButton({ 50,400 + 70 * 3 }, button, this);
+	button.normal_tex_area = UIElement_Rect::MM_OPT_5_NORMAL_;
+	button.hover_tex_area = UIElement_Rect::MM_OPT_5_HOVER_;
+	button.pressed_tex_area = UIElement_Rect::MM_OPT_5_PRESSED_;
+	main_menu_buttons[++i] = App->gui->CreateUIButton({ 50,400 + 70 * 4 }, button, this);
 	i = 0;
-	SDL_SetTextureAlphaMod((SDL_Texture*)App->gui->GetTexture(Tex_Names::MAIN_MENU_), 0);
+	App->gui->SetTextureAlphaMod(0);
 
 	// Main menu options
-	label.font_name = Font_Names::SOBAD_8_;
+	label.interaction_from_father = true;
+	label.font_name = Font_Names::MSMINCHO_;
 	label.horizontal_orientation = UIElement_HORIZONTAL_POS::CENTER_;
 	label.vertical_orientation = UIElement_VERTICAL_POS::MIDDLE_;
 	label.normal_color = Purple_;
@@ -989,7 +986,7 @@ void j1Menu::CreateMainMenuUIElements()
 	label.horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	label.vertical_orientation = UIElement_VERTICAL_POS::TOP_;
 	label.normal_color = White_;
-	label.text = "HIGHSCORE";
+	label.text = "LAST SCORE";
 	highscore_text = App->gui->CreateUILabel({ (int)width - 50, -500 }, label);
 	int font_width, font_height;
 	App->font->CalcSize(label.text.GetString(), font_width, font_height, App->gui->GetFont(Font_Names::MSMINCHO_));
@@ -1007,7 +1004,7 @@ void j1Menu::CreateSettingsUIElements()
 	// Window
 	UIWindow_Info window;
 	window.interactive = false;
-	window.tex_name = Tex_Names::MENU_PAUSE_;
+	window.tex_area = UIElement_Rect::BIG_WINDOW_;
 	settings_window = App->gui->CreateUIWindow({ 50, -500 }, window, this);
 
 	// Options
@@ -1016,7 +1013,7 @@ void j1Menu::CreateSettingsUIElements()
 	label.normal_color = Purple_;
 	label.hover_color = Pink_;
 	label.pressed_color = LightPink_;
-	label.font_name = Font_Names::SOBAD_;
+	label.font_name = Font_Names::MSMINCHO_;
 	label.text = "Music volume";
 	music_volume_text = App->gui->CreateUILabel({ 40,50 }, label, this, settings_window);
 	music_volume_text->SetColor({ music_volume_text->GetColor().r,music_volume_text->GetColor().g,music_volume_text->GetColor().b,0 });
@@ -1037,10 +1034,9 @@ void j1Menu::CreateSettingsUIElements()
 	UIButton_Info checkbox;
 	checkbox.interactive = false;
 	checkbox.checkbox = true;
-	checkbox.tex_name = Tex_Names::CHECKBOX_;
-	checkbox.normal_tex_area = { 0,0,11,7 };
-	checkbox.hover_tex_area = { 0,0,11,7 };
-	checkbox.pressed_tex_area = { 12,0,11,7 };
+	checkbox.normal_tex_area = UIElement_Rect::CHECKBOX_NORMAL_;
+	checkbox.hover_tex_area = UIElement_Rect::CHECKBOX_NORMAL_;
+	checkbox.pressed_tex_area = UIElement_Rect::CHECKBOX_PRESSED_;
 
 	if (App->win->fullscreen)
 		checkbox.checkbox_checked = true;
@@ -1052,7 +1048,7 @@ void j1Menu::CreateSettingsUIElements()
 	else
 		checkbox.checkbox_checked = false;
 
-	cap_frames_checkbox = App->gui->CreateUIButton({ 300,cap_frames_text->GetLocalPos().y + cap_frames_text->GetLocalRect().h }, checkbox, this, settings_window);
+	cap_frames_checkbox = App->gui->CreateUIButton({ 400,cap_frames_text->GetLocalPos().y + cap_frames_text->GetLocalRect().h }, checkbox, this, settings_window);
 
 	if (App->map->camera_blit)
 		checkbox.checkbox_checked = true;
@@ -1063,25 +1059,23 @@ void j1Menu::CreateSettingsUIElements()
 
 	// Sliders
 	UISlider_Info slider;
-	slider.tex_name = Tex_Names::SLIDER_;
 	slider.draggable = false;
 	slider.interactive = false;
-	slider.tex_area = { 9,0,54,9 };
-	slider.button_slider_area = { 0,1,9,10 };
+	slider.tex_area = UIElement_Rect::SLIDER_BAR_;
+	slider.button_slider_area = UIElement_Rect::SLIDER_BUTTON_;
 	slider.offset = 3;
 	slider.buggy_offset = -1;
-	slider.slider_button_pos.x = App->audio->music_volume * (slider.tex_area.w) / 128;
+	slider.slider_button_pos.x = App->audio->music_volume * (App->gui->GetRectFromAtlas(UIElement_Rect::SLIDER_BAR_).w) / 128;
 	music_slider = App->gui->CreateUISlider({ 300,music_volume_text->GetLocalPos().y + 10 }, slider, this, settings_window);
-	slider.slider_button_pos.x = App->audio->fx_volume * (slider.tex_area.w) / 128;
+	slider.slider_button_pos.x = App->audio->fx_volume * (App->gui->GetRectFromAtlas(UIElement_Rect::SLIDER_BAR_).w) / 128;
 	FX_slider = App->gui->CreateUISlider({ 300,FX_volume_text->GetLocalPos().y + 10 }, slider, this, settings_window);
 
 	// Back to main menu button
 	UIButton_Info button;
-	button.tex_name = Tex_Names::MAIN_MENU_;
 	button.interactive = false;
-	button.normal_tex_area = { 0,119,24,20 };
-	button.hover_tex_area = { 27,119,24,20 };
-	button.pressed_tex_area = { 54,119,24,20 };
+	button.normal_tex_area = UIElement_Rect::ARROW_LEFT_NORMAL_;
+	button.hover_tex_area = UIElement_Rect::ARROW_LEFT_HOVER_;
+	button.pressed_tex_area = UIElement_Rect::ARROW_LEFT_PRESSED_;
 	back_to_main_menu_from_settings = App->gui->CreateUIButton({ (int)width - 100, (int)height + 200 }, button, this);
 }
 
@@ -1090,51 +1084,50 @@ void j1Menu::CreateCreditsUIElements()
 	// Window
 	UIWindow_Info window;
 	window.interactive = false;
-	window.tex_name = Tex_Names::CREDITS_WINDOW_;
-	int tex_width, tex_height;
-	SDL_QueryTexture((SDL_Texture*)App->gui->GetTexture(Tex_Names::CREDITS_WINDOW_), NULL, NULL, &tex_width, &tex_height);
-	credits_window = App->gui->CreateUIWindow({ (int)width - 100 - (tex_width * scale), (int)height + 500 }, window, this);
+	window.tex_area = UIElement_Rect::SMALL_WINDOW_;
+	credits_window = App->gui->CreateUIWindow({ (int)width - 100 - (App->gui->GetRectFromAtlas(UIElement_Rect::SMALL_WINDOW_).w * scale), (int)height + 500 }, window, this);
 
 	// Back to main menu button
 	UIButton_Info button;
-	button.tex_name = Tex_Names::MAIN_MENU_;
 	button.interactive = false;
-	button.normal_tex_area = { 84,119,20,24 };
-	button.hover_tex_area = { 111,119,20,24 };
-	button.pressed_tex_area = { 138,119,20,24 };
+	button.normal_tex_area = UIElement_Rect::ARROW_UP_NORMAL_;
+	button.hover_tex_area = UIElement_Rect::ARROW_UP_HOVER_;
+	button.pressed_tex_area = UIElement_Rect::ARROW_UP_PRESSED_;
 	back_to_main_menu_from_credits = App->gui->CreateUIButton({ 50, -200 }, button, this);
 
 	// Website button
-	button.normal_tex_area = { 168, 119,46,20 };
-	button.hover_tex_area = { 214, 119,46,20 };
-	button.pressed_tex_area = { 214, 140,46,20 };
+	button.normal_tex_area = UIElement_Rect::WEB_BUTTON_NORMAL_;
+	button.hover_tex_area = UIElement_Rect::WEB_BUTTON_HOVER_;
+	button.pressed_tex_area = UIElement_Rect::WEB_BUTTON_PRESSED_;
 	website_button = App->gui->CreateUIButton({ 220, (int)height + 500 }, button, this);
 
 	// Labels
 	UILabel_Info label;
 	label.interactive = false;
-	label.font_name = Font_Names::SOBAD_; // big titles
-	label.text = "Authors";
-	authors_title = App->gui->CreateUILabel({ 120, (int)height / 2 + (int)height / 8 - tex_height * scale / 2 }, label);
+	label.font_name = Font_Names::MSMINCHO_; // big titles
+	label.text = "AUTHORS";
+	authors_title = App->gui->CreateUILabel({ 120, (int)height / 2 + (int)height / 8 - App->gui->GetRectFromAtlas(UIElement_Rect::SMALL_WINDOW_).h * scale / 2 }, label);
 	authors_title->SetColor({ authors_title->GetColor().r,authors_title->GetColor().g,authors_title->GetColor().b,0 });
-	label.text = "License";
-	license_title = App->gui->CreateUILabel({ (int)width - 100 - (tex_width * scale), 200 }, label);
+	label.text = "LICENSE";
+	license_title = App->gui->CreateUILabel({ (int)width - 100 - (App->gui->GetRectFromAtlas(UIElement_Rect::SMALL_WINDOW_).w * scale), 200 }, label);
 	license_title->SetColor({ license_title->GetColor().r,license_title->GetColor().g,license_title->GetColor().b,0 });
 
+	label.interaction_from_father = true;
 	label.horizontal_orientation = UIElement_HORIZONTAL_POS::CENTER_;
 	label.vertical_orientation = UIElement_VERTICAL_POS::MIDDLE_;
 	label.normal_color = Purple_;
 	label.hover_color = Pink_;
 	label.pressed_color = LightPink_;
-	label.text = "Website";
+	label.text = "WEBSITE";
 	website_title = App->gui->CreateUILabel({ (website_button->GetLocalRect().w * scale) / 2, (website_button->GetLocalRect().h * scale) / 2 }, label, this, website_button);
 
-	label.font_name = Font_Names::SOBAD_8_; // small descriptions
+	label.interaction_from_father = false;
+	label.font_name = Font_Names::MSMINCHO_; // small descriptions
 	label.horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	label.vertical_orientation = UIElement_VERTICAL_POS::TOP_;
 	label.normal_color = White_;
 	label.text = "Sandra Alvarez Garcia and Guillem Costa Miquel";
-	authors_description = App->gui->CreateUILabel({ 120, (int)height / 2 + (int)height / 8 - tex_height * scale / 2 + 50 }, label, this);
+	authors_description = App->gui->CreateUILabel({ 120, (int)height / 2 + (int)height / 8 - App->gui->GetRectFromAtlas(UIElement_Rect::SMALL_WINDOW_).h * scale / 2 + 50 }, label, this);
 	authors_description->SetColor({ authors_title->GetColor().r,authors_title->GetColor().g,authors_title->GetColor().b,0 });
 	label.text = "MIT License Copyright(c) 2017 Sandra Alvarez & Guillem Costa\n\n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files(the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\n THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
 	label.text_wrap_length = 110;
@@ -1142,11 +1135,10 @@ void j1Menu::CreateCreditsUIElements()
 
 	// Slider to scroll the previous text
 	UISlider_Info slider;
-	slider.tex_name = SLIDER_;
 	slider.interactive = false;
 	slider.draggable = false;
-	slider.tex_area = { 9,0,54,9 };
-	slider.button_slider_area = { 0,1,9,10 };
+	slider.tex_area = UIElement_Rect::SLIDER_BAR_;
+	slider.button_slider_area = UIElement_Rect::SLIDER_BUTTON_;
 	slider.slider_button_pos.x = 0;
 	slider.offset = 3;
 	slider.buggy_offset = -1;

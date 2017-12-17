@@ -214,9 +214,11 @@ void j1Particles::AddParticle(const Particle& particle, int x, int y, COLLIDER_T
 			if (collider_type != COLLIDER_NONE && collider_type != COLLIDER_CATPEASANT_SHOT && collider_type != COLLIDER_MONKEY_HIT)
 				p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), collider_type, this);
 			else if (collider_type == COLLIDER_CATPEASANT_SHOT) {
-				float m = sqrtf(pow(App->entities->playerData->position.x - p->position.x, 2.0f) + pow(App->entities->playerData->position.y - p->position.y, 2.0f));
-				p->destination.x = (App->entities->playerData->position.x - p->position.x) / m;
-				p->destination.y = (App->entities->playerData->position.y - p->position.y) / m;
+				if (App->entities->playerData != nullptr) {
+					float m = sqrtf(pow(App->entities->playerData->position.x - p->position.x, 2.0f) + pow(App->entities->playerData->position.y - p->position.y, 2.0f));
+					p->destination.x = (App->entities->playerData->position.x - p->position.x) / m;
+					p->destination.y = (App->entities->playerData->position.y - p->position.y) / m;
+				}
 
 				p->collider = App->collision->AddCollider({ 0, 0, p->coll_size.x - 40, p->coll_size.y - 40}, collider_type, this);
 			}
@@ -281,7 +283,8 @@ bool Particle::Update(float dt)
 		if (anim.Finished() || life == 0)
 			ret = false;
 
-	App->entities->playerData->CheckCollision({ (int)position.x, (int)position.y }, coll_size, App->entities->playerData->player.check_collision_offset, up, down, left, right);
+	if (App->entities->playerData != nullptr)
+		App->entities->playerData->CheckCollision({ (int)position.x, (int)position.y }, coll_size, App->entities->playerData->player.check_collision_offset, up, down, left, right);
 
 	if (App->map->data.CheckIfEnter("Player", "Gate", position) && App->scene->gate == false) {
 

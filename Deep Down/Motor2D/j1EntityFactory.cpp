@@ -964,6 +964,8 @@ bool j1EntityFactory::CleanUp()
 		}
 	}
 
+	playerData = nullptr;
+
 	return true;
 }
 

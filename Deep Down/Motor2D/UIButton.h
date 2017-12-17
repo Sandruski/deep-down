@@ -9,11 +9,10 @@
 #include "j1Gui.h"
 
 struct UIButton_Info {
-	SDL_Rect normal_tex_area = { 0,0,0,0 };
-	SDL_Rect hover_tex_area = { 0,0,0,0 };
-	SDL_Rect pressed_tex_area = { 0,0,0,0 };
+	UIElement_Rect normal_tex_area = UIElement_Rect::NO_ELEMENT_RECT_;
+	UIElement_Rect hover_tex_area = UIElement_Rect::NO_ELEMENT_RECT_;
+	UIElement_Rect pressed_tex_area = UIElement_Rect::NO_ELEMENT_RECT_;
 
-	Tex_Names tex_name = Tex_Names::NO_TEX_;
 	bool checkbox = false;
 	bool checkbox_checked = false;
 	UIElement_HORIZONTAL_POS horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
@@ -46,6 +45,10 @@ public:
 private:
 	UIButton_Info button;
 	UIEvents UIevent = NO_EVENT_;
+
+	SDL_Rect normal_tex_area = { 0,0,0,0 };
+	SDL_Rect hover_tex_area = { 0,0,0,0 };
+	SDL_Rect pressed_tex_area = { 0,0,0,0 };
 
 public:
 	bool tab = false;

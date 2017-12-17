@@ -9,9 +9,8 @@
 #include "j1Gui.h"
 
 struct UISlider_Info {
-	SDL_Rect tex_area = { 0,0,0,0 };
-	SDL_Rect button_slider_area = { 0,0,0,0 };
-	Tex_Names tex_name = Tex_Names::NO_TEX_;
+	UIElement_Rect tex_area = UIElement_Rect::NO_ELEMENT_RECT_;
+	UIElement_Rect button_slider_area = UIElement_Rect::NO_ELEMENT_RECT_;
 	UIElement_HORIZONTAL_POS horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
 	SDL_Color color = { 0,0,0,255 };
@@ -46,6 +45,8 @@ private:
 
 	UIEvents UIevent = NO_EVENT_;
 	bool next_event = false;
+
+	SDL_Rect button_slider_area = { 0,0,0,0 };
 
 public:
 	bool lets_move = false;

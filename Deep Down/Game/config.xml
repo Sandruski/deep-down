@@ -35,6 +35,65 @@
     <volume default="16"/>
   </audio>
 
+  <gui>
+    <atlas file="Assets/Sprites/UI/atlas.png"/>
+    <UI_elements_rects>
+      <rect name="main_menu_option_1_normal" x="0" y="0" w="81" h="21"/>
+      <rect name="main_menu_option_2_normal" x="0" y="24" w="81" h="21"/>
+      <rect name="main_menu_option_3_normal" x="0" y="47" w="81" h="21"/>
+      <rect name="main_menu_option_4_normal" x="0" y="70" w="81" h="21"/>
+      <rect name="main_menu_option_5_normal" x="0" y="93" w="81" h="21"/>
+
+      <rect name="main_menu_option_1_hover" x="84" y="0" w="81" h="21"/>
+      <rect name="main_menu_option_2_hover" x="84" y="24" w="81" h="21"/>
+      <rect name="main_menu_option_3_hover" x="84" y="47" w="81" h="21"/>
+      <rect name="main_menu_option_4_hover" x="84" y="70" w="81" h="21"/>
+      <rect name="main_menu_option_5_hover" x="84" y="93" w="81" h="21"/>
+
+      <rect name="main_menu_option_1_pressed" x="168" y="0" w="81" h="21"/>
+      <rect name="main_menu_option_2_pressed" x="168" y="24" w="81" h="21"/>
+      <rect name="main_menu_option_3_pressed" x="168" y="47" w="81" h="21"/>
+      <rect name="main_menu_option_4_pressed" x="168" y="70" w="81" h="21"/>
+      <rect name="main_menu_option_5_pressed" x="168" y="93" w="81" h="21"/>
+
+      <rect name="arrow_left_normal" x="0" y="119" w="24" h="20"/>
+      <rect name="arrow_left_hover" x="27" y="119" w="24" h="20"/>
+      <rect name="arrow_left_pressed" x="54" y="119" w="24" h="20"/>
+
+      <rect name="arrow_up_normal" x="84" y="119" w="20" h="24"/>
+      <rect name="arrow_up_hover" x="111" y="119" w="20" h="24"/>
+      <rect name="arrow_up_pressed" x="138" y="119" w="20" h="24"/>
+
+      <rect name="website_button_normal" x="168" y="119" w="46" h="20"/>
+      <rect name="website_button_hover" x="214" y="119" w="46" h="20"/>
+      <rect name="website_button_pressed" x="214" y="140" w="46" h="20"/>
+
+      <rect name="lifebar_frame" x="0" y="167" w="230" h="7"/>
+      <rect name="lifebar_red" x="5" y="175" w="222" h="4"/>
+      <rect name="lifebar_brown" x="5" y="181" w="222" h="4"/>
+
+      <rect name="cat_circle_idle" x="256" y="0" w="26" h="26"/>
+      <rect name="cat_circle_crouch_1" x="282" y="0" w="26" h="26"/>
+      <rect name="cat_circle_crouch_2" x="256" y="26" w="26" h="26"/>
+      <rect name="cat_circle_crouch_3" x="282" y="26" w="26" h="26"/>
+
+      <rect name="cursor_default" x="260" y="59" w="14" h="14"/>
+      <rect name="cursor_clicked" x="276" y="59" w="14" h="14"/>
+      
+      <rect name="checkbox_normal" x="260" y="80" w="11" h="7"/>
+      <rect name="checkbox_pressed" x="272" y="80" w="11" h="7"/>
+
+      <rect name="close_button_normal" x="260" y="94" w="7" h="7"/>
+      <rect name="close_button_pressed" x="267" y="94" w="7" h="8"/>
+
+      <rect name="slider_button" x="314" y="147" w="9" h="9"/>
+      <rect name="slider" x="327" y="147" w="54" h="9"/>
+
+      <rect name="small_window" x="314" y="0" w="117" h="135"/>
+      <rect name="big_window" x="437" y="0" w="171" h="160"/>     
+    </UI_elements_rects>
+  </gui>
+
   <scene>
     <maps>
       <index first="0"/>
@@ -59,6 +118,18 @@
         <fx name="ButtonClick.wav"/>
       </fx>
     </audio>
+    <UI_cat>
+      <animation speed="2.5">
+        <frame x="256" y="0" w="26" h="26"/>
+        <frame x="282" y="0" w="26" h="26"/>
+        <frame x="282" y="0" w="26" h="26"/>
+        <frame x="256" y="26" w="26" h="26"/>
+        <frame x="282" y="26" w="26" h="26"/>
+        <frame x="256" y="26" w="26" h="26"/>
+        <frame x="282" y="0" w="26" h="26"/>
+        <frame x="256" y="0" w="26" h="26"/>
+      </animation>
+    </UI_cat>
   </scene>
 
   <entities>

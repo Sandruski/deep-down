@@ -97,7 +97,7 @@ bool j1BetweenTransitions::Update(float dt)
 						if (start)
 							l_level_cats_picked = CreateLevelCatsPickedText({ (int)width / 2, (int)height / 2 - 80 }, 1, App->scene->cats_first_map);
 						else {
-							l_level_cats_picked = CreateLevelCatsPickedText({ (int)width / 2, (int)height / 2 - 30 }, 1, App->scene->cats_first_map);
+							l_level_cats_picked = CreateLevelCatsPickedText({ (int)width / 2, (int)height / 2 - 50 }, 1, App->scene->cats_first_map);
 						}
 					}
 				}
@@ -303,7 +303,7 @@ UILabel* j1BetweenTransitions::CreateTotalCatsPickedText(uint first_level_cats_p
 	p2SString tmp("%s%d%s", "Total ", first_level_cats_picked + second_level_cats_picked, "/10");
 	label.text = tmp.GetString();
 
-	return App->gui->CreateUILabel({ (int)width / 2,(int)height / 2 + 30 }, label);
+	return App->gui->CreateUILabel({ (int)width / 2,(int)height / 2 + 50 }, label);
 }
 
 UILabel* j1BetweenTransitions::CreateScoreText(int score)
@@ -318,7 +318,7 @@ UILabel* j1BetweenTransitions::CreateScoreText(int score)
 	p2SString tmp("%s%d", "SCORE ", 1000);
 	label.text = tmp.GetString();
 
-	return App->gui->CreateUILabel({ (int)width / 2,(int)height / 2 + 80 }, label);
+	return App->gui->CreateUILabel({ (int)width / 2,(int)height / 2 + 100 }, label);
 }
 
 UILabel* j1BetweenTransitions::CreateYouDiedText(uint word)
@@ -343,9 +343,8 @@ UICursor* j1BetweenTransitions::CreateCursor()
 {
 	// Cursor
 	UICursor_Info cursor;
-	cursor.tex_name = CURSORTEX_;
-	cursor.default = { 0,0,16,16 };
-	cursor.on_click = { 16,0,16,16 };
+	cursor.default = UIElement_Rect::CURSOR_DEFAULT_;
+	cursor.on_click = UIElement_Rect::CURSOR_CLICKED_;
 
 	game_cursor = App->gui->CreateUICursor(cursor, this);
 

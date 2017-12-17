@@ -8,19 +8,14 @@ UIWindow::UIWindow(iPoint local_pos, UIElement* parent, UIWindow_Info& info, j1M
 {
 	type = UIElement_TYPE::WINDOW_;
 
-	draggable = info.draggable;
-	interactive = info.interactive;
-	horizontal = info.horizontal_orientation;
-	vertical = info.vertical_orientation;
-	tex_area = info.tex_area;
-	tex = App->gui->GetTexture(window.tex_name);
+	tex_area = App->gui->GetRectFromAtlas(window.tex_area);
 
-	if (tex_area.w == 0)
-		SDL_QueryTexture((SDL_Texture*)tex, NULL, NULL, &width, &height);
-	else {
-		width = tex_area.w;
-		height = tex_area.h;
-	}
+	draggable = window.draggable;
+	interactive = window.interactive;
+	horizontal = window.horizontal_orientation;
+	vertical = window.vertical_orientation;
+	width = tex_area.w;
+	height = tex_area.h;
 
 	SetOrientation();
 }
@@ -36,7 +31,7 @@ void UIWindow::DebugDraw(iPoint blit_pos) const
 	Uint8 alpha = 80;
 
 	SDL_Rect quad = { blit_pos.x, blit_pos.y, width, height };
-	App->render->DrawQuad(quad, 255, 150, 50, alpha, false);
+	App->render->DrawQuad(quad, 0, 150, 255, alpha, false);
 }
 
 void UIWindow::HandleInput()
@@ -130,6 +125,8 @@ void UIWindow::HandleInput()
 		break;
 	}
 }
+
+//---------------------------------------------------------------
 
 bool UIWindow::SlideTransition(float dt, int end_pos_y, float speed, bool bounce, float bounce_interval, float bounce_speed, bool down)
 {

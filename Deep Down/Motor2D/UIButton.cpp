@@ -8,23 +8,22 @@ UIButton::UIButton(iPoint local_pos, UIElement* parent, UIButton_Info& info, j1M
 {
 	type = UIElement_TYPE::BUTTON_;
 
-	draggable = info.draggable;
-	interactive = info.interactive;
-	horizontal = info.horizontal_orientation;
-	vertical = info.vertical_orientation;
-	tex = App->gui->GetTexture(button.tex_name);
+	normal_tex_area = App->gui->GetRectFromAtlas(button.normal_tex_area);
+	hover_tex_area = App->gui->GetRectFromAtlas(button.hover_tex_area);
+	pressed_tex_area = App->gui->GetRectFromAtlas(button.pressed_tex_area);
+
+	draggable = button.draggable;
+	interactive = button.interactive;
+	horizontal = button.horizontal_orientation;
+	vertical = button.vertical_orientation;
 
 	if (button.checkbox_checked)
-		tex_area = info.pressed_tex_area;
+		tex_area = pressed_tex_area;
 	else
-		tex_area = info.normal_tex_area;
+		tex_area = normal_tex_area;
 
-	if (tex_area.w == 0)
-		SDL_QueryTexture((SDL_Texture*)tex, NULL, NULL, &width, &height);
-	else {
-		width = tex_area.w;
-		height = tex_area.h;
-	}
+	width = tex_area.w;
+	height = tex_area.h;
 
 	SetOrientation();
 }
@@ -69,7 +68,7 @@ void UIButton::HandleInput()
 		else if ((!tab && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED) || (tab && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)) {
 			next_event = false;
 			LOG("MOUSE L CLICK START");
-			ChangeSprite(button.pressed_tex_area);
+			ChangeSprite(pressed_tex_area);
 			UIevent = UIEvents::MOUSE_LEFT_CLICK_;
 
 			if (button.checkbox)
@@ -80,7 +79,7 @@ void UIButton::HandleInput()
 		else if ((!tab && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED) || (tab && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)) {
 			next_event = false;
 			LOG("MOUSE R CLICK START");
-			ChangeSprite(button.pressed_tex_area);
+			ChangeSprite(pressed_tex_area);
 
 			mouse_click_pos.x = mouse_pos.x * App->win->GetScale() - GetLocalPos().x;
 			mouse_click_pos.y = mouse_pos.y * App->win->GetScale() - GetLocalPos().y;
@@ -101,7 +100,7 @@ void UIButton::HandleInput()
 		if (!next_event) {
 			LOG("MOUSE ENTER");
 			if (!button.checkbox_checked)
-				ChangeSprite(button.hover_tex_area);
+				ChangeSprite(hover_tex_area);
 			next_event = true;
 		}
 
@@ -140,7 +139,7 @@ void UIButton::HandleInput()
 		break;
 	case UIEvents::MOUSE_LEAVE_:
 		if (!button.checkbox_checked)
-			ChangeSprite(button.normal_tex_area);
+			ChangeSprite(normal_tex_area);
 		listener->OnUIEvent((UIElement*)this, UIevent);
 		UIevent = NO_EVENT_;
 		break;
@@ -156,17 +155,17 @@ void UIButton::ChangeSprite(SDL_Rect tex_area)
 
 SDL_Rect UIButton::GetHoverSprite() const
 {
-	return button.hover_tex_area;
+	return hover_tex_area;
 }
 
 SDL_Rect UIButton::GetPressedSprite() const
 {
-	return button.pressed_tex_area;
+	return pressed_tex_area;
 }
 
 SDL_Rect UIButton::GetNormalSprite() const
 {
-	return button.normal_tex_area;
+	return normal_tex_area;
 }
 
 UIEvents UIButton::GetActualEvent() const

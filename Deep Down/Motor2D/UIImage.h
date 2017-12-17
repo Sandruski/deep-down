@@ -10,11 +10,13 @@
 #include "Animation.h"
 
 struct UIImage_Info {
-	SDL_Rect tex_area = { 0,0,0,0 };
-	Tex_Names tex_name = Tex_Names::NO_TEX_;
+	UIElement_Rect tex_area = UIElement_Rect::NO_ELEMENT_RECT_;
 	UIElement_HORIZONTAL_POS horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	UIElement_VERTICAL_POS vertical_orientation = UIElement_VERTICAL_POS::TOP_;
+
 	bool quad = false;
+	SDL_Rect quad_area = { 0,0,0,0 };
+
 	SDL_Color color = { 0,0,0,255 };
 	bool draggable = false;
 };

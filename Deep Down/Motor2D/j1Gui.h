@@ -22,25 +22,6 @@ using namespace std;
 
 struct _TTF_Font;
 
-enum Tex_Names {
-	NO_TEX_,
-	ATLAS_,
-	CURSORTEX_,
-	CHECKBOX_,
-	DSUI_,
-	MENU_PAUSE_,
-	MAIN_MENU_,
-	CREDITS_WINDOW_,
-	GENERAL_,
-	SLIDER_,
-	POINTER_SLIDER_,
-	BUTTON_SLIDER_,
-	BUTTON_SLIDER2_,
-	CAT_SCORE_,
-	CLOSING_WINDOW,
-	MAX_TEXS_
-};
-
 enum Font_Names {
 	DEFAULT_,
 	MSMINCHO_,
@@ -49,6 +30,65 @@ enum Font_Names {
 	DIGITAL7_,
 	BLACK_BLOC_,
 	MAX_FONTS_
+};
+
+enum UIElement_Rect {
+	NO_ELEMENT_RECT_,
+	MM_OPT_1_NORMAL_,
+	MM_OPT_2_NORMAL_,
+	MM_OPT_3_NORMAL_,
+	MM_OPT_4_NORMAL_,
+	MM_OPT_5_NORMAL_,
+
+	MM_OPT_1_HOVER_,
+	MM_OPT_2_HOVER_,
+	MM_OPT_3_HOVER_,
+	MM_OPT_4_HOVER_,
+	MM_OPT_5_HOVER_,
+
+	MM_OPT_1_PRESSED_,
+	MM_OPT_2_PRESSED_,
+	MM_OPT_3_PRESSED_,
+	MM_OPT_4_PRESSED_,
+	MM_OPT_5_PRESSED_,
+
+	ARROW_LEFT_NORMAL_,
+	ARROW_LEFT_HOVER_,
+	ARROW_LEFT_PRESSED_,
+
+	ARROW_UP_NORMAL_,
+	ARROW_UP_HOVER_,
+	ARROW_UP_PRESSED_,
+
+	WEB_BUTTON_NORMAL_,
+	WEB_BUTTON_HOVER_,
+	WEB_BUTTON_PRESSED_,
+
+	LIFEBAR_FRAME_,
+	LIFEBAR_RED_,
+	LIFEBAR_BROWN_,
+
+	CAT_CIRCLE_IDLE_,
+	CAT_CIRCLE_CROUCH_1_,
+	CAT_CIRCLE_CROUCH_2_,
+	CAT_CIRCLE_CROUCH_3_,
+
+	CURSOR_DEFAULT_,
+	CURSOR_CLICKED_,
+
+	CHECKBOX_NORMAL_,
+	CHECKBOX_PRESSED_,
+
+	CLOSE_BUTTON_NORMAL_,
+	CLOSE_BUTTON_PRESSED_,
+
+	SLIDER_BUTTON_,
+	SLIDER_BAR_,
+
+	SMALL_WINDOW_,
+	BIG_WINDOW_,
+
+	MAX_RECTS_
 };
 
 struct UIImage_Info;
@@ -115,20 +155,24 @@ public:
 	void SetUpDraggingNode(bool drag);
 
 	_TTF_Font* GetFont(Font_Names font_name);
-	const SDL_Texture* GetTexture(Tex_Names tex_name);
-	void SetTextureAlphaMod(Tex_Names tex_name, float alpha);
+
+	const SDL_Texture* GetAtlas() const;
+	SDL_Rect GetRectFromAtlas(UIElement_Rect rect);
+
+	void SetTextureAlphaMod(float alpha);
 	float IncreaseDecreaseAlpha(float from, float to, float seconds);
 	void ResetAlpha();
 
 private:
 	p2SString atlas_file_name;
+	const SDL_Texture* atlas;
 
 	p2List<UIElement*> UI_elements_list;
 
 	p2List<UIElement*> to_spawn_UI_elements;
 	p2List<UIElement*> to_spawn_UI_parents;
 
-	map<Tex_Names, const SDL_Texture*> map_textures;
+	map<UIElement_Rect, SDL_Rect> UI_elements_rects;
 	map<Font_Names, _TTF_Font*> map_fonts;
 
 	// Alpha parameters
