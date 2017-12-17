@@ -136,6 +136,7 @@ bool j1Scene::Start()
 	App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (uchar*)App->map->collisionLayer->data);
 
 	loading = true;
+	end_of_level_reached = false;
 
 	return true;
 }
@@ -197,6 +198,7 @@ bool j1Scene::Update(float dt)
 		App->audio->SetFxVolume(volume);
 	}
 
+	// Pause menu
 	if (menu_bouncing) {
 		if (pause_menu->SlideTransition(App->auxiliar_dt, height / 2, 500.0f, true, 20.0f, 2.0f, false)) {
 			menu_position = pause_menu->GetLocalPos();
@@ -222,11 +224,13 @@ bool j1Scene::Update(float dt)
 			return true;
 		}
 
+		// If player reaches the end of the level: level 1 (go to level 2), level 2 (go to main menu)
 		if (App->map->data.CheckIfEnter("Player", "EndPos", App->entities->playerData->position) && App->fade->GetStep() == fade_step::none) {
 			if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
 				|| App->entities->playerData->player.GetState() == idle_ || App->entities->playerData->player.GetState() == idle2_) {
 				loading_state = false;
 				god = true;
+				end_of_level_reached = true;
 
 				if (index == 0)
 					index = 1;
