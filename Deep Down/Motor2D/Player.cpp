@@ -72,7 +72,7 @@ void Player::Move(float dt)
 
 	GodMode();
 
-	player.gravity = 125.0f * dt;
+	player.gravity = GRAVITY * dt;
 
 	if (App->fade->GetStep() == fade_step::fade_to_black || App->fade->GetStep() == fade_step::fade_from_black)
 		player.gravity = 0;
@@ -157,29 +157,29 @@ void Player::OnCollision(Collider* c1, Collider* c2) {
 
 void Player::MoveForward() {
 	if (right) {
-		position.x += 125.0f * dt;
+		position.x += P_NORMAL_SPEED * dt;
 	}
 }
 
 void Player::MoveBackward() {
 	if (left) {
-		position.x -= 125.0f * dt;
+		position.x -= P_NORMAL_SPEED * dt;
 	}
 }
 
 void Player::MoveForwardJumping() {
 	if (right) {
-		position.x += 60.0f * dt;
+		position.x += P_JUMP_SPEED * dt;
 	}
 }
 void Player::MoveBackwardJumping() {
 	if (left) {
-		position.x -= 60.0f * dt;
+		position.x -= P_JUMP_SPEED * dt;
 	}
 }
 
 float Player::Jump() const{
-	return -100.0f;
+	return -P_JUMP;
 }
 
 void PlayerInfo::SetState(playerstates state) {
@@ -188,14 +188,14 @@ void PlayerInfo::SetState(playerstates state) {
 
 void Player::DashForward() {
 	if (right)
-		position.x += 125.0f * dt;
+		position.x += P_NORMAL_SPEED * dt;
 
 	speed.y = 0;
 }
 
 void Player::DashBackward() {
 	if (left)
-		position.x -= 125.0f * dt;
+		position.x -= P_NORMAL_SPEED * dt;
 
 	speed.y = 0;
 }
@@ -206,8 +206,8 @@ void Player::ApplySpeed() {
 		if (!up)
 			speed.y = 0;
 		speed.y += player.gravity;
-		if (speed.y >= 90.0f && !gravitySpeed) {
-			speed.y = 90.0f * dt;
+		if (speed.y >= P_GRAVITY && !gravitySpeed) {
+			speed.y = P_GRAVITY * dt;
 			gravitySpeed = true;
 		}
 		position.y += speed.y * dt;
@@ -216,8 +216,8 @@ void Player::ApplySpeed() {
 		//no jump
 		if (down) { //down == true, there isn't floor
 			speed.y += player.gravity;
-			if (speed.y >= 100.0f && !gravitySpeed) {
-				speed.y = 100.0f * dt;
+			if (speed.y >= P_JUMP && !gravitySpeed) {
+				speed.y = P_JUMP * dt;
 				gravitySpeed = true;
 			}
 			if (player.state == forward_ || player.state == idle_)
@@ -238,9 +238,9 @@ void Player::ShotRight() {
 	if (player.shot.Finished() || player.crouchShot.Finished()) {
 		App->audio->PlayFx(3);
 		if (player.state == shot_)
-			App->particles->AddParticle(App->particles->arrowRight, position.x + 5, position.y + 22, COLLIDER_ARROW, NULL, { 200,0 });
+			App->particles->AddParticle(App->particles->arrowRight, position.x + SHOT_X, position.y + SHOT_Y, COLLIDER_ARROW, NULL, { 200,0 });
 		else if (player.state == crouchShot_)
-			App->particles->AddParticle(App->particles->arrowRight, position.x + 5, position.y + 38, COLLIDER_ARROW, NULL, { 200,0 });
+			App->particles->AddParticle(App->particles->arrowRight, position.x + CROUCH_SHOT_X, position.y + CROUCH_SHOT_Y, COLLIDER_ARROW, NULL, { 200,0 });
 		stopshot = true;
 		player.shot.Reset();
 		player.crouchShot.Reset();
@@ -252,9 +252,9 @@ void Player::ShotLeft() {
 	if (player.shot2.Finished() || player.crouchShot2.Finished()) {
 		App->audio->PlayFx(3);
 		if (player.state == shot2_)
-			App->particles->AddParticle(App->particles->arrowLeft, position.x + 15, position.y + 22, COLLIDER_ARROW, NULL, { -200,0 });
+			App->particles->AddParticle(App->particles->arrowLeft, position.x + SHOT_X + 10, position.y + SHOT_X, COLLIDER_ARROW, NULL, { -200,0 });
 		else if (player.state == crouchShot2_)
-			App->particles->AddParticle(App->particles->arrowLeft, position.x + 5, position.y + 38, COLLIDER_ARROW, NULL, { -200,0 });
+			App->particles->AddParticle(App->particles->arrowLeft, position.x + CROUCH_SHOT_X, position.y + CROUCH_SHOT_Y, COLLIDER_ARROW, NULL, { -200,0 });
 		stopshot = true;
 		player.shot2.Reset();
 		player.crouchShot2.Reset();
@@ -694,10 +694,10 @@ void Player::PlayerStateMachine() {
 
 	case firstAttack_:
 		if (animation != &player.firstAttack)
-			App->particles->AddParticle(App->particles->firstAttack, position.x + 35, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
+			App->particles->AddParticle(App->particles->firstAttack, position.x + P_ATTACK_OFFSET_X, position.y + P_ATTACK_OFFSET_Y, COLLIDER_ARROW, NULL, { 0,0 });
 		animation = &player.firstAttack;
 		if (right)
-			position.x += 10.0f * dt;
+			position.x += P_ATTACK_SPEED * dt;
 		if (player.firstAttack.Finished()) {
 			player.firstAttack.Reset();
 			secondAttackToCheck = true;
@@ -708,11 +708,11 @@ void Player::PlayerStateMachine() {
 
 	case secondAttack_:
 		if (animation != &player.secondAttack)
-			App->particles->AddParticle(App->particles->secondAttack, position.x + 35, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
+			App->particles->AddParticle(App->particles->secondAttack, position.x + P_ATTACK_OFFSET_X, position.y + P_ATTACK_OFFSET_Y, COLLIDER_ARROW, NULL, { 0,0 });
 		secondAttackToCheck = false;
 		animation = &player.secondAttack;
 		if (right)
-			position.x += 10.0f * dt;
+			position.x += P_ATTACK_SPEED * dt;
 		if (player.secondAttack.Finished()) {
 			thirdAttackToCheck = true;
 			player.secondAttack.Reset();
@@ -723,11 +723,11 @@ void Player::PlayerStateMachine() {
 
 	case thirdAttack_:
 		if (animation != &player.thirdAttack)
-			App->particles->AddParticle(App->particles->thirdAttack, position.x + 35, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
+			App->particles->AddParticle(App->particles->thirdAttack, position.x + P_ATTACK_OFFSET_X, position.y + P_ATTACK_OFFSET_Y, COLLIDER_ARROW, NULL, { 0,0 });
 		thirdAttackToCheck = false;
 		animation = &player.thirdAttack;
 		if (right)
-			position.x += 10.0f * dt;
+			position.x += P_ATTACK_SPEED * dt;
 		if (player.thirdAttack.Finished()) {
 			player.thirdAttack.Reset();
 			player.state = idle_;
@@ -737,10 +737,10 @@ void Player::PlayerStateMachine() {
 
 	case firstAttack2_:
 		if (animation != &player.firstAttack2)
-			App->particles->AddParticle(App->particles->firstAttack, position.x, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
+			App->particles->AddParticle(App->particles->firstAttack, position.x, position.y + P_ATTACK_OFFSET_Y, COLLIDER_ARROW, NULL, { 0,0 });
 		animation = &player.firstAttack2;
 		if (left)
-			position.x -= 10.0f * dt;
+			position.x -= P_ATTACK_SPEED * dt;
 		if (player.firstAttack2.Finished()) {
 			player.firstAttack2.Reset();
 			secondAttackToCheck2 = true;
@@ -751,11 +751,11 @@ void Player::PlayerStateMachine() {
 
 	case secondAttack2_:
 		if (animation != &player.secondAttack2)
-			App->particles->AddParticle(App->particles->secondAttack, position.x, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
+			App->particles->AddParticle(App->particles->secondAttack, position.x, position.y + P_ATTACK_OFFSET_Y, COLLIDER_ARROW, NULL, { 0,0 });
 		secondAttackToCheck2 = false;
 		animation = &player.secondAttack2;
 		if (left)
-			position.x -= 10.0f * dt;
+			position.x -= P_ATTACK_SPEED * dt;
 		if (player.secondAttack2.Finished()) {
 			thirdAttackToCheck2 = true;
 			player.secondAttack2.Reset();
@@ -766,11 +766,11 @@ void Player::PlayerStateMachine() {
 
 	case thirdAttack2_:
 		if (animation != &player.thirdAttack2)
-			App->particles->AddParticle(App->particles->thirdAttack, position.x, position.y + 20, COLLIDER_ARROW, NULL, { 0,0 });
+			App->particles->AddParticle(App->particles->thirdAttack, position.x, position.y + P_ATTACK_OFFSET_Y, COLLIDER_ARROW, NULL, { 0,0 });
 		thirdAttackToCheck2 = false;
 		animation = &player.thirdAttack2;
 		if (left)
-			position.x -= 10.0f * dt;
+			position.x -= P_ATTACK_SPEED * dt;
 		if (player.thirdAttack2.Finished()) {
 			player.thirdAttack2.Reset();
 			player.state = idle2_;
@@ -815,7 +815,7 @@ void Player::CheckCollision(iPoint position, iPoint size, int offset, bool &up, 
 
 	BROFILER_CATEGORY("CheckForCollision", Profiler::Color::Azure);
 
-	App->map->culing_offset = 50;
+	App->map->culing_offset = CULING_OFFSET;
 
 	for (int i = position.x - App->map->culing_offset; i < position.x + App->map->culing_offset; i++) {
 		for (int j = position.y - App->map->culing_offset; j < position.y + App->map->culing_offset; j++) {

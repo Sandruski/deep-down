@@ -78,14 +78,12 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	god = false;
-
 	// In-game UI
 	UILifeBar_Info girl_life_bar;
 	girl_life_bar.tex_area = UIElement_Rect::LIFEBAR_FRAME_;
 	girl_life_bar.background = UIElement_Rect::LIFEBAR_BROWN_;
 	girl_life_bar.bar = UIElement_Rect::LIFEBAR_RED_;
-	girl_life_bar.life = 222;
+	girl_life_bar.life = LIFE;
 	girl_life_bar.life_bar_position = { 5,1 };
 	girl_life_bar.horizontal_orientation = CENTER_;
 	progress_bar = App->gui->CreateUILifeBar({ 512,668 }, girl_life_bar, this);
@@ -135,8 +133,9 @@ bool j1Scene::Start()
 	// Pathfinding collision data
 	App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (uchar*)App->map->collisionLayer->data);
 
-	loading = true;
+	god = false;
 	end_of_level_reached = false;
+	loading = true;
 
 	return true;
 }
@@ -169,6 +168,7 @@ bool j1Scene::Update(float dt)
 	// Set window title
 	App->input->GetMousePosition(mouse.x, mouse.y);
 
+	// Lifebar decreasing
 	if (countdown_to_die >= 0.5f)
 	{
 		progress_bar->DecreaseLifeProgress(1);
@@ -176,31 +176,34 @@ bool j1Scene::Update(float dt)
 	}
 	countdown_to_die += dt;
 
+	// Game time
 	count_time += dt;
 	if (count_time < 10)
 		countdown_time->SetText(p2SString("0%i", (int)count_time));
 	else
 		countdown_time->SetText(p2SString("%i", (int)count_time));
 
+	// If a cat is picked, animate!
 	if (activate_UI_anim) {
 		cat_UI->StartAnimation(catsUI_anim);
 		activate_UI_anim = false;
 	}
 
+	// Slider set music and FX volume
 	if (swap_music) {
 		int volume = volume_slider->GetPercent();
-		volume = 128 * volume / 100;
+		volume = MAX_VOLUME * volume / 100;
 		App->audio->SetMusicVolume(volume);
 	}
 	else if (swap_fx && App->audio->active) {
 		int volume = fx_slider->GetPercent();
-		volume = 128 * volume / 100;
+		volume = MAX_VOLUME * volume / 100;
 		App->audio->SetFxVolume(volume);
 	}
 
 	// Pause menu
 	if (menu_bouncing) {
-		if (pause_menu->SlideTransition(App->auxiliar_dt, height / 2, 500.0f, true, 20.0f, 2.0f, false)) {
+		if (pause_menu->SlideTransition(App->auxiliar_dt, height / 2, SLIDE_SLOW_SPEED, true, 20.0f, 2.0f, false)) {
 			menu_position = pause_menu->GetLocalPos();
 			menu_pause_labels[RESUME_]->SetInteraction(true);
 			menu_pause_labels[SAVE_]->SetInteraction(true);
@@ -211,6 +214,7 @@ bool j1Scene::Update(float dt)
 		}
 	}
 
+	// Scene transitions related to player actions
 	if (App->entities->playerData != nullptr) {
 
 		// If player dies, go back to main menu
@@ -220,7 +224,7 @@ bool j1Scene::Update(float dt)
 			App->trans->do_transition = true;
 			App->entities->KillAllEntities();
 			App->trans->back_to_main_menu = true;
-			App->fade->FadeToBlack(this, App->menu, 8.0f, fades::slider_fade);
+			App->fade->FadeToBlack(this, App->menu, FADE_MORE_SECONDS, fades::slider_fade);
 			return true;
 		}
 
@@ -241,7 +245,7 @@ bool j1Scene::Update(float dt)
 
 				if (index == 1) {
 					App->trans->SetNextTransitionInfo(1, true);
-					App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade);
+					App->fade->FadeToBlack(this, this, FADE_LESS_SECONDS, fades::slider_fade);
 					return true;
 				}
 				else {
@@ -249,7 +253,7 @@ bool j1Scene::Update(float dt)
 					App->trans->back_to_main_menu = true;
 					App->trans->SetNextTransitionInfo(1, false);
 					App->trans->highscore = cats_first_map * 100 + cats_second_map * 100 + progress_bar->GetProgress() - count_time;
-					App->fade->FadeToBlack(this, App->menu, 8.0f, fades::slider_fade);
+					App->fade->FadeToBlack(this, App->menu, FADE_MORE_SECONDS, fades::slider_fade);
 					return true;
 				}
 			}
@@ -274,6 +278,7 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing Scene %d", index);
+
 	App->audio->PauseMusic();
 	App->map->UnLoad();
 
@@ -286,6 +291,24 @@ bool j1Scene::CleanUp()
 		App->entities->CleanUp();
 
 	App->gui->ClearAllUI();
+
+	// Set to nullptr the pointers to UI elements
+	cats_score = nullptr;
+	countdown_time = nullptr;
+	cat_UI = nullptr;
+	pause_menu = nullptr;
+
+	for (uint i = 0; i < 5; ++i) {
+		menu_pause_labels[i] = nullptr;
+	}
+
+	menu_pause_checkbox[0] = nullptr;
+	menu_pause_checkbox[1] = nullptr;
+
+	progress_bar = nullptr;
+	closeWindow = nullptr;
+	volume_slider = nullptr;
+	fx_slider = nullptr;
 
 	return true;
 }
@@ -372,14 +395,14 @@ bool j1Scene::Load(pugi::xml_node& save) {
 
 			index = save.child("index").attribute("index").as_uint();
 			App->trans->SetNextTransitionInfo(index, true);
-			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade);
+			App->fade->FadeToBlack(this, this, FADE_LESS_SECONDS, fades::slider_fade);
 		}
 		else {
 			forced_cleanup = true;
 
 			App->trans->continue_game = false;
 			App->trans->SetNextTransitionInfo(index, true);
-			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade); // false false
+			App->fade->FadeToBlack(this, this, FADE_LESS_SECONDS, fades::slider_fade);
 		}
 	}
 
@@ -400,7 +423,8 @@ bool j1Scene::Load(pugi::xml_node& save) {
 }
 
 // Debug keys
-void j1Scene::DebugKeys() {
+void j1Scene::DebugKeys() 
+{
 	// F1: start from the beginning of the first level
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
 		if (App->entities->playerData->player.GetState() == forward_ || App->entities->playerData->player.GetState() == backward_
@@ -419,7 +443,7 @@ void j1Scene::DebugKeys() {
 				index = 0;
 
 			App->trans->SetNextTransitionInfo(0, true);
-			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade);
+			App->fade->FadeToBlack(this, this, FADE_LESS_SECONDS, fades::slider_fade);
 		}
 	}
 
@@ -436,11 +460,9 @@ void j1Scene::DebugKeys() {
 			fx = false;
 
 			App->trans->SetNextTransitionInfo(index, true);
-			App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade);
+			App->fade->FadeToBlack(this, this, FADE_LESS_SECONDS, fades::slider_fade);
 		}
 	}
-
-	// F3: show colliders
 
 	// F4: change between maps
 	if (App->entities->playerData != nullptr) {
@@ -458,7 +480,7 @@ void j1Scene::DebugKeys() {
 				App->entities->playerData->player.SetState(stop_);
 
 				App->trans->SetNextTransitionInfo(index, true);
-				App->fade->FadeToBlack(this, this, 6.0f, fades::slider_fade);
+				App->fade->FadeToBlack(this, this, FADE_LESS_SECONDS, fades::slider_fade);
 			}
 		}
 	}
@@ -494,19 +516,12 @@ void j1Scene::DebugKeys() {
 
 	// ---------------------------------------
 
-	// +, -: adjust music volume
-	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
-		App->audio->ChangeMusicVolume(true); //music volume + 8
-
-	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
-		App->audio->ChangeMusicVolume(false); //music volume - 8
-
 	// 1, 2, 3: camera blit
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->map->blit_offset < 15 && App->map->camera_blit)
-		App->map->blit_offset += 7;
+		App->map->blit_offset += CAM_BLIT_INCREASE_OFFSET;
 
 	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && App->map->blit_offset > -135 && App->map->camera_blit)
-		App->map->blit_offset -= 7;
+		App->map->blit_offset -= CAM_BLIT_INCREASE_OFFSET;
 
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 		App->map->camera_blit = !App->map->camera_blit;
@@ -605,20 +620,17 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			App->gui->DestroyElement(pause_menu); // Closing pause menu
 			App->audio->PlayFx(10);
 		}
-
 		else if (UIelem == (UIElement*)menu_pause_labels[SAVE_])
 		{
 			App->SaveGame();
 			last_index = index;
 			App->audio->PlayFx(10);
 		}
-
 		else if (UIelem == (UIElement*)menu_pause_labels[QUIT_])
 		{
 			App->quit_game = true;
 			App->audio->PlayFx(10);
 		}
-
 		else if (UIelem == (UIElement*)menu_pause_labels[OPTIONS_])
 		{
 			App->audio->PlayFx(10);
@@ -627,29 +639,24 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			}
 			OpeningSubMenuOptions();		
 		}
-
 		else if (UIelem == (UIElement*)menu_pause_checkbox[0]) // Cap_frames checkbox
 		{
 			App->toCap = !App->toCap;
 		}
-
 		else if (UIelem == (UIElement*)menu_pause_checkbox[1]) // Camera_blit checkbox
 		{
 			App->map->camera_blit = !App->map->camera_blit;
 		}
-
 		else if (UIelem == (UIElement*)menu_pause_labels[BACK_])
 		{
 			App->gui->DestroyElement(pause_menu); // Closing pause menu
 			OpeningPauseMenu();
 			App->audio->PlayFx(10);
 		}
-
 		else if (UIelem == (UIElement*)volume_slider)
 		{
 			swap_music = true;
 		}
-
 		else if (UIelem == (UIElement*)fx_slider)
 		{
 			swap_fx = true;
@@ -662,12 +669,10 @@ void j1Scene::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		{
 			swap_music = false;
 		}
-
 		if (UIelem == (UIElement*)volume_slider)
 		{
 			swap_fx = false;
 		}
-
 		else if (UIelem == (UIElement*)closeWindow)
 		{
 			pause = false;

@@ -59,10 +59,6 @@ bool j1Gui::Start()
 	// Load fonts
 	map_fonts[Font_Names::MSMINCHO_] = App->font->Load("Assets/Fonts/MSMINCHO.TTF");
 	map_fonts[Font_Names::ZELDA_] = App->font->Load("Assets/Fonts/Zelda.ttf", 60);
-	map_fonts[Font_Names::SOBAD_] = App->font->Load("Assets/Fonts/So/SOBAD___.ttf");
-	map_fonts[Font_Names::SOBAD_8_] = App->font->Load("Assets/Fonts/So/SOBAD___.ttf", 8);
-	map_fonts[Font_Names::BLACK_BLOC_] = App->font->Load("Assets/Fonts/black_bloc.ttf");
-	map_fonts[Font_Names::DIGITAL7_] = App->font->Load("Assets/Fonts/digital-7.ttf", 16);
 
 	UI_elements_tree = new nTree<UIElement*>((UIElement*)App->win->window);
 

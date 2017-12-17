@@ -55,6 +55,42 @@ bool j1Menu::Awake(pugi::xml_node& config)
 {
 	bool ret = true;
 
+	skip_button_speed = config.child("skip_button_speed").attribute("value").as_float();
+	press_any_button_speed = config.child("press_any_button_speed").attribute("value").as_float();
+	press_any_button_seconds = config.child("press_any_button_seconds").attribute("value").as_float();
+	scene_fade_seconds = config.child("scene_fade_seconds").attribute("value").as_float();
+	start_fade_seconds = config.child("start_fade_seconds").attribute("value").as_float();
+	continue_fade_seconds = config.child("continue_fade_seconds").attribute("value").as_float();
+	options_seconds = config.child("options_seconds").attribute("value").as_float();
+	title_opaque_seconds = config.child("title_opaque_seconds").attribute("value").as_float();
+	
+	camera_speed = config.child("camera_speed").attribute("value").as_float();
+	cat_run = config.child("cat_run").attribute("value").as_float();
+	cat_jump.x = config.child("cat_jump").attribute("x").as_float();
+	cat_jump.y = config.child("cat_jump").attribute("y").as_float();
+	
+	cat_width_roll.x = config.child("cat_width_roll").attribute("x").as_float();
+	cat_width_roll.y = config.child("cat_width_roll").attribute("y").as_float();
+
+	cat_height_roll.x = config.child("cat_height_roll").attribute("x").as_float();
+	cat_height_roll.y = config.child("cat_height_roll").attribute("y").as_float();
+
+	cat_roll.x = config.child("cat_roll").attribute("x").as_float();
+	cat_roll.y = config.child("cat_roll").attribute("y").as_float();
+	seconds_stop_jumping = config.child("seconds_stop_jumping").attribute("value").as_float();
+	cat_seconds = config.child("cat_seconds").attribute("value").as_float();
+
+	cat_final_position.x = config.child("cat_final_pos").attribute("x").as_int();
+	cat_final_position.y = config.child("cat_final_pos").attribute("y").as_int();
+	
+	cam_start_pos.x = config.child("camera_start_tile").attribute("x").as_int();
+	cam_start_pos.y = config.child("camera_start_tile").attribute("y").as_int();
+
+	title_pos.x = config.child("title_pos").attribute("x").as_int();
+	title_pos.y = config.child("title_pos").attribute("y").as_int();
+	title_track.x = config.child("title_track").attribute("x").as_int();
+	title_track.y = config.child("title_track").attribute("y").as_int();
+	
 	return ret;
 }
 
@@ -73,16 +109,16 @@ bool j1Menu::Start()
 		App->entities->AddEntities();
 
 	App->audio->PlayMusic("MenuTheme.ogg");
-	App->audio->SetMusicVolume(100);
+	App->audio->SetMusicVolume(MENU_THEME_VOLUME);
 
 	// Get screen parameters
 	App->win->GetWindowSize(width, height);
 	scale = App->win->GetScale();
 
 	// Set camera position
-	camera_start_position = { 22,0 };
+	camera_start_position = { cam_start_pos.x,cam_start_pos.y };
 	camera_start_position = App->map->MapToWorld(camera_start_position.x, camera_start_position.y);
-	App->render->camera.x = -(camera_start_position.x + 10) * scale;
+	App->render->camera.x = -(camera_start_position.x + CAMERA_OFFSET) * scale;
 	App->render->camera.y = camera_start_position.y * scale;
 
 	// Create UI elements
@@ -102,8 +138,8 @@ bool j1Menu::Start()
 	label.draggable = false;
 
 	label.text = "D";
-	iPoint title_position = { 70 * scale,55 * scale };
-	iPoint tracking = { 5,12 };
+	iPoint title_position = { title_pos.x * scale,title_pos.y * scale };
+	iPoint tracking = { title_track.x,title_track.y };
 	uint i = 0;
 	title_letters[i] = App->gui->CreateUILabel({ title_position.x,title_position.y }, label);
 
@@ -274,8 +310,6 @@ bool j1Menu::Start()
 	entity.position = { camera_start_position.x,50 };
 	cat = (Cat*)App->entities->SpawnEntity(entity);
 
-	float cat_seconds = 2.5f;
-
 	cat_position_increment[i] = 45.0f;
 	cat_position_increment[++i] = 65.0f;
 	cat_position_increment[++i] = 85.0f;
@@ -287,7 +321,6 @@ bool j1Menu::Start()
 	i = 0;
 	//_cat
 
-	iPoint cat_final_position = { 627,190 };
 	if (App->trans->back_to_main_menu) {
 		cat->position = { (float)cat_final_position.x, (float)cat_final_position.y };
 		menuCatState = MenuCatState::MC_AT_GROUND_;
@@ -311,36 +344,14 @@ bool j1Menu::Update(float dt)
 
 	if (swap_music && music_slider != nullptr) {
 		int volume = music_slider->GetPercent();
-		volume = 128 * volume / 100;
+		volume = MAX_VOLUME * volume / 100;
 		App->audio->SetMusicVolume(volume);
 	}
 	else if (swap_fx && App->audio->active && FX_slider != nullptr) {
 		int volume = FX_slider->GetPercent();
-		volume = 128 * volume / 100;
+		volume = MAX_VOLUME * volume / 100;
 		App->audio->SetFxVolume(volume);
 	}
-
-	// Time variables
-	float skip_button_speed = 2.5f;
-	float press_any_button_speed = 1.5f;
-
-	float press_any_button_seconds = 2.0f;
-	float scene_fade_seconds = 5.0f;
-	float start_fade_seconds = 6.0f;
-	float continue_fade_seconds = 1.0f;
-	float options_seconds = 3.0f;
-	float title_opaque_seconds = 1.0f;
-
-	float camera_speed = 300.0f;
-
-	// Cat variables
-	iPoint cat_final_position = { 627,190 };
-	float cat_run = 30.0f;
-	fPoint cat_jump = { 20.0f, 20.0f };
-	fPoint cat_width_roll = { 20.0f, 6.0f };
-	fPoint cat_height_roll = { 15.0f, 25.0f };
-	fPoint cat_roll = { 10.0f, 20.0f };
-	float seconds_stop_jumping = 2.0f;
 
 	// Update cat
 	if (cat != nullptr)
@@ -469,10 +480,9 @@ bool j1Menu::Update(float dt)
 		break;
 	}
 
+	float alpha = 0.0f;
 	bool is_button_invisible = false;
 	bool is_black_screen_image_invisible = false;
-	float alpha = 0.0f;
-
 	bool first_letter = false;
 	bool second_letter = false;
 	bool third_letter = false;
@@ -490,7 +500,7 @@ bool j1Menu::Update(float dt)
 		// Skip
 		if (menuCatState > MenuCatState::NO_CAT_) {
 
-			if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+			if (App->input->IsAnyKeyPressed()) {
 				skip->SetColor({ skip->GetColor().r,skip->GetColor().g,skip->GetColor().b,0 });
 
 				for (uint i = 0; i < 8; ++i)
@@ -512,14 +522,14 @@ bool j1Menu::Update(float dt)
 		//_skip
 
 		if (print_title) {
-			if (title_letters[0]->IntermitentFade(1.2f, false)) {
-				if (title_letters[1]->IntermitentFade(1.2f, false)) {
-					if (title_letters[2]->IntermitentFade(1.2f, false)) {
-						if (title_letters[3]->IntermitentFade(1.2f, false)) {
-							if (title_letters[4]->IntermitentFade(1.2f, false)) {
-								if (title_letters[5]->IntermitentFade(1.2f, false)) {
-									if (title_letters[6]->IntermitentFade(1.2f, false)) {
-										if (title_letters[7]->IntermitentFade(1.2f, false)) {
+			if (title_letters[0]->IntermitentFade(INTERMITENT_FADE, false)) {
+				if (title_letters[1]->IntermitentFade(INTERMITENT_FADE, false)) {
+					if (title_letters[2]->IntermitentFade(INTERMITENT_FADE, false)) {
+						if (title_letters[3]->IntermitentFade(INTERMITENT_FADE, false)) {
+							if (title_letters[4]->IntermitentFade(INTERMITENT_FADE, false)) {
+								if (title_letters[5]->IntermitentFade(INTERMITENT_FADE, false)) {
+									if (title_letters[6]->IntermitentFade(INTERMITENT_FADE, false)) {
+										if (title_letters[7]->IntermitentFade(INTERMITENT_FADE, false)) {
 
 											if (timer >= title_opaque_seconds) {
 												for (uint i = 0; i < 8; ++i)
@@ -539,7 +549,6 @@ bool j1Menu::Update(float dt)
 				}
 			}
 		}		
-
 		break;
 
 	case MenuState::PRESS_ANY_BUTTON_:
@@ -550,8 +559,7 @@ bool j1Menu::Update(float dt)
 				press_any_button->ResetFade();
 				menuState = MenuState::TRANSITION_TO_MAIN_MENU_;
 				break;
-			}
-			
+			}		
 			press_any_button->IntermitentFade(press_any_button_seconds);
 		}
 		else
@@ -574,15 +582,15 @@ bool j1Menu::Update(float dt)
 
 		if (from_settings || from_credits) {
 			if (from_settings) {
-				if (App->render->camera.x > -(camera_start_position.x + 10) * scale) {
+				if (App->render->camera.x > -(camera_start_position.x + CAMERA_OFFSET) * scale) {
 					if (camera_speed * dt > 1)
 						App->render->camera.x -= camera_speed * dt;
 					else
 						App->render->camera.x -= 1;
 				}
 				else {
-					if (App->render->camera.x < -(camera_start_position.x + 10) * scale)
-						App->render->camera.x = -(camera_start_position.x + 10) * scale;
+					if (App->render->camera.x < -(camera_start_position.x + CAMERA_OFFSET) * scale)
+						App->render->camera.x = -(camera_start_position.x + CAMERA_OFFSET) * scale;
 					camera_moved = true;
 				}
 			}
@@ -604,35 +612,35 @@ bool j1Menu::Update(float dt)
 		if (camera_moved) {
 			blit_cat = true;
 
-			alpha = App->gui->IncreaseDecreaseAlpha(0.0f, 255.0f, options_seconds);
+			alpha = App->gui->IncreaseDecreaseAlpha(0.0f, MAX_ALPHA, options_seconds);
 			App->gui->SetTextureAlphaMod(alpha);
 
 			main_menu_options[0]->SetColor({ main_menu_options[0]->GetColor().r,main_menu_options[0]->GetColor().g,main_menu_options[0]->GetColor().b,(Uint8)alpha });
-			if (alpha >= 1.0f * (255.0f / 5.0f) && continue_button) {
+			if (alpha >= 1.0f * (MAX_ALPHA / 5.0f) && continue_button) {
 				main_menu_options[1]->SetColor({ main_menu_options[1]->GetColor().r,main_menu_options[1]->GetColor().g,main_menu_options[1]->GetColor().b,(Uint8)alpha });
 			}
-			if (alpha >= 2.0f * (255.0f / 5.0f))
+			if (alpha >= 2.0f * (MAX_ALPHA / 5.0f))
 				main_menu_options[2]->SetColor({ main_menu_options[2]->GetColor().r,main_menu_options[2]->GetColor().g,main_menu_options[2]->GetColor().b,(Uint8)alpha });
-			if (alpha >= 3.0f * (255.0f / 5.0f))
+			if (alpha >= 3.0f * (MAX_ALPHA / 5.0f))
 				main_menu_options[3]->SetColor({ main_menu_options[3]->GetColor().r,main_menu_options[3]->GetColor().g,main_menu_options[3]->GetColor().b,(Uint8)alpha });
-			if (alpha >= 4.0f * (255.0f / 5.0f))
+			if (alpha >= 4.0f * (MAX_ALPHA / 5.0f))
 				main_menu_options[4]->SetColor({ main_menu_options[4]->GetColor().r,main_menu_options[4]->GetColor().g,main_menu_options[4]->GetColor().b,(Uint8)alpha });
 
-			if (alpha == 255.0f) {
+			if (alpha == MAX_ALPHA) {
 
-				first_letter = title_letters[0]->IntermitentFade(1.2f, false, true);
-				second_letter = title_letters[1]->IntermitentFade(1.2f, false, true);
-				third_letter = title_letters[2]->IntermitentFade(1.2f, false, true);
-				fourth_letter = title_letters[3]->IntermitentFade(1.2f, false, true);
-				fifth_letter = title_letters[4]->IntermitentFade(1.2f, false, true);
-				sixth_letter = title_letters[5]->IntermitentFade(1.2f, false, true);
-				seventh_letter = title_letters[6]->IntermitentFade(1.2f, false, true);
-				eighth_letter = title_letters[7]->IntermitentFade(1.2f, false, true);
+				first_letter = title_letters[0]->IntermitentFade(INTERMITENT_FADE, false, true);
+				second_letter = title_letters[1]->IntermitentFade(INTERMITENT_FADE, false, true);
+				third_letter = title_letters[2]->IntermitentFade(INTERMITENT_FADE, false, true);
+				fourth_letter = title_letters[3]->IntermitentFade(INTERMITENT_FADE, false, true);
+				fifth_letter = title_letters[4]->IntermitentFade(INTERMITENT_FADE, false, true);
+				sixth_letter = title_letters[5]->IntermitentFade(INTERMITENT_FADE, false, true);
+				seventh_letter = title_letters[6]->IntermitentFade(INTERMITENT_FADE, false, true);
+				eighth_letter = title_letters[7]->IntermitentFade(INTERMITENT_FADE, false, true);
 
 				if (first_letter && second_letter && third_letter && fourth_letter && fifth_letter && sixth_letter && seventh_letter && eighth_letter) {
 
-					if (highscore_value->SlideTransition(dt, (int)height / 6, 800.0f, true, 10.0f, 3.0f)) {
-						if (highscore_text->SlideTransition(dt, (int)height / 10, 800.0f, true, 10.0f, 3.0f)) {
+					if (highscore_value->SlideTransition(dt, (int)height / 6, SLIDE_FAST_SPEED, true, 10.0f, 3.0f)) {
+						if (highscore_text->SlideTransition(dt, (int)height / 10, SLIDE_FAST_SPEED, true, 10.0f, 3.0f)) {
 							for (uint i = 0; i < 5; ++i) {
 								if (i == 1) {
 									if (continue_button) {
@@ -659,23 +667,23 @@ bool j1Menu::Update(float dt)
 			}
 		}
 		else if (!from_settings && !from_credits && !App->trans->back_to_main_menu) {
-			alpha = App->gui->IncreaseDecreaseAlpha(0.0f, 255.0f, options_seconds);
+			alpha = App->gui->IncreaseDecreaseAlpha(0.0f, MAX_ALPHA, options_seconds);
 			App->gui->SetTextureAlphaMod(alpha);
 
 			main_menu_options[0]->SetColor({ main_menu_options[0]->GetColor().r,main_menu_options[0]->GetColor().g,main_menu_options[0]->GetColor().b,(Uint8)alpha });
-			if (alpha >= 1.0f * (255.0f / 5.0f) && continue_button)
+			if (alpha >= 1.0f * (MAX_ALPHA / 5.0f) && continue_button)
 				main_menu_options[1]->SetColor({ main_menu_options[1]->GetColor().r,main_menu_options[1]->GetColor().g,main_menu_options[1]->GetColor().b,(Uint8)alpha });
-			if (alpha >= 2.0f * (255.0f / 5.0f))
+			if (alpha >= 2.0f * (MAX_ALPHA / 5.0f))
 				main_menu_options[2]->SetColor({ main_menu_options[2]->GetColor().r,main_menu_options[2]->GetColor().g,main_menu_options[2]->GetColor().b,(Uint8)alpha });
-			if (alpha >= 3.0f * (255.0f / 5.0f))
+			if (alpha >= 3.0f * (MAX_ALPHA / 5.0f))
 				main_menu_options[3]->SetColor({ main_menu_options[3]->GetColor().r,main_menu_options[3]->GetColor().g,main_menu_options[3]->GetColor().b,(Uint8)alpha });
-			if (alpha >= 4.0f * (255.0f / 5.0f))
+			if (alpha >= 4.0f * (MAX_ALPHA / 5.0f))
 				main_menu_options[4]->SetColor({ main_menu_options[4]->GetColor().r,main_menu_options[4]->GetColor().g,main_menu_options[4]->GetColor().b,(Uint8)alpha });
 
 			if (alpha == 255.0f) {
 
-				if (highscore_value->SlideTransition(dt, (int)height / 6, 800.0f, true, 10.0f, 3.0f)) {
-					if (highscore_text->SlideTransition(dt, (int)height / 10, 800.0f, true, 10.0f, 3.0f)) {
+				if (highscore_value->SlideTransition(dt, (int)height / 6, SLIDE_FAST_SPEED, true, 10.0f, 3.0f)) {
+					if (highscore_text->SlideTransition(dt, (int)height / 10, SLIDE_FAST_SPEED, true, 10.0f, 3.0f)) {
 
 						for (uint i = 0; i < 5; ++i) {
 							if (i == 1) {
@@ -716,13 +724,13 @@ bool j1Menu::Update(float dt)
 				if (App->render->camera.x > -10)
 					App->render->camera.x = 0;
 
-				if (settings_window->SlideTransition(dt, height / 2, 500.0f, true, 20.0f, 2.0f)) {
-					if (music_volume_text->IntermitentFade(1.0f, false, true)) {
-						if (FX_volume_text->IntermitentFade(1.0f, false, true)) {
-							if (fullscreen_text->IntermitentFade(1.0f, false, true)) {
-								if (cap_frames_text->IntermitentFade(1.0f, false, true)) {
-									if (camera_blit_text->IntermitentFade(1.0f, false, true)) {
-										if (back_to_main_menu_from_settings->SlideTransition(dt, height - 50, 500.0f, true, 10.0f, 2.0f, false)) {
+				if (settings_window->SlideTransition(dt, height / 2, SLIDE_SLOW_SPEED, true, 20.0f, 2.0f)) {
+					if (music_volume_text->IntermitentFade(CS_INTERMITENT_FADE, false, true)) {
+						if (FX_volume_text->IntermitentFade(CS_INTERMITENT_FADE, false, true)) {
+							if (fullscreen_text->IntermitentFade(CS_INTERMITENT_FADE, false, true)) {
+								if (cap_frames_text->IntermitentFade(CS_INTERMITENT_FADE, false, true)) {
+									if (camera_blit_text->IntermitentFade(CS_INTERMITENT_FADE, false, true)) {
+										if (back_to_main_menu_from_settings->SlideTransition(dt, height - 50, SLIDE_SLOW_SPEED, true, 10.0f, 2.0f, false)) {
 											settings_window->SetInteraction(true);
 											fullscreen_checkbox->SetInteraction(true);
 											cap_frames_checkbox->SetInteraction(true);
@@ -763,13 +771,13 @@ bool j1Menu::Update(float dt)
 				if (App->render->camera.y < -(int)height - 2 * 16 * scale)
 					App->render->camera.y = -(int)height - 2 * 16 * scale;
 
-				if (license_slider->SlideTransition(dt, (int)height / 2 - (int)height / 5, 800.0f, true, 10.0f, 2.0f, false)) {
-					if (credits_window->SlideTransition(dt, (int)height / 2 + (int)height / 8, 500.0f, true, 20.0f, 2.0f, false)) {
-						if (license_title->IntermitentFade(1.0f, false, true)) {
-							if (authors_title->IntermitentFade(1.0f, false, true)) {
-								if (authors_description->IntermitentFade(1.0f, false, true)) {
-									if (website_button->SlideTransition(dt, (int)height / 2 + (int)height / 6, 800.0f, true, 10.0f, 2.0f, false)) {
-										if (back_to_main_menu_from_credits->SlideTransition(dt, 50, 500.0f, true, 10.0f, 2.0f)) {
+				if (license_slider->SlideTransition(dt, (int)height / 2 - (int)height / 5, SLIDE_FAST_SPEED, true, 10.0f, 2.0f, false)) {
+					if (credits_window->SlideTransition(dt, (int)height / 2 + (int)height / 8, SLIDE_SLOW_SPEED, true, 20.0f, 2.0f, false)) {
+						if (license_title->IntermitentFade(CS_INTERMITENT_FADE, false, true)) {
+							if (authors_title->IntermitentFade(CS_INTERMITENT_FADE, false, true)) {
+								if (authors_description->IntermitentFade(CS_INTERMITENT_FADE, false, true)) {
+									if (website_button->SlideTransition(dt, (int)height / 2 + (int)height / 6, SLIDE_FAST_SPEED, true, 10.0f, 2.0f, false)) {
+										if (back_to_main_menu_from_credits->SlideTransition(dt, 50, SLIDE_SLOW_SPEED, true, 10.0f, 2.0f)) {
 											website_button->SetInteraction(true);
 											website_title->SetInteraction(true);
 											back_to_main_menu_from_credits->SetInteraction(true);
@@ -1060,10 +1068,6 @@ bool j1Menu::CleanUp()
 	press_any_button = nullptr;
 	skip = nullptr;
 	black_screen_image = nullptr;
-
-	memset(title_letters, 0, 8);
-	memset(main_menu_buttons, 0, 5);
-	memset(main_menu_options, 0, 5);
 
 	App->map->UnLoad();
 	App->scene->active = true;
@@ -1356,7 +1360,7 @@ void j1Menu::CreateCreditsUIElements()
 	label.horizontal_orientation = UIElement_HORIZONTAL_POS::LEFT_;
 	label.vertical_orientation = UIElement_VERTICAL_POS::TOP_;
 	label.normal_color = White_;
-	label.text = "Sandra Alvarez Garcia and Guillem Costa Miquel";
+	label.text = "Sandra & Guillem";
 	authors_description = App->gui->CreateUILabel({ 120, (int)height / 2 + (int)height / 8 - App->gui->GetRectFromAtlas(UIElement_Rect::SMALL_WINDOW_).h * scale / 2 + 50 }, label, this);
 	authors_description->SetColor({ authors_title->GetColor().r,authors_title->GetColor().g,authors_title->GetColor().b,0 });
 	label.text = "MIT License Copyright(c) 2017 Sandra Alvarez & Guillem Costa\n\n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files(the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\n THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";

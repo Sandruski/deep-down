@@ -35,6 +35,32 @@
     <volume default="16"/>
   </audio>
 
+  <menu>
+    <camera_start_tile x="22" y="0"/>
+    <title_pos x="70" y="55"/>
+    <title_track x="5" y="12"/>
+    <cat_seconds value="2.5"/>
+    <cat_final_pos x="627" y="190"/>
+
+    <skip_button_speed value="2.5"/>
+    <press_any_button_speed value="1.5"/>
+    <press_any_button_seconds value="2.0"/>
+    <scene_fade_seconds value="5.0"/>
+    <start_fade_seconds value="6.0"/>
+    <continue_fade_seconds value="1.0"/>
+    <options_seconds value="3.0"/>
+    <title_opaque_seconds value="1.0"/>
+    
+    <camera_speed value="300"/>
+
+    <cat_run value="30"/>
+    <cat_jump x="20" y="20"/>
+    <cat_width_roll x="20" y="6"/>
+    <cat_height_roll x="15" y="25"/>
+    <cat_roll x="10" y="20"/>
+    <seconds_stop_jumping value="2.0"/>
+  </menu>
+
   <gui>
     <atlas file="Assets/Sprites/UI/atlas.png"/>
     <UI_elements_rects>

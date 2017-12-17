@@ -5,6 +5,8 @@
 #include "p2Point.h"
 #include "j1FadeToBlack.h"
 
+#define QUAD_SECONDS 7
+
 struct UILabel;
 struct UICursor;
 struct UIImage;

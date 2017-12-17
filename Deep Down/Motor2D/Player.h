@@ -4,6 +4,20 @@
 #include "Entity.h"
 #include "Animation.h"
 
+#define GRAVITY 125
+#define P_GRAVITY 90
+#define P_NORMAL_SPEED 125
+#define P_JUMP_SPEED 60
+#define P_JUMP 100
+#define P_ATTACK_SPEED 10
+#define P_ATTACK_OFFSET_X 35
+#define P_ATTACK_OFFSET_Y 20
+#define CULING_OFFSET 50
+#define CROUCH_SHOT_X 5
+#define CROUCH_SHOT_Y 38
+#define SHOT_X 5
+#define SHOT_Y 22
+
 enum playerstates {
 	null_,
 	stop_,

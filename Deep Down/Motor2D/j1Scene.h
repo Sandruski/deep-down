@@ -6,6 +6,10 @@
 #include "Animation.h"
 
 #define LABELS_POS_MOUSE_ENTER {3,0}
+#define CAM_BLIT_INCREASE_OFFSET 7
+#define FADE_LESS_SECONDS 6
+#define FADE_MORE_SECONDS 8
+#define LIFE 222
 
 struct SDL_Texture;
 struct UILifeBar;
@@ -76,17 +80,14 @@ public:
 	uint height = 0;
 	uint scale = 0;
 
-	bool gate = false, fx = false, loading = true;
-	bool loading_state = false;
-	bool forced_cleanup = false;
-	bool end_of_level_reached = false;
-
+	// Map
 	uint index = 0;
 	uint last_index = 0;
+	bool gate = false, fx = false;
 
+	// Player
+	bool end_of_level_reached = false;
 	bool god = false;
-	bool pause = false;
-	bool back_to_main_menu = false;
 
 	// Cats score
 	uint cats_first_map = 0;
@@ -94,11 +95,19 @@ public:
 	UILabel* cats_score = nullptr;
 	bool activate_UI_anim = false;
 
+	// Pause menu
+	bool pause = false;
 	bool menu_bouncing = false;
 	iPoint menu_position = { 0,0 };
 
-private:
+	// Save and load
+	bool loading = true;
+	bool loading_state = false;
+	bool forced_cleanup = false;
+	bool back_to_main_menu = false;
+	bool check_continue = false;
 
+private:
 	p2SString map1 = nullptr;
 	p2SString map2 = nullptr;
 	p2SString song1 = nullptr;
@@ -111,7 +120,7 @@ private:
 
 	iPoint mouse = { 0,0 };
 
-	// Ingame UI
+	// In-game UI
 	UILabel* countdown_time = nullptr;
 	UIImage* cat_UI = nullptr;
 	Animation catsUI_anim;
@@ -120,13 +129,11 @@ private:
 	UIWindow* pause_menu = nullptr;
 	UILabel* menu_pause_labels[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
 	UIButton* menu_pause_checkbox[2] = { nullptr, nullptr };
-	UIButton* closeWindow;
+	UIButton* closeWindow = nullptr;
 	UISlider* volume_slider = nullptr;
 	UISlider* fx_slider = nullptr;
 	bool swap_music = false;
 	bool swap_fx = false;
-
-	bool check_continue = false;
 
 public:
 	UILifeBar* progress_bar = nullptr;

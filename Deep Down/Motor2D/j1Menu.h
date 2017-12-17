@@ -5,6 +5,15 @@
 
 #include "Animation.h"
 
+#define MENU_THEME_VOLUME 100
+#define MAX_VOLUME 128
+#define CAMERA_OFFSET 10
+#define MAX_ALPHA 255
+#define SLIDE_SLOW_SPEED 500
+#define SLIDE_FAST_SPEED 800
+#define INTERMITENT_FADE 1.2
+#define CS_INTERMITENT_FADE 1
+
 struct SDL_Texture;
 struct Cat;
 struct UILabel;
@@ -80,7 +89,7 @@ private:
 	Cat* cat = nullptr;
 	float cat_position_increment[8];
 
-	// UI Elements
+	// UI elements
 	// Main menu
 	UILabel* title_letters[8] = { nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr };
 	UILabel* main_menu_options[5] = { nullptr,nullptr,nullptr,nullptr,nullptr };
@@ -94,6 +103,8 @@ private:
 	UIImage* black_screen_image = nullptr;
 
 	// Settings
+	UIWindow* settings_window = nullptr;
+
 	UILabel* music_volume_text = nullptr;
 	UILabel* FX_volume_text = nullptr;
 	UILabel* fullscreen_text = nullptr;
@@ -122,35 +133,58 @@ private:
 	UIButton* website_button = nullptr;
 
 	UISlider* license_slider = nullptr;
+	//_UI_elements
 
-	// Credits slider
+	// Screen parameters
+	uint width = 0, height = 0;
+	int scale = 0;
+
+	// Camera
+	iPoint cam_start_pos = { 0,0 };
+	iPoint camera_start_position = { 0,0 };
+	float camera_speed = 0.0f;
+
+	// Time variables
+	float skip_button_speed = 0.0f;
+	float press_any_button_speed = 0.0f;
+	float press_any_button_seconds = 0.0f;
+	float scene_fade_seconds = 0.0f;
+	float start_fade_seconds = 0.0f;
+	float continue_fade_seconds = 0.0f;
+	float options_seconds = 0.0f;
+	float title_opaque_seconds = 0.0f;
+	float timer = 0.0f;
+
+	// Cat variables
+	iPoint cat_final_position = { 627,190 };
+	float cat_run = 0.0f;
+	fPoint cat_jump = { 0.0f, 0.0f };
+	fPoint cat_width_roll = { 0.0f, 0.0f };
+	fPoint cat_height_roll = { 0.0f, 0.0f };
+	fPoint cat_roll = { 0.0f, 0.0f };
+	float seconds_stop_jumping = 0.0f;
+	float cat_seconds = 0.0f;
+
+	// Other
+	iPoint title_pos = { 0,0 };
+	iPoint title_track = { 0,0 };
+
+	bool swap_music = false;
+	bool swap_fx = false;
+
 	bool sliding = false;
 	int last_slide = 0;
-
-	float timer = 0;
 
 	bool print_title = false;
 	bool blit_cat = true;
 
 	bool from_settings = false;
 	bool from_credits = false;
-	bool camera_moved = false;
 	bool settings_done = false;
 	bool credits_done = false;
-
-	// Screen parameters
-	uint width = 0, height = 0;
-	int scale = 0;
-
-	iPoint camera_start_position = { 0,0 };
-
-	bool swap_music = false;
-	bool swap_fx = false;
+	bool camera_moved = false;
 
 	bool continue_button = false;
-
-public:
-	UIWindow* settings_window = nullptr;
 };
 
 #endif // __j1MENU_H__

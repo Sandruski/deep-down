@@ -62,7 +62,7 @@ bool j1BetweenTransitions::Update(float dt)
 	if (black_screen_image != nullptr) {
 		timer += 1.0f * dt;
 
-		if (timer <= 7.0f)
+		if (timer <= QUAD_SECONDS)
 			black_screen_image->Draw();
 		else {
 			timer = 0.0f;
