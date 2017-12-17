@@ -63,9 +63,6 @@ bool j1Menu::Start()
 {
 	bool ret = true;
 
-	camera_blit = App->map->camera_blit;
-	App->map->camera_blit = false;
-
 	// Set Default Score
 	App->scene->cats_first_map = 0;
 	App->scene->cats_second_map = 0;
@@ -421,7 +418,6 @@ bool j1Menu::Update(float dt)
 
 		if (cat->position.x >= camera_start_position.x + cat_position_increment[7]) {
 			menuCatState = MenuCatState::NO_CAT_;
-			App->map->camera_blit = camera_blit;
 
 			App->trans->SetNextTransitionInfo(0, true);
 			App->fade->FadeToBlack(this, App->scene, level_fade_seconds, fades::slider_fade);
@@ -435,7 +431,6 @@ bool j1Menu::Update(float dt)
 
 		if (cat->position.x >= camera_start_position.x + cat_position_increment[7]) {
 			menuCatState = MenuCatState::NO_CAT_;
-			App->map->camera_blit = camera_blit;
 
 			// Fade? On-off?
 			/*
@@ -564,14 +559,20 @@ bool j1Menu::Update(float dt)
 			if (from_settings) {
 				if (App->render->camera.x > -(camera_start_position.x + 10) * scale)
 					App->render->camera.x -= camera_speed * dt;
-				else
+				else {
+					if (App->render->camera.x < -(camera_start_position.x + 10) * scale)
+						App->render->camera.x = -(camera_start_position.x + 10) * scale;
 					camera_moved = true;
+				}
 			}
 			else if (from_credits) {
 				if (App->render->camera.y < 0)
 					App->render->camera.y += camera_speed * dt;
-				else
+				else {
+					if (App->render->camera.y > 0)
+						App->render->camera.y = 0;
 					camera_moved = true;
+				}
 			}
 		}
 
@@ -662,24 +663,29 @@ bool j1Menu::Update(float dt)
 	case MenuState::AT_SETTINGS_:
 		blit_cat = false;
 
-		if (App->render->camera.x < -1)
+		if (App->render->camera.x < -10)
 			App->render->camera.x += camera_speed * dt;
-		else if (!settings_done) {
-			if (settings_window->SlideTransition(dt, height / 2, 500.0f, true, 20.0f, 2.0f)) {
-				if (music_volume_text->IntermitentFade(1.0f, false, true)) {
-					if (FX_volume_text->IntermitentFade(1.0f, false, true)) {
-						if (fullscreen_text->IntermitentFade(1.0f, false, true)) {
-							if (cap_frames_text->IntermitentFade(1.0f, false, true)) {
-								if (camera_blit_text->IntermitentFade(1.0f, false, true)) {
-									if (back_to_main_menu_from_settings->SlideTransition(dt, height - 50, 500.0f, true, 10.0f, 2.0f, false)) {
-										settings_window->SetInteraction(true);
-										fullscreen_checkbox->SetInteraction(true);
-										cap_frames_checkbox->SetInteraction(true);
-										camera_blit_checkbox->SetInteraction(true);
-										back_to_main_menu_from_settings->SetInteraction(true);
-										FX_slider->SetInteraction(true);
-										music_slider->SetInteraction(true);
-										settings_done = true;
+		else {
+			if (!settings_done) {
+				if (App->render->camera.x > -10)
+					App->render->camera.x = 0;
+
+				if (settings_window->SlideTransition(dt, height / 2, 500.0f, true, 20.0f, 2.0f)) {
+					if (music_volume_text->IntermitentFade(1.0f, false, true)) {
+						if (FX_volume_text->IntermitentFade(1.0f, false, true)) {
+							if (fullscreen_text->IntermitentFade(1.0f, false, true)) {
+								if (cap_frames_text->IntermitentFade(1.0f, false, true)) {
+									if (camera_blit_text->IntermitentFade(1.0f, false, true)) {
+										if (back_to_main_menu_from_settings->SlideTransition(dt, height - 50, 500.0f, true, 10.0f, 2.0f, false)) {
+											settings_window->SetInteraction(true);
+											fullscreen_checkbox->SetInteraction(true);
+											cap_frames_checkbox->SetInteraction(true);
+											camera_blit_checkbox->SetInteraction(true);
+											back_to_main_menu_from_settings->SetInteraction(true);
+											FX_slider->SetInteraction(true);
+											music_slider->SetInteraction(true);
+											settings_done = true;
+										}
 									}
 								}
 							}
@@ -702,19 +708,24 @@ bool j1Menu::Update(float dt)
 
 		if (App->render->camera.y > -(int)height - 2*16*scale)
 			App->render->camera.y -= camera_speed * dt;
-		else if (!credits_done) {
-			if (license_slider->SlideTransition(dt, (int)height / 2 - (int)height / 5, 800.0f, true, 10.0f, 2.0f, false)) {
-				if (credits_window->SlideTransition(dt, (int)height / 2 + (int)height / 8, 500.0f, true, 20.0f, 2.0f, false)) {
-					if (license_title->IntermitentFade(1.0f, false, true)) {
-						if (authors_title->IntermitentFade(1.0f, false, true)) {
-							if (authors_description->IntermitentFade(1.0f, false, true)) {
-								if (website_button->SlideTransition(dt, (int)height / 2 + (int)height / 6, 800.0f, true, 10.0f, 2.0f, false)) {
-									if (back_to_main_menu_from_credits->SlideTransition(dt, 50, 500.0f, true, 10.0f, 2.0f)) {
-										website_button->SetInteraction(true);
-										website_title->SetInteraction(true);
-										back_to_main_menu_from_credits->SetInteraction(true);
-										license_slider->SetInteraction(true);
-										credits_done = true;
+		else {
+			if (!credits_done) {
+				if (App->render->camera.y < -(int)height - 2 * 16 * scale)
+					App->render->camera.y = -(int)height - 2 * 16 * scale;
+
+				if (license_slider->SlideTransition(dt, (int)height / 2 - (int)height / 5, 800.0f, true, 10.0f, 2.0f, false)) {
+					if (credits_window->SlideTransition(dt, (int)height / 2 + (int)height / 8, 500.0f, true, 20.0f, 2.0f, false)) {
+						if (license_title->IntermitentFade(1.0f, false, true)) {
+							if (authors_title->IntermitentFade(1.0f, false, true)) {
+								if (authors_description->IntermitentFade(1.0f, false, true)) {
+									if (website_button->SlideTransition(dt, (int)height / 2 + (int)height / 6, 800.0f, true, 10.0f, 2.0f, false)) {
+										if (back_to_main_menu_from_credits->SlideTransition(dt, 50, 500.0f, true, 10.0f, 2.0f)) {
+											website_button->SetInteraction(true);
+											website_title->SetInteraction(true);
+											back_to_main_menu_from_credits->SetInteraction(true);
+											license_slider->SetInteraction(true);
+											credits_done = true;
+										}
 									}
 								}
 							}
@@ -739,12 +750,12 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 
 	case UIEvents::MOUSE_LEFT_CLICK_:
 
-		if (UIelem == license_slider) {
+		if (UIelem == (UIElement*)license_slider) {
 			sliding = true;
 			break;
 		}
 
-		else if (UIelem == fullscreen_checkbox)
+		else if (UIelem == (UIElement*)fullscreen_checkbox)
 		{
 			if (App->win->fullscreen) {
 				App->win->fullscreen = false;
@@ -758,23 +769,23 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			}
 		}
 
-		else if (UIelem == cap_frames_checkbox)
+		else if (UIelem == (UIElement*)cap_frames_checkbox)
 		{
 			App->toCap = !App->toCap;
 			break;
 		}
 
-		else if (UIelem == camera_blit_checkbox)
+		else if (UIelem == (UIElement*)camera_blit_checkbox)
 		{
 			App->map->camera_blit = !App->map->camera_blit;
 			break;
 		}
 
-		else if (UIelem == music_slider) {
+		else if (UIelem == (UIElement*)music_slider) {
 			swap_music = true;
 			break;
 		}
-		else if (UIelem == FX_slider) {
+		else if (UIelem == (UIElement*)FX_slider) {
 			swap_fx = true;
 			break;
 		}
@@ -784,45 +795,77 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 	case UIEvents::MOUSE_LEFT_UP_:
 
 		// Main menu
-		if (UIelem == main_menu_buttons[MenuOptions::MM_START_]) {
-			main_menu_buttons[MenuOptions::MM_CONTINUE_]->SetInteraction(false);
-			main_menu_buttons[MenuOptions::MM_SETTINGS_]->SetInteraction(false);
-			main_menu_buttons[MenuOptions::MM_CREDITS_]->SetInteraction(false);
-			main_menu_buttons[MenuOptions::MM_EXIT_]->SetInteraction(false);
+		if (UIelem == (UIElement*)main_menu_buttons[MenuOptions::MM_START_]) {
+			for (uint i = 0; i < 5; ++i) {
+				main_menu_buttons[i]->SetInteraction(false);
+				main_menu_options[i]->SetInteraction(false);
+				main_menu_buttons[i] = nullptr;
+				main_menu_options[i] = nullptr;
+			}
 
 			menuCatState = MenuCatState::MC_START_;
 			break;
 		}
-		else if (UIelem == main_menu_buttons[MenuOptions::MM_CONTINUE_]) {
-			main_menu_buttons[MenuOptions::MM_CONTINUE_]->SetInteraction(false);
-			main_menu_buttons[MenuOptions::MM_SETTINGS_]->SetInteraction(false);
-			main_menu_buttons[MenuOptions::MM_CREDITS_]->SetInteraction(false);
-			main_menu_buttons[MenuOptions::MM_EXIT_]->SetInteraction(false);
+		else if (UIelem == (UIElement*)main_menu_buttons[MenuOptions::MM_CONTINUE_]) {
+			for (uint i = 0; i < 5; ++i) {
+				main_menu_buttons[i]->SetInteraction(false);
+				main_menu_options[i]->SetInteraction(false);
+				main_menu_buttons[i] = nullptr;
+				main_menu_options[i] = nullptr;
+			}
 
 			menuCatState = MenuCatState::MC_CONTINUE_;
 			break;
 		}
-		else if (UIelem == main_menu_buttons[MenuOptions::MM_SETTINGS_]) {
+		else if (UIelem == (UIElement*)main_menu_buttons[MenuOptions::MM_SETTINGS_]) {
+			for (uint i = 0; i < 5; ++i) {
+				main_menu_buttons[i]->SetInteraction(false);
+				main_menu_options[i]->SetInteraction(false);
+				main_menu_buttons[i] = nullptr;
+				main_menu_options[i] = nullptr;
+			}
+
 			App->gui->ClearAllUI();
 			CreateSettingsUIElements();
 			menuState = MenuState::AT_SETTINGS_;
-			//App->fade->FadeToBlack(this, this, 2.0f, slider_fade, false, false);
 			break;
 		}
-		else if (UIelem == main_menu_buttons[MenuOptions::MM_CREDITS_]) {
+		else if (UIelem == (UIElement*)main_menu_buttons[MenuOptions::MM_CREDITS_]) {
+			for (uint i = 0; i < 5; ++i) {
+				main_menu_buttons[i]->SetInteraction(false);
+				main_menu_options[i]->SetInteraction(false);
+				main_menu_buttons[i] = nullptr;
+				main_menu_options[i] = nullptr;
+			}
+
 			App->gui->ClearAllUI();
 			CreateCreditsUIElements();
 			menuState = MenuState::AT_CREDITS_;
-			//App->fade->FadeToBlack(this, this, 2.0f, slider_fade, false, false);
 			break;
 		}
-		else if (UIelem == main_menu_buttons[MenuOptions::MM_EXIT_]) {
+		else if (UIelem == (UIElement*)main_menu_buttons[MenuOptions::MM_EXIT_]) {
 			App->quit_game = true;
 			break;
 		}
 
 		// Settings
-		else if (UIelem == back_to_main_menu_from_settings) {
+		else if (UIelem == (UIElement*)back_to_main_menu_from_settings) {
+			settings_window->SetInteraction(false);
+			fullscreen_checkbox->SetInteraction(false);
+			cap_frames_checkbox->SetInteraction(false);
+			camera_blit_checkbox->SetInteraction(false);
+			back_to_main_menu_from_settings->SetInteraction(false);
+			FX_slider->SetInteraction(false);
+			music_slider->SetInteraction(false);
+
+			settings_window = nullptr;
+			fullscreen_checkbox = nullptr;
+			cap_frames_checkbox = nullptr;
+			camera_blit_checkbox = nullptr;
+			back_to_main_menu_from_settings = nullptr;
+			FX_slider = nullptr;
+			music_slider = nullptr;
+
 			App->gui->ClearAllUI();
 			CreateMainMenuUIElements();
 			from_settings = true;
@@ -832,7 +875,17 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		}
 
 		// Credits
-		else if (UIelem == back_to_main_menu_from_credits) {
+		else if (UIelem == (UIElement*)back_to_main_menu_from_credits) {
+			website_button->SetInteraction(false);
+			website_title->SetInteraction(false);
+			back_to_main_menu_from_credits->SetInteraction(false);
+			license_slider->SetInteraction(false);
+
+			website_button = nullptr;
+			website_title = nullptr;
+			back_to_main_menu_from_credits = nullptr;
+			license_slider = nullptr;
+
 			App->gui->ClearAllUI();
 			CreateMainMenuUIElements();
 			from_credits = true;
@@ -840,20 +893,20 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 			menuState = MenuState::MAIN_MENU_OPTIONS_ANIMATION_;
 			break;
 		}		
-		else if (UIelem == website_button)
+		else if (UIelem == (UIElement*)website_button)
 		{
 			open_url("https://sandruski.github.io/Deep-Down-Game/");
 			break;
 		}
-		else if (UIelem == license_slider) {
+		else if (UIelem == (UIElement*)license_slider) {
 			sliding = false;
 			break;
 		}
-		else if (UIelem == music_slider) {
+		else if (UIelem == (UIElement*)music_slider) {
 			swap_music = false;
 			break;
 		}
-		else if (UIelem == FX_slider) {
+		else if (UIelem == (UIElement*)FX_slider) {
 			swap_fx = false;
 			break;
 		}
@@ -1096,9 +1149,11 @@ void j1Menu::CreateSettingsUIElements()
 	slider.button_slider_area = UIElement_Rect::SLIDER_BUTTON_;
 	slider.offset = 3;
 	slider.buggy_offset = -1;
-	slider.slider_button_pos.x = App->audio->music_volume * (App->gui->GetRectFromAtlas(UIElement_Rect::SLIDER_BAR_).w) / 128;
+
+	//slider.slider_button_pos.x = App->audio->music_volume * (App->gui->GetRectFromAtlas(UIElement_Rect::SLIDER_BUTTON_).w) / 128;
 	music_slider = App->gui->CreateUISlider({ 300,music_volume_text->GetLocalPos().y + 10 }, slider, this, settings_window);
-	slider.slider_button_pos.x = App->audio->fx_volume * (App->gui->GetRectFromAtlas(UIElement_Rect::SLIDER_BAR_).w) / 128;
+
+	//slider.slider_button_pos.x = App->audio->fx_volume * (App->gui->GetRectFromAtlas(UIElement_Rect::SLIDER_BUTTON_).w) / 128;
 	FX_slider = App->gui->CreateUISlider({ 300,FX_volume_text->GetLocalPos().y + 10 }, slider, this, settings_window);
 
 	// Back to main menu button

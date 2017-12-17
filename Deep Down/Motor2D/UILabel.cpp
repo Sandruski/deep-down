@@ -29,6 +29,11 @@ void UILabel::Update(float dt)
 		HandleInput();
 }
 
+UILabel::~UILabel()
+{
+	App->tex->UnLoad((SDL_Texture*)tex);
+}
+
 void UILabel::Draw() const
 {
 	iPoint blit_pos;
@@ -188,11 +193,6 @@ void UILabel::SetColor(SDL_Color color, bool normal, bool hover, bool pressed)
 		label.hover_color = color;
 	else if (pressed)
 		label.pressed_color = color;
-}
-
-UILabel::~UILabel()
-{
-	font = nullptr;
 }
 
 SDL_Color UILabel::GetColor(bool normal, bool hover, bool pressed) 

@@ -57,11 +57,8 @@ bool j1BetweenTransitions::Update(float dt)
 
 		bool player_death = false;
 
-		if (App->entities->playerData != nullptr) {
-			if (died && App->entities->playerData->player_is_dead) {
-				player_death = true;
-			}
-		}
+		if (died && back_to_main_menu)
+			player_death = true;
 
 		switch (App->fade->GetStep()) {
 
@@ -175,7 +172,7 @@ bool j1BetweenTransitions::Update(float dt)
 				}
 
 				bloody = false;
-			}			
+			}
 
 			break;
 
@@ -205,16 +202,17 @@ bool j1BetweenTransitions::Update(float dt)
 			l_score_text->RandomAlphaPainting(dt, WarmYellow_, 255 / 2, 255 / 5, 255 / 2 + 255 / 3, 0.1f);
 		}
 		if (l_you != nullptr) {
+			l_you->Draw();
 			if (bloody)
 				l_you->RandomAlphaPainting(dt, BloodyRed_, 255 / 2, 255 / 5, 255 / 2 + 255 / 3, 0.1f);
-			l_you->Draw();
 		}
 		if (l_died != nullptr) {
+			l_died->Draw();
 			if (bloody)
 				l_died->RandomAlphaPainting(dt, BloodyRed_, 255 / 2, 255 / 5, 255 / 2 + 255 / 3, 0.1f);
-			l_died->Draw();
 		}
 	}
+	
 
 	if (game_cursor != nullptr)
 		game_cursor->DrawAbove();

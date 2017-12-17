@@ -143,7 +143,6 @@ private:
 	int scale = 0;
 
 	iPoint camera_start_position = { 0,0 };
-	bool camera_blit = false;
 
 	bool swap_music = false;
 	bool swap_fx = false;

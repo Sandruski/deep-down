@@ -289,7 +289,12 @@ bool j1Gui::ClearAllUI()
 
 	while (UI_elem_it != nullptr) {
 
-		UI_elem_it->data->to_remove = true;
+		if (UI_elem_it->data != (UIElement*)App->trans->l_level_name && UI_elem_it->data != (UIElement*)App->trans->l_cats_picked
+			&& UI_elem_it->data != (UIElement*)App->trans->l_level_cats_picked && UI_elem_it->data != (UIElement*)App->trans->l_level_cats_picked2
+			&& UI_elem_it->data != (UIElement*)App->trans->l_score_text && UI_elem_it->data != (UIElement*)App->trans->l_you
+			&& UI_elem_it->data != (UIElement*)App->trans->l_died)
+			UI_elem_it->data->to_remove = true;
+
 		UI_elem_it = UI_elem_it->next;
 	}
 

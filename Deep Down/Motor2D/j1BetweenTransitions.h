@@ -49,9 +49,6 @@ public:
 private:
 	UICursor* game_cursor;
 
-	// Fade
-	fade_step current_step = fade_step::none;
-
 	// Create labels
 	bool level_name = true;
 	bool cats_picked = true;
@@ -62,6 +59,13 @@ private:
 	bool you = true;
 	bool died = true;
 
+	// Game info
+	uint scene_index = 0;
+	bool start = true;
+
+	bool bloody = false;
+
+public:
 	// Store labels
 	UILabel* l_level_name = nullptr;
 	UILabel* l_cats_picked = nullptr;
@@ -72,13 +76,7 @@ private:
 	UILabel* l_you = nullptr;
 	UILabel* l_died = nullptr;
 
-	// Game info
-	uint scene_index = 0;
-	bool start = true;
-
-	bool bloody = false;
-
-public:
+	// General game info
 	bool back_to_main_menu = false;
 	int highscore = 0;
 	bool continue_game = false;

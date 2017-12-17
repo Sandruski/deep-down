@@ -58,8 +58,6 @@ void UIElement::Draw() const
 
 	if (tex_area.w != 0)
 		App->render->Blit(App->gui->GetAtlas(), blit_pos.x, blit_pos.y, &tex_area);
-	else
-		App->render->Blit(App->gui->GetAtlas(), blit_pos.x, blit_pos.y);
 
 	if (App->gui->debug_draw)
 		DebugDraw(blit_pos);
