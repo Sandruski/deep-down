@@ -62,6 +62,7 @@ bool j1Menu::Awake(pugi::xml_node& config)
 bool j1Menu::Start()
 {
 	bool ret = true;
+	continue_button = false;
 
 	// Set Default Score
 	App->scene->cats_first_map = 0;
@@ -177,10 +178,19 @@ bool j1Menu::Start()
 	button.hover_tex_area = UIElement_Rect::MM_OPT_1_HOVER_;
 	button.pressed_tex_area = UIElement_Rect::MM_OPT_1_PRESSED_;
 	main_menu_buttons[i] = App->gui->CreateUIButton({ 50,400 }, button, this);
-	button.normal_tex_area = UIElement_Rect::MM_OPT_2_NORMAL_;
-	button.hover_tex_area = UIElement_Rect::MM_OPT_2_HOVER_;
-	button.pressed_tex_area = UIElement_Rect::MM_OPT_2_PRESSED_;
-	main_menu_buttons[++i] = App->gui->CreateUIButton({ 50,400 + 70 }, button, this);
+
+	pugi::xml_document config_file;
+	if (pugi::xml_parse_result result = config_file.load_file("save_game.xml")) {
+		button.normal_tex_area = UIElement_Rect::MM_OPT_2_NORMAL_;
+		button.hover_tex_area = UIElement_Rect::MM_OPT_2_HOVER_;
+		button.pressed_tex_area = UIElement_Rect::MM_OPT_2_PRESSED_;
+		main_menu_buttons[++i] = App->gui->CreateUIButton({ 50,400 + 70 }, button, this);
+		continue_button = true;
+	}
+	else {
+		++i;
+	}
+
 	button.normal_tex_area = UIElement_Rect::MM_OPT_3_NORMAL_;
 	button.hover_tex_area = UIElement_Rect::MM_OPT_3_HOVER_;
 	button.pressed_tex_area = UIElement_Rect::MM_OPT_3_PRESSED_;
@@ -206,8 +216,14 @@ bool j1Menu::Start()
 	label.text = "Play";
 	iPoint options_position = { main_menu_buttons[i]->GetLocalRect().w * scale / 2,main_menu_buttons[i]->GetLocalRect().h * scale / 2 };
 	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[i]);
-	label.text = "Continue";
-	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[++i]);
+
+	if (continue_button) {
+		label.text = "Continue";
+		main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[++i]);
+	}
+	else {
+		++i;
+	}
 	label.text = "Settings";
 	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[++i]);
 	label.text = "Credits";
@@ -216,9 +232,14 @@ bool j1Menu::Start()
 	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[++i]);
 	i = 0;
 
-	for (i; i < 5; ++i)
-		main_menu_options[i]->SetColor({ main_menu_options[i]->GetColor().r,main_menu_options[i]->GetColor().g,main_menu_options[i]->GetColor().b,0 });
-
+	for (i; i < 5; ++i) {
+		if (i == 1) {
+			if (continue_button)
+				main_menu_options[i]->SetColor({ main_menu_options[i]->GetColor().r,main_menu_options[i]->GetColor().g,main_menu_options[i]->GetColor().b,0 });
+		}
+		else
+			main_menu_options[i]->SetColor({ main_menu_options[i]->GetColor().r,main_menu_options[i]->GetColor().g,main_menu_options[i]->GetColor().b,0 });
+	}
 	i = 0;
 
 	// Highscore
@@ -587,8 +608,9 @@ bool j1Menu::Update(float dt)
 			App->gui->SetTextureAlphaMod(alpha);
 
 			main_menu_options[0]->SetColor({ main_menu_options[0]->GetColor().r,main_menu_options[0]->GetColor().g,main_menu_options[0]->GetColor().b,(Uint8)alpha });
-			if (alpha >= 1.0f * (255.0f / 5.0f))
+			if (alpha >= 1.0f * (255.0f / 5.0f) && continue_button) {
 				main_menu_options[1]->SetColor({ main_menu_options[1]->GetColor().r,main_menu_options[1]->GetColor().g,main_menu_options[1]->GetColor().b,(Uint8)alpha });
+			}
 			if (alpha >= 2.0f * (255.0f / 5.0f))
 				main_menu_options[2]->SetColor({ main_menu_options[2]->GetColor().r,main_menu_options[2]->GetColor().g,main_menu_options[2]->GetColor().b,(Uint8)alpha });
 			if (alpha >= 3.0f * (255.0f / 5.0f))
@@ -612,8 +634,16 @@ bool j1Menu::Update(float dt)
 					if (highscore_value->SlideTransition(dt, (int)height / 6, 800.0f, true, 10.0f, 3.0f)) {
 						if (highscore_text->SlideTransition(dt, (int)height / 10, 800.0f, true, 10.0f, 3.0f)) {
 							for (uint i = 0; i < 5; ++i) {
-								main_menu_buttons[i]->SetInteraction(true);
-								main_menu_options[i]->SetInteraction(true);
+								if (i == 1) {
+									if (continue_button) {
+										main_menu_buttons[i]->SetInteraction(true);
+										main_menu_options[i]->SetInteraction(true);
+									}
+								}
+								else {
+									main_menu_options[i]->SetInteraction(true);
+									main_menu_buttons[i]->SetInteraction(true);
+								}
 							}
 
 							from_settings = false;
@@ -633,7 +663,7 @@ bool j1Menu::Update(float dt)
 			App->gui->SetTextureAlphaMod(alpha);
 
 			main_menu_options[0]->SetColor({ main_menu_options[0]->GetColor().r,main_menu_options[0]->GetColor().g,main_menu_options[0]->GetColor().b,(Uint8)alpha });
-			if (alpha >= 1.0f * (255.0f / 5.0f))
+			if (alpha >= 1.0f * (255.0f / 5.0f) && continue_button)
 				main_menu_options[1]->SetColor({ main_menu_options[1]->GetColor().r,main_menu_options[1]->GetColor().g,main_menu_options[1]->GetColor().b,(Uint8)alpha });
 			if (alpha >= 2.0f * (255.0f / 5.0f))
 				main_menu_options[2]->SetColor({ main_menu_options[2]->GetColor().r,main_menu_options[2]->GetColor().g,main_menu_options[2]->GetColor().b,(Uint8)alpha });
@@ -648,8 +678,16 @@ bool j1Menu::Update(float dt)
 					if (highscore_text->SlideTransition(dt, (int)height / 10, 800.0f, true, 10.0f, 3.0f)) {
 
 						for (uint i = 0; i < 5; ++i) {
-							main_menu_buttons[i]->SetInteraction(true);
-							main_menu_options[i]->SetInteraction(true);
+							if (i == 1) {
+								if (continue_button) {
+									main_menu_buttons[i]->SetInteraction(true);
+									main_menu_options[i]->SetInteraction(true);
+								}
+							}
+							else {
+								main_menu_options[i]->SetInteraction(true);
+								main_menu_buttons[i]->SetInteraction(true);
+							}
 						}
 
 						menuState = MenuState::AT_MAIN_MENU_;
@@ -764,9 +802,19 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 
 		for (uint i = 0; i < 5; ++i)
 		{
-			if (UIelem == main_menu_buttons[i]) {
-				App->audio->PlayFx(10);
-				continue;
+			if (i == 1) {
+				if (continue_button) {
+					if (UIelem == main_menu_buttons[i]) {
+						App->audio->PlayFx(10);
+						continue;
+					}
+				}
+			}
+			else {
+				if (UIelem == main_menu_buttons[i]) {
+					App->audio->PlayFx(10);
+					continue;
+				}
 			}
 		}
 
@@ -817,21 +865,42 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		// Main menu
 		if (UIelem == (UIElement*)main_menu_buttons[MenuOptions::MM_START_]) {
 			for (uint i = 0; i < 5; ++i) {
-				main_menu_buttons[i]->SetInteraction(false);
-				main_menu_options[i]->SetInteraction(false);
-				main_menu_buttons[i] = nullptr;
-				main_menu_options[i] = nullptr;
+				if (i == 1) {
+					if (continue_button) {
+						main_menu_buttons[i]->SetInteraction(false);
+						main_menu_options[i]->SetInteraction(false);
+						main_menu_buttons[i] = nullptr;
+						main_menu_options[i] = nullptr;
+					}
+				}
+				else {
+					main_menu_buttons[i]->SetInteraction(false);
+					main_menu_options[i]->SetInteraction(false);
+					main_menu_buttons[i] = nullptr;
+					main_menu_options[i] = nullptr;
+				}
 			}
 
 			menuCatState = MenuCatState::MC_START_;
 			break;
 		}
-		else if (UIelem == (UIElement*)main_menu_buttons[MenuOptions::MM_CONTINUE_]) {
+		else if (UIelem == (UIElement*)main_menu_buttons[MenuOptions::MM_CONTINUE_] && continue_button) {
+
 			for (uint i = 0; i < 5; ++i) {
-				main_menu_buttons[i]->SetInteraction(false);
-				main_menu_options[i]->SetInteraction(false);
-				main_menu_buttons[i] = nullptr;
-				main_menu_options[i] = nullptr;
+				if (i == 1) {
+					if (continue_button) {
+						main_menu_buttons[i]->SetInteraction(false);
+						main_menu_options[i]->SetInteraction(false);
+						main_menu_buttons[i] = nullptr;
+						main_menu_options[i] = nullptr;
+					}
+				}
+				else {
+					main_menu_buttons[i]->SetInteraction(false);
+					main_menu_options[i]->SetInteraction(false);
+					main_menu_buttons[i] = nullptr;
+					main_menu_options[i] = nullptr;
+				}
 			}
 
 			menuCatState = MenuCatState::MC_CONTINUE_;
@@ -839,10 +908,20 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		}
 		else if (UIelem == (UIElement*)main_menu_buttons[MenuOptions::MM_SETTINGS_]) {
 			for (uint i = 0; i < 5; ++i) {
-				main_menu_buttons[i]->SetInteraction(false);
-				main_menu_options[i]->SetInteraction(false);
-				main_menu_buttons[i] = nullptr;
-				main_menu_options[i] = nullptr;
+				if (i == 1) {
+					if (continue_button) {
+						main_menu_buttons[i]->SetInteraction(false);
+						main_menu_options[i]->SetInteraction(false);
+						main_menu_buttons[i] = nullptr;
+						main_menu_options[i] = nullptr;
+					}
+				}
+				else {
+					main_menu_buttons[i]->SetInteraction(false);
+					main_menu_options[i]->SetInteraction(false);
+					main_menu_buttons[i] = nullptr;
+					main_menu_options[i] = nullptr;
+				}
 			}
 
 			App->gui->ClearAllUI();
@@ -852,10 +931,20 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		}
 		else if (UIelem == (UIElement*)main_menu_buttons[MenuOptions::MM_CREDITS_]) {
 			for (uint i = 0; i < 5; ++i) {
-				main_menu_buttons[i]->SetInteraction(false);
-				main_menu_options[i]->SetInteraction(false);
-				main_menu_buttons[i] = nullptr;
-				main_menu_options[i] = nullptr;
+				if (i == 1) {
+					if (continue_button) {
+						main_menu_buttons[i]->SetInteraction(false);
+						main_menu_options[i]->SetInteraction(false);
+						main_menu_buttons[i] = nullptr;
+						main_menu_options[i] = nullptr;
+					}
+				}
+				else {
+					main_menu_buttons[i]->SetInteraction(false);
+					main_menu_options[i]->SetInteraction(false);
+					main_menu_buttons[i] = nullptr;
+					main_menu_options[i] = nullptr;
+				}
 			}
 
 			App->gui->ClearAllUI();
@@ -936,9 +1025,19 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 	case UIEvents::MOUSE_ENTER_:
 		for (uint i = 0; i < 5; ++i)
 		{
-			if (UIelem == main_menu_buttons[i]) {
-				App->audio->PlayFx(9);
-				continue;
+			if (i == 1) {
+				if (continue_button) {
+					if (UIelem == (UIElement*)main_menu_buttons[i]) {
+						App->audio->PlayFx(9);
+						continue;
+					}
+				}
+			}
+			else {
+				if (UIelem == (UIElement*)main_menu_buttons[i]) {
+					App->audio->PlayFx(9);
+					continue;
+				}
 			}
 		}
 		break;
@@ -1044,10 +1143,20 @@ void j1Menu::CreateMainMenuUIElements()
 	button.hover_tex_area = UIElement_Rect::MM_OPT_1_HOVER_;
 	button.pressed_tex_area = UIElement_Rect::MM_OPT_1_PRESSED_;
 	main_menu_buttons[i] = App->gui->CreateUIButton({ 50,400 }, button, this);
-	button.normal_tex_area = UIElement_Rect::MM_OPT_2_NORMAL_;
-	button.hover_tex_area = UIElement_Rect::MM_OPT_2_HOVER_;
-	button.pressed_tex_area = UIElement_Rect::MM_OPT_2_PRESSED_;
-	main_menu_buttons[++i] = App->gui->CreateUIButton({ 50,400 + 70 }, button, this);
+
+	pugi::xml_document config_file;
+	if (pugi::xml_parse_result result = config_file.load_file("save_game.xml")) {
+		button.normal_tex_area = UIElement_Rect::MM_OPT_2_NORMAL_;
+		button.hover_tex_area = UIElement_Rect::MM_OPT_2_HOVER_;
+		button.pressed_tex_area = UIElement_Rect::MM_OPT_2_PRESSED_;
+		main_menu_buttons[++i] = App->gui->CreateUIButton({ 50,400 + 70 }, button, this);
+		continue_button = true;
+	}
+	else {
+		++i;
+		continue_button = false;
+	}
+
 	button.normal_tex_area = UIElement_Rect::MM_OPT_3_NORMAL_;
 	button.hover_tex_area = UIElement_Rect::MM_OPT_3_HOVER_;
 	button.pressed_tex_area = UIElement_Rect::MM_OPT_3_PRESSED_;
@@ -1075,8 +1184,15 @@ void j1Menu::CreateMainMenuUIElements()
 	label.text = "Play";
 	iPoint options_position = { main_menu_buttons[i]->GetLocalRect().w * scale / 2,main_menu_buttons[i]->GetLocalRect().h * scale / 2 };
 	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[i]);
-	label.text = "Continue";
-	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[++i]);
+
+	if (continue_button) {
+		label.text = "Continue";
+		main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[++i]);
+	}
+	else {
+		++i;
+	}
+
 	label.text = "Settings";
 	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[++i]);
 	label.text = "Credits";
@@ -1085,9 +1201,14 @@ void j1Menu::CreateMainMenuUIElements()
 	main_menu_options[i] = App->gui->CreateUILabel({ options_position.x,options_position.y }, label, this, main_menu_buttons[++i]);
 	i = 0;
 
-	for (i; i < 5; ++i)
-		main_menu_options[i]->SetColor({ main_menu_options[i]->GetColor().r,main_menu_options[i]->GetColor().g,main_menu_options[i]->GetColor().b,0 });
-
+	for (i; i < 5; ++i) {
+		if (i == 1) {
+			if (continue_button)
+				main_menu_options[i]->SetColor({ main_menu_options[i]->GetColor().r,main_menu_options[i]->GetColor().g,main_menu_options[i]->GetColor().b,0 });
+		}
+		else
+			main_menu_options[i]->SetColor({ main_menu_options[i]->GetColor().r,main_menu_options[i]->GetColor().g,main_menu_options[i]->GetColor().b,0 });
+	}
 	i = 0;
 
 	// Highscore

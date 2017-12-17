@@ -147,6 +147,8 @@ private:
 	bool swap_music = false;
 	bool swap_fx = false;
 
+	bool continue_button = false;
+
 public:
 	UIWindow* settings_window = nullptr;
 };
