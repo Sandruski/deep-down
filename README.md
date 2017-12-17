@@ -23,9 +23,6 @@ Left Shift: dash
 A: shoot
 
 X: attack (you can make a kind of combo if x is pressed in a short period of time)
-
-KP(+, -): increase, decrease music volume
-
 ### Debug
 
 F1: start from the beggining of the first level
