@@ -12,7 +12,7 @@ Special kudos to Momodora: Reviere under the Moonlight, Cave Story, Zelda: Breat
 
 ## Team members
 
-![](team_photo.png)
+![](team_photo.JPG)
 
 Alvarez Garcia, Sandra:
 
