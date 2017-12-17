@@ -116,6 +116,7 @@
         <fx name="CatPeasantScream.wav"/>
         <fx name="TinyButton.wav"/>
         <fx name="ButtonClick.wav"/>
+        <fx name="cat_coin.wav"/>
       </fx>
     </audio>
     <UI_cat>

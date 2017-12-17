@@ -504,6 +504,7 @@ void Cat::OnCollision(Collider* c1, Collider* c2)
 			catState = CatState::lc_dead;
 
 		App->scene->activate_UI_anim = true;
+		App->audio->PlayFx(11);
 		break;
 
 	case COLLIDER_PLAYER:
@@ -514,6 +515,7 @@ void Cat::OnCollision(Collider* c1, Collider* c2)
 			catState = CatState::lc_dead_run;
 
 		App->scene->activate_UI_anim = true;
+		App->audio->PlayFx(11);
 		break;
 	}
 }

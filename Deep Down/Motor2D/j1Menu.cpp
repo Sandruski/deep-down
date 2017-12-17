@@ -66,6 +66,10 @@ bool j1Menu::Start()
 	camera_blit = App->map->camera_blit;
 	App->map->camera_blit = false;
 
+	// Set Default Score
+	App->scene->cats_first_map = 0;
+	App->scene->cats_second_map = 0;
+
 	// Load menu map
 	if (App->map->Load("menu.tmx"))
 		App->entities->AddEntities();
@@ -231,7 +235,7 @@ bool j1Menu::Start()
 	int font_width, font_height;
 	App->font->CalcSize(label.text.GetString(), font_width, font_height, App->gui->GetFont(Font_Names::MSMINCHO_));
 	highscore_text->DecreasePos({ font_width * scale, font_height * scale });
-	p2SString tmp("%d", 10000);
+	p2SString tmp("%i", App->trans->highscore);
 	label.text = tmp.GetString();
 	highscore_value = App->gui->CreateUILabel({ (int)width - 50, -500 }, label);
 	App->font->CalcSize(label.text.GetString(), font_width, font_height, App->gui->GetFont(Font_Names::MSMINCHO_));
@@ -286,6 +290,17 @@ bool j1Menu::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		App->quit_game = true;
+
+	if (swap_music) {
+		int volume = music_slider->GetPercent();
+		volume = 128 * volume / 100;
+		App->audio->SetMusicVolume(volume);
+	}
+	else if (swap_fx && App->audio->active) {
+		int volume = FX_slider->GetPercent();
+		volume = 128 * volume / 100;
+		App->audio->SetFxVolume(volume);
+	}
 
 	// Time variables
 	float skip_button_speed = 2.5f;
@@ -826,6 +841,12 @@ void j1Menu::OnUIEvent(UIElement* UIelem, UIEvents UIevent)
 		else if (UIelem == license_slider) {
 			sliding = false;
 			break;
+		}
+		else if (UIelem == music_slider) {
+			swap_music = false;
+		}
+		else if (UIelem == FX_slider) {
+			swap_fx = false;
 		}
 
 		break;

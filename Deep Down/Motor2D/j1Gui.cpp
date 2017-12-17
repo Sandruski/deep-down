@@ -16,6 +16,8 @@
 #include "UILifeBar.h"
 #include "UISlider.h"
 
+#include "Brofiler\Brofiler.h"
+
 j1Gui::j1Gui() : j1Module()
 {
 	name.create("gui");
@@ -103,6 +105,8 @@ bool j1Gui::PreUpdate()
 
 bool j1Gui::Update(float dt)
 {
+	BROFILER_CATEGORY("UI_UpdateLogic", Profiler::Color::Azure);
+
 	bool ret = true;
 
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
@@ -126,6 +130,8 @@ bool j1Gui::Update(float dt)
 
 bool j1Gui::Blit(float dt) const
 {
+	BROFILER_CATEGORY("UI_BlitElements", Profiler::Color::Azure);
+
 	bool ret = true;
 
 	p2List_item<UIElement*>* UI_elem_it = UI_elements_list.start;

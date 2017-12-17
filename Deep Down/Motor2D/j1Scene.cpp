@@ -244,6 +244,7 @@ bool j1Scene::Update(float dt)
 					App->trans->back_to_main_menu = true;
 					App->trans->SetNextTransitionInfo(1, false);
 					App->fade->FadeToBlack(this, App->menu, 8.0f, fades::slider_fade);
+					App->trans->highscore = cats_first_map * 100 + cats_second_map * 100 + progress_bar->GetProgress() - count_time;
 					return true;
 				}
 			}

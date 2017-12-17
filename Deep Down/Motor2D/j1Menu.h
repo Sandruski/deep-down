@@ -143,6 +143,9 @@ private:
 	iPoint camera_start_position = { 0,0 };
 	bool camera_blit = false;
 
+	bool swap_music = false;
+	bool swap_fx = false;
+
 public:
 	UIWindow* settings_window = nullptr;
 };

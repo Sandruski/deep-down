@@ -59,7 +59,7 @@ private:
 
 public:
 	int music_volume = 0;
-	int fx_volume = 0;
+	int fx_volume = 40;
 };
 
 #endif // __j1AUDIO_H__
