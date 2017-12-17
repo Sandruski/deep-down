@@ -54,11 +54,9 @@ Number 3: enable/disable "onlyBlittingCamera"
 
 ## Innovation:
 
-- Blitting only what camera sees.
+- Menu Pause implemented
 
-- Collider Culing.
-
-- Enemy paths (polyline and start-end paths) and behaviour defined in Tiled.
+- New Transition
 
 ## Tools used:
 
