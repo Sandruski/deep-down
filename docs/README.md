@@ -2,7 +2,7 @@
  
 Welcome to Deep Down website!
 
-## About the game and it is context
+## About the game and its context
 This is Deep Down, a side-scrolling platformer game about exploring an abandoned and mysterious cave. It has two different levels:
 while the first one follows the player entering the underground world, the second one is about an epic chase towards the exit of this dangerous place.<br>
 
